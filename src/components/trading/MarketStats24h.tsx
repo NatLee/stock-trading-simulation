@@ -21,6 +21,10 @@ const SCENARIO_LABELS: Record<MarketScenario, { label: string; color: string }> 
     sideways: { label: '盤整', color: 'text-zinc-400' },
     volatile: { label: '高波動', color: 'text-amber-400' },
     calm: { label: '平靜', color: 'text-blue-400' },
+    breakout: { label: '突破', color: 'text-purple-400' },
+    crash: { label: '崩盤', color: 'text-red-600' },
+    accumulation: { label: '吸籌', color: 'text-indigo-400' },
+    distribution: { label: '派發', color: 'text-orange-400' },
 };
 
 /**
