@@ -2,13 +2,13 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
-    Activity, Globe, RefreshCw, Eye, EyeOff, Layers, Zap,
-    BookOpen, Palette, Bot, Settings, TrendingUp, TrendingDown, Minus,
-    X, MinusCircle, PlusCircle, CheckCircle, Info
+    Activity, Eye, EyeOff, Layers, Zap,
+    BookOpen, Palette, Settings, TrendingUp, TrendingDown, Minus,
+    X, MinusCircle, PlusCircle, Info
 } from 'lucide-react';
 import Link from 'next/link';
 import { Language, TRANSLATIONS, CONFIG } from '@/constants';
-import { useMarketSimulator, MarketState } from '@/hooks/useMarketSimulator';
+import { useMarketSimulator } from '@/hooks/useMarketSimulator';
 import { MarketScenario, HoldingLot } from '@/lib/matching';
 import { SCENARIO_MODIFIERS } from '@/lib/bots/types';
 import { CandleData, OrderType, OrderCondition, Holding, OrderRecord, LogEntry, AIState, AIRecommendation, PendingOrder } from '@/types';
@@ -43,12 +43,11 @@ const SCENARIO_OPTIONS: { label: string; value: MarketScenario; icon: React.Reac
  * This integrates the full order matching engine with bot-driven market simulation
  */
 export function TradingPanelV2() {
-    const [lang, setLang] = useState<Language>('zh');
+    const [lang] = useState<Language>('zh');
     const t = TRANSLATIONS[lang];
 
     const [showMA, setShowMA] = useState(true);
     const [showVolume, setShowVolume] = useState(true);
-    const [isMobile, setIsMobile] = useState(false);
     const [chartSize, setChartSize] = useState({ width: 800, height: 400 });
     // Speed state removed - fixed at 100ms
     const [timeframe, setTimeframe] = useState(60000); // Default 1m
@@ -80,12 +79,9 @@ export function TradingPanelV2() {
 
     const {
         state: marketState,
-        start,
-        stop,
         submitOrder: submitMarketOrder,
         cancelOrder,
         setScenario,
-        toggleBotOrderVisibility,
     } = useMarketSimulator(simConfig, { onTrade: (t) => onTradeRef.current(t) });
 
 
@@ -94,13 +90,7 @@ export function TradingPanelV2() {
     const [balance, setBalance] = useState<number>(CONFIG.INITIAL_BALANCE);
     const [holding, setHolding] = useState<Holding | null>(null);
     const [lots, setLots] = useState<HoldingLot[]>([]);
-    const sellTargetRef = useCallback((lotId: string | null) => {
-        // Simple mechanism to store the intended lot ID for the next sell
-        // We can't easily use useRef here because we need it inside the callback
-        // Better: store in a MutableRefObject
-        _lotIdRef.current = lotId;
-    }, []);
-    const _lotIdRef = useState<{ current: string | null }>({ current: null })[0]; // Ref-like that persists
+    const lotIdRef = useRef<string | null>(null);
 
     const [orderHistory, setOrderHistory] = useState<OrderRecord[]>([]);
     const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([]);
@@ -176,7 +166,7 @@ export function TradingPanelV2() {
         let tradePnl: number | undefined = undefined;
 
         // 2. Update Lots (and calculate Realized PnL)
-        let nextLots = [...lots];
+        const nextLots = [...lots];
 
         if (userSide === 'buy') {
             const newLot: HoldingLot = {
@@ -195,8 +185,8 @@ export function TradingPanelV2() {
             let realizedPnlDelta = 0;
 
             // Targeted Lot Sell?
-            if (_lotIdRef.current) {
-                const targetIdx = nextLots.findIndex(l => l.id === _lotIdRef.current);
+            if (lotIdRef.current) {
+                const targetIdx = nextLots.findIndex(l => l.id === lotIdRef.current);
                 if (targetIdx !== -1) {
                     const lot = nextLots[targetIdx];
                     const sellQty = Math.min(lot.quantity, remainingToSell);
@@ -210,7 +200,7 @@ export function TradingPanelV2() {
                     lot.quantity -= sellQty;
                     remainingToSell -= sellQty;
                 }
-                _lotIdRef.current = null;
+                lotIdRef.current = null;
             }
 
             // FIFO for remaining
@@ -273,7 +263,7 @@ export function TradingPanelV2() {
             pnl: tradePnl // Net Realized PnL (Sell Price - Buy Price - Both Commissions)
         }, ...prev].slice(0, 50));
 
-    }, [commissionRatePercent, addLog, _lotIdRef, lots]);
+    }, [commissionRatePercent, addLog, lots]);
 
     // Link Ref to the Callback
     useEffect(() => {
@@ -343,7 +333,7 @@ export function TradingPanelV2() {
         }
 
         setOrderQuantity(0);
-    }, [submitMarketOrder, balance, lots, marketState.currentPrice, addLog]); // Added lots to dependency
+    }, [submitMarketOrder, addLog, setOrderQuantity, setPendingOrders]);
 
     // Cancel pending order
     const handleCancelOrder = useCallback((orderId: string) => {
@@ -359,11 +349,11 @@ export function TradingPanelV2() {
         if (!lot) return;
 
         // Set target
-        _lotIdRef.current = lotId;
+        lotIdRef.current = lotId;
 
         // Execute Sell (Market Order)
         handleSubmitOrder('sell', lot.quantity, marketState.currentPrice, 1, 'market', 'GTC');
-    }, [lots, marketState.currentPrice, handleSubmitOrder, _lotIdRef]);
+    }, [lots, marketState.currentPrice, handleSubmitOrder]);
 
     // Handle reset
     // Reset logic removed
@@ -397,7 +387,6 @@ export function TradingPanelV2() {
     useEffect(() => {
         const updateHeight = () => {
             const mobile = window.innerWidth < 640;
-            setIsMobile(mobile);
             setChartSize(prev => ({
                 ...prev,
                 height: mobile ? 280 : 400

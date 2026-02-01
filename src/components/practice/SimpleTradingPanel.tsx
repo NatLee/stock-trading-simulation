@@ -42,7 +42,7 @@ export function SimpleTradingPanel({
     const downColor = isAsianTheme ? 'text-emerald-400' : 'text-rose-400';
     
     return (
-        <div className="bg-zinc-800/50 rounded-lg p-4 space-y-4">
+        <div className="bg-zinc-800/50 border border-zinc-700/50 rounded-xl p-4 space-y-4">
             {/* Current Price */}
             <div className="text-center pb-4 border-b border-zinc-700">
                 <div className="text-xs text-zinc-500 mb-1">目前價格</div>
@@ -88,47 +88,46 @@ export function SimpleTradingPanel({
                     <span>交易數量</span>
                     <span>最大: {maxBuyQuantity}</span>
                 </div>
-                <div className="flex gap-2">
-                    <input
-                        type="number"
-                        value={quantity}
-                        onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 0)}
-                        className="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-indigo-500"
-                        min={1}
-                        max={maxBuyQuantity}
-                    />
-                    <div className="flex gap-1">
-                        {[10, 50, 100].map((q) => (
-                            <button
-                                key={q}
-                                onClick={() => setQuantity(q)}
-                                className={`px-2 py-1 rounded text-xs ${
-                                    quantity === q
-                                        ? 'bg-indigo-600 text-white'
-                                        : 'bg-zinc-700 text-zinc-400 hover:bg-zinc-600'
-                                }`}
-                            >
-                                {q}
-                            </button>
-                        ))}
-                    </div>
+                <input
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 0)}
+                    className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-indigo-500"
+                    min={1}
+                    max={maxBuyQuantity}
+                />
+                {/* Quick quantity buttons */}
+                <div className="grid grid-cols-4 gap-1">
+                    {[10, 50, 100, 500].map((q) => (
+                        <button
+                            key={q}
+                            onClick={() => setQuantity(Math.min(q, maxBuyQuantity))}
+                            className={`py-1.5 rounded text-xs font-medium transition-all ${
+                                quantity === q
+                                    ? 'bg-indigo-600 text-white'
+                                    : 'bg-zinc-700/50 text-zinc-400 hover:bg-zinc-600/50'
+                            }`}
+                        >
+                            {q}
+                        </button>
+                    ))}
                 </div>
             </div>
             
             {/* Order Preview */}
-            <div className="text-xs text-zinc-500 space-y-1">
+            <div className="text-xs text-zinc-500 space-y-1 bg-zinc-900/30 rounded-lg p-2">
                 <div className="flex justify-between">
                     <span>交易金額</span>
-                    <span>${totalCost.toLocaleString()}</span>
+                    <span className="text-zinc-300">${totalCost.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                     <span>手續費</span>
-                    <span>${commission.toFixed(0)}</span>
+                    <span className="text-zinc-300">${commission.toFixed(0)}</span>
                 </div>
             </div>
             
             {/* Action Buttons */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
                 <button
                     onClick={() => onBuy(quantity)}
                     disabled={currentPrice <= 0 || quantity <= 0 || totalCost + commission > balance}
