@@ -799,6 +799,12 @@
                 },
                 {
                     "type": "highlight-box",
+                    "title": "📚 延伸學習",
+                    "color": "zinc",
+                    "text": "想學習更多進階交易策略（趨勢交易、波段操作、突破策略等），請參考「交易策略」課程。"
+                },
+                {
+                    "type": "highlight-box",
                     "title": "定期定額 (Dollar-Cost Averaging)",
                     "color": "emerald",
                     "text": "最適合新手的投資方式",
@@ -1061,103 +1067,6 @@
         },
         {
             "id": "13",
-            "title": "波段交易策略",
-            "description": "Swing Trading 的操作方法與技巧",
-            "duration": "15分鐘",
-            "content": [
-                {
-                    "type": "paragraph",
-                    "text": "**波段交易（Swing Trading）**是介於當沖和長期投資之間的交易方式，持有期間從數天到數週不等。",
-                    "highlights": [{ "text": "波段交易（Swing Trading）", "color": "white" }]
-                },
-                {
-                    "type": "comparison-grid",
-                    "items": [
-                        {
-                            "title": "波段交易 vs 當沖",
-                            "description": "不需要盯盤，適合有工作的投資人",
-                            "color": "emerald",
-                            "subtext": "持有數天至數週"
-                        },
-                        {
-                            "title": "波段交易 vs 長期投資",
-                            "description": "更積極把握價格波動，潛在報酬較高",
-                            "color": "indigo",
-                            "subtext": "但需要更多技術分析"
-                        }
-                    ]
-                },
-                {
-                    "type": "highlight-box",
-                    "title": "波段交易選股條件",
-                    "color": "indigo",
-                    "items": [
-                        "日均成交量 > 50 萬股（流動性充足）",
-                        "股價在明確的價格通道內波動",
-                        "有清晰的支撐和壓力位",
-                        "避開財報公布前後（波動過大）",
-                        "優先選擇 Beta > 1 的股票（波動性較大）"
-                    ]
-                },
-                {
-                    "type": "highlight-box",
-                    "title": "進場策略",
-                    "color": "emerald",
-                    "items": [
-                        "支撐買入：股價回落至支撐位附近，出現止跌訊號時買入",
-                        "突破買入：股價放量突破壓力位時買入",
-                        "均線回測：股價回測移動平均線獲支撐時買入",
-                        "確認訊號：等待 K 線確認（錘子線、吞噬等）再進場"
-                    ]
-                },
-                {
-                    "type": "highlight-box",
-                    "title": "出場策略",
-                    "color": "amber",
-                    "items": [
-                        "目標價出場：達到壓力位或預設目標",
-                        "停損出場：跌破支撐位或停損點（通常 5-8%）",
-                        "時間出場：持有超過預期時間仍未達目標",
-                        "訊號出場：出現反轉 K 線型態時獲利了結"
-                    ]
-                },
-                {
-                    "type": "table",
-                    "headers": ["技術指標", "買入訊號", "賣出訊號"],
-                    "rows": [
-                        ["移動平均線", "股價站上 20MA 且均線向上", "股價跌破 20MA"],
-                        ["MACD", "金叉且柱狀轉正", "死叉且柱狀轉負"],
-                        ["RSI", "RSI < 30 超賣後反彈", "RSI > 70 超買後回落"],
-                        ["布林通道", "觸及下軌反彈", "觸及上軌回落"]
-                    ]
-                },
-                {
-                    "type": "highlight-box",
-                    "title": "⚠️ 波段交易風險管理",
-                    "color": "rose",
-                    "items": [
-                        "單筆交易風險不超過總資金 2%",
-                        "設定明確停損，嚴格執行",
-                        "避開重大事件（財報、FOMC 會議）",
-                        "不要逆勢操作，順勢而為",
-                        "記錄每筆交易，定期檢討"
-                    ]
-                },
-                {
-                    "type": "quiz-example",
-                    "question": "波段交易最適合哪種類型的投資人？",
-                    "options": [
-                        { "id": "a", "text": "想要每天交易賺價差的人", "isCorrect": false },
-                        { "id": "b", "text": "有工作但想積極參與市場的人", "isCorrect": true },
-                        { "id": "c", "text": "完全不想看盤的長期投資者", "isCorrect": false },
-                        { "id": "d", "text": "資金很少的新手", "isCorrect": false }
-                    ],
-                    "explanation": "波段交易適合有工作但想積極參與市場的人。不需要像當沖一樣全天盯盤，但比長期投資更能把握價格波動。需要有一定的技術分析能力和風險承受度。"
-                }
-            ]
-        },
-        {
-            "id": "14",
             "title": "美股股息投資進階",
             "description": "SCHD、股息貴族與高殖利率策略",
             "duration": "15分鐘",
@@ -1266,7 +1175,7 @@
             ]
         },
         {
-            "id": "15",
+            "id": "14",
             "title": "風險對沖策略",
             "description": "反向 ETF、賣權與避險方法",
             "duration": "12分鐘",
@@ -1365,7 +1274,7 @@
             ]
         },
         {
-            "id": "16",
+            "id": "15",
             "title": "美股技術分析實戰",
             "description": "MACD、RSI、均線的美股應用",
             "duration": "15分鐘",
