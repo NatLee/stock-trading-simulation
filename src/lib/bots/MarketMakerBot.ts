@@ -34,6 +34,13 @@ export class MarketMakerBot {
     }
 
     /**
+     * Get refresh interval for burst-mode calculation
+     */
+    getRefreshInterval(): number {
+        return this.config.refreshInterval;
+    }
+
+    /**
      * Generate quotes for the order book
      * Returns orders to place on both bid and ask sides
      */
@@ -68,7 +75,10 @@ export class MarketMakerBot {
             const skewedOffset = levelOffset + bidSkew * baseSpread;
             const rawPrice = currentPrice * (1 - skewedOffset);
             const price = PriceStep.floorToTick(rawPrice); // Use floor for bids to be safe
-            const size = Math.floor((minSize + Math.random() * (maxSize - minSize)) * sizeMultiplier);
+
+            // Increase size for deeper levels (scale 1.0 to ~3.0)
+            const depthScale = 1 + (i / dynamicDepth) * 2.0;
+            const size = Math.floor((minSize + Math.random() * (maxSize - minSize)) * sizeMultiplier * depthScale);
 
             if (price > 0) {
                 orders.push({
@@ -87,7 +97,10 @@ export class MarketMakerBot {
             const skewedOffset = levelOffset + askSkew * baseSpread;
             const rawPrice = currentPrice * (1 + skewedOffset);
             const price = PriceStep.ceilToTick(rawPrice); // Use ceil for asks to be safe
-            const size = Math.floor((minSize + Math.random() * (maxSize - minSize)) * sizeMultiplier);
+
+            // Increase size for deeper levels
+            const depthScale = 1 + (i / dynamicDepth) * 2.0;
+            const size = Math.floor((minSize + Math.random() * (maxSize - minSize)) * sizeMultiplier * depthScale);
 
             orders.push({
                 side: 'sell',

@@ -33,15 +33,23 @@ export class NoiseBot {
     }
 
     /**
+     * Get trade interval for burst-mode calculation
+     */
+    getTradeInterval(): number {
+        return this.config.tradeInterval;
+    }
+
+    /**
      * Generate random trading orders
      */
-    generateOrders(currentPrice: number): BotOrder[] {
+    generateOrders(currentPrice: number, force: boolean = false): BotOrder[] {
         if (!this.config.enabled) return [];
 
         const now = Date.now();
         const intensity = this.config.intensity || 1.0;
         const effectiveInterval = this.config.tradeInterval / intensity;
-        if (now - this.lastTradeTime < effectiveInterval) return [];
+
+        if (!force && now - this.lastTradeTime < effectiveInterval) return [];
 
         const orders: BotOrder[] = [];
         const [minSize, maxSize] = this.config.sizeRange;
@@ -74,7 +82,9 @@ export class NoiseBot {
                 botType: 'noise',
             });
 
-            this.lastTradeTime = now;
+            if (!force) {
+                this.lastTradeTime = now;
+            }
         }
 
         return orders;

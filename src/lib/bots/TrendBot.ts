@@ -36,6 +36,13 @@ export class TrendBot {
     }
 
     /**
+     * Get trade interval for burst-mode calculation
+     */
+    getTradeInterval(): number {
+        return this.config.tradeInterval;
+    }
+
+    /**
      * Record a price observation
      */
     observePrice(price: number): void {
@@ -70,27 +77,37 @@ export class TrendBot {
      */
     generateOrders(
         currentPrice: number,
-        scenario: MarketScenario
+        scenario: MarketScenario,
+        force: boolean = false
     ): BotOrder[] {
         if (!this.config.enabled) return [];
 
         const now = Date.now();
         const intensity = this.config.intensity || 1.0;
         const effectiveInterval = this.config.tradeInterval / intensity;
-        if (now - this.lastTradeTime < effectiveInterval) return [];
+
+        if (!force && now - this.lastTradeTime < effectiveInterval) return [];
 
         const trend = this.calculateTrend();
         const scenarioBias = this.getScenarioBias(scenario);
         const combinedTrend = trend + scenarioBias;
 
+        // Use separate buy/sell strength if provided, otherwise use aggressiveness
+        const buyStrength = this.config.buyStrength ?? this.config.aggressiveness;
+        const sellStrength = this.config.sellStrength ?? this.config.aggressiveness;
+
+        // Determine side based on trend
+        const isBuying = combinedTrend > 0;
+        const strength = isBuying ? buyStrength : sellStrength;
+
         // Only trade if trend is strong enough
-        const threshold = 0.3 * (1 - this.config.aggressiveness);
+        const threshold = 0.3 * (1 - strength);
         if (Math.abs(combinedTrend) < threshold) return [];
 
         const orders: BotOrder[] = [];
         const [minSize, maxSize] = this.config.sizeRange;
         const size = Math.floor(
-            minSize + (maxSize - minSize) * Math.abs(combinedTrend) * this.config.aggressiveness
+            minSize + (maxSize - minSize) * Math.abs(combinedTrend) * strength
         );
 
         if (size > 0) {
@@ -114,7 +131,10 @@ export class TrendBot {
                     botType: 'trend',
                 });
             }
-            this.lastTradeTime = now;
+
+            if (!force) {
+                this.lastTradeTime = now;
+            }
         }
 
         return orders;
