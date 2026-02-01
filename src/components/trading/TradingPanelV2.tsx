@@ -37,7 +37,59 @@ const SCENARIO_OPTIONS: { label: string; value: MarketScenario; icon: React.Reac
     { label: '恐慌崩盤', value: 'crash', icon: <TrendingDown size={14} className="text-red-600" /> },
     { label: '主力吸籌', value: 'accumulation', icon: <Activity size={14} className="text-green-400" /> },
     { label: '主力出貨', value: 'distribution', icon: <Activity size={14} className="text-orange-400" /> },
+    { label: '拉高出貨', value: 'pump_dump', icon: <TrendingUp size={14} className="text-red-500" /> },
+    { label: '死貓反彈', value: 'dead_cat', icon: <Activity size={14} className="text-orange-500" /> },
+    { label: '盤整待變', value: 'squeeze', icon: <MinusCircle size={14} className="text-zinc-500" /> },
 ];
+
+/**
+ * Get simple SVG path for scenario preview
+ */
+const getScenarioPreviewPath = (scenario: MarketScenario) => {
+    switch (scenario) {
+        case 'bull': return "M 5 95 C 30 80, 60 40, 95 5";
+        case 'bear': return "M 5 5 C 30 20, 60 60, 95 95";
+        case 'sideways': return "M 5 50 Q 25 30, 50 50 T 95 50";
+        case 'volatile': return "M 5 50 L 20 20 L 35 80 L 50 10 L 65 90 L 80 30 L 95 50";
+        case 'calm': return "M 5 50 L 95 50";
+        case 'breakout': return "M 5 80 L 50 70 L 60 20 L 95 10";
+        case 'crash': return "M 5 10 L 30 20 L 40 90 L 95 95";
+        case 'accumulation': return "M 5 80 Q 25 70, 50 80 T 95 20";
+        case 'distribution': return "M 5 20 Q 25 30, 50 20 T 95 80";
+        case 'pump_dump': return "M 5 80 L 30 10 L 50 20 L 70 90 L 95 95";
+        case 'dead_cat': return "M 5 10 L 30 90 L 50 60 L 70 95 L 95 100";
+        case 'squeeze': return "M 5 50 L 20 45 L 40 55 L 60 48 L 80 52 L 95 50";
+        default: return "M 5 50 L 95 50";
+    }
+};
+
+/**
+ * Scenario Explanations & Stats
+ */
+const SCENARIO_DETAILS: Record<MarketScenario, { desc: string; vol: number; liq: number }> = {
+    bull: { desc: "市場情緒樂觀，買盤強勁，價格呈現多頭排列。", vol: 3, liq: 4 },
+    bear: { desc: "市場情緒悲觀，賣壓沉重，價格持續探底。", vol: 3, liq: 3 },
+    sideways: { desc: "市場缺乏明確方向，價格在區間內來回波動，流動性充足。", vol: 2, liq: 5 },
+    volatile: { desc: "多空交戰激烈，價格上下沖洗，風險極高。", vol: 5, liq: 2 },
+    calm: { desc: "交易清淡，價格波動極小，市場觀望氣氛濃厚。", vol: 1, liq: 1 },
+    breakout: { desc: "價格突破關鍵壓力位，伴隨大量買盤，趨勢可能反轉。", vol: 4, liq: 3 },
+    crash: { desc: "恐慌性拋售，價格直線崩落，流動性瞬間枯竭。", vol: 5, liq: 1 },
+    accumulation: { desc: "主力在低檔悄悄吸納籌碼，價格波動被刻意壓低。", vol: 2, liq: 4 },
+    distribution: { desc: "主力在高檔掩護出貨，價格看似強勢實則虛浮。", vol: 2, liq: 4 },
+    pump_dump: { desc: "人為極速拉抬股價，隨後將出現垂直崩盤。", vol: 5, liq: 3 },
+    dead_cat: { desc: "崩盤後的技術性反彈，幅度有限，通常是逃命波。", vol: 4, liq: 2 },
+    squeeze: { desc: "成交量窒息，波幅壓縮至極限，即將出現大行情。", vol: 1, liq: 2 },
+};
+
+/**
+ * Scenario Lifecycle Config (Transient Scenarios)
+ */
+const SCENARIO_LIFECYCLE: Partial<Record<MarketScenario, { duration: number; next: MarketScenario; label: string }>> = {
+    pump_dump: { duration: 15000, next: 'crash', label: '拉高結束 -> 殺盤開始' },
+    crash: { duration: 20000, next: 'dead_cat', label: '恐慌結束 -> 死貓反彈' },
+    breakout: { duration: 25000, next: 'bull', label: '突破確立 -> 轉為多頭' },
+    squeeze: { duration: 30000, next: 'breakout', label: '盤整結束 -> 向上突破' },
+};
 
 /**
  * TradingPanel V2 - Uses new matching engine
@@ -94,6 +146,8 @@ export function TradingPanelV2() {
         cancelOrder,
         setScenario,
     } = useMarketSimulator(simConfig, { onTrade: (t) => onTradeRef.current(t) });
+
+
 
 
 
@@ -167,6 +221,36 @@ export function TradingPanelV2() {
             timestamp: Date.now(),
         }]);
     }, []);
+
+    // Scenario Lifecycle Management
+    const scenarioTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+        // Clear existing timeout
+        if (scenarioTimeoutRef.current) {
+            clearTimeout(scenarioTimeoutRef.current);
+            scenarioTimeoutRef.current = null;
+        }
+
+        const lifecycle = SCENARIO_LIFECYCLE[marketState.scenario];
+        if (lifecycle) {
+            scenarioTimeoutRef.current = setTimeout(() => {
+                addLog(`[劇本切換] ${lifecycle.label}`, 'warning');
+                setScenario(lifecycle.next);
+
+                // If switching implies intensity change, update it too
+                const modifier = SCENARIO_MODIFIERS[lifecycle.next];
+                if (modifier?.intensity) setIntensity(modifier.intensity);
+
+            }, lifecycle.duration);
+        }
+
+        return () => {
+            if (scenarioTimeoutRef.current) {
+                clearTimeout(scenarioTimeoutRef.current);
+            }
+        };
+    }, [marketState.scenario, setScenario, addLog]);
 
     // Handle order submission
     // Centralized Trade Handler (Async & Sync)
@@ -731,11 +815,84 @@ export function TradingPanelV2() {
                                                     const modifier = SCENARIO_MODIFIERS[opt.value];
                                                     if (modifier?.intensity) setIntensity(modifier.intensity);
                                                 }}
-                                                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${marketState.scenario === opt.value ? 'bg-indigo-500/30 border border-indigo-500/50 text-indigo-300' : 'bg-zinc-800 border border-zinc-700 text-zinc-400 hover:border-zinc-600'}`}
+                                                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all border relative overflow-hidden ${marketState.scenario === opt.value
+                                                    ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300 ring-1 ring-indigo-500/50'
+                                                    : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600'
+                                                    }`}
                                             >
+                                                {/* Active Indicator */}
+                                                {marketState.scenario === opt.value && (
+                                                    <div className="absolute inset-0 bg-indigo-500/10 animate-pulse" />
+                                                )}
                                                 {opt.icon} {opt.label}
                                             </button>
                                         ))}
+                                    </div>
+                                </div>
+
+                                {/* Scenario Overview Card */}
+                                <div className="mt-4 bg-zinc-950 border border-zinc-800 rounded-lg p-4 relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 p-2 opacity-10">
+                                        <Activity size={100} />
+                                    </div>
+
+                                    <div className="flex flex-col sm:flex-row gap-6 relative z-10">
+                                        {/* Left: Visualization */}
+                                        <div className="flex-shrink-0 flex flex-col items-center justify-center gap-2">
+                                            <div className="w-[120px] h-[60px] bg-zinc-900/50 rounded flex items-center justify-center p-2 border border-zinc-800">
+                                                <svg width="100" height="40" viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full stroke-current text-indigo-500 fill-none stroke-2 shadow-lg filter drop-shadow">
+                                                    <path d={getScenarioPreviewPath(marketState.scenario)} vectorEffect="non-scaling-stroke" />
+                                                </svg>
+                                            </div>
+                                            <div className="text-[10px] uppercase font-mono text-zinc-500 tracking-wider">Pattern Preview</div>
+                                        </div>
+
+                                        {/* Right: Info & Stats */}
+                                        <div className="flex-1 space-y-3">
+                                            <div>
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <h4 className="text-sm font-bold text-white">
+                                                        {SCENARIO_OPTIONS.find(o => o.value === marketState.scenario)?.label}
+                                                    </h4>
+                                                    {SCENARIO_LIFECYCLE[marketState.scenario] && (
+                                                        <span className="text-[10px] px-1.5 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded animate-pulse">
+                                                            自動切換中...
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-zinc-400 leading-relaxed">
+                                                    {SCENARIO_DETAILS[marketState.scenario]?.desc}
+                                                </p>
+                                            </div>
+
+                                            {/* Stats Bars */}
+                                            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-[10px] text-zinc-500 uppercase">
+                                                        <span>Volatility</span>
+                                                        <span>{SCENARIO_DETAILS[marketState.scenario]?.vol}/5</span>
+                                                    </div>
+                                                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                                        <div
+                                                            className="h-full bg-amber-500 rounded-full transition-all duration-500"
+                                                            style={{ width: `${(SCENARIO_DETAILS[marketState.scenario]?.vol / 5) * 100}%` }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-[10px] text-zinc-500 uppercase">
+                                                        <span>Liquidity</span>
+                                                        <span>{SCENARIO_DETAILS[marketState.scenario]?.liq}/5</span>
+                                                    </div>
+                                                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                                        <div
+                                                            className="h-full bg-blue-500 rounded-full transition-all duration-500"
+                                                            style={{ width: `${(SCENARIO_DETAILS[marketState.scenario]?.liq / 5) * 100}%` }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 

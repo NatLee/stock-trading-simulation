@@ -111,18 +111,40 @@ export class TrendBot {
         );
 
         if (size > 0) {
-            // Limit orders - place slightly away from market
-            if (Math.random() < 0.7) {
-                const side: OrderSide = combinedTrend > 0 ? 'buy' : 'sell';
+            // Determine order urgency based on trend strength
+            const isAggressive = Math.abs(combinedTrend) > 0.6; // High trend = aggressive
+            const side: OrderSide = combinedTrend > 0 ? 'buy' : 'sell';
+
+            // Aggressive: Cross the spread to ensure execution (Market-like Limit)
+            // Passive: Sit on the book (Standard Limit)
+            let price: number;
+
+            if (isAggressive) {
+                // Aggressive: Price is set to cross the spread
+                // Buy: Current + 0.5% (to eat asks)
+                // Sell: Current - 0.5% (to hit bids)
+                // Note: Matching engine treats these as limit orders that cross = immediate match
+                const crossing = 0.005;
+                const rawPrice = side === 'buy'
+                    ? currentPrice * (1 + crossing)
+                    : currentPrice * (1 - crossing);
+
+                price = side === 'buy'
+                    ? PriceStep.floorToTick(rawPrice)
+                    : PriceStep.ceilToTick(rawPrice);
+            } else {
+                // Passive: Standard logic (existing)
                 const deviation = 0.001 + Math.random() * 0.002;
                 const rawPrice = side === 'buy'
                     ? currentPrice * (1 - deviation)
                     : currentPrice * (1 + deviation);
 
-                const price = side === 'buy'
+                price = side === 'buy'
                     ? PriceStep.floorToTick(rawPrice)
                     : PriceStep.ceilToTick(rawPrice);
+            }
 
+            if (Math.random() < (isAggressive ? 0.9 : 0.7)) {
                 orders.push({
                     side,
                     type: 'limit',
@@ -131,10 +153,10 @@ export class TrendBot {
                     botType: 'trend',
                 });
             }
+        }
 
-            if (!force) {
-                this.lastTradeTime = now;
-            }
+        if (!force) {
+            this.lastTradeTime = now;
         }
 
         return orders;

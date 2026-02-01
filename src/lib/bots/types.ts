@@ -262,4 +262,44 @@ export const SCENARIO_MODIFIERS: Record<MarketScenario, Partial<BotManagerConfig
         },
         marketMaker: { ...DEFAULT_MARKET_MAKER_CONFIG, depth: 12 },
     },
+    // 拉高出貨 (Pump & Dump) - 極速拉升
+    pump_dump: {
+        volatility: 2.5,
+        liquidity: 1.2,
+        intensity: 4.0, // Very high intensity
+        trend: {
+            ...DEFAULT_TREND_BOT_CONFIG,
+            aggressiveness: 0.95,
+            buyStrength: 0.9,  // Hard pump
+            sellStrength: 0.1,
+            tradeInterval: 500, // Very fast
+        },
+        marketMaker: { ...DEFAULT_MARKET_MAKER_CONFIG, spreadPercent: 0.01 }, // Wider spread during pump
+    },
+    // 死貓反彈 (Dead Cat Bounce) - 崩盤後小幅反彈
+    dead_cat: {
+        volatility: 2.0,
+        liquidity: 0.8,
+        intensity: 2.0,
+        trend: {
+            ...DEFAULT_TREND_BOT_CONFIG,
+            aggressiveness: 0.6,
+            buyStrength: 0.6,  // Moderate buy
+            sellStrength: 0.4,
+            tradeInterval: 1500,
+        },
+    },
+    // 盤整待變 (Squeeze) - 窒息量
+    squeeze: {
+        volatility: 0.1, // Very low volatility
+        liquidity: 0.5,  // Low liquidity
+        intensity: 0.5,  // Low activity
+        trend: {
+            ...DEFAULT_TREND_BOT_CONFIG,
+            aggressiveness: 0.1,
+            tradeInterval: 5000,
+            enabled: true,
+        },
+        noise: { ...DEFAULT_NOISE_BOT_CONFIG, tradeInterval: 8000 },
+    },
 };

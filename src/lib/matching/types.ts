@@ -128,7 +128,10 @@ export type MarketScenario =
     | 'breakout'      // 盤整突破
     | 'crash'         // 恐慌崩盤
     | 'accumulation'  // 主力吸籌
-    | 'distribution'; // 主力出貨
+    | 'distribution'  // 主力出貨
+    | 'pump_dump'     // 拉高出貨
+    | 'dead_cat'      // 死貓反彈
+    | 'squeeze';      // 盤整待變
 
 
 /**
@@ -302,6 +305,39 @@ export const MARKET_PRESETS: Record<MarketScenario, Partial<MarketConfig>> = {
             enabled: true,
         },
     },
+    pump_dump: {
+        scenario: 'pump_dump',
+        volatility: 2.5,
+        liquidity: 1.2,
+        trendBot: {
+            aggressiveness: 0.9, // Aggressive
+            sizeRange: [50, 200], // Large orders
+            tradeInterval: 500, // Very fast
+            enabled: true,
+        }
+    },
+    dead_cat: {
+        scenario: 'dead_cat',
+        volatility: 2.0,
+        liquidity: 0.8,
+        trendBot: {
+            aggressiveness: 0.5, // Moderate bias, but will use negative bias in logic
+            sizeRange: [10, 50],
+            tradeInterval: 1500,
+            enabled: true,
+        }
+    },
+    squeeze: {
+        scenario: 'squeeze',
+        volatility: 0.2, // Extremely low
+        liquidity: 0.5, // Drying up
+        trendBot: {
+            aggressiveness: 0.1,
+            sizeRange: [1, 5],
+            tradeInterval: 5000,
+            enabled: true,
+        }
+    }
 };
 
 /**

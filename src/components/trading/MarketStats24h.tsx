@@ -25,6 +25,9 @@ const SCENARIO_LABELS: Record<MarketScenario, { label: string; color: string }> 
     crash: { label: '崩盤', color: 'text-red-600' },
     accumulation: { label: '吸籌', color: 'text-indigo-400' },
     distribution: { label: '派發', color: 'text-orange-400' },
+    pump_dump: { label: '拉高出貨', color: 'text-red-500' },
+    dead_cat: { label: '死貓跳', color: 'text-orange-500' },
+    squeeze: { label: '窒息量', color: 'text-zinc-500' },
 };
 
 /**
