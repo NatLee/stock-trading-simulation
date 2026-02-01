@@ -53,7 +53,11 @@ export function SimulatedTradingSection() {
 
     // Price engine state
     const [candles, setCandles] = useState<CandleData[]>([]);
-    const [priceEngineState, setPriceEngineState] = useState({
+    const [priceEngineState, setPriceEngineState] = useState<{
+        currentPrice: number;
+        regime: MarketRegime;
+        sentiment: number;
+    }>({
         currentPrice: CONFIG.BASE_PRICE,
         regime: 'CHOP' as MarketRegime,
         sentiment: 50,
