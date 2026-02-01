@@ -47,6 +47,7 @@ export interface HoldingLot {
     id: string;
     tradeId: string;
     timestamp: number;
+    side: 'buy' | 'sell'; // buy = long, sell = short
     price: number;
     quantity: number;
     originalQuantity: number;

@@ -59,10 +59,25 @@ export const getTimeString = (): string => {
 };
 
 /**
- * Calculate order commission
+ * Calculate order commission (Handling Fee)
+ * Rule: 0.1425%, Minimum 20 TWD (default), integer rounding
  */
-export const calculateCommission = (total: number, rate = 0.001425): number => {
-    return Math.round(total * rate);
+export const calculateCommission = (total: number, rate = 0.001425, minFee = 20): number => {
+    // 1 TWD min for small odd lots logic could go here if needed, but standard is 20
+    // User requested: "Minimum 20 TWD rules"
+    const fee = Math.floor(total * rate); // Typically floor or round? Tw stocks usually floor then take max
+    // Use standard rounding for sim simplicity or follow Math.floor logic often used
+    const rawFee = Math.floor(total * rate);
+    return Math.max(rawFee, minFee);
+};
+
+/**
+ * Calculate Transaction Tax (Sell Only)
+ * Rule: 0.3% (Normal) or 0.15% (Day Trade)
+ */
+export const calculateTransactionTax = (total: number, isDayTrade = false): number => {
+    const rate = isDayTrade ? 0.0015 : 0.003;
+    return Math.floor(total * rate);
 };
 
 /**
