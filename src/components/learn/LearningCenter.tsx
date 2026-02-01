@@ -338,13 +338,22 @@ export function LearningCenter() {
                             </nav>
                         </div>
                         
-                        <Link
-                            href="/"
-                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-500/20 border border-indigo-500/50 hover:bg-indigo-500/30 text-sm font-medium transition-all text-indigo-400"
-                        >
-                            <Activity size={14} />
-                            <span className="hidden sm:inline">模擬交易</span>
-                        </Link>
+                        <div className="flex items-center gap-2">
+                            <Link
+                                href="/practice"
+                                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-500/50 hover:bg-amber-500/30 text-sm font-medium transition-all text-amber-400"
+                            >
+                                <Zap size={14} />
+                                <span className="hidden sm:inline">實戰練習</span>
+                            </Link>
+                            <Link
+                                href="/"
+                                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-500/20 border border-indigo-500/50 hover:bg-indigo-500/30 text-sm font-medium transition-all text-indigo-400"
+                            >
+                                <Activity size={14} />
+                                <span className="hidden sm:inline">模擬交易</span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -381,7 +390,7 @@ export function LearningCenter() {
                         <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-xl p-6">
                             <h2 className="text-2xl font-bold text-white mb-2">歡迎來到學習中心</h2>
                             <p className="text-zinc-400">系統化學習股票交易，從入門到精通</p>
-                            <div className="flex gap-4 mt-4 text-sm">
+                            <div className="flex flex-wrap gap-4 mt-4 text-sm">
                                 <div className="flex items-center gap-2 text-zinc-400">
                                     <BookOpen size={16} className="text-indigo-400" />
                                     <span>{COURSES_DATA.length} 門課程</span>
@@ -390,6 +399,17 @@ export function LearningCenter() {
                                     <FileText size={16} className="text-emerald-400" />
                                     <span>{COURSES_DATA.reduce((sum, c) => sum + c.lessons.length, 0)} 個單元</span>
                                 </div>
+                            </div>
+                            <div className="mt-4 pt-4 border-t border-indigo-500/20">
+                                <Link
+                                    href="/practice"
+                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/50 hover:bg-amber-500/30 text-sm font-medium transition-all text-amber-400"
+                                >
+                                    <Zap size={16} />
+                                    <span>前往實戰練習</span>
+                                    <ChevronRight size={16} />
+                                </Link>
+                                <p className="text-xs text-zinc-500 mt-2">練習K線型態辨識與模擬交易</p>
                             </div>
                         </div>
 
