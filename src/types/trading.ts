@@ -40,6 +40,7 @@ export interface OrderRecord {
     price: number;
     total: number;           // quantity × price
     commission: number;
+    tax?: number;            // Transaction Tax (Sell only)
     status: 'filled' | 'cancelled' | 'pending';
     pnl?: number;            // Realized P&L for this trade
 }
