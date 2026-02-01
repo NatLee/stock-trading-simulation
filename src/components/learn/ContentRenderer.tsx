@@ -297,7 +297,7 @@ function ContentBlockRenderer({ block }: { block: ContentBlock }) {
                 high: c.high,
                 low: c.low,
                 close: c.close,
-                label: c.label,
+                label: c.label || '',
             }));
             return (
                 <TVCandlestickChart 
@@ -326,26 +326,26 @@ function ContentBlockRenderer({ block }: { block: ContentBlock }) {
             const tvPoints: DataPoint[] = block.data.points.map(p => ({
                 x: p.x,
                 y: p.y,
-                label: p.label,
+                label: p.label || '',
             }));
             const tvMarkers: ChartMarker[] = (block.data.markers || []).map(m => ({
                 x: m.x,
                 y: m.y,
                 type: m.type,
-                label: m.label,
+                label: m.label || '',
             }));
             const tvLines: ChartLine[] = (block.data.lines || []).map(l => ({
                 type: l.type,
                 y: l.y,
                 points: l.points,
-                label: l.label,
+                label: l.label || '',
                 color: l.color,
             }));
             const tvZones: ChartZone[] = (block.data.zones || []).map(z => ({
                 type: z.type,
                 yStart: z.yStart,
                 yEnd: z.yEnd,
-                label: z.label,
+                label: z.label || '',
             }));
             return (
                 <TVLineChart 
@@ -365,33 +365,33 @@ function ContentBlockRenderer({ block }: { block: ContentBlock }) {
                 high: c.high,
                 low: c.low,
                 close: c.close,
-                label: c.label,
+                label: c.label || '',
             }));
             
             // 如果有線圖數據，同時顯示
             const comboLinePoints: DataPoint[] | undefined = block.lineData?.points.map(p => ({
                 x: p.x,
                 y: p.y,
-                label: p.label,
+                label: p.label || '',
             }));
             const comboLineMarkers: ChartMarker[] = (block.lineData?.markers || []).map(m => ({
                 x: m.x,
                 y: m.y,
                 type: m.type,
-                label: m.label,
+                label: m.label || '',
             }));
             const comboLineLines: ChartLine[] = (block.lineData?.lines || []).map(l => ({
                 type: l.type,
                 y: l.y,
                 points: l.points,
-                label: l.label,
+                label: l.label || '',
                 color: l.color,
             }));
             const comboLineZones: ChartZone[] = (block.lineData?.zones || []).map(z => ({
                 type: z.type,
                 yStart: z.yStart,
                 yEnd: z.yEnd,
-                label: z.label,
+                label: z.label || '',
             }));
             
             return (

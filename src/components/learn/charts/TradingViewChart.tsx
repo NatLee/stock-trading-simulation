@@ -199,7 +199,7 @@ export function TVCandlestickChart({
                 x,
                 y,
                 content: {
-                    label: candle.label,
+                    label: candle.label || '',
                     open: candle.open,
                     high: candle.high,
                     low: candle.low,
@@ -534,7 +534,7 @@ export function TVLineChart({
                 x,
                 y,
                 content: {
-                    label: point.label,
+                    label: point.label || '',
                     price: point.y,
                 },
             });
@@ -1083,10 +1083,12 @@ function drawMarkers(
         ctx.fill();
 
         // 標記文字
-        ctx.fillStyle = style.color;
-        ctx.font = `${isHovered ? 'bold ' : ''}10px sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.fillText(marker.label, x, isAbove ? y - 35 : y + 42);
+        if (marker.label) {
+            ctx.fillStyle = style.color;
+            ctx.font = `${isHovered ? 'bold ' : ''}10px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.fillText(marker.label, x, isAbove ? y - 35 : y + 42);
+        }
     });
 }
 
