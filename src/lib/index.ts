@@ -1,6 +1,7 @@
 export * from './utils';
 export * from './orderCalculations';
 export * from './orderMatching';
+export * from './aiAnalysis';
 
 // Re-export matching module - contains the new matching engine
 export {

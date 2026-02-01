@@ -19,8 +19,9 @@ import { OrderForm } from './order';
 import { OrderHistoryPanel, MarketTradesPanel } from './records';
 import { HoldingsPanel } from './holdings';
 import { PendingOrdersPanel } from './orders';
-import { AITerminal, AIScanner } from '@/components/ai';
-import { generateId, getTimeString, calculateCommission } from '@/lib';
+import { AITerminal, AIAnalysisPanel } from '@/components/ai';
+import { generateId, getTimeString, calculateCommission, performAIAnalysis } from '@/lib';
+import { AIDetailedAnalysis } from '@/types';
 
 // Speed options removed as requested
 // Default tick interval: 100ms
@@ -124,6 +125,7 @@ export function TradingPanelV2() {
     // AI state
     const [aiState, setAiState] = useState<AIState>('idle');
     const [aiRecommendation, setAiRecommendation] = useState<AIRecommendation>(null);
+    const [aiAnalysis, setAiAnalysis] = useState<AIDetailedAnalysis | null>(null);
     const [logs, setLogs] = useState<LogEntry[]>([
         { id: generateId(), text: t.logReady, type: 'info', time: getTimeString(), timestamp: Date.now() }
     ]);
@@ -358,29 +360,75 @@ export function TradingPanelV2() {
     // Handle reset
     // Reset logic removed
 
-    // AI Scanner
+    // AI Scanner - Real market analysis
     const startScan = useCallback(() => {
         setAiState('scanning');
-        addLog('AI 分析中...', 'info');
+        addLog('AI 啟動市場分析...', 'info');
+
+        // Simulate analysis time for UX
+        setTimeout(() => {
+            addLog('正在分析 K 線趨勢...', 'subtle');
+        }, 300);
 
         setTimeout(() => {
-            const scenario = marketState.scenario;
-            let recommendation: typeof aiRecommendation = null;
+            addLog('正在分析委託簿買賣壓...', 'subtle');
+        }, 800);
 
-            if (scenario === 'bull') {
-                recommendation = 'LONG';
-                addLog('AI 建議：多頭趨勢，建議買入', 'success');
-            } else if (scenario === 'bear') {
-                recommendation = 'SHORT';
-                addLog('AI 建議：空頭趨勢，建議賣出', 'warning');
+        setTimeout(() => {
+            addLog('正在計算動能指標...', 'subtle');
+        }, 1300);
+
+        setTimeout(() => {
+            addLog('正在識別 K 線型態...', 'subtle');
+        }, 1800);
+
+        setTimeout(() => {
+            // Perform real analysis
+            const analysis = performAIAnalysis(
+                marketState.candles,
+                marketState.orderBook,
+                10
+            );
+
+            setAiAnalysis(analysis);
+
+            // Update legacy recommendation state for OrderForm
+            if (analysis.overall.recommendation === 'LONG') {
+                setAiRecommendation('LONG');
+            } else if (analysis.overall.recommendation === 'SHORT') {
+                setAiRecommendation('SHORT');
             } else {
-                addLog('AI 分析：市場震盪，建議觀望', 'info');
+                setAiRecommendation(null);
             }
 
-            setAiRecommendation(recommendation);
+            // Log analysis results
+            addLog(`趨勢分析: ${analysis.trend.description}`, 'info');
+            addLog(`委託簿分析: ${analysis.orderBook.description}`, 'info');
+            addLog(`動能分析: ${analysis.momentum.description}`, 'info');
+
+            if (analysis.pattern.detected) {
+                addLog(`K線型態: ${analysis.pattern.detected} - ${analysis.pattern.description}`,
+                    analysis.pattern.signal === 'bullish' ? 'success' :
+                        analysis.pattern.signal === 'bearish' ? 'warning' : 'info'
+                );
+            }
+
+            // Log final recommendation
+            const recText = analysis.overall.recommendation === 'LONG' ? '買進 (LONG)' :
+                analysis.overall.recommendation === 'SHORT' ? '賣出 (SHORT)' : '觀望 (HOLD)';
+            const recType = analysis.overall.recommendation === 'LONG' ? 'success' :
+                analysis.overall.recommendation === 'SHORT' ? 'warning' : 'info';
+
+            addLog(`AI 建議: ${recText} (信心度: ${analysis.overall.confidence}%)`, recType);
+
+            // Log reasons
+            analysis.overall.reasons.forEach(reason => {
+                addLog(`  → ${reason}`, 'subtle');
+            });
+
             setAiState('analyzed');
-        }, 2000);
-    }, [marketState.scenario, addLog]);
+        }, 2300);
+    }, [marketState.candles, marketState.orderBook, addLog]);
 
     // Chart Container Resize Observer
     const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -711,7 +759,7 @@ export function TradingPanelV2() {
                         {/* Pair Info */}
                         <div className="flex items-center gap-3">
                             <div className="flex items-baseline gap-2">
-                                <span className="text-xl font-bold text-white tracking-wider">NAT/USD</span>
+                                <span className="text-xl font-bold text-white tracking-wider">NATLEE/TWD</span>
                                 <span className={`text-lg font-mono font-bold ${getTextColor(marketState.tickChange >= 0)}`}>
                                     ${marketState.currentPrice.toFixed(2)}
                                 </span>
@@ -766,6 +814,15 @@ export function TradingPanelV2() {
                         isScanning={aiState === 'scanning'}
                         title="系統記錄"
                         processingLabel={t.processing}
+                    />
+
+                    {/* AI Analysis Panel - Dedicated Section */}
+                    <AIAnalysisPanel
+                        state={aiState}
+                        analysis={aiAnalysis}
+                        onStartScan={startScan}
+                        disabled={false}
+                        isAsianTheme={isAsianTheme}
                     />
 
                     {/* Pending Orders Panel */}
@@ -857,18 +914,6 @@ export function TradingPanelV2() {
 
                     {/* Trading Panel */}
                     <div className="flex-1 min-h-fit bg-zinc-900 border border-zinc-800 rounded-sm p-4 flex flex-col">
-                        {/* AI Scanner */}
-                        <AIScanner
-                            state={aiState}
-                            onStartScan={startScan}
-                            disabled={false}
-                            scanIdleLabel={t.scanIdle}
-                            scanRunningLabel={t.scanRunning}
-                        />
-
-                        {/* Market Stats (Merged into OrderBook) */}
-                        <div className="hidden"></div>
-
                         {/* Order Form */}
                         <OrderForm
                             currentPrice={marketState.currentPrice}
