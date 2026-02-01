@@ -8,14 +8,14 @@ import {
     PracticeTrade,
     PracticePosition,
     PracticeResult,
-    PlaybackState,
     ScoreBreakdown,
     RecognitionQuestion,
 } from '@/data/practice/types';
-import { PATTERN_SCENARIOS, generateRecognitionQuestions, PATTERN_INFO } from '@/data/practice/patternScenarios';
+import { PATTERN_SCENARIOS, generateRecognitionQuestions } from '@/data/practice/patternScenarios';
 
 const INITIAL_BALANCE = 1000000; // 100萬初始資金
 const COMMISSION_RATE = 0.001425; // 手續費率
+const SHARES_PER_LOT = 1000; // 1張 = 1000股
 
 interface UsePracticeEngineReturn {
     // State
@@ -100,22 +100,42 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
         return visibleCandles[visibleCandles.length - 1].close;
     }, [visibleCandles]);
     
-    // Update position unrealized PnL
+    // Update position unrealized PnL (supports both long and short positions)
     useEffect(() => {
-        if (state.position && state.position.quantity > 0) {
-            const currentPrice = getCurrentPrice();
-            const unrealizedPnL = (currentPrice - state.position.averageCost) * state.position.quantity;
-            const unrealizedPnLPercent = (unrealizedPnL / (state.position.averageCost * state.position.quantity)) * 100;
+        const currentPrice = getCurrentPrice();
+        if (currentPrice <= 0) return;
+        
+        setState(prev => {
+            if (!prev.position || prev.position.quantity <= 0) return prev;
             
-            setState(prev => ({
+            let unrealizedPnL: number;
+            
+            if (prev.position.isShort) {
+                // 空頭部位：價格下跌獲利
+                unrealizedPnL = (prev.position.averageCost - currentPrice) * prev.position.quantity * SHARES_PER_LOT;
+            } else {
+                // 多頭部位：價格上漲獲利
+                unrealizedPnL = (currentPrice - prev.position.averageCost) * prev.position.quantity * SHARES_PER_LOT;
+            }
+            
+            const positionValue = prev.position.averageCost * prev.position.quantity * SHARES_PER_LOT;
+            const unrealizedPnLPercent = positionValue > 0 ? (unrealizedPnL / positionValue) * 100 : 0;
+            
+            // 只在值有變化時更新，避免無限循環
+            if (prev.position.unrealizedPnL === unrealizedPnL && 
+                prev.position.unrealizedPnLPercent === unrealizedPnLPercent) {
+                return prev;
+            }
+            
+            return {
                 ...prev,
-                position: prev.position ? {
+                position: {
                     ...prev.position,
                     unrealizedPnL,
                     unrealizedPnLPercent,
-                } : null,
-            }));
-        }
+                },
+            };
+        });
     }, [getCurrentPrice, state.playback.currentIndex]);
     
     // Playback timer effect
@@ -263,15 +283,57 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
         }
     }, [state.currentScenario, loadScenario]);
     
-    // Trading actions
+    // Trading actions - BUY (買入/空頭回補)
     const buy = useCallback((quantity: number) => {
         const price = getCurrentPrice();
         if (price <= 0 || quantity <= 0) return;
         
-        const cost = price * quantity;
+        const totalShares = quantity * SHARES_PER_LOT;
+        const cost = price * totalShares;
         const commission = cost * COMMISSION_RATE;
-        const totalCost = cost + commission;
         
+        // 檢查是否有空頭部位需要回補
+        if (state.position && state.position.isShort) {
+            // 空頭回補
+            const coverQuantity = Math.min(quantity, state.position.quantity);
+            const coverShares = coverQuantity * SHARES_PER_LOT;
+            const coverCost = price * coverShares;
+            const coverCommission = coverCost * COMMISSION_RATE;
+            
+            // 計算空頭平倉損益
+            const pnl = (state.position.averageCost - price) * coverShares;
+            
+            const trade: PracticeTrade = {
+                id: `trade-${Date.now()}`,
+                timestamp: Date.now(),
+                action: 'buy',
+                price,
+                quantity: coverQuantity,
+                candleIndex: state.playback.currentIndex,
+            };
+            
+            setState(prev => {
+                const remainingShortQuantity = prev.position!.quantity - coverQuantity;
+                const newPosition: PracticePosition | null = remainingShortQuantity > 0
+                    ? {
+                        ...prev.position!,
+                        quantity: remainingShortQuantity,
+                    }
+                    : null;
+                
+                return {
+                    ...prev,
+                    balance: prev.balance - coverCost - coverCommission + pnl,
+                    position: newPosition,
+                    trades: [...prev.trades, trade],
+                };
+            });
+            
+            return;
+        }
+        
+        // 一般買入（建立或加碼多頭部位）
+        const totalCost = cost + commission;
         if (totalCost > state.balance) return;
         
         const trade: PracticeTrade = {
@@ -284,18 +346,20 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
         };
         
         setState(prev => {
-            const newPosition: PracticePosition = prev.position
+            const newPosition: PracticePosition = prev.position && !prev.position.isShort
                 ? {
                     quantity: prev.position.quantity + quantity,
-                    averageCost: ((prev.position.averageCost * prev.position.quantity) + cost) / (prev.position.quantity + quantity),
+                    averageCost: ((prev.position.averageCost * prev.position.quantity) + (price * quantity)) / (prev.position.quantity + quantity),
                     unrealizedPnL: 0,
                     unrealizedPnLPercent: 0,
+                    isShort: false,
                 }
                 : {
                     quantity,
                     averageCost: price,
                     unrealizedPnL: 0,
                     unrealizedPnLPercent: 0,
+                    isShort: false,
                 };
             
             return {
@@ -305,16 +369,59 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
                 trades: [...prev.trades, trade],
             };
         });
-    }, [getCurrentPrice, state.balance, state.playback.currentIndex]);
+    }, [getCurrentPrice, state.balance, state.position, state.playback.currentIndex]);
     
+    // Trading actions - SELL (賣出/做空)
     const sell = useCallback((quantity: number) => {
         const price = getCurrentPrice();
         if (price <= 0 || quantity <= 0) return;
-        if (!state.position || state.position.quantity < quantity) return;
         
-        const revenue = price * quantity;
+        const totalShares = quantity * SHARES_PER_LOT;
+        const revenue = price * totalShares;
         const commission = revenue * COMMISSION_RATE;
-        const netRevenue = revenue - commission;
+        
+        // 檢查是否有多頭部位需要賣出
+        if (state.position && !state.position.isShort && state.position.quantity > 0) {
+            // 賣出多頭部位
+            const sellQuantity = Math.min(quantity, state.position.quantity);
+            const sellShares = sellQuantity * SHARES_PER_LOT;
+            const sellRevenue = price * sellShares;
+            const sellCommission = sellRevenue * COMMISSION_RATE;
+            const netRevenue = sellRevenue - sellCommission;
+            
+            const trade: PracticeTrade = {
+                id: `trade-${Date.now()}`,
+                timestamp: Date.now(),
+                action: 'sell',
+                price,
+                quantity: sellQuantity,
+                candleIndex: state.playback.currentIndex,
+            };
+            
+            setState(prev => {
+                const remainingQuantity = prev.position!.quantity - sellQuantity;
+                const newPosition: PracticePosition | null = remainingQuantity > 0
+                    ? {
+                        ...prev.position!,
+                        quantity: remainingQuantity,
+                    }
+                    : null;
+                
+                return {
+                    ...prev,
+                    balance: prev.balance + netRevenue,
+                    position: newPosition,
+                    trades: [...prev.trades, trade],
+                };
+            });
+            
+            return;
+        }
+        
+        // 做空（建立或加碼空頭部位）
+        // 做空需要保證金，這裡簡化為需要有足夠資金作為保證金
+        const marginRequired = revenue * 0.5; // 50% 保證金
+        if (marginRequired > state.balance) return;
         
         const trade: PracticeTrade = {
             id: `trade-${Date.now()}`,
@@ -326,28 +433,43 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
         };
         
         setState(prev => {
-            const newQuantity = prev.position!.quantity - quantity;
-            const newPosition: PracticePosition | null = newQuantity > 0
+            const newPosition: PracticePosition = prev.position && prev.position.isShort
                 ? {
-                    ...prev.position!,
-                    quantity: newQuantity,
+                    quantity: prev.position.quantity + quantity,
+                    averageCost: ((prev.position.averageCost * prev.position.quantity) + (price * quantity)) / (prev.position.quantity + quantity),
+                    unrealizedPnL: 0,
+                    unrealizedPnLPercent: 0,
+                    isShort: true,
                 }
-                : null;
+                : {
+                    quantity,
+                    averageCost: price,
+                    unrealizedPnL: 0,
+                    unrealizedPnLPercent: 0,
+                    isShort: true,
+                };
             
             return {
                 ...prev,
-                balance: prev.balance + netRevenue,
+                balance: prev.balance + revenue - commission, // 做空時收到賣出金額
                 position: newPosition,
                 trades: [...prev.trades, trade],
             };
         });
-    }, [getCurrentPrice, state.position, state.playback.currentIndex]);
+    }, [getCurrentPrice, state.position, state.balance, state.playback.currentIndex]);
     
+    // 平倉（支援多頭和空頭）
     const closePosition = useCallback(() => {
-        if (state.position && state.position.quantity > 0) {
+        if (!state.position || state.position.quantity <= 0) return;
+        
+        if (state.position.isShort) {
+            // 空頭平倉 - 買回
+            buy(state.position.quantity);
+        } else {
+            // 多頭平倉 - 賣出
             sell(state.position.quantity);
         }
-    }, [state.position, sell]);
+    }, [state.position, buy, sell]);
     
     // Recognition mode functions
     const startRecognitionSession = useCallback(() => {
@@ -431,9 +553,16 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
         
         // Calculate trading P&L
         let totalPnL = state.balance - INITIAL_BALANCE;
-        if (state.position) {
+        if (state.position && state.position.quantity > 0) {
             const currentPrice = getCurrentPrice();
-            totalPnL += (currentPrice - state.position.averageCost) * state.position.quantity;
+            const positionShares = state.position.quantity * SHARES_PER_LOT;
+            if (state.position.isShort) {
+                // 空頭部位未實現損益
+                totalPnL += (state.position.averageCost - currentPrice) * positionShares;
+            } else {
+                // 多頭部位未實現損益
+                totalPnL += (currentPrice - state.position.averageCost) * positionShares;
+            }
         }
         const totalPnLPercent = (totalPnL / INITIAL_BALANCE) * 100;
         
@@ -444,25 +573,35 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
         if (state.mode === 'trading' && state.currentScenario) {
             const scenario = state.currentScenario;
             
-            // Check entry accuracy
-            const buyTrades = state.trades.filter(t => t.action === 'buy');
-            if (buyTrades.length > 0 && scenario.optimalEntry) {
-                const firstBuy = buyTrades[0];
-                const entryDiff = Math.abs(firstBuy.price - scenario.optimalEntry.price);
-                const entryTolerance = scenario.optimalEntry.price * 0.03; // 3% tolerance
-                if (entryDiff <= entryTolerance) {
-                    entryAccuracy = 20;
+            // Check entry accuracy - 根據情境方向判斷進場
+            if (scenario.optimalEntry) {
+                const relevantTrades = scenario.expectedDirection === 'up'
+                    ? state.trades.filter(t => t.action === 'buy')
+                    : state.trades.filter(t => t.action === 'sell');
+                    
+                if (relevantTrades.length > 0) {
+                    const firstTrade = relevantTrades[0];
+                    const entryDiff = Math.abs(firstTrade.price - scenario.optimalEntry.price);
+                    const entryTolerance = scenario.optimalEntry.price * 0.03; // 3% tolerance
+                    if (entryDiff <= entryTolerance) {
+                        entryAccuracy = 20;
+                    }
                 }
             }
             
-            // Check exit accuracy
-            const sellTrades = state.trades.filter(t => t.action === 'sell');
-            if (sellTrades.length > 0 && scenario.optimalExit) {
-                const lastSell = sellTrades[sellTrades.length - 1];
-                const exitDiff = Math.abs(lastSell.price - scenario.optimalExit.price);
-                const exitTolerance = scenario.optimalExit.price * 0.03;
-                if (exitDiff <= exitTolerance) {
-                    exitAccuracy = 20;
+            // Check exit accuracy - 根據情境方向判斷出場
+            if (scenario.optimalExit) {
+                const relevantTrades = scenario.expectedDirection === 'up'
+                    ? state.trades.filter(t => t.action === 'sell')
+                    : state.trades.filter(t => t.action === 'buy');
+                    
+                if (relevantTrades.length > 0) {
+                    const lastTrade = relevantTrades[relevantTrades.length - 1];
+                    const exitDiff = Math.abs(lastTrade.price - scenario.optimalExit.price);
+                    const exitTolerance = scenario.optimalExit.price * 0.03;
+                    if (exitDiff <= exitTolerance) {
+                        exitAccuracy = 20;
+                    }
                 }
             }
         }
