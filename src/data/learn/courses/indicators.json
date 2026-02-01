@@ -1687,6 +1687,51 @@
             "title": "費波納契回調",
             "description": "Fibonacci Retracement 的應用",
             "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "股價回調到哪裡會止跌？上漲到哪裡會遇到壓力？**費波納契工具**讓你在盤勢變化前就先畫好關鍵價位，提前佈局進出場策略。這是專業交易者最常用的技術分析工具之一。",
+                    "highlights": [{ "text": "費波納契工具", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "📊 學完這門課，你將能夠",
+                    "color": "indigo",
+                    "items": [
+                        "在趨勢回調時找到精準的買入價位",
+                        "預測價格可能反轉的支撐/壓力區間",
+                        "設定合理的停損和目標價",
+                        "結合其他指標提高勝率"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "適用時機",
+                            "description": "趨勢行情中的回調買點、反彈賣點",
+                            "color": "emerald",
+                            "subtext": "盤整行情效果較差"
+                        },
+                        {
+                            "title": "搭配使用",
+                            "description": "K線型態、成交量、均線、RSI 等指標",
+                            "color": "amber",
+                            "subtext": "多重確認提高成功率"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🎯 課程學習路徑",
+                    "color": "zinc",
+                    "items": [
+                        "單元 1：理解黃金比例的數學原理",
+                        "單元 2：實際操作繪製技巧（上升趨勢/下降趨勢）",
+                        "單元 3：進場策略與風險控制實戰"
+                    ]
+                }
+            ],
             "subLessons": [
                 {
                     "id": "19-1",
@@ -1770,16 +1815,16 @@
                             "type": "combo-chart-example",
                             "title": "費波納契回調買點範例",
                             "candles": [
-                                { "open": 100, "high": 102, "low": 99, "close": 101 },
-                                { "open": 101, "high": 106, "low": 100, "close": 105 },
-                                { "open": 105, "high": 112, "low": 104, "close": 111 },
-                                { "open": 111, "high": 120, "low": 110, "close": 118 },
-                                { "open": 118, "high": 122, "low": 117, "close": 120 },
-                                { "open": 120, "high": 121, "low": 115, "close": 116 },
-                                { "open": 116, "high": 117, "low": 112, "close": 113 },
-                                { "open": 113, "high": 114, "low": 110, "close": 112 },
-                                { "open": 112, "high": 115, "low": 111, "close": 114 },
-                                { "open": 114, "high": 118, "low": 113, "close": 117 }
+                                { "open": 100, "high": 102, "low": 99, "close": 101, "label": "Day 1" },
+                                { "open": 101, "high": 106, "low": 100, "close": 105, "label": "Day 2" },
+                                { "open": 105, "high": 112, "low": 104, "close": 111, "label": "Day 3" },
+                                { "open": 111, "high": 120, "low": 110, "close": 118, "label": "Day 4" },
+                                { "open": 118, "high": 122, "low": 117, "close": 120, "label": "Day 5" },
+                                { "open": 120, "high": 121, "low": 115, "close": 116, "label": "Day 6" },
+                                { "open": 116, "high": 117, "low": 112, "close": 113, "label": "Day 7" },
+                                { "open": 113, "high": 114, "low": 110, "close": 112, "label": "Day 8" },
+                                { "open": 112, "high": 115, "low": 111, "close": 114, "label": "Day 9" },
+                                { "open": 114, "high": 118, "low": 113, "close": 117, "label": "Day 10" }
                             ],
                             "annotations": [
                                 { "index": 0, "label": "低點", "position": "below" },
@@ -1874,14 +1919,80 @@
                         },
                         {
                             "type": "highlight-box",
+                            "title": "🎯 匯聚原則（Confluence）",
+                            "color": "indigo",
+                            "text": "當多個技術訊號在同一價位匯聚時，該價位的有效性大增",
+                            "items": [
+                                "費波 61.8% + 前波高點 = 強支撐",
+                                "費波 50% + 20日均線 = 有效支撐",
+                                "費波 + RSI 超賣 + 錘子線 = 高機率買點",
+                                "至少要有 2-3 個訊號匯聚才進場"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "🛡️ 停損設置規則",
+                            "color": "amber",
+                            "items": [
+                                "規則1：設在進場費波位的下一層級（如 61.8% 進場，停損設 78.6% 下方）",
+                                "規則2：固定點數/百分比停損（如進場價的 2-3%）",
+                                "規則3：K 線低點下方 1-2 個 tick",
+                                "規則4：跌破進場位就停損，不要扛單等下一層"
+                            ]
+                        },
+                        {
+                            "type": "calculation-example",
+                            "title": "風險報酬比（R:R）計算",
+                            "steps": [
+                                { "label": "進場價", "value": "$107.64" },
+                                { "label": "停損價", "value": "$105.00" },
+                                { "label": "風險", "formula": "$107.64 - $105.00", "value": "$2.64" },
+                                { "label": "目標價", "value": "$127.64" },
+                                { "label": "潛在獲利", "formula": "$127.64 - $107.64", "value": "$20.00" },
+                                { "label": "風險報酬比", "formula": "$20.00 ÷ $2.64", "value": "7.58:1", "highlight": true }
+                            ],
+                            "result": {
+                                "label": "評估",
+                                "value": "風報比 > 2:1 即可考慮進場，此例高達 7.58:1，非常理想",
+                                "color": "emerald"
+                            }
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "📋 進場檢核清單",
+                            "color": "zinc",
+                            "items": [
+                                "□ 確認大趨勢方向（順勢交易）",
+                                "□ 畫出正確的費波回調（高低點選擇正確）",
+                                "□ 等待價格到達費波位",
+                                "□ 確認匯聚訊號（K線、指標、其他支撐）",
+                                "□ 計算風險報酬比（至少 2:1）",
+                                "□ 設定停損和目標價",
+                                "□ 確認倉位大小符合風險管理"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
                             "title": "⚠️ 注意事項",
                             "color": "rose",
                             "items": [
                                 "費波納契不是100%準確，需配合其他工具",
                                 "強勢趨勢可能只回調 23.6% 就反彈",
                                 "跌破 78.6% 通常意味趨勢可能反轉",
-                                "不同時間框架的費波可能產生衝突"
+                                "不同時間框架的費波可能產生衝突",
+                                "避免在重大消息發布前進場"
                             ]
+                        },
+                        {
+                            "type": "quiz-example",
+                            "question": "以下哪種情況是最佳的費波納契進場時機？",
+                            "options": [
+                                { "id": "a", "text": "價格剛碰到 38.2% 就立刻買入", "isCorrect": false },
+                                { "id": "b", "text": "價格在 61.8% 出現錘子線，且 RSI 超賣", "isCorrect": true },
+                                { "id": "c", "text": "價格跌破 78.6% 後抄底", "isCorrect": false },
+                                { "id": "d", "text": "不管任何訊號，只要到費波位就買", "isCorrect": false }
+                            ],
+                            "explanation": "最佳進場時機是多重訊號匯聚時：價格到達費波位（61.8%）+ K線反轉訊號（錘子線）+ 指標確認（RSI 超賣）。單獨依靠費波位進場勝率較低。"
                         }
                     ]
                 }
@@ -1892,6 +2003,62 @@
             "title": "艾略特波浪理論",
             "description": "Elliott Wave 入門與應用",
             "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "市場走勢看似混亂，其實暗藏規律。**艾略特波浪理論**教你識別價格運動的週期結構，預判趨勢何時延續、何時轉折，在關鍵轉捩點做出正確決策。",
+                    "highlights": [{ "text": "艾略特波浪理論", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "📊 學完這門課，你將能夠",
+                    "color": "indigo",
+                    "items": [
+                        "辨識當前市場處於哪一個波浪階段",
+                        "判斷趨勢是否即將結束或延續",
+                        "運用三大鐵律驗證波浪判讀的正確性",
+                        "結合費波納契計算目標價與停損位"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "適合進場",
+                            "description": "第 3 浪啟動初期、第 5 浪突破點",
+                            "color": "emerald",
+                            "subtext": "順勢交易獲利潛力大"
+                        },
+                        {
+                            "title": "謹慎觀望",
+                            "description": "第 4 浪盤整期、修正浪 B 反彈",
+                            "color": "rose",
+                            "subtext": "容易被假突破誤導"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 學習提醒",
+                    "color": "amber",
+                    "items": [
+                        "波浪計數需要經驗累積，初學者容易數錯",
+                        "同一段走勢可能有多種解讀方式",
+                        "建議搭配其他指標做確認，不要單獨使用",
+                        "先學會三大鐵律，再練習實際數浪"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🎯 課程學習路徑",
+                    "color": "zinc",
+                    "items": [
+                        "單元 1：理解 8 浪結構與背後的群眾心理",
+                        "單元 2：掌握三大鐵律，避免錯誤數浪",
+                        "單元 3：實戰應用費波納契預測目標價"
+                    ]
+                }
+            ],
             "subLessons": [
                 {
                     "id": "20-1",
@@ -1982,15 +2149,15 @@
                             "type": "combo-chart-example",
                             "title": "五浪推進結構示意",
                             "candles": [
-                                { "open": 100, "high": 102, "low": 99, "close": 101 },
-                                { "open": 101, "high": 108, "low": 100, "close": 107 },
-                                { "open": 107, "high": 108, "low": 103, "close": 104 },
-                                { "open": 104, "high": 115, "low": 103, "close": 114 },
-                                { "open": 114, "high": 125, "low": 113, "close": 124 },
-                                { "open": 124, "high": 126, "low": 118, "close": 119 },
-                                { "open": 119, "high": 132, "low": 118, "close": 130 },
-                                { "open": 130, "high": 131, "low": 125, "close": 126 },
-                                { "open": 126, "high": 135, "low": 125, "close": 133 }
+                                { "open": 100, "high": 102, "low": 99, "close": 101, "label": "Day 1" },
+                                { "open": 101, "high": 108, "low": 100, "close": 107, "label": "Day 2" },
+                                { "open": 107, "high": 108, "low": 103, "close": 104, "label": "Day 3" },
+                                { "open": 104, "high": 115, "low": 103, "close": 114, "label": "Day 4" },
+                                { "open": 114, "high": 125, "low": 113, "close": 124, "label": "Day 5" },
+                                { "open": 124, "high": 126, "low": 118, "close": 119, "label": "Day 6" },
+                                { "open": 119, "high": 132, "low": 118, "close": 130, "label": "Day 7" },
+                                { "open": 130, "high": 131, "low": 125, "close": 126, "label": "Day 8" },
+                                { "open": 126, "high": 135, "low": 125, "close": 133, "label": "Day 9" }
                             ],
                             "annotations": [
                                 { "index": 0, "label": "起點", "position": "below" },

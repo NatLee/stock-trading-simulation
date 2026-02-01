@@ -517,6 +517,44 @@
             "title": "ESG 永續投資",
             "description": "環境、社會、公司治理選股法",
             "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "為什麼越來越多投資人開始關注**永續投資**？當全球資金加速流向 ESG 領域，這不僅是道德選擇，更是降低投資風險、把握長期成長機會的策略。本課程帶你掌握 ESG 投資的實務技巧。",
+                    "highlights": [{ "text": "永續投資", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "📊 你將學會回答這些問題",
+                    "color": "indigo",
+                    "items": [
+                        "如何判斷一家公司的 ESG 表現好不好？",
+                        "不同評等機構給的分數不一樣，該相信誰？",
+                        "台灣有哪些 ESG ETF 可以投資？",
+                        "ESG 投資真的能帶來好報酬嗎？"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🎯 課程學習路徑",
+                    "color": "zinc",
+                    "items": [
+                        "單元 1：認識 ESG 三大面向與投資邏輯",
+                        "單元 2：學會解讀 MSCI、Sustainalytics 等評等",
+                        "單元 3：實戰挑選台股與美股 ESG ETF"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 適合對象",
+                    "color": "emerald",
+                    "items": [
+                        "想讓投資組合更具抗風險能力的投資人",
+                        "關心企業社會責任的價值型投資者",
+                        "希望透過投資支持永續發展的人"
+                    ]
+                }
+            ],
             "subLessons": [
                 {
                     "id": "8-1",
@@ -578,6 +616,60 @@
                                 { "id": "d", "text": "Global（全球）", "isCorrect": false }
                             ],
                             "explanation": "ESG 分別代表 Environmental（環境）、Social（社會）、Governance（公司治理）。公司治理包括董事會獨立性、管理層薪酬、股東權益保護等議題。"
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "ESG 整合投資流程",
+                            "color": "indigo",
+                            "text": "專業機構如何將 ESG 納入投資決策",
+                            "items": [
+                                "1. 政策制定：建立 ESG 投資政策與目標",
+                                "2. 組織治理：指定 ESG 負責團隊",
+                                "3. 投資流程：研究、估值、投組建構整合 ESG",
+                                "4. 參與監督：股東倡議、投票、持續追蹤",
+                                "5. 報告揭露：對外報告 ESG 整合成果"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "重大性原則（Materiality）",
+                            "color": "amber",
+                            "text": "並非所有 ESG 因素對每家公司都同等重要",
+                            "items": [
+                                "不同產業有不同的重大 ESG 議題",
+                                "科技業：資料安全、供應鏈人權最關鍵",
+                                "能源業：碳排放、環境污染是重點",
+                                "金融業：公司治理、反洗錢最重要",
+                                "只有重大性 ESG 因素才能預測財務表現"
+                            ]
+                        },
+                        {
+                            "type": "comparison-grid",
+                            "items": [
+                                {
+                                    "title": "傳統財務分析",
+                                    "description": "營收、獲利、現金流、負債比",
+                                    "color": "zinc",
+                                    "subtext": "看過去的財務數據"
+                                },
+                                {
+                                    "title": "ESG 整合分析",
+                                    "description": "在傳統分析基礎上加入 ESG 風險與機會",
+                                    "color": "emerald",
+                                    "subtext": "預測未來的永續競爭力"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "💡 實務建議",
+                            "color": "zinc",
+                            "items": [
+                                "先了解目標產業的重大 ESG 議題",
+                                "關注 ESG 改善趨勢，而非只看絕對分數",
+                                "ESG 是長期投資的風險管理工具",
+                                "不要只依賴單一評等機構的分數"
+                            ]
                         }
                     ]
                 },
@@ -634,6 +726,57 @@
                                 "短期績效：ESG 不保證短期報酬",
                                 "成本：ESG ETF 費用可能較高"
                             ]
+                        },
+                        {
+                            "type": "comparison-grid",
+                            "items": [
+                                {
+                                    "title": "排除策略（Exclusion）",
+                                    "description": "剔除 ESG 分數最低的公司",
+                                    "color": "rose",
+                                    "subtext": "簡單直接，對報酬影響小"
+                                },
+                                {
+                                    "title": "最佳同類（Best-in-Class）",
+                                    "description": "剔除低分，再投資同產業高分股",
+                                    "color": "emerald",
+                                    "subtext": "維持產業分散，減少偏誤"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "📊 當評等不一致時怎麼辦？",
+                            "color": "indigo",
+                            "items": [
+                                "了解各機構評分方法的差異",
+                                "關注產業內相對排名，而非絕對分數",
+                                "檢視企業自身的永續報告與揭露",
+                                "追蹤 ESG 爭議新聞與事件",
+                                "多方比對，不要只看單一來源"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "🔍 實用查詢資源",
+                            "color": "zinc",
+                            "items": [
+                                "MSCI ESG Ratings：msci.com（部分免費查詢）",
+                                "台灣證交所：ESG 資訊平台（esg.twse.com.tw）",
+                                "企業永續報告書：各公司官網下載",
+                                "Yahoo Finance：部分美股提供 ESG 分數"
+                            ]
+                        },
+                        {
+                            "type": "quiz-example",
+                            "question": "哪種 ESG 篩選策略可以維持投資組合的產業分散性？",
+                            "options": [
+                                { "id": "a", "text": "負面篩選（排除爭議產業）", "isCorrect": false },
+                                { "id": "b", "text": "最佳同類（Best-in-Class）", "isCorrect": true },
+                                { "id": "c", "text": "主題投資（聚焦綠能）", "isCorrect": false },
+                                { "id": "d", "text": "影響力投資", "isCorrect": false }
+                            ],
+                            "explanation": "最佳同類策略在每個產業中選擇 ESG 表現最佳的公司，因此能維持投資組合的產業分散性，避免過度集中於某些「天然較環保」的產業。"
                         }
                     ]
                 },
@@ -689,6 +832,58 @@
                                 "低費用：ESGV（僅 0.09%）",
                                 "嚴格篩選：SUSA、SUSL",
                                 "建議搭配大盤 ETF 分散風險"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "📊 ESG ETF vs 一般 ETF 績效比較",
+                            "color": "amber",
+                            "text": "研究數據顯示 ESG ETF 長期績效與大盤相近",
+                            "items": [
+                                "短期：ESG ETF 可能略輸大盤（排除某些高獲利產業）",
+                                "長期：ESG 領先者因風險管理較佳，表現往往不遜色",
+                                "波動：部分研究顯示 ESG ETF 下檔風險較小",
+                                "費用：ESG ETF 平均費用率約 0.15-0.35%，略高於傳統 ETF"
+                            ]
+                        },
+                        {
+                            "type": "comparison-grid",
+                            "items": [
+                                {
+                                    "title": "費用考量",
+                                    "description": "ESG ETF 費用通常較高，長期會侵蝕報酬",
+                                    "color": "amber",
+                                    "subtext": "美股 ESG ETF 費用已趨近傳統 ETF"
+                                },
+                                {
+                                    "title": "流動性考量",
+                                    "description": "選擇規模大、成交量高的 ETF",
+                                    "color": "emerald",
+                                    "subtext": "避免買賣價差過大"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "🔗 台灣 ESG 資源",
+                            "color": "indigo",
+                            "items": [
+                                "證交所 ESG 資訊平台：esg.twse.com.tw",
+                                "公司治理中心：cgc.twse.com.tw",
+                                "各公司永續報告書：官網 > 投資人專區",
+                                "投信投顧公會：ESG 基金專區"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "⚠️ 投資前的檢核清單",
+                            "color": "rose",
+                            "items": [
+                                "□ 了解 ETF 的 ESG 篩選方法",
+                                "□ 比較費用率（長期影響大）",
+                                "□ 確認成分股是否符合你的期望",
+                                "□ 檢視追蹤誤差與流動性",
+                                "□ 決定在投資組合中的配置比例"
                             ]
                         },
                         {
