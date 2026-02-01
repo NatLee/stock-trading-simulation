@@ -118,7 +118,17 @@ export interface MatchResult {
 /**
  * Market scenario preset
  */
-export type MarketScenario = 'bull' | 'bear' | 'sideways' | 'volatile' | 'calm';
+export type MarketScenario =
+    | 'bull'          // 強勢多頭
+    | 'bear'          // 弱勢空頭
+    | 'sideways'      // 盤整
+    | 'volatile'      // 劇烈震盪
+    | 'calm'          // 冷清
+    | 'breakout'      // 盤整突破
+    | 'crash'         // 恐慌崩盤
+    | 'accumulation'  // 主力吸籌
+    | 'distribution'; // 主力出貨
+
 
 /**
  * Market maker bot configuration
@@ -245,6 +255,50 @@ export const MARKET_PRESETS: Record<MarketScenario, Partial<MarketConfig>> = {
             sizeRange: [5, 15],
             tradeInterval: 10000,
             enabled: false,
+        },
+    },
+    breakout: {
+        scenario: 'breakout',
+        volatility: 1.8,
+        liquidity: 1.3,
+        trendBot: {
+            aggressiveness: 0.8,
+            sizeRange: [15, 60],
+            tradeInterval: 1500,
+            enabled: true,
+        },
+    },
+    crash: {
+        scenario: 'crash',
+        volatility: 3.0,
+        liquidity: 0.5,
+        trendBot: {
+            aggressiveness: 0.9,
+            sizeRange: [20, 80],
+            tradeInterval: 800,
+            enabled: true,
+        },
+    },
+    accumulation: {
+        scenario: 'accumulation',
+        volatility: 0.6,
+        liquidity: 1.8,
+        trendBot: {
+            aggressiveness: 0.6,
+            sizeRange: [10, 40],
+            tradeInterval: 2000,
+            enabled: true,
+        },
+    },
+    distribution: {
+        scenario: 'distribution',
+        volatility: 0.8,
+        liquidity: 1.5,
+        trendBot: {
+            aggressiveness: 0.6,
+            sizeRange: [10, 40],
+            tradeInterval: 2000,
+            enabled: true,
         },
     },
 };

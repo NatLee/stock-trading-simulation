@@ -82,6 +82,12 @@ export class MatchingEngine {
             // Snap to nearest valid tick to match bot orders and avoid floating point splits
             // e.g. 150.0000001 -> 150.0
             finalPrice = PriceStep.roundToTick(finalPrice);
+
+            // Price floor protection - prevent negative prices (Taiwan stock market rule)
+            // Minimum price is 0.01 (smallest tick size)
+            if (finalPrice < 0.01) {
+                finalPrice = 0.01;
+            }
         }
 
         // Create order entry

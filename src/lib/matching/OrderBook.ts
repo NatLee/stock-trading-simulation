@@ -257,6 +257,41 @@ export class OrderBook {
     }
 
     /**
+     * Cancel orders from a specific source that are too far from reference price
+     */
+    pruneDistantOrders(referencePrice: number, thresholdPercent: number, source: OrderSource): number {
+        const lowerBound = referencePrice * (1 - thresholdPercent);
+        const upperBound = referencePrice * (1 + thresholdPercent);
+        let cancelled = 0;
+        const ordersToCancel: string[] = [];
+
+        // Scan Asks (> upperBound)
+        for (const [price, level] of this.asks) {
+            if (price > upperBound) {
+                for (const order of level.orders) {
+                    if (order.source === source) ordersToCancel.push(order.orderId);
+                }
+            }
+        }
+
+        // Scan Bids (< lowerBound)
+        for (const [price, level] of this.bids) {
+            if (price < lowerBound) {
+                for (const order of level.orders) {
+                    if (order.source === source) ordersToCancel.push(order.orderId);
+                }
+            }
+        }
+
+        // Execute cancellations
+        ordersToCancel.forEach(id => {
+            if (this.cancelOrder(id)) cancelled++;
+        });
+
+        return cancelled;
+    }
+
+    /**
      * Get total volume on each side
      */
     getTotalVolume(): { askVolume: number; bidVolume: number } {
