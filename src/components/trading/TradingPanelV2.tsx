@@ -4,12 +4,13 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
     Activity, Globe, RefreshCw, Eye, EyeOff, Layers, Zap,
     BookOpen, Palette, Bot, Settings, TrendingUp, TrendingDown, Minus,
-    X, MinusCircle, PlusCircle, CheckCircle
+    X, MinusCircle, PlusCircle, CheckCircle, Info
 } from 'lucide-react';
 import Link from 'next/link';
 import { Language, TRANSLATIONS, CONFIG } from '@/constants';
 import { useMarketSimulator, MarketState } from '@/hooks/useMarketSimulator';
 import { MarketScenario, HoldingLot } from '@/lib/matching';
+import { SCENARIO_MODIFIERS } from '@/lib/bots/types';
 import { CandleData, OrderType, OrderCondition, Holding, OrderRecord, LogEntry, AIState, AIRecommendation, PendingOrder } from '@/types';
 import { Trade } from '@/lib/matching';
 import { CandlestickChart } from '@/components/chart';
@@ -24,13 +25,17 @@ import { generateId, getTimeString, calculateCommission } from '@/lib';
 // Speed options removed as requested
 // Default tick interval: 100ms
 
-// Scenario options
+// Scenario options - Taiwan stock market patterns
 const SCENARIO_OPTIONS: { label: string; value: MarketScenario; icon: React.ReactNode }[] = [
-    { label: '牛市', value: 'bull', icon: <TrendingUp size={14} className="text-emerald-400" /> },
-    { label: '熊市', value: 'bear', icon: <TrendingDown size={14} className="text-rose-400" /> },
+    { label: '強勢多頭', value: 'bull', icon: <TrendingUp size={14} className="text-emerald-400" /> },
+    { label: '弱勢空頭', value: 'bear', icon: <TrendingDown size={14} className="text-rose-400" /> },
     { label: '盤整', value: 'sideways', icon: <Minus size={14} className="text-zinc-400" /> },
-    { label: '高波動', value: 'volatile', icon: <Zap size={14} className="text-amber-400" /> },
-    { label: '平靜', value: 'calm', icon: <Activity size={14} className="text-blue-400" /> },
+    { label: '劇烈震盪', value: 'volatile', icon: <Zap size={14} className="text-amber-400" /> },
+    { label: '冷清', value: 'calm', icon: <Activity size={14} className="text-blue-400" /> },
+    { label: '盤整突破', value: 'breakout', icon: <TrendingUp size={14} className="text-cyan-400" /> },
+    { label: '恐慌崩盤', value: 'crash', icon: <TrendingDown size={14} className="text-red-600" /> },
+    { label: '主力吸籌', value: 'accumulation', icon: <Activity size={14} className="text-green-400" /> },
+    { label: '主力出貨', value: 'distribution', icon: <Activity size={14} className="text-orange-400" /> },
 ];
 
 /**
@@ -52,6 +57,8 @@ export function TradingPanelV2() {
     const [isOddLot, setIsOddLot] = useState(false);
     const [commissionRatePercent, setCommissionRatePercent] = useState(0.1425); // Default 0.1425%
     const [intensity, setIntensity] = useState(1.0);
+    const [showScenarioInfo, setShowScenarioInfo] = useState(false);
+    const [showIntensityInfo, setShowIntensityInfo] = useState(false);
 
     // Color theme (Asian: up=red, Western: up=green)
     const [isAsianTheme, setIsAsianTheme] = useState(true);
@@ -532,15 +539,44 @@ export function TradingPanelV2() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Scenario */}
                         <div className="space-y-4">
-                            <div className="flex flex-col gap-1">
-                                <label className="text-xs text-zinc-400 font-bold uppercase tracking-wider">市場情境</label>
-                                <p className="text-[10px] text-zinc-500 leading-relaxed">調整市場趨勢（如多頭、空頭或盤整），影響機器人的交易偏好。</p>
+                            <div className="flex items-start justify-between gap-2">
+                                <div className="flex flex-col gap-1 flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <label className="text-xs text-zinc-400 font-bold uppercase tracking-wider">市場情境</label>
+                                        <button
+                                            onClick={() => setShowScenarioInfo(!showScenarioInfo)}
+                                            className="text-zinc-500 hover:text-indigo-400 transition-colors"
+                                            title="查看說明"
+                                        >
+                                            <Info size={14} />
+                                        </button>
+                                    </div>
+                                    <p className="text-[10px] text-zinc-500 leading-relaxed">調整市場趨勢（如多頭、空頭或盤整），影響機器人的交易偏好。</p>
+                                    {showScenarioInfo && (
+                                        <div className="mt-2 p-3 bg-zinc-800/50 border border-zinc-700 rounded-lg text-[10px] text-zinc-400 leading-relaxed space-y-2">
+                                            <p className="font-semibold text-indigo-400">程式邏輯說明：</p>
+                                            <ul className="list-disc list-inside space-y-1 pl-2">
+                                                <li><strong>買賣趨勢強度</strong>：每個情境有獨立的 buyStrength 和 sellStrength (0-1)</li>
+                                                <li><strong>強勢多頭</strong>：buyStrength=0.8, sellStrength=0.2（買盤強勁）</li>
+                                                <li><strong>恐慌崩盤</strong>：buyStrength=0.05, sellStrength=0.95（賣壓極大）</li>
+                                                <li><strong>盤整</strong>：buyStrength=0.5, sellStrength=0.5（買賣平衡）</li>
+                                                <li><strong>波動率</strong>：影響價差寬度（0.3-3.0倍）</li>
+                                                <li><strong>流動性</strong>：影響委託簿深度（0.5-3.0倍）</li>
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {SCENARIO_OPTIONS.map(opt => (
                                     <button
                                         key={opt.value}
-                                        onClick={() => setScenario(opt.value)}
+                                        onClick={() => {
+                                            setScenario(opt.value);
+                                            // Auto-update intensity based on scenario default
+                                            const modifier = SCENARIO_MODIFIERS[opt.value];
+                                            if (modifier?.intensity) setIntensity(modifier.intensity);
+                                        }}
                                         className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${marketState.scenario === opt.value
                                             ? 'bg-indigo-500/30 border border-indigo-500/50 text-indigo-300'
                                             : 'bg-zinc-800 border border-zinc-700 text-zinc-400 hover:border-zinc-600'
@@ -623,9 +659,30 @@ export function TradingPanelV2() {
                         {/* Market Intensity */}
                         <div className="md:col-span-2 pt-6 border-t border-zinc-800/50">
                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                                <div className="flex flex-col gap-1">
-                                    <label className="text-xs text-zinc-400 font-bold uppercase tracking-wider">市場熱絡度 (Market Intensity)</label>
+                                <div className="flex flex-col gap-1 flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <label className="text-xs text-zinc-400 font-bold uppercase tracking-wider">市場熱絡度 (Market Intensity)</label>
+                                        <button
+                                            onClick={() => setShowIntensityInfo(!showIntensityInfo)}
+                                            className="text-zinc-500 hover:text-indigo-400 transition-colors"
+                                            title="查看說明"
+                                        >
+                                            <Info size={14} />
+                                        </button>
+                                    </div>
                                     <p className="text-[10px] text-zinc-500 leading-relaxed max-w-xl">控制機器人的下單頻率。高熱絡度會導致委託簿快速變動與頻繁成交，產生「上沖下洗」的劇烈震盪感。</p>
+                                    {showIntensityInfo && (
+                                        <div className="mt-2 p-3 bg-zinc-800/50 border border-zinc-700 rounded-lg text-[10px] text-zinc-400 leading-relaxed space-y-2">
+                                            <p className="font-semibold text-indigo-400">程式邏輯說明：</p>
+                                            <ul className="list-disc list-inside space-y-1 pl-2">
+                                                <li><strong>下單頻率</strong>：機器人間隔時間 = 基礎間隔 / intensity</li>
+                                                <li><strong>訂單量</strong>：每筆訂單量 = 基礎量 × sqrt(intensity)</li>
+                                                <li><strong>委託簿深度</strong>：價位數量 = 基礎深度 + floor(intensity × 2)</li>
+                                                <li><strong>範例 (5.0x)</strong>：頻率 5 倍、量 2.24 倍、深度 +10 檔</li>
+                                                <li><strong>成交速度</strong>：高熱絡度 → 更多訂單 + 更大量 = 更快成交</li>
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
                                 <span className={`text-xs font-mono font-bold px-3 py-1 rounded shadow-sm ${intensity >= 2.0 ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
                                     intensity >= 1.0 ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' :
