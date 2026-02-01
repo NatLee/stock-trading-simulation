@@ -1827,10 +1827,10 @@
                                 { "open": 114, "high": 118, "low": 113, "close": 117, "label": "Day 10" }
                             ],
                             "annotations": [
-                                { "index": 0, "label": "低點", "position": "below" },
-                                { "index": 4, "label": "高點", "position": "above" },
-                                { "index": 7, "label": "61.8%", "position": "below" },
-                                { "index": 8, "label": "買入", "position": "below" }
+                                { "index": 0, "text": "低點", "position": "bottom" },
+                                { "index": 4, "text": "高點", "position": "top" },
+                                { "index": 7, "text": "61.8%", "position": "bottom" },
+                                { "index": 8, "text": "買入", "position": "bottom" }
                             ],
                             "lineData": {
                                 "points": [
@@ -2160,12 +2160,12 @@
                                 { "open": 126, "high": 135, "low": 125, "close": 133, "label": "Day 9" }
                             ],
                             "annotations": [
-                                { "index": 0, "label": "起點", "position": "below" },
-                                { "index": 1, "label": "①", "position": "above" },
-                                { "index": 2, "label": "②", "position": "below" },
-                                { "index": 4, "label": "③", "position": "above" },
-                                { "index": 5, "label": "④", "position": "below" },
-                                { "index": 8, "label": "⑤", "position": "above" }
+                                { "index": 0, "text": "起點", "position": "bottom" },
+                                { "index": 1, "text": "①", "position": "top" },
+                                { "index": 2, "text": "②", "position": "bottom" },
+                                { "index": 4, "text": "③", "position": "top" },
+                                { "index": 5, "text": "④", "position": "bottom" },
+                                { "index": 8, "text": "⑤", "position": "top" }
                             ],
                             "lineData": {
                                 "points": [
