@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Activity, Globe, RefreshCw, Eye, EyeOff, Layers, Zap, BookOpen, Palette, ArrowRight } from 'lucide-react';
+import { Activity, Globe, RefreshCw, Eye, EyeOff, Layers, Zap, BookOpen, Palette } from 'lucide-react';
 import Link from 'next/link';
 import { Language, TRANSLATIONS, CONFIG } from '@/constants';
 import { generateOrderBook } from '@/lib';
@@ -35,7 +35,6 @@ export function SimulatedTradingSection() {
 
     const [showMA, setShowMA] = useState(true);
     const [showVolume, setShowVolume] = useState(true);
-    const [isMobile, setIsMobile] = useState(false);
     const [chartSize, setChartSize] = useState({ width: 800, height: 400 });
     const [speed, setSpeed] = useState(100);
 
@@ -134,7 +133,7 @@ export function SimulatedTradingSection() {
     useEffect(() => {
         const updateSize = () => {
             const mobile = window.innerWidth < 640;
-            setIsMobile(mobile);
+
 
             const containerWidth = Math.min(window.innerWidth - 32, 1200);
             const chartWidth = mobile ? containerWidth : containerWidth * 0.75 - 16;
