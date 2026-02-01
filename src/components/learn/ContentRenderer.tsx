@@ -299,10 +299,16 @@ function ContentBlockRenderer({ block }: { block: ContentBlock }) {
                 close: c.close,
                 label: c.label || '',
             }));
+            // 轉換標註格式（處理 label vs text 和 position 值的差異）
+            const tvAnnotations = (block.annotations || []).map((a: { index: number; text?: string; label?: string; position: string }) => ({
+                index: a.index,
+                text: a.text || a.label || '',
+                position: (a.position === 'below' ? 'bottom' : a.position === 'above' ? 'top' : a.position) as 'top' | 'bottom',
+            }));
             return (
                 <TVCandlestickChart 
                     candles={tvCandles} 
-                    annotations={block.annotations} 
+                    annotations={tvAnnotations} 
                     title={block.title} 
                     description={block.description}
                     height={220}
@@ -367,6 +373,12 @@ function ContentBlockRenderer({ block }: { block: ContentBlock }) {
                 close: c.close,
                 label: c.label || '',
             }));
+            // 轉換標註格式（處理 label vs text 和 position 值的差異）
+            const comboAnnotations = (block.annotations || []).map((a: { index: number; text?: string; label?: string; position: string }) => ({
+                index: a.index,
+                text: a.text || a.label || '',
+                position: (a.position === 'below' ? 'bottom' : a.position === 'above' ? 'top' : a.position) as 'top' | 'bottom',
+            }));
             
             // 如果有線圖數據，同時顯示
             const comboLinePoints: DataPoint[] | undefined = block.lineData?.points.map(p => ({
@@ -398,7 +410,7 @@ function ContentBlockRenderer({ block }: { block: ContentBlock }) {
                 <ComboChartExample
                     title={block.title}
                     candles={comboCandles}
-                    annotations={block.annotations}
+                    annotations={comboAnnotations}
                     lineData={block.lineData ? {
                         points: comboLinePoints!,
                         markers: comboLineMarkers,

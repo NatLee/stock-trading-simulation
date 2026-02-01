@@ -796,8 +796,12 @@ function drawAnnotations(
             const x = getX(ann.index);
             const isTop = ann.position === 'top';
             
+            // 防禦性處理：確保文字不為 undefined
+            const displayText = ann.text || '';
+            if (!displayText) return; // 如果沒有文字則跳過此標註
+            
             // 計算文字寬度以繪製背景
-            const textMetrics = ctx.measureText(ann.text);
+            const textMetrics = ctx.measureText(displayText);
             const textWidth = textMetrics.width;
             const paddingX = 6;
             const paddingY = 3;
@@ -845,7 +849,7 @@ function drawAnnotations(
             ctx.fillStyle = '#fbbf24';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(ann.text, x, baseY - 2);
+            ctx.fillText(displayText, x, baseY - 2);
             ctx.textBaseline = 'alphabetic';
         }
     });
