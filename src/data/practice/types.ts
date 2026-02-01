@@ -7,20 +7,39 @@ export type PracticeMode = 'recognition' | 'trading' | 'replay';
 
 // Pattern types for recognition and trading
 export type PatternType = 
+    // 反轉型態 - Reversal Patterns
     | 'head-and-shoulders-top'
     | 'head-and-shoulders-bottom'
     | 'double-bottom'
     | 'double-top'
+    | 'triple-top'
+    | 'triple-bottom'
+    | 'rounding-bottom'
+    | 'rounding-top'
+    | 'island-reversal-top'
+    | 'island-reversal-bottom'
+    | 'rising-wedge'
+    | 'falling-wedge'
+    | 'v-bottom'
+    | 'v-top'
+    // K線型態 - Candlestick Patterns
+    | 'morning-star'
+    | 'evening-star'
+    | 'bullish-engulfing'
+    | 'bearish-engulfing'
+    | 'hammer'
+    | 'shooting-star'
+    // 持續型態 - Continuation Patterns
     | 'ascending-triangle'
     | 'descending-triangle'
     | 'symmetric-triangle'
     | 'bull-flag'
     | 'bear-flag'
+    | 'bull-pennant'
+    | 'bear-pennant'
     | 'cup-and-handle'
-    | 'rounding-bottom'
-    | 'island-reversal'
-    | 'rectangle'
-    | 'wedge';
+    // 整理型態 - Consolidation Patterns
+    | 'rectangle';
 
 // Pattern information for UI display
 export interface PatternInfo {
@@ -81,10 +100,11 @@ export interface PracticeTrade {
 
 // Trading position
 export interface PracticePosition {
-    quantity: number;
-    averageCost: number;
-    unrealizedPnL: number;
-    unrealizedPnLPercent: number;
+    quantity: number;        // 持有數量（張）
+    averageCost: number;     // 平均成本
+    unrealizedPnL: number;   // 未實現損益
+    unrealizedPnLPercent: number;  // 未實現損益百分比
+    isShort: boolean;        // 是否為空頭部位
 }
 
 // Session result
