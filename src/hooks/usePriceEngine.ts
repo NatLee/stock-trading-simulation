@@ -21,7 +21,7 @@ interface UsePriceEngineOptions {
 
 export function usePriceEngine({ onUpdate, enabled = true, speed = 100 }: UsePriceEngineOptions) {
     const animationRef = useRef<number>(0);
-    const basePriceRef = useRef(CONFIG.BASE_PRICE);
+    const basePriceRef = useRef<number>(CONFIG.BASE_PRICE);
     const organicTrendRef = useRef(0);
     const regimeTimerRef = useRef(0);
     const candleProgressRef = useRef(0);
