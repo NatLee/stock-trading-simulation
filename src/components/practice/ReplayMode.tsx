@@ -136,13 +136,16 @@ export function ReplayMode({
                         ref={chartContainerRef}
                         className="bg-zinc-900 border border-zinc-800 rounded-xl p-4"
                     >
-                        {currentCandle?.label && (
-                            <div className="text-center mb-2">
-                                <span className="text-sm px-3 py-1 rounded-full bg-amber-600/20 text-amber-400">
+                        {/* 固定高度的標籤區域，避免佈局偏移 */}
+                        <div className="h-8 flex items-center justify-center mb-2">
+                            {currentCandle?.label ? (
+                                <span className="text-sm px-3 py-1 rounded-full bg-amber-600/20 text-amber-400 animate-in fade-in duration-200">
                                     {currentCandle.label}
                                 </span>
-                            </div>
-                        )}
+                            ) : (
+                                <span className="text-sm text-zinc-600">—</span>
+                            )}
+                        </div>
                         <CandlestickChart
                             candles={visibleCandles}
                             currentPrice={currentPrice}
