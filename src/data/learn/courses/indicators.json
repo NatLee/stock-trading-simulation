@@ -1,0 +1,2114 @@
+{
+    "id": "indicators",
+    "title": "技術指標",
+    "description": "掌握常用技術分析工具",
+    "icon": "TrendingUp",
+    "color": "amber",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "移動平均線 (MA)",
+            "description": "MA7、MA25 的應用",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**移動平均線 (Moving Average)** 是最基本也最常用的技術指標，用於平滑價格數據，識別趨勢方向。",
+                    "highlights": [{ "text": "移動平均線 (Moving Average)", "color": "white" }]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "常用週期：",
+                    "items": [
+                        { "key": "MA5/MA7", "value": "短期趨勢 (週線)", "keyColor": "indigo" },
+                        { "key": "MA20/MA25", "value": "中期趨勢 (月線)", "keyColor": "amber" },
+                        { "key": "MA60", "value": "長期趨勢 (季線)", "keyColor": "rose" },
+                        { "key": "MA120/MA240", "value": "半年/年線", "keyColor": "emerald" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "交易信號",
+                    "color": "indigo",
+                    "items": [
+                        "黃金交叉：短期MA向上穿越長期MA → 買入信號",
+                        "死亡交叉：短期MA向下穿越長期MA → 賣出信號"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "相對強弱指數 (RSI)",
+            "description": "判斷超買超賣",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**RSI (Relative Strength Index)** 是一個介於 0-100 的震盪指標，用於判斷股票是否超買或超賣。",
+                    "highlights": [{ "text": "RSI (Relative Strength Index)", "color": "white" }]
+                },
+                {
+                    "type": "gradient-bar",
+                    "leftLabel": "超賣區 (<30)",
+                    "rightLabel": "超買區 (>70)",
+                    "middleLabel": "中性區",
+                    "markers": ["0", "30", "50", "70", "100"]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "RSI > 70",
+                            "description": "超買，可能下跌",
+                            "color": "rose"
+                        },
+                        {
+                            "title": "RSI < 30",
+                            "description": "超賣，可能上漲",
+                            "color": "emerald"
+                        }
+                    ]
+                },
+                {
+                    "type": "indicator-example",
+                    "title": "RSI 實戰解讀",
+                    "indicator": "RSI(14)",
+                    "values": [
+                        { "label": "當前 RSI", "value": 28, "signal": "bullish" },
+                        { "label": "昨日 RSI", "value": 35, "signal": "neutral" },
+                        { "label": "5日前 RSI", "value": 65, "signal": "neutral" }
+                    ],
+                    "interpretation": "RSI 從 65 快速下降至 28，已進入超賣區域。這可能代表短期賣壓過大，有機會出現技術性反彈。但需等待 RSI 回升突破 30 再確認買入信號。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "當 RSI 指標顯示 75，應該如何解讀？",
+                    "options": [
+                        { "id": "a", "text": "股票被超賣，應該買入", "isCorrect": false },
+                        { "id": "b", "text": "股票被超買，應該謹慎", "isCorrect": true },
+                        { "id": "c", "text": "市場中性，可以觀望", "isCorrect": false },
+                        { "id": "d", "text": "RSI 無法判斷超買超賣", "isCorrect": false }
+                    ],
+                    "explanation": "RSI > 70 表示股票已進入超買區域，短期上漲動能可能過熱，需要謹慎追高。但這不代表一定要賣出，在強勢行情中 RSI 可能長期維持在高位。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "MACD指標",
+            "description": "趨勢動能分析",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**MACD (Moving Average Convergence Divergence)** 透過兩條移動平均線的差異來識別買賣信號。",
+                    "highlights": [{ "text": "MACD (Moving Average Convergence Divergence)", "color": "white" }]
+                },
+                {
+                    "type": "key-value-list",
+                    "items": [
+                        { "key": "DIF線", "value": "快線 (12日EMA - 26日EMA)", "keyColor": "indigo" },
+                        { "key": "DEA線", "value": "慢線 (DIF的9日EMA)", "keyColor": "amber" },
+                        { "key": "柱狀圖", "value": "DIF - DEA" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "交易信號",
+                    "color": "indigo",
+                    "items": [
+                        "DIF向上穿越DEA：黃金交叉，買入",
+                        "DIF向下穿越DEA：死亡交叉，賣出",
+                        "柱狀圖由負轉正：動能轉強"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "支撐與壓力",
+            "description": "價格關鍵位置",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**支撐與壓力**是技術分析中最重要的概念之一。",
+                    "highlights": [{ "text": "支撐與壓力", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "支撐位",
+                            "description": "價格下跌時傾向停止的位置，買盤力量較強。",
+                            "color": "emerald",
+                            "subtext": "跌破支撐 → 可能繼續下跌"
+                        },
+                        {
+                            "title": "壓力位",
+                            "description": "價格上漲時傾向停止的位置，賣盤力量較強。",
+                            "color": "rose",
+                            "subtext": "突破壓力 → 可能繼續上漲"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "如何找支撐/壓力？",
+                    "color": "zinc",
+                    "items": [
+                        "前期高點/低點",
+                        "整數關卡 (如 100、500)",
+                        "移動平均線",
+                        "成交量密集區"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "KD指標 (隨機震盪)",
+            "description": "KD交叉與背離信號",
+            "duration": "14分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**KD指標**（隨機震盪指標）是另一個常用的動量指標，比RSI更敏感，適合捕捉短期轉折。",
+                    "highlights": [{ "text": "KD指標", "color": "white" }]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "KD指標組成：",
+                    "items": [
+                        { "key": "K線（快線）", "value": "反映最近價格相對於區間的位置", "keyColor": "indigo" },
+                        { "key": "D線（慢線）", "value": "K線的移動平均，較為平滑", "keyColor": "amber" },
+                        { "key": "J線", "value": "3K - 2D，更敏感但假訊號多", "keyColor": "rose" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "交易信號",
+                    "color": "indigo",
+                    "items": [
+                        "黃金交叉：K線在20以下向上穿越D線 → 買入",
+                        "死亡交叉：K線在80以上向下穿越D線 → 賣出"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "背離信號",
+                    "color": "amber",
+                    "items": [
+                        "底背離（牛背離）：股價創新低，KD未創新低 → 可能反彈",
+                        "頂背離（熊背離）：股價創新高，KD未創新高 → 可能回調"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 鈍化陷阱",
+                    "color": "rose",
+                    "text": "強勢趨勢中，KD可能長時間維持在超買/超賣區（鈍化），此時不宜逆勢操作。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "布林通道 (Bollinger Bands)",
+            "description": "波動率與突破策略",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**布林通道**由三條線組成，能動態反映價格波動範圍。",
+                    "highlights": [{ "text": "布林通道", "color": "white" }]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "三軌結構：",
+                    "items": [
+                        { "key": "上軌", "value": "中軌 + 2倍標準差（壓力）", "keyColor": "rose" },
+                        { "key": "中軌", "value": "20日移動平均線", "keyColor": "amber" },
+                        { "key": "下軌", "value": "中軌 - 2倍標準差（支撐）", "keyColor": "emerald" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "通道狀態解讀",
+                    "color": "indigo",
+                    "items": [
+                        "通道收窄：波動降低，大行情即將到來",
+                        "通道擴張：趨勢正在形成或加速",
+                        "價格沿上軌：強勢上漲趨勢",
+                        "價格沿下軌：強勢下跌趨勢"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "買入時機",
+                            "description": "價格觸及下軌後反彈回中軌",
+                            "color": "emerald"
+                        },
+                        {
+                            "title": "賣出時機",
+                            "description": "價格觸及上軌後回落中軌",
+                            "color": "rose"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "兩種操作策略",
+                    "color": "amber",
+                    "items": [
+                        "順勢操作：成交量放大突破上/下軌時，跟著主力方向操作",
+                        "逆勢操作：成交量未放大觸及上/下軌時，預期價格回歸中軌"
+                    ]
+                },
+                {
+                    "type": "indicator-example",
+                    "title": "布林通道實戰解讀",
+                    "indicator": "布林通道",
+                    "values": [
+                        { "label": "上軌", "value": "$108.5", "signal": "neutral" },
+                        { "label": "中軌", "value": "$100.0", "signal": "neutral" },
+                        { "label": "下軌", "value": "$91.5", "signal": "neutral" },
+                        { "label": "當前價", "value": "$92.3", "signal": "bullish" }
+                    ],
+                    "interpretation": "股價接近下軌 $91.5，根據統計約 95% 的價格會落在通道內。若成交量未放大，可視為短期超賣，等待反彈回中軌 $100 附近。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "布林通道收窄代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "股價即將下跌", "isCorrect": false },
+                        { "id": "b", "text": "波動率降低，大行情即將來臨", "isCorrect": true },
+                        { "id": "c", "text": "應該立即賣出", "isCorrect": false },
+                        { "id": "d", "text": "趨勢已經結束", "isCorrect": false }
+                    ],
+                    "explanation": "通道收窄代表近期波動減小，市場在蓄積能量。一旦突破收窄區間，往往會有較大的行情發動。此時應等待突破方向確認後再進場。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "ATR波動率指標",
+            "description": "動態止損與倉位計算",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**ATR (Average True Range)** 衡量市場波動程度，主要用於設定止損和計算倉位大小。",
+                    "highlights": [{ "text": "ATR (Average True Range)", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "True Range 計算",
+                    "color": "zinc",
+                    "text": "TR = 以下三者中的最大值：",
+                    "items": [
+                        "當日最高價 - 當日最低價",
+                        "|當日最高價 - 前日收盤價|",
+                        "|當日最低價 - 前日收盤價|",
+                        "ATR = TR的N日移動平均（通常N=14）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ATR止損設定",
+                    "color": "indigo",
+                    "items": [
+                        "保守止損：買入價 - 2 × ATR",
+                        "積極止損：買入價 - 1.5 × ATR",
+                        "波動大時止損距離自動放寬，避免被震盪洗出"
+                    ]
+                },
+                {
+                    "type": "code-block",
+                    "title": "倉位計算範例",
+                    "lines": [
+                        { "value": "總資金: $100,000" },
+                        { "value": "單筆風險: 2% = $2,000" },
+                        { "value": "ATR = $5" },
+                        { "value": "止損距離: 2 × ATR = $10" },
+                        { "value": "可買股數: $2,000 ÷ $10 = 200股", "color": "emerald" }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "多指標組合應用",
+            "description": "提高訊號準確度",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "單一指標容易產生假訊號，**多指標組合**能有效提高判斷準確度。",
+                    "highlights": [{ "text": "多指標組合", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "MA + RSI 組合",
+                    "color": "emerald",
+                    "items": [
+                        "買入條件：價格站上MA20 + RSI從30以下回升",
+                        "賣出條件：價格跌破MA20 + RSI從70以上回落"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "MACD + 布林通道 組合",
+                    "color": "indigo",
+                    "items": [
+                        "買入條件：價格觸及布林下軌 + MACD黃金交叉",
+                        "賣出條件：價格觸及布林上軌 + MACD死亡交叉"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 避免指標打架",
+                    "color": "rose",
+                    "items": [
+                        "不要用太多相似類型的指標（如同時用RSI、KD、CCI）",
+                        "建議組合：趨勢指標 + 震盪指標 + 成交量",
+                        "指標只是輔助，核心仍是價格行為"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "系統化分析流程",
+                    "color": "zinc",
+                    "items": [
+                        "1. 先看大週期判斷趨勢方向（60%權重）",
+                        "2. 找出關鍵支撐壓力位（25%權重）",
+                        "3. 用指標確認進場時機（10%權重）",
+                        "4. 觀察成交量確認訊號（5%權重）"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "title": "葛蘭碧八大法則",
+            "description": "均線買賣點的經典理論",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**葛蘭碧八大法則**是利用股價與移動平均線關係判斷買賣時機的經典方法，由美國分析師葛蘭碧(Joseph Granville)創立。",
+                    "highlights": [{ "text": "葛蘭碧八大法則", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "四大買進訊號",
+                    "color": "emerald",
+                    "items": [
+                        "B1 突破：均線從下降轉走平或上升，股價從下方突破均線",
+                        "B2 假跌破：股價跌破均線後迅速站回，均線仍呈上升",
+                        "B3 支撐：股價回檔到均線附近獲支撐，未跌破即反彈",
+                        "B4 抄底：股價急跌遠離均線下方，乖離過大後反彈"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "四大賣出訊號",
+                    "color": "rose",
+                    "items": [
+                        "S1 跌破：均線從上升轉走平或下降，股價從上方跌破均線",
+                        "S2 假突破：股價突破均線後快速跌回，均線仍呈下降",
+                        "S3 反壓：股價反彈到均線附近遇壓力，無法突破即回落",
+                        "S4 反轉：股價急漲遠離均線上方，乖離過大後拉回"
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "葛蘭碧法則圖解",
+                    "candles": [
+                        { "open": 44, "high": 49, "low": 43, "close": 48, "label": "B1突破" },
+                        { "open": 49, "high": 57, "low": 48, "close": 55, "label": "上漲" },
+                        { "open": 54, "high": 56, "low": 50, "close": 52, "label": "B3支撐" },
+                        { "open": 53, "high": 60, "low": 52, "close": 58, "label": "反彈" },
+                        { "open": 59, "high": 67, "low": 58, "close": 65, "label": "續漲" },
+                        { "open": 66, "high": 74, "low": 65, "close": 72, "label": "S4乖離" },
+                        { "open": 71, "high": 76, "low": 66, "close": 68, "label": "回檔" },
+                        { "open": 69, "high": 76, "low": 68, "close": 75, "label": "再創高" },
+                        { "open": 74, "high": 75, "low": 68, "close": 70, "label": "S1跌破" },
+                        { "open": 69, "high": 70, "low": 60, "close": 62, "label": "下跌" },
+                        { "open": 61, "high": 63, "low": 56, "close": 58, "label": "續跌" }
+                    ],
+                    "annotations": [
+                        { "index": 0, "text": "B1突破", "position": "bottom" },
+                        { "index": 2, "text": "B3支撐", "position": "bottom" },
+                        { "index": 5, "text": "S4乖離大", "position": "top" },
+                        { "index": 8, "text": "S1跌破", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 45, "label": "" },
+                            { "x": 1, "y": 48, "label": "" },
+                            { "x": 2, "y": 55, "label": "" },
+                            { "x": 3, "y": 52, "label": "" },
+                            { "x": 4, "y": 58, "label": "" },
+                            { "x": 5, "y": 65, "label": "" },
+                            { "x": 6, "y": 72, "label": "" },
+                            { "x": 7, "y": 68, "label": "" },
+                            { "x": 8, "y": 75, "label": "" },
+                            { "x": 9, "y": 70, "label": "" },
+                            { "x": 10, "y": 62, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 48, "type": "buy", "label": "B1 突破" },
+                            { "x": 3, "y": 52, "type": "buy", "label": "B3 支撐" },
+                            { "x": 6, "y": 72, "type": "info", "label": "S4 乖離大" },
+                            { "x": 9, "y": 70, "type": "sell", "label": "S1 跌破" }
+                        ],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 46}, {"x": 3, "y": 50}, {"x": 6, "y": 60}, {"x": 9, "y": 68}], "label": "20MA", "color": "#60a5fa" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 48, "yEnd": 72, "label": "多頭區" }
+                        ]
+                    },
+                    "description": "K線圖展示葛蘭碧八大法則：B1突破時出現帶量長紅K，B3支撐時出現長下影線（買盤承接）。S4乖離大時出現長上影線（獲利了結），S1跌破時出現連續長黑K確認趨勢反轉。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["買點", "特徵", "風險程度"],
+                    "rows": [
+                        ["B1 突破", "均線轉向+股價突破", "中等"],
+                        ["B2 假跌破", "跌破後快速站回", "較低"],
+                        ["B3 支撐", "回檔不破均線", "較低"],
+                        ["B4 抄底", "急跌後反彈", "較高"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "股價在均線上方回檔，但未跌破均線就反彈上漲，這是葛蘭碧的哪個買點？",
+                    "options": [
+                        { "id": "a", "text": "B1 突破", "isCorrect": false },
+                        { "id": "b", "text": "B2 假跌破", "isCorrect": false },
+                        { "id": "c", "text": "B3 支撐", "isCorrect": true },
+                        { "id": "d", "text": "B4 抄底", "isCorrect": false }
+                    ],
+                    "explanation": "B3支撐是指股價在均線上方回檔，但在接近或輕觸均線時獲得支撐反彈。這是風險較低的買點，因為均線仍呈上升趨勢，支撐有效。"
+                }
+            ]
+        },
+        {
+            "id": "10",
+            "title": "背離訊號深入分析",
+            "description": "頂背離與底背離的判斷與應用",
+            "duration": "16分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**背離訊號**是技術指標最高階的應用，當股價與指標走勢相反時，往往預示趨勢即將反轉。",
+                    "highlights": [{ "text": "背離訊號", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "頂背離（熊背離）",
+                            "description": "股價創新高，但指標未創新高",
+                            "color": "rose",
+                            "subtext": "預示頭部，可能反轉下跌"
+                        },
+                        {
+                            "title": "底背離（牛背離）",
+                            "description": "股價創新低，但指標未創新低",
+                            "color": "emerald",
+                            "subtext": "預示底部，可能反轉上漲"
+                        }
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "頂背離示意圖",
+                    "candles": [
+                        { "open": 58, "high": 62, "low": 57, "close": 61, "label": "D1" },
+                        { "open": 61, "high": 73, "low": 60, "close": 72, "label": "高點A" },
+                        { "open": 72, "high": 74, "low": 67, "close": 68, "label": "D3" },
+                        { "open": 68, "high": 79, "low": 67, "close": 78, "label": "高點B" },
+                        { "open": 78, "high": 80, "low": 69, "close": 70, "label": "D5" },
+                        { "open": 70, "high": 84, "low": 69, "close": 82, "label": "高點C" },
+                        { "open": 82, "high": 83, "low": 74, "close": 75, "label": "出場" },
+                        { "open": 75, "high": 76, "low": 64, "close": 65, "label": "D8" }
+                    ],
+                    "annotations": [
+                        { "type": "sell", "index": 6, "label": "確認背離" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 60, "label": "" },
+                            { "x": 1, "y": 72, "label": "" },
+                            { "x": 2, "y": 68, "label": "" },
+                            { "x": 3, "y": 78, "label": "" },
+                            { "x": 4, "y": 70, "label": "" },
+                            { "x": 5, "y": 82, "label": "" },
+                            { "x": 6, "y": 75, "label": "" },
+                            { "x": 7, "y": 65, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 72, "type": "info", "label": "股價高點A" },
+                            { "x": 3, "y": 78, "type": "info", "label": "股價高點B" },
+                            { "x": 5, "y": 82, "type": "info", "label": "股價高點C (新高)" },
+                            { "x": 6, "y": 75, "type": "sell", "label": "確認背離出場" }
+                        ],
+                        "lines": [
+                            { "type": "trendline", "points": [{"x": 1, "y": 72}, {"x": 3, "y": 78}, {"x": 5, "y": 82}], "label": "股價上升", "color": "#22c55e" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 60, "yEnd": 75, "label": "背離後下跌" }
+                        ]
+                    },
+                    "description": "股價連續創新高（A→B→C），但若同時RSI或MACD的高點卻在下降（例如70→68→65），這就是頂背離。訊號出現後股價隨即反轉下跌。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "MACD背離判斷要點",
+                    "color": "indigo",
+                    "items": [
+                        "觀察DIF線的高點/低點是否與股價同步",
+                        "或觀察柱狀圖的面積是否越來越小",
+                        "背離出現後不要急著進場，等待確認訊號",
+                        "配合K線型態確認更可靠"
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "【線圖分析題】底背離判斷",
+                    "candles": [
+                        { "open": 82, "high": 84, "low": 78, "close": 80, "label": "D1" },
+                        { "open": 80, "high": 81, "low": 66, "close": 68, "label": "低點A" },
+                        { "open": 68, "high": 74, "low": 67, "close": 72, "label": "D3" },
+                        { "open": 72, "high": 73, "low": 60, "close": 62, "label": "低點B" },
+                        { "open": 62, "high": 72, "low": 61, "close": 70, "label": "D5" },
+                        { "open": 70, "high": 71, "low": 56, "close": 58, "label": "低點C" },
+                        { "open": 58, "high": 67, "low": 57, "close": 65, "label": "進場" },
+                        { "open": 65, "high": 77, "low": 64, "close": 75, "label": "D8" },
+                        { "open": 75, "high": 87, "low": 74, "close": 85, "label": "D9" }
+                    ],
+                    "annotations": [
+                        { "type": "buy", "index": 6, "label": "背離買進" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 80, "label": "" },
+                            { "x": 1, "y": 68, "label": "" },
+                            { "x": 2, "y": 72, "label": "" },
+                            { "x": 3, "y": 62, "label": "" },
+                            { "x": 4, "y": 70, "label": "" },
+                            { "x": 5, "y": 58, "label": "" },
+                            { "x": 6, "y": 65, "label": "" },
+                            { "x": 7, "y": 75, "label": "" },
+                            { "x": 8, "y": 85, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 68, "type": "info", "label": "低點A RSI=25" },
+                            { "x": 3, "y": 62, "type": "info", "label": "低點B RSI=28" },
+                            { "x": 5, "y": 58, "type": "info", "label": "低點C RSI=32" },
+                            { "x": 6, "y": 65, "type": "buy", "label": "確認進場" }
+                        ],
+                        "lines": [
+                            { "type": "trendline", "points": [{"x": 1, "y": 68}, {"x": 3, "y": 62}, {"x": 5, "y": 58}], "label": "股價下降", "color": "#ef4444" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 58, "yEnd": 90, "label": "背離後反彈" }
+                        ]
+                    },
+                    "description": "股價連續創新低（A $68→B $62→C $58），但RSI卻越來越高（25→28→32）。這代表什麼訊號？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "上圖中股價創新低但RSI反而上升，這是什麼訊號？",
+                    "options": [
+                        { "id": "a", "text": "頂背離，預示下跌", "isCorrect": false },
+                        { "id": "b", "text": "底背離，預示反轉上漲", "isCorrect": true },
+                        { "id": "c", "text": "沒有明確訊號", "isCorrect": false },
+                        { "id": "d", "text": "應該繼續放空", "isCorrect": false }
+                    ],
+                    "explanation": "這是典型的底背離：股價創新低但RSI未創新低反而上升，代表下跌動能減弱。訊號確認後股價反轉上漲，從$58漲至$85，漲幅達46%。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "背離操作要點",
+                    "color": "amber",
+                    "items": [
+                        "背離是「預警」不是「確認」訊號",
+                        "出現背離後要等K線型態確認",
+                        "多次背離的可靠度更高",
+                        "配合支撐/壓力位操作更佳"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "11",
+            "title": "技術指標綜合練習",
+            "description": "線圖分析實戰題組",
+            "duration": "20分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "透過**綜合練習**來強化技術指標的判讀能力，以下提供多組線圖分析題，請嘗試判斷並回答。",
+                    "highlights": [{ "text": "綜合練習", "color": "white" }]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【練習1】均線與RSI綜合分析",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 45, "label": "" },
+                            { "x": 1, "y": 52, "label": "" },
+                            { "x": 2, "y": 58, "label": "" },
+                            { "x": 3, "y": 55, "label": "" },
+                            { "x": 4, "y": 62, "label": "" },
+                            { "x": 5, "y": 68, "label": "" },
+                            { "x": 6, "y": 72, "label": "" },
+                            { "x": 7, "y": 78, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 52, "type": "buy", "label": "突破20MA" },
+                            { "x": 3, "y": 55, "type": "info", "label": "RSI=45回測" },
+                            { "x": 7, "y": 78, "type": "info", "label": "RSI=75" }
+                        ],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 48}, {"x": 3, "y": 52}, {"x": 6, "y": 62}, {"x": 7, "y": 68}], "label": "20MA", "color": "#60a5fa" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 48, "yEnd": 80, "label": "多頭趨勢" }
+                        ]
+                    },
+                    "description": "股價突破20MA後持續上漲，目前RSI已達75。請問此時的操作建議？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【練習1答案】此時RSI=75，應該如何操作？",
+                    "options": [
+                        { "id": "a", "text": "立即全部賣出", "isCorrect": false },
+                        { "id": "b", "text": "可部分獲利，但不需急於全出，因趨勢仍向上", "isCorrect": true },
+                        { "id": "c", "text": "加大部位追高", "isCorrect": false },
+                        { "id": "d", "text": "RSI不重要，不需理會", "isCorrect": false }
+                    ],
+                    "explanation": "雖然RSI=75進入超買區，但股價仍在20MA上方且均線向上，代表多頭趨勢仍在。此時可部分獲利鎖住利潤，但不需急於全部出場，因為強勢行情中RSI可能長時間維持在高位（鈍化）。"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【練習2】MACD交叉判斷",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 85, "label": "" },
+                            { "x": 1, "y": 78, "label": "" },
+                            { "x": 2, "y": 72, "label": "" },
+                            { "x": 3, "y": 68, "label": "" },
+                            { "x": 4, "y": 65, "label": "" },
+                            { "x": 5, "y": 70, "label": "" },
+                            { "x": 6, "y": 75, "label": "" },
+                            { "x": 7, "y": 72, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 4, "y": 65, "type": "info", "label": "MACD黃金交叉" },
+                            { "x": 5, "y": 70, "type": "buy", "label": "確認買入?" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 65, "label": "支撐位" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 65, "yEnd": 78, "label": "觀察區" }
+                        ]
+                    },
+                    "description": "股價下跌後在$65附近止穩，MACD出現黃金交叉。此時是否應該進場？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【練習2答案】MACD黃金交叉後，最佳操作是？",
+                    "options": [
+                        { "id": "a", "text": "立即全倉買入", "isCorrect": false },
+                        { "id": "b", "text": "等待股價突破前波高點$78再確認進場", "isCorrect": true },
+                        { "id": "c", "text": "黃金交叉沒有意義", "isCorrect": false },
+                        { "id": "d", "text": "應該放空", "isCorrect": false }
+                    ],
+                    "explanation": "MACD黃金交叉是買進參考訊號，但此時股價仍在下降趨勢中。較穩健的做法是等待股價突破$78（前波高點）確認趨勢反轉，或至少等待MACD柱狀圖轉正再進場。"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【練習3】布林通道分析",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 52, "label": "" },
+                            { "x": 1, "y": 50, "label": "" },
+                            { "x": 2, "y": 48, "label": "" },
+                            { "x": 3, "y": 46, "label": "" },
+                            { "x": 4, "y": 45, "label": "" },
+                            { "x": 5, "y": 48, "label": "" },
+                            { "x": 6, "y": 52, "label": "" },
+                            { "x": 7, "y": 56, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 4, "y": 45, "type": "info", "label": "觸及下軌" },
+                            { "x": 5, "y": 48, "type": "buy", "label": "反彈進場?" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 44, "label": "布林下軌" },
+                            { "type": "resistance", "y": 55, "label": "布林中軌" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 44, "yEnd": 55, "label": "下半通道" }
+                        ]
+                    },
+                    "description": "股價觸及布林通道下軌後開始反彈，且成交量並未放大。請判斷操作策略。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【練習3答案】股價觸及布林下軌且量縮，應該？",
+                    "options": [
+                        { "id": "a", "text": "這是破位訊號，應該賣出", "isCorrect": false },
+                        { "id": "b", "text": "可嘗試買入，目標是布林中軌", "isCorrect": true },
+                        { "id": "c", "text": "等待跌破下軌再進場", "isCorrect": false },
+                        { "id": "d", "text": "布林通道沒有參考價值", "isCorrect": false }
+                    ],
+                    "explanation": "布林通道下軌觸及且無放量，通常代表短期超賣，股價有回歸中軌的傾向。此時可輕倉嘗試反彈操作，目標設在中軌$55附近，停損設在下軌下方。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "技術指標使用總結",
+                    "color": "emerald",
+                    "items": [
+                        "單一指標容易產生假訊號，需多指標確認",
+                        "指標是輔助工具，核心仍是價格行為",
+                        "趨勢指標(MA/MACD) + 震盪指標(RSI/KD) 組合使用",
+                        "背離訊號是最高階應用，需謹慎判斷"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "12",
+            "title": "威廉指標 (Williams %R)",
+            "description": "短線超買超賣的精準捕捉",
+            "duration": "14分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**威廉指標 (Williams %R)** 是由技術分析大師Larry Williams於1960年代發明的短線指標，專門用於判斷超買超賣狀態，比KD更加敏感。",
+                    "highlights": [{ "text": "威廉指標 (Williams %R)", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "計算公式",
+                    "color": "zinc",
+                    "text": "%R = (最高價 - 收盤價) ÷ (最高價 - 最低價) × -100",
+                    "items": [
+                        "計算期間通常為14天",
+                        "數值範圍在 -100 到 0 之間",
+                        "負值設計讓圖表更直觀"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "-20 以上（超買區）",
+                            "description": "價格可能過高，考慮賣出或放空",
+                            "color": "rose",
+                            "subtext": "市場過熱警訊"
+                        },
+                        {
+                            "title": "-80 以下（超賣區）",
+                            "description": "價格可能過低，考慮買入或做多",
+                            "color": "emerald",
+                            "subtext": "超跌反彈機會"
+                        },
+                        {
+                            "title": "-50 中線",
+                            "description": "多空分界點",
+                            "color": "amber",
+                            "subtext": "由下往上穿越轉多；由上往下跌破轉空"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "威廉指標交易策略",
+                    "color": "indigo",
+                    "items": [
+                        "基本策略：超買區賣出，超賣區買入",
+                        "中線交叉：穿越-50確認多空轉換",
+                        "背離訊號：價格新高/低但指標未跟進",
+                        "Failure策略：指標未達極端值就反轉，訊號更強"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "威廉指標實戰應用",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 55, "label": "" },
+                            { "x": 2, "y": 62, "label": "" },
+                            { "x": 3, "y": 68, "label": "" },
+                            { "x": 4, "y": 65, "label": "" },
+                            { "x": 5, "y": 58, "label": "" },
+                            { "x": 6, "y": 52, "label": "" },
+                            { "x": 7, "y": 48, "label": "" },
+                            { "x": 8, "y": 55, "label": "" },
+                            { "x": 9, "y": 62, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 68, "type": "sell", "label": "%R=-15 超買" },
+                            { "x": 7, "y": 48, "type": "buy", "label": "%R=-85 超賣" },
+                            { "x": 9, "y": 62, "type": "info", "label": "%R=-45" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 65, "label": "超買區觸發" },
+                            { "type": "support", "y": 50, "label": "超賣區觸發" }
+                        ],
+                        "zones": []
+                    },
+                    "description": "當%R=-15進入超買區時，股價在$68達到短期高點；%R=-85進入超賣區時，股價在$48形成低點並反彈。威廉指標在短線交易中非常實用。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["威廉指標值", "市場狀態", "操作建議"],
+                    "rows": [
+                        ["0 ~ -20", "強勢超買", "注意回調風險，可分批減碼"],
+                        ["-20 ~ -50", "偏多格局", "持股續抱或逢低加碼"],
+                        ["-50 ~ -80", "偏空格局", "觀望或輕倉試探"],
+                        ["-80 ~ -100", "強勢超賣", "尋找反彈機會，分批布局"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "與KD指標的比較",
+                    "color": "amber",
+                    "items": [
+                        "威廉指標更敏感，訊號更快但假訊號也多",
+                        "KD有K、D兩線交叉，威廉只有單線",
+                        "威廉適合極短線，KD適合短中線",
+                        "兩者可搭配使用：威廉抓轉折，KD確認趨勢"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "威廉指標顯示 -12，請問應該如何解讀？",
+                    "options": [
+                        { "id": "a", "text": "股票超賣，可以買入", "isCorrect": false },
+                        { "id": "b", "text": "股票超買，需謹慎追高", "isCorrect": true },
+                        { "id": "c", "text": "處於中性區，持續觀望", "isCorrect": false },
+                        { "id": "d", "text": "威廉指標無法判斷超買超賣", "isCorrect": false }
+                    ],
+                    "explanation": "威廉指標 -12 已進入超買區（-20以上），代表短期價格可能過高，有回調風險。此時不宜追高，應等待指標回落或出現轉折訊號再進場。"
+                }
+            ]
+        },
+        {
+            "id": "13",
+            "title": "乖離率 (BIAS)",
+            "description": "均線偏離程度的量化指標",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**乖離率 (BIAS)** 衡量股價與移動平均線之間的距離，用於判斷股價是否漲過頭（超買）或跌過頭（超賣），是找尋短線反轉點的重要工具。",
+                    "highlights": [{ "text": "乖離率 (BIAS)", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "計算公式",
+                    "color": "zinc",
+                    "text": "乖離率(%) = (現價 - N日均線) ÷ N日均線 × 100%",
+                    "items": [
+                        "正乖離：現價高於均線，代表短期超買",
+                        "負乖離：現價低於均線，代表短期超賣",
+                        "零軸：現價等於均線，代表平衡狀態"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "乖離率計算範例",
+                    "steps": [
+                        { "label": "現價", "value": "$110" },
+                        { "label": "5日均線", "value": "$100" },
+                        { "label": "乖離率", "formula": "(110-100)/100 × 100%", "result": "+10%" }
+                    ],
+                    "conclusion": "正乖離10%，代表股價已高於均線10%，可能有超漲風險。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["均線週期", "買進參考（負乖離）", "賣出參考（正乖離）"],
+                    "rows": [
+                        ["5日均線", "-3% 以下", "+3.5% 以上"],
+                        ["10日均線", "-4% 以下", "+4.5% 以上"],
+                        ["20日均線", "-6% 以下", "+7% 以上"],
+                        ["60日均線", "-10% 以下", "+10% 以上"]
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "乖離率實戰圖解",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 105, "label": "" },
+                            { "x": 2, "y": 112, "label": "" },
+                            { "x": 3, "y": 108, "label": "" },
+                            { "x": 4, "y": 102, "label": "" },
+                            { "x": 5, "y": 95, "label": "" },
+                            { "x": 6, "y": 88, "label": "" },
+                            { "x": 7, "y": 92, "label": "" },
+                            { "x": 8, "y": 98, "label": "" },
+                            { "x": 9, "y": 105, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 112, "type": "sell", "label": "乖離+12%" },
+                            { "x": 6, "y": 88, "type": "buy", "label": "乖離-12%" },
+                            { "x": 9, "y": 105, "type": "info", "label": "回歸均線" }
+                        ],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 98}, {"x": 3, "y": 103}, {"x": 6, "y": 100}, {"x": 9, "y": 100}], "label": "20MA", "color": "#60a5fa" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 108, "yEnd": 115, "label": "正乖離過大" },
+                            { "type": "profit", "yStart": 85, "yEnd": 92, "label": "負乖離過大" }
+                        ]
+                    },
+                    "description": "股價在$112時正乖離達12%（超買），隨後回調。在$88時負乖離達12%（超賣），出現反彈。乖離過大時價格傾向回歸均線。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "乖離率應用要點",
+                    "color": "indigo",
+                    "items": [
+                        "乖離率是「均值回歸」概念的應用",
+                        "每檔股票的合理乖離率不同，需參考歷史數據",
+                        "強勢股可容忍較大正乖離，弱勢股相反",
+                        "乖離率適合搭配K線型態、支撐壓力使用"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 使用限制",
+                    "color": "rose",
+                    "items": [
+                        "強勢趨勢中可能持續高乖離（追強殺弱失效）",
+                        "不同股票股性不同，不能套用統一標準",
+                        "需配合其他指標確認，不宜單獨使用",
+                        "新聞利多/利空可能造成乖離持續擴大"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "某股票目前股價$85，20日均線$100，乖離率為多少？應如何解讀？",
+                    "options": [
+                        { "id": "a", "text": "乖離率-15%，屬於超賣區，可考慮買入", "isCorrect": true },
+                        { "id": "b", "text": "乖離率+15%，屬於超買區，應賣出", "isCorrect": false },
+                        { "id": "c", "text": "乖離率-15%，應繼續觀望", "isCorrect": false },
+                        { "id": "d", "text": "無法計算乖離率", "isCorrect": false }
+                    ],
+                    "explanation": "乖離率 = (85-100)/100 × 100% = -15%。負乖離15%已遠超過20日均線的一般標準（-6%），代表短期超賣嚴重，有反彈回歸均線的可能。但需確認沒有重大利空，並搭配其他指標判斷。"
+                }
+            ]
+        },
+        {
+            "id": "14",
+            "title": "OBV能量潮指標",
+            "description": "成交量與股價的領先指標",
+            "duration": "14分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**OBV (On Balance Volume)** 又稱能量潮或人氣指標，是少數以成交量而非價格計算的技術指標，基於「量先價行」的概念判斷市場買賣力道。",
+                    "highlights": [{ "text": "OBV (On Balance Volume)", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "計算規則",
+                    "color": "zinc",
+                    "items": [
+                        "股價上漲日：今日OBV = 前日OBV + 今日成交量",
+                        "股價下跌日：今日OBV = 前日OBV - 今日成交量",
+                        "股價持平日：今日OBV = 前日OBV（不計）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "OBV基本假設",
+                    "color": "amber",
+                    "items": [
+                        "市場看法分歧愈大，成交量愈大",
+                        "股價上漲需要成交量支撐，下跌則不需要",
+                        "熱門股的成交量和股價會呈倍數成長",
+                        "OBV走勢可預測股價走向"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "OBV同步上升",
+                            "description": "股價漲、OBV漲",
+                            "color": "emerald",
+                            "subtext": "行情健康，可持有或加碼"
+                        },
+                        {
+                            "title": "OBV同步下降",
+                            "description": "股價跌、OBV跌",
+                            "color": "rose",
+                            "subtext": "行情走弱，考慮減碼"
+                        },
+                        {
+                            "title": "OBV頂背離",
+                            "description": "股價創新高、OBV未創新高",
+                            "color": "rose",
+                            "subtext": "賣盤增強，考慮出場"
+                        },
+                        {
+                            "title": "OBV底背離",
+                            "description": "股價創新低、OBV未創新低",
+                            "color": "emerald",
+                            "subtext": "買盤增強，考慮進場"
+                        }
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "OBV背離訊號圖解",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 58, "label": "" },
+                            { "x": 2, "y": 55, "label": "" },
+                            { "x": 3, "y": 65, "label": "" },
+                            { "x": 4, "y": 60, "label": "" },
+                            { "x": 5, "y": 72, "label": "" },
+                            { "x": 6, "y": 68, "label": "" },
+                            { "x": 7, "y": 62, "label": "" },
+                            { "x": 8, "y": 55, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 58, "type": "info", "label": "高點A OBV=1000萬" },
+                            { "x": 3, "y": 65, "type": "info", "label": "高點B OBV=950萬" },
+                            { "x": 5, "y": 72, "type": "info", "label": "高點C OBV=880萬" },
+                            { "x": 6, "y": 68, "type": "sell", "label": "確認背離出場" }
+                        ],
+                        "lines": [
+                            { "type": "trendline", "points": [{"x": 1, "y": 58}, {"x": 3, "y": 65}, {"x": 5, "y": 72}], "label": "股價上升", "color": "#22c55e" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 55, "yEnd": 72, "label": "背離後下跌" }
+                        ]
+                    },
+                    "description": "股價連續創新高（$58→$65→$72），但OBV卻逐漸下降（1000萬→950萬→880萬），形成頂背離。這代表上漲動能減弱，隨後股價回落至$55。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "OBV使用建議",
+                    "color": "indigo",
+                    "items": [
+                        "必須搭配K線圖一起觀察",
+                        "適合波段交易，不適合超短線",
+                        "成交量大的股票效果較佳",
+                        "可配合均線、MACD等指標使用"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "股價下跌並創新低，但OBV並未創新低反而持平或上升，這代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "頂背離，預示繼續下跌", "isCorrect": false },
+                        { "id": "b", "text": "底背離，買盤開始進場，可能反轉", "isCorrect": true },
+                        { "id": "c", "text": "沒有任何意義", "isCorrect": false },
+                        { "id": "d", "text": "應該繼續做空", "isCorrect": false }
+                    ],
+                    "explanation": "這是OBV底背離訊號。股價創新低代表表面看來空方佔優，但OBV未跟隨下降代表實際上有買盤在承接。這種「量價背離」往往是底部訊號，可準備逢低布局。"
+                }
+            ]
+        },
+        {
+            "id": "15",
+            "title": "成交量與量價關係",
+            "description": "技術分析的重要驗證工具",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**成交量**是技術分析中最重要的驗證工具之一。俗話說「新手看價、老手看量」，因為成交量能反映市場的真實參與程度，驗證價格走勢的真實性。",
+                    "highlights": [{ "text": "成交量", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "量價關係核心原則",
+                    "color": "zinc",
+                    "text": "「量是因、價是果、量先而價行」",
+                    "items": [
+                        "成交量是股價變化的動力來源",
+                        "有量才有價，無量難持續",
+                        "量能變化往往領先於價格變化"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "價漲量增",
+                            "description": "健康上漲，多方強勢",
+                            "color": "emerald",
+                            "subtext": "趨勢可能持續，可持有"
+                        },
+                        {
+                            "title": "價漲量縮",
+                            "description": "上漲乏力，缺乏支撐",
+                            "color": "amber",
+                            "subtext": "警惕假突破，不宜追高"
+                        },
+                        {
+                            "title": "價跌量增",
+                            "description": "恐慌拋售，空方強勢",
+                            "color": "rose",
+                            "subtext": "應快速離場，避免深套"
+                        },
+                        {
+                            "title": "價跌量縮",
+                            "description": "殺低無力，觀望氣氛",
+                            "color": "zinc",
+                            "subtext": "可能盤整，等待訊號"
+                        }
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "量價關係實戰圖解",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 55, "label": "" },
+                            { "x": 2, "y": 62, "label": "" },
+                            { "x": 3, "y": 68, "label": "" },
+                            { "x": 4, "y": 72, "label": "" },
+                            { "x": 5, "y": 70, "label": "" },
+                            { "x": 6, "y": 65, "label": "" },
+                            { "x": 7, "y": 58, "label": "" },
+                            { "x": 8, "y": 52, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 62, "type": "buy", "label": "價漲量增" },
+                            { "x": 4, "y": 72, "type": "info", "label": "價漲量縮(警訊)" },
+                            { "x": 6, "y": 65, "type": "sell", "label": "價跌量增" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "profit", "yStart": 50, "yEnd": 68, "label": "量價配合上漲" },
+                            { "type": "loss", "yStart": 55, "yEnd": 72, "label": "量縮後回落" }
+                        ]
+                    },
+                    "description": "股價從$50上漲至$62時成交量同步放大（價漲量增），上漲健康。但$62至$72期間成交量萎縮（價漲量縮），顯示買盤不足。隨後出現價跌量增，股價快速回落。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "成交量三大用法",
+                    "color": "indigo",
+                    "items": [
+                        "找轉折徵兆：量突然放大伴隨明顯K線，常是重要轉折點",
+                        "避開假突破：真正的突破需要成交量放大並維持",
+                        "挑出熱門股：高成交量代表市場關注，容易走出趨勢"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["量價組合", "市場含義", "操作建議"],
+                    "rows": [
+                        ["爆大量紅K", "多方強勢突破", "可順勢買進"],
+                        ["爆大量黑K", "空方強勢下殺", "應快速離場"],
+                        ["高檔爆量收上影線", "主力出貨徵兆", "減碼或出場"],
+                        ["低檔縮量止跌", "賣壓消化完畢", "準備伺機布局"],
+                        ["量縮橫盤整理", "蓄積動能", "等待突破方向"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "突破行情的量能判斷",
+                    "color": "emerald",
+                    "items": [
+                        "有效突破：突破時成交量放大至少1.5倍",
+                        "假突破：突破時成交量無明顯放大",
+                        "突破後需要量能維持，否則易回測",
+                        "跳空缺口搭配大量更具意義"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "股價突破前高壓力位，但成交量卻比前幾日縮減30%，應如何解讀？",
+                    "options": [
+                        { "id": "a", "text": "有效突破，可以追進", "isCorrect": false },
+                        { "id": "b", "text": "假突破機率高，應謹慎觀察", "isCorrect": true },
+                        { "id": "c", "text": "縮量代表賣壓輕，更應該買進", "isCorrect": false },
+                        { "id": "d", "text": "成交量與突破無關", "isCorrect": false }
+                    ],
+                    "explanation": "真正的有效突破需要成交量配合放大，代表市場認同並願意以更高價格買入。縮量突破往往是假突破，可能是主力拉高吸引追價，之後價格容易回落。應等待放量確認再進場。"
+                }
+            ]
+        },
+        {
+            "id": "16",
+            "title": "KD指標進階應用",
+            "description": "鈍化現象與參數優化",
+            "duration": "16分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "KD指標的進階應用包含**鈍化現象的判斷**和**參數的調整**，掌握這些技巧能大幅提升KD指標的使用效果。",
+                    "highlights": [{ "text": "鈍化現象的判斷", "color": "white" }, { "text": "參數的調整", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "什麼是KD鈍化？",
+                    "color": "amber",
+                    "text": "當KD指標長時間停留在超買區（80以上）或超賣區（20以下）時，稱為「鈍化」。",
+                    "items": [
+                        "高檔鈍化：強勢上漲趨勢中，KD長期維持在80以上",
+                        "低檔鈍化：強勢下跌趨勢中，KD長期維持在20以下",
+                        "鈍化時逆勢操作容易被軋"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "高檔鈍化（強勢行情）",
+                            "description": "KD > 80 持續多日不回落",
+                            "color": "emerald",
+                            "subtext": "不宜做空，可持股續抱"
+                        },
+                        {
+                            "title": "低檔鈍化（弱勢行情）",
+                            "description": "KD < 20 持續多日不反彈",
+                            "color": "rose",
+                            "subtext": "不宜抄底，耐心等待"
+                        }
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "KD高檔鈍化案例",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 58, "label": "" },
+                            { "x": 2, "y": 65, "label": "" },
+                            { "x": 3, "y": 72, "label": "" },
+                            { "x": 4, "y": 78, "label": "" },
+                            { "x": 5, "y": 85, "label": "" },
+                            { "x": 6, "y": 92, "label": "" },
+                            { "x": 7, "y": 98, "label": "" },
+                            { "x": 8, "y": 105, "label": "" },
+                            { "x": 9, "y": 110, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 72, "type": "info", "label": "KD=82 進入超買" },
+                            { "x": 5, "y": 85, "type": "info", "label": "KD=88 持續超買" },
+                            { "x": 7, "y": 98, "type": "info", "label": "KD=90 高檔鈍化" },
+                            { "x": 9, "y": 110, "type": "info", "label": "KD=85 仍在高位" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "profit", "yStart": 50, "yEnd": 115, "label": "強勢上漲趨勢" }
+                        ]
+                    },
+                    "description": "股價從$50一路漲至$110，KD在$72時就進入超買區（82）。若在此時放空，會錯過$72到$110的漲幅。這就是高檔鈍化，強勢趨勢中不宜逆勢操作。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["參數設定", "適用情境", "特點"],
+                    "rows": [
+                        ["(5, 3, 3)", "極短線（當沖）", "反應快，假訊號多"],
+                        ["(9, 3, 3)", "短線（標準參數）", "平衡敏感度與可靠性"],
+                        ["(14, 3, 3)", "短中線", "較穩定，訊號較少"],
+                        ["(21, 3, 3)", "中線波段", "濾除雜訊，訊號可靠"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "如何應對KD鈍化",
+                    "color": "indigo",
+                    "items": [
+                        "確認趨勢：先用均線判斷大趨勢方向",
+                        "順勢操作：上升趨勢中KD高檔鈍化不做空",
+                        "等待破位：等KD跌破80或突破20再反向操作",
+                        "多週期確認：日線鈍化時看週線趨勢"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "KD進階交易策略",
+                    "color": "emerald",
+                    "items": [
+                        "多頭市場：KD回落到50附近就是買點（不用等20）",
+                        "空頭市場：KD反彈到50附近就是賣點（不用等80）",
+                        "背離+交叉：出現背離後等待黃金/死亡交叉確認",
+                        "J線極值：J線超過100或低於0時注意極端行情"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "股價持續上漲，KD值已在85以上維持5天，此時應該？",
+                    "options": [
+                        { "id": "a", "text": "立即做空，因為KD超買太久", "isCorrect": false },
+                        { "id": "b", "text": "繼續持有，因為這是高檔鈍化的強勢表現", "isCorrect": true },
+                        { "id": "c", "text": "KD失效，完全不用理會", "isCorrect": false },
+                        { "id": "d", "text": "加倍做多追高", "isCorrect": false }
+                    ],
+                    "explanation": "KD長時間維持在超買區代表「高檔鈍化」，這是強勢行情的特徵，不宜逆勢做空。正確做法是順勢持有，等待KD跌破80或出現死亡交叉時再考慮減碼。在強趨勢中，KD的超買訊號可靠度會下降。"
+                }
+            ]
+        },
+        {
+            "id": "17",
+            "title": "指標共振與交叉驗證",
+            "description": "提高交易勝率的組合策略",
+            "duration": "20分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**指標共振**是指多個技術指標同時發出相同方向的訊號，如同「投票機制」，當多數指標一致時，訊號可信度大幅提升。",
+                    "highlights": [{ "text": "指標共振", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "為什麼需要多指標確認？",
+                    "color": "zinc",
+                    "items": [
+                        "單一指標容易產生假訊號",
+                        "頻繁交易造成手續費侵蝕利潤",
+                        "不同指標有不同的強項與弱點",
+                        "多指標確認能提高勝率與信心"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "指標分類原則",
+                    "color": "amber",
+                    "text": "組合應使用「不同類型」的指標，避免重複性高的同類指標",
+                    "items": [
+                        "趨勢指標：MA、MACD、布林通道中軌",
+                        "動量/震盪指標：RSI、KD、威廉指標",
+                        "成交量指標：OBV、成交量均線"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "正確組合",
+                            "description": "MA + KD + OBV（不同類型）",
+                            "color": "emerald",
+                            "subtext": "趨勢+動量+量能全面驗證"
+                        },
+                        {
+                            "title": "錯誤組合",
+                            "description": "RSI + KD + 威廉（同類型）",
+                            "color": "rose",
+                            "subtext": "都是震盪指標，訊號重複"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "經典組合策略",
+                    "color": "indigo",
+                    "items": [
+                        "MA + RSI：趨勢確認 + 超買超賣判斷",
+                        "MACD + KD：趨勢動能 + 短線轉折",
+                        "布林通道 + RSI：波動範圍 + 極端值判斷",
+                        "均線 + OBV + KD：趨勢 + 量能 + 時機"
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "指標共振買進案例",
+                    "candles": [
+                        { "open": 82, "high": 84, "low": 78, "close": 80, "label": "D1" },
+                        { "open": 80, "high": 81, "low": 70, "close": 72, "label": "D2" },
+                        { "open": 72, "high": 73, "low": 63, "close": 65, "label": "D3" },
+                        { "open": 65, "high": 66, "low": 56, "close": 58, "label": "D4" },
+                        { "open": 58, "high": 59, "low": 53, "close": 55, "label": "觸下軌" },
+                        { "open": 55, "high": 62, "low": 54, "close": 60, "label": "買進" },
+                        { "open": 60, "high": 70, "low": 59, "close": 68, "label": "D7" },
+                        { "open": 68, "high": 77, "low": 67, "close": 75, "label": "D8" },
+                        { "open": 75, "high": 84, "low": 74, "close": 82, "label": "D9" }
+                    ],
+                    "annotations": [
+                        { "type": "buy", "index": 5, "label": "共振買進" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 80, "label": "" },
+                            { "x": 1, "y": 72, "label": "" },
+                            { "x": 2, "y": 65, "label": "" },
+                            { "x": 3, "y": 58, "label": "" },
+                            { "x": 4, "y": 55, "label": "" },
+                            { "x": 5, "y": 60, "label": "" },
+                            { "x": 6, "y": 68, "label": "" },
+                            { "x": 7, "y": 75, "label": "" },
+                            { "x": 8, "y": 82, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 4, "y": 55, "type": "info", "label": "觸及布林下軌" },
+                            { "x": 5, "y": 60, "type": "buy", "label": "共振買點" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 54, "label": "布林下軌" },
+                            { "type": "ma", "points": [{"x": 0, "y": 75}, {"x": 4, "y": 65}, {"x": 8, "y": 72}], "label": "20MA", "color": "#60a5fa" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 55, "yEnd": 85, "label": "共振後反彈" }
+                        ]
+                    },
+                    "description": "共振訊號：① 股價觸及布林下軌 ② RSI=28進入超賣 ③ KD出現黃金交叉 ④ MACD柱狀圖縮短。四個指標同時發出買進訊號，股價隨後從$55反彈至$82。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["共振程度", "同向指標數量", "操作建議"],
+                    "rows": [
+                        ["強共振", "4個以上", "積極進場，加大部位"],
+                        ["中共振", "3個", "可進場，正常部位"],
+                        ["弱共振", "2個", "輕倉試探，嚴設停損"],
+                        ["無共振", "0-1個", "觀望等待，不宜進場"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "共振策略實戰流程",
+                    "color": "emerald",
+                    "items": [
+                        "1. 判斷大趨勢：用週線MA或MACD確認方向",
+                        "2. 等待回檔：在上升趨勢中等待價格回檔",
+                        "3. 觀察共振：檢查多個指標是否同向",
+                        "4. 確認進場：共振出現時進場，設好停損",
+                        "5. 分批操作：訊號越強，部位越大"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "某股票出現以下訊號：股價站上20MA、RSI=55、KD黃金交叉、MACD柱狀由負轉正，這是什麼情況？",
+                    "options": [
+                        { "id": "a", "text": "訊號混亂，無法判斷", "isCorrect": false },
+                        { "id": "b", "text": "強共振買進訊號，可積極進場", "isCorrect": true },
+                        { "id": "c", "text": "賣出訊號，應該離場", "isCorrect": false },
+                        { "id": "d", "text": "只有一個買進訊號，不足以進場", "isCorrect": false }
+                    ],
+                    "explanation": "這是典型的「強共振買進訊號」：① MA趨勢向上（站上20MA）② RSI中性偏多（55）③ KD黃金交叉 ④ MACD轉正。四個不同類型的指標都指向多方，可信度高，適合積極進場。"
+                }
+            ]
+        },
+        {
+            "id": "18",
+            "title": "技術指標實戰綜合測驗",
+            "description": "多指標整合分析能力測試",
+            "duration": "25分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "本單元透過**綜合實戰測驗**，檢驗您對各種技術指標的理解和應用能力。請仔細分析每個情境，做出最佳判斷。",
+                    "highlights": [{ "text": "綜合實戰測驗", "color": "white" }]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【情境1】多頭趨勢中的回檔",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 45, "label": "" },
+                            { "x": 1, "y": 52, "label": "" },
+                            { "x": 2, "y": 60, "label": "" },
+                            { "x": 3, "y": 68, "label": "" },
+                            { "x": 4, "y": 75, "label": "" },
+                            { "x": 5, "y": 70, "label": "" },
+                            { "x": 6, "y": 65, "label": "" },
+                            { "x": 7, "y": 62, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 4, "y": 75, "type": "info", "label": "波段高點" },
+                            { "x": 7, "y": 62, "type": "info", "label": "目前位置" }
+                        ],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 48}, {"x": 4, "y": 58}, {"x": 7, "y": 62}], "label": "20MA", "color": "#60a5fa" },
+                            { "type": "support", "y": 60, "label": "支撐位" }
+                        ],
+                        "zones": []
+                    },
+                    "description": "指標狀態：20MA向上、RSI=42（從70回落）、KD=38、MACD柱狀圖縮短但仍為正值、OBV維持高位。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境1分析】根據上圖資訊，最佳操作是？",
+                    "options": [
+                        { "id": "a", "text": "趨勢已經反轉，應該賣出或做空", "isCorrect": false },
+                        { "id": "b", "text": "回檔買點，可在支撐位附近分批布局", "isCorrect": true },
+                        { "id": "c", "text": "訊號不明確，完全觀望", "isCorrect": false },
+                        { "id": "d", "text": "立即全倉買入追高", "isCorrect": false }
+                    ],
+                    "explanation": "分析要點：① 20MA仍向上，大趨勢未變 ② RSI從超買回落至42，進入中性區 ③ 價格回檔至20MA附近（支撐）④ OBV維持高位代表籌碼未鬆動。這是典型的「多頭趨勢中的健康回檔」，是逢低布局的好時機。"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【情境2】盤整突破判斷",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 52, "label": "" },
+                            { "x": 2, "y": 48, "label": "" },
+                            { "x": 3, "y": 51, "label": "" },
+                            { "x": 4, "y": 49, "label": "" },
+                            { "x": 5, "y": 52, "label": "" },
+                            { "x": 6, "y": 56, "label": "" },
+                            { "x": 7, "y": 58, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 5, "y": 52, "type": "info", "label": "前高壓力" },
+                            { "x": 6, "y": 56, "type": "buy", "label": "突破！量增2倍" },
+                            { "x": 7, "y": 58, "type": "info", "label": "持續放量" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 52, "label": "盤整區上緣" },
+                            { "type": "support", "y": 48, "label": "盤整區下緣" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 48, "yEnd": 52, "label": "盤整區間" }
+                        ]
+                    },
+                    "description": "布林通道收窄後擴張、突破時成交量放大2倍、MACD黃金交叉、KD=65向上、RSI=62。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境2分析】這次突破是否有效？應如何操作？",
+                    "options": [
+                        { "id": "a", "text": "假突破，應該放空", "isCorrect": false },
+                        { "id": "b", "text": "有效突破，可進場做多，停損設在$52下方", "isCorrect": true },
+                        { "id": "c", "text": "等股價回測$52再進場", "isCorrect": false },
+                        { "id": "d", "text": "KD還沒超買，不急進場", "isCorrect": false }
+                    ],
+                    "explanation": "判斷有效突破的關鍵：① 布林通道收窄後擴張（蓄力後爆發）② 突破伴隨量增2倍（真金白銀）③ MACD黃金交叉（動能確認）④ 持續放量（買盤持續）。這是典型的有效突破，可進場做多並將停損設在突破點$52下方。"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【情境3】頂部訊號判斷",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 60, "label": "" },
+                            { "x": 1, "y": 72, "label": "" },
+                            { "x": 2, "y": 68, "label": "" },
+                            { "x": 3, "y": 82, "label": "" },
+                            { "x": 4, "y": 78, "label": "" },
+                            { "x": 5, "y": 88, "label": "" },
+                            { "x": 6, "y": 85, "label": "" },
+                            { "x": 7, "y": 80, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 72, "type": "info", "label": "高點A RSI=72" },
+                            { "x": 3, "y": 82, "type": "info", "label": "高點B RSI=70" },
+                            { "x": 5, "y": 88, "type": "info", "label": "高點C RSI=65" },
+                            { "x": 6, "y": 85, "type": "sell", "label": "出現長上影線" }
+                        ],
+                        "lines": [
+                            { "type": "trendline", "points": [{"x": 1, "y": 72}, {"x": 3, "y": 82}, {"x": 5, "y": 88}], "label": "價格上升", "color": "#22c55e" }
+                        ],
+                        "zones": []
+                    },
+                    "description": "股價連續創新高（$72→$82→$88），但RSI卻越來越低（72→70→65）。最近一根K線出現長上影線，成交量放大但收黑。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境3分析】根據上述訊號，應該採取什麼行動？",
+                    "options": [
+                        { "id": "a", "text": "股價還在創新高，繼續持有不動", "isCorrect": false },
+                        { "id": "b", "text": "出現頂背離+長上影線，應減碼或出場", "isCorrect": true },
+                        { "id": "c", "text": "RSI還沒低於30，不需要擔心", "isCorrect": false },
+                        { "id": "d", "text": "趁高位加碼追買", "isCorrect": false }
+                    ],
+                    "explanation": "危險訊號明顯：① RSI頂背離（價格新高但RSI下降）② 長上影線（上方賣壓重）③ 放量收黑（有人在出貨）。這是典型的頭部訊號組合，應該減碼或出場，而不是繼續持有或追高。"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【情境4】假突破識別",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 48, "label": "" },
+                            { "x": 1, "y": 50, "label": "" },
+                            { "x": 2, "y": 52, "label": "" },
+                            { "x": 3, "y": 55, "label": "" },
+                            { "x": 4, "y": 53, "label": "" },
+                            { "x": 5, "y": 50, "label": "" },
+                            { "x": 6, "y": 47, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 52, "type": "info", "label": "壓力位" },
+                            { "x": 3, "y": 55, "type": "info", "label": "突破？量縮" },
+                            { "x": 5, "y": 50, "type": "stopLoss", "label": "跌回壓力下" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 52, "label": "壓力位$52" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 47, "yEnd": 55, "label": "假突破回落" }
+                        ]
+                    },
+                    "description": "股價突破$52壓力時成交量萎縮30%，隔日出現長黑K吞噬前一日漲幅，MACD柱狀圖翻負。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境4分析】這是假突破的原因是什麼？",
+                    "options": [
+                        { "id": "a", "text": "突破位置不對", "isCorrect": false },
+                        { "id": "b", "text": "量縮突破+隔日長黑吞噬+MACD轉負，三大假突破特徵", "isCorrect": true },
+                        { "id": "c", "text": "只是正常回測，不是假突破", "isCorrect": false },
+                        { "id": "d", "text": "價格有突破過壓力，就是有效突破", "isCorrect": false }
+                    ],
+                    "explanation": "假突破三大特徵全部出現：① 量縮突破（缺乏買盤支撐）② 長黑吞噬（空方反撲成功）③ MACD轉負（動能轉弱）。遇到這種情況應立即停損出場，不要期待會再次上攻。這也提醒我們突破時一定要看成交量配合。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "技術指標綜合使用要訣",
+                    "color": "emerald",
+                    "items": [
+                        "趨勢為王：先判斷大趨勢，再用指標找時機",
+                        "量價配合：任何訊號都要有成交量支持",
+                        "多指標確認：至少2-3個不同類型指標同向",
+                        "背離警戒：價格與指標背離是重要反轉預警",
+                        "紀律執行：訊號出現就行動，不要猶豫或後悔"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "19",
+            "title": "費波納契回調",
+            "description": "Fibonacci Retracement 的應用",
+            "duration": "15分鐘",
+            "subLessons": [
+                {
+                    "id": "19-1",
+                    "title": "費波納契數列與黃金比例",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "text": "**費波納契回調**（Fibonacci Retracement）是技術分析中最重要的工具之一，基於費波納契數列的比例來預測價格的支撐與壓力位。",
+                            "highlights": [{ "text": "費波納契回調", "color": "white" }]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "費波納契數列",
+                            "color": "indigo",
+                            "text": "每個數字是前兩個數字的和：1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89...",
+                            "items": [
+                                "黃金比例：任一數除以前一數 ≈ 1.618",
+                                "反向比例：任一數除以後一數 ≈ 0.618",
+                                "這個比例在自然界和金融市場中普遍存在"
+                            ]
+                        },
+                        {
+                            "type": "table",
+                            "headers": ["比例", "來源", "重要性"],
+                            "rows": [
+                                ["23.6%", "0.236 (1/4.236)", "淺回調，強勢趨勢"],
+                                ["38.2%", "0.382 (1/2.618)", "常見回調位"],
+                                ["50%", "心理關卡", "最常見支撐/壓力"],
+                                ["61.8%", "0.618（黃金比例）", "最重要的回調位"],
+                                ["78.6%", "0.786 (√0.618)", "深度回調，趨勢可能反轉"]
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "為什麼費波納契有效？",
+                            "color": "zinc",
+                            "items": [
+                                "自我實現預言：多數交易者關注這些位置",
+                                "自然法則：市場參與者行為符合自然規律",
+                                "心理關卡：人類傾向在特定比例做決策",
+                                "歷史驗證：長期統計支持其有效性"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "19-2",
+                    "title": "費波納契繪製方法",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "text": "正確繪製費波納契回調線是應用的關鍵，需要找到明確的**波段高點**和**波段低點**。",
+                            "highlights": [
+                                { "text": "波段高點", "color": "rose" },
+                                { "text": "波段低點", "color": "emerald" }
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "上升趨勢中的繪製",
+                            "color": "emerald",
+                            "items": [
+                                "從波段低點（0%）拉到波段高點（100%）",
+                                "回調位置出現在 23.6%、38.2%、50%、61.8%",
+                                "價格回調到這些位置可能獲得支撐",
+                                "尋找買入機會"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "下降趨勢中的繪製",
+                            "color": "rose",
+                            "items": [
+                                "從波段高點（0%）拉到波段低點（100%）",
+                                "反彈位置出現在 23.6%、38.2%、50%、61.8%",
+                                "價格反彈到這些位置可能遇壓",
+                                "尋找放空機會"
+                            ]
+                        },
+                        {
+                            "type": "combo-chart-example",
+                            "title": "費波納契回調買點範例",
+                            "candles": [
+                                { "open": 100, "high": 102, "low": 99, "close": 101 },
+                                { "open": 101, "high": 106, "low": 100, "close": 105 },
+                                { "open": 105, "high": 112, "low": 104, "close": 111 },
+                                { "open": 111, "high": 120, "low": 110, "close": 118 },
+                                { "open": 118, "high": 122, "low": 117, "close": 120 },
+                                { "open": 120, "high": 121, "low": 115, "close": 116 },
+                                { "open": 116, "high": 117, "low": 112, "close": 113 },
+                                { "open": 113, "high": 114, "low": 110, "close": 112 },
+                                { "open": 112, "high": 115, "low": 111, "close": 114 },
+                                { "open": 114, "high": 118, "low": 113, "close": 117 }
+                            ],
+                            "annotations": [
+                                { "index": 0, "label": "低點", "position": "below" },
+                                { "index": 4, "label": "高點", "position": "above" },
+                                { "index": 7, "label": "61.8%", "position": "below" },
+                                { "index": 8, "label": "買入", "position": "below" }
+                            ],
+                            "lineData": {
+                                "points": [
+                                    { "x": 0, "y": 100, "label": "0% (低點)" },
+                                    { "x": 1, "y": 105, "label": "" },
+                                    { "x": 2, "y": 111, "label": "" },
+                                    { "x": 3, "y": 118, "label": "" },
+                                    { "x": 4, "y": 120, "label": "100% (高點)" },
+                                    { "x": 5, "y": 116, "label": "" },
+                                    { "x": 6, "y": 113, "label": "" },
+                                    { "x": 7, "y": 112, "label": "61.8%" },
+                                    { "x": 8, "y": 114, "label": "" },
+                                    { "x": 9, "y": 117, "label": "" }
+                                ],
+                                "lines": [
+                                    { "type": "support", "y": 112, "label": "61.8% ($112)" },
+                                    { "type": "support", "y": 110, "label": "50% ($110)" }
+                                ],
+                                "markers": [
+                                    { "x": 7, "y": 112, "type": "buy", "label": "61.8% 支撐買入" }
+                                ]
+                            },
+                            "description": "價格從 $100 上漲到 $120，回調至 61.8% 位置（$112）獲得支撐後反彈。61.8% 是最重要的費波納契比例。"
+                        },
+                        {
+                            "type": "quiz-example",
+                            "question": "在上升趨勢中，費波納契回調應該從哪裡開始繪製？",
+                            "options": [
+                                { "id": "a", "text": "從高點到低點", "isCorrect": false },
+                                { "id": "b", "text": "從低點到高點", "isCorrect": true },
+                                { "id": "c", "text": "從收盤價到開盤價", "isCorrect": false },
+                                { "id": "d", "text": "任意兩點皆可", "isCorrect": false }
+                            ],
+                            "explanation": "在上升趨勢中，應該從波段低點（0%）開始，拉到波段高點（100%）。這樣回調比例才會正確顯示支撐位置。下降趨勢則相反，從高點拉到低點。"
+                        }
+                    ]
+                },
+                {
+                    "id": "19-3",
+                    "title": "費波納契進場策略",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "text": "結合費波納契回調與其他技術分析工具，可以大幅提高交易勝率。",
+                            "highlights": []
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "進場確認訊號",
+                            "color": "emerald",
+                            "items": [
+                                "K線反轉型態：錘子線、吞噬、晨星出現在費波位",
+                                "成交量放大：回調到支撐位時量縮，反彈時量增",
+                                "指標配合：RSI 超賣、MACD 即將金叉",
+                                "多重匯聚：費波位與均線、趨勢線重疊"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "費波納契交易策略",
+                            "color": "indigo",
+                            "items": [
+                                "策略1：38.2% 回調買入（強勢趨勢）",
+                                "策略2：50% 回調買入（標準回調）",
+                                "策略3：61.8% 回調買入（最後防線）",
+                                "停損：設在下一個費波位下方",
+                                "目標：前高或 138.2%/161.8% 延伸位"
+                            ]
+                        },
+                        {
+                            "type": "calculation-example",
+                            "title": "費波納契目標價計算",
+                            "steps": [
+                                { "label": "波段低點", "value": "$100" },
+                                { "label": "波段高點", "value": "$120" },
+                                { "label": "波段幅度", "formula": "$120 - $100", "value": "$20" },
+                                { "label": "61.8% 回調位", "formula": "$120 - $20×0.618", "value": "$107.64", "highlight": true },
+                                { "label": "138.2% 延伸目標", "formula": "$100 + $20×1.382", "value": "$127.64", "highlight": true },
+                                { "label": "161.8% 延伸目標", "formula": "$100 + $20×1.618", "value": "$132.36", "highlight": true }
+                            ],
+                            "result": {
+                                "label": "交易計畫",
+                                "value": "在 $107.64 買入，停損 $105，目標 $127-$132",
+                                "color": "emerald"
+                            }
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "⚠️ 注意事項",
+                            "color": "rose",
+                            "items": [
+                                "費波納契不是100%準確，需配合其他工具",
+                                "強勢趨勢可能只回調 23.6% 就反彈",
+                                "跌破 78.6% 通常意味趨勢可能反轉",
+                                "不同時間框架的費波可能產生衝突"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "20",
+            "title": "艾略特波浪理論",
+            "description": "Elliott Wave 入門與應用",
+            "duration": "18分鐘",
+            "subLessons": [
+                {
+                    "id": "20-1",
+                    "title": "波浪理論基礎",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "text": "**艾略特波浪理論**（Elliott Wave Theory）由 Ralph Nelson Elliott 在 1930 年代提出，認為市場價格以特定的波浪型態運動。",
+                            "highlights": [{ "text": "艾略特波浪理論", "color": "white" }]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "核心概念",
+                            "color": "indigo",
+                            "text": "市場走勢由投資人集體心理驅動，呈現規律的波浪型態",
+                            "items": [
+                                "一個完整週期 = 5 浪推進 + 3 浪修正",
+                                "推進浪：1-2-3-4-5（順趨勢）",
+                                "修正浪：A-B-C（逆趨勢）",
+                                "波浪具有自相似性（碎形結構）"
+                            ]
+                        },
+                        {
+                            "type": "comparison-grid",
+                            "items": [
+                                {
+                                    "title": "推進浪（1-5）",
+                                    "description": "主趨勢方向的五個波浪",
+                                    "color": "emerald",
+                                    "subtext": "1、3、5 為上漲浪；2、4 為回調浪"
+                                },
+                                {
+                                    "title": "修正浪（A-B-C）",
+                                    "description": "逆主趨勢的三個波浪",
+                                    "color": "rose",
+                                    "subtext": "A、C 為下跌浪；B 為反彈浪"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "table",
+                            "headers": ["波浪", "特徵", "心理狀態"],
+                            "rows": [
+                                ["第1浪", "底部反彈，懷疑者多", "市場開始轉向"],
+                                ["第2浪", "回測第1浪漲幅 50-78.6%", "懷疑聲浪最大"],
+                                ["第3浪", "最長最強，突破確認", "樂觀情緒擴散"],
+                                ["第4浪", "整理休息，幅度較淺", "短暫獲利了結"],
+                                ["第5浪", "最後上漲，散戶進場", "過度樂觀"],
+                                ["A浪", "被視為回調，抄底者多", "否認下跌趨勢"],
+                                ["B浪", "反彈誘多，量能萎縮", "最後逃命機會"],
+                                ["C浪", "恐慌殺跌，深度修正", "極度悲觀"]
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "20-2",
+                    "title": "波浪規則與指引",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "text": "波浪理論有三大**鐵律**必須遵守，以及多項**指引**幫助判斷。",
+                            "highlights": [{ "text": "鐵律", "color": "rose" }]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "三大鐵律（不可違反）",
+                            "color": "rose",
+                            "items": [
+                                "鐵律1：第2浪不能回調超過第1浪的起點",
+                                "鐵律2：第3浪不能是推進浪中最短的",
+                                "鐵律3：第4浪不能進入第1浪的價格區間"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "常見指引（經常成立）",
+                            "color": "amber",
+                            "items": [
+                                "第3浪通常是最長且最強的",
+                                "第2浪回調通常較深（50-78.6%）",
+                                "第4浪回調通常較淺（38.2%）",
+                                "第2浪和第4浪通常交替（鋸齒vs平台）",
+                                "第5浪常等於第1浪或為第1至3浪的0.618倍"
+                            ]
+                        },
+                        {
+                            "type": "combo-chart-example",
+                            "title": "五浪推進結構示意",
+                            "candles": [
+                                { "open": 100, "high": 102, "low": 99, "close": 101 },
+                                { "open": 101, "high": 108, "low": 100, "close": 107 },
+                                { "open": 107, "high": 108, "low": 103, "close": 104 },
+                                { "open": 104, "high": 115, "low": 103, "close": 114 },
+                                { "open": 114, "high": 125, "low": 113, "close": 124 },
+                                { "open": 124, "high": 126, "low": 118, "close": 119 },
+                                { "open": 119, "high": 132, "low": 118, "close": 130 },
+                                { "open": 130, "high": 131, "low": 125, "close": 126 },
+                                { "open": 126, "high": 135, "low": 125, "close": 133 }
+                            ],
+                            "annotations": [
+                                { "index": 0, "label": "起點", "position": "below" },
+                                { "index": 1, "label": "①", "position": "above" },
+                                { "index": 2, "label": "②", "position": "below" },
+                                { "index": 4, "label": "③", "position": "above" },
+                                { "index": 5, "label": "④", "position": "below" },
+                                { "index": 8, "label": "⑤", "position": "above" }
+                            ],
+                            "lineData": {
+                                "points": [
+                                    { "x": 0, "y": 100, "label": "起點" },
+                                    { "x": 1, "y": 107, "label": "1" },
+                                    { "x": 2, "y": 104, "label": "2" },
+                                    { "x": 3, "y": 114, "label": "" },
+                                    { "x": 4, "y": 124, "label": "3" },
+                                    { "x": 5, "y": 119, "label": "4" },
+                                    { "x": 6, "y": 130, "label": "" },
+                                    { "x": 7, "y": 126, "label": "" },
+                                    { "x": 8, "y": 133, "label": "5" }
+                                ],
+                                "markers": [
+                                    { "x": 1, "y": 107, "type": "info", "label": "浪1" },
+                                    { "x": 2, "y": 104, "type": "info", "label": "浪2" },
+                                    { "x": 4, "y": 124, "type": "info", "label": "浪3（最強）" },
+                                    { "x": 5, "y": 119, "type": "info", "label": "浪4" },
+                                    { "x": 8, "y": 133, "type": "info", "label": "浪5" }
+                                ]
+                            },
+                            "description": "典型五浪推進結構：第3浪為最長最強的主升段，第4浪的低點未跌入第1浪的高點區域，符合波浪鐵律。"
+                        },
+                        {
+                            "type": "quiz-example",
+                            "question": "根據波浪理論，以下哪種情況違反鐵律？",
+                            "options": [
+                                { "id": "a", "text": "第3浪是推進浪中最長的", "isCorrect": false },
+                                { "id": "b", "text": "第2浪回調了第1浪的 70%", "isCorrect": false },
+                                { "id": "c", "text": "第4浪跌破了第1浪的高點", "isCorrect": true },
+                                { "id": "d", "text": "第5浪長度等於第1浪", "isCorrect": false }
+                            ],
+                            "explanation": "第4浪不能進入第1浪的價格區間，這是波浪理論的第三條鐵律。如果第4浪跌破第1浪的高點，可能代表整個波浪計數錯誤，需要重新分析。"
+                        }
+                    ]
+                },
+                {
+                    "id": "20-3",
+                    "title": "波浪與費波納契",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "text": "波浪理論與**費波納契比例**密切相關，兩者結合可以更準確地預測價格目標。",
+                            "highlights": [{ "text": "費波納契比例", "color": "white" }]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "回調浪的費波納契關係",
+                            "color": "indigo",
+                            "items": [
+                                "第2浪：通常回調第1浪的 50%-78.6%",
+                                "第4浪：通常回調第3浪的 23.6%-50%",
+                                "A浪：通常回調第5浪的 38.2%-50%",
+                                "B浪：通常回調A浪的 50%-78.6%"
+                            ]
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "推進浪的費波納契關係",
+                            "color": "emerald",
+                            "items": [
+                                "第3浪：常為第1浪的 1.618 或 2.618 倍",
+                                "第5浪：常等於第1浪或為第1浪的 0.618 倍",
+                                "第5浪（延伸）：可達第1至3浪的 0.618 倍",
+                                "C浪：常等於A浪或為A浪的 1.618 倍"
+                            ]
+                        },
+                        {
+                            "type": "calculation-example",
+                            "title": "第3浪目標價計算",
+                            "steps": [
+                                { "label": "第1浪起點", "value": "$100" },
+                                { "label": "第1浪終點", "value": "$120" },
+                                { "label": "第1浪幅度", "formula": "$120 - $100", "value": "$20" },
+                                { "label": "第2浪終點", "value": "$108（回調60%）" },
+                                { "label": "第3浪目標（1.618倍）", "formula": "$108 + $20×1.618", "value": "$140.36", "highlight": true },
+                                { "label": "第3浪目標（2.618倍）", "formula": "$108 + $20×2.618", "value": "$160.36", "highlight": true }
+                            ],
+                            "result": {
+                                "label": "交易計畫",
+                                "value": "第2浪結束後買入，目標 $140-$160",
+                                "color": "emerald"
+                            }
+                        },
+                        {
+                            "type": "highlight-box",
+                            "title": "💡 波浪理論實戰建議",
+                            "color": "zinc",
+                            "items": [
+                                "波浪計數需要不斷練習和修正",
+                                "多個時間框架交叉驗證",
+                                "結合成交量確認波浪轉折",
+                                "承認計數錯誤時快速調整",
+                                "不要預測未來波浪，跟隨市場"
+                            ]
+                        },
+                        {
+                            "type": "quiz-example",
+                            "question": "第3浪最常見的費波納契延伸比例是？",
+                            "options": [
+                                { "id": "a", "text": "0.382 倍第1浪", "isCorrect": false },
+                                { "id": "b", "text": "0.618 倍第1浪", "isCorrect": false },
+                                { "id": "c", "text": "1.618 倍第1浪", "isCorrect": true },
+                                { "id": "d", "text": "等於第1浪", "isCorrect": false }
+                            ],
+                            "explanation": "第3浪通常是最長最強的推進浪，最常見的延伸比例是第1浪的 1.618 倍（黃金比例）。在強勢行情中，第3浪甚至可以達到第1浪的 2.618 倍。"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

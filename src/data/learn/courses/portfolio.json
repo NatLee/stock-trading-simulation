@@ -1,0 +1,1231 @@
+{
+    "id": "portfolio",
+    "title": "資產配置與投資組合",
+    "description": "學習科學化的資金配置方法",
+    "icon": "PieChart",
+    "color": "purple",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "資產配置基礎概念",
+            "description": "了解資產配置對投資成敗的影響",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**資產配置**是決定將資金分配到不同類型資產的過程。研究顯示，投資組合的長期表現有超過 90% 取決於資產配置，而非選股或擇時。",
+                    "highlights": [{ "text": "資產配置", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "為什麼資產配置重要？",
+                    "color": "indigo",
+                    "items": [
+                        "降低整體投資組合風險",
+                        "不同資產在不同經濟環境表現不同",
+                        "避免「全押單一資產」的災難性虧損",
+                        "諾貝爾經濟學獎研究證實其重要性"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "股票 📈",
+                            "description": "高報酬、高風險，適合追求成長",
+                            "color": "emerald",
+                            "subtext": "長期年化報酬約 8-10%"
+                        },
+                        {
+                            "title": "債券 📊",
+                            "description": "低報酬、低風險，穩定收益",
+                            "color": "indigo",
+                            "subtext": "長期年化報酬約 3-5%"
+                        },
+                        {
+                            "title": "現金 💵",
+                            "description": "幾乎無風險，但報酬最低",
+                            "color": "zinc",
+                            "subtext": "抵抗通膨困難"
+                        },
+                        {
+                            "title": "不動產 🏠",
+                            "description": "中等報酬風險，抗通膨",
+                            "color": "amber",
+                            "subtext": "流動性較低"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "股債的負相關性",
+                    "color": "emerald",
+                    "text": "股票和債券通常呈現負相關：當股市因經濟衰退下跌時，資金會流入債券避險，推升債券價格。這種特性讓股債組合能有效降低整體波動。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "研究顯示，投資組合長期表現主要取決於什麼？",
+                    "options": [
+                        { "id": "a", "text": "選股能力", "isCorrect": false },
+                        { "id": "b", "text": "進出場時機", "isCorrect": false },
+                        { "id": "c", "text": "資產配置", "isCorrect": true },
+                        { "id": "d", "text": "運氣", "isCorrect": false }
+                    ],
+                    "explanation": "諾貝爾經濟學獎得主的研究顯示，投資組合長期表現有超過90%取決於資產配置（決定配置多少在股票、債券等），而非個股選擇或擇時進出。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "經典股債配置策略",
+            "description": "60/40法則與年齡法則",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**60/40 配置**是最經典的投資組合，將 60% 資金配置在股票、40% 在債券，在成長性與穩定性之間取得平衡。",
+                    "highlights": [{ "text": "60/40 配置", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "60/40 法則的歷史表現",
+                    "color": "indigo",
+                    "items": [
+                        "1987-2022年間年化報酬率約 9.3%",
+                        "最大回撤約 30%（純股票約 50%）",
+                        "波動度比純股票低約 40%",
+                        "被譽為「黃金配置比例」"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "年齡法則（100-年齡）",
+                    "color": "emerald",
+                    "text": "股票配置比例 = 100 - 你的年齡",
+                    "items": [
+                        "30歲：股票70%、債券30%",
+                        "40歲：股票60%、債券40%",
+                        "50歲：股票50%、債券50%",
+                        "60歲：股票40%、債券60%"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["配置策略", "股票比例", "債券比例", "適合對象"],
+                    "rows": [
+                        ["積極型", "80-90%", "10-20%", "年輕、高風險承受度"],
+                        ["成長型", "70%", "30%", "30-40歲上班族"],
+                        ["平衡型", "60%", "40%", "40-50歲中年人"],
+                        ["穩健型", "50%", "50%", "50-60歲準退休族"],
+                        ["保守型", "30-40%", "60-70%", "退休族群"]
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "80/20 配置",
+                            "description": "80%股票、20%債券",
+                            "color": "emerald",
+                            "subtext": "適合20-35歲年輕人"
+                        },
+                        {
+                            "title": "60/40 配置",
+                            "description": "60%股票、40%債券",
+                            "color": "indigo",
+                            "subtext": "經典平衡配置"
+                        },
+                        {
+                            "title": "40/60 配置",
+                            "description": "40%股票、60%債券",
+                            "color": "amber",
+                            "subtext": "適合退休族群"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "根據「100-年齡」法則，35歲的投資者應該配置多少比例在股票？",
+                    "options": [
+                        { "id": "a", "text": "35%", "isCorrect": false },
+                        { "id": "b", "text": "50%", "isCorrect": false },
+                        { "id": "c", "text": "65%", "isCorrect": true },
+                        { "id": "d", "text": "80%", "isCorrect": false }
+                    ],
+                    "explanation": "100 - 35 = 65，所以35歲投資者可配置65%在股票、35%在債券。年紀越輕，能承受的風險越高，因為有更多時間等待市場回升。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "核心-衛星策略",
+            "description": "穩健核心搭配積極衛星",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**核心-衛星策略**將投資組合分為兩部分：穩健的「核心」資產追求市場報酬，積極的「衛星」資產追求超額報酬。",
+                    "highlights": [{ "text": "核心-衛星策略", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "核心資產（70-80%）",
+                            "description": "低成本指數型ETF，追蹤大盤",
+                            "color": "indigo",
+                            "subtext": "例：0050、VTI、VOO"
+                        },
+                        {
+                            "title": "衛星資產（20-30%）",
+                            "description": "主動選股或主題型投資",
+                            "color": "emerald",
+                            "subtext": "例：個股、產業ETF"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "核心資產特徵",
+                    "color": "indigo",
+                    "items": [
+                        "分散投資，追蹤大盤指數",
+                        "管理費低（<0.3%）",
+                        "長期持有，不頻繁交易",
+                        "穩定累積，降低風險"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "衛星資產特徵",
+                    "color": "amber",
+                    "items": [
+                        "追求超越大盤的報酬",
+                        "可投資看好的個股或產業",
+                        "較高風險，需要研究能力",
+                        "定期檢視，適時調整"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["資產類型", "建議配置", "範例"],
+                    "rows": [
+                        ["核心-台股", "40%", "0050、006208"],
+                        ["核心-美股", "30%", "VTI、VOO"],
+                        ["核心-債券", "10%", "00679B、BND"],
+                        ["衛星-個股", "10%", "看好的成長股"],
+                        ["衛星-主題", "10%", "AI、電動車ETF"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "核心-衛星策略中，「核心」資產應該具備什麼特徵？",
+                    "options": [
+                        { "id": "a", "text": "高風險高報酬的個股", "isCorrect": false },
+                        { "id": "b", "text": "低成本、分散投資的指數型ETF", "isCorrect": true },
+                        { "id": "c", "text": "高配息的個別股票", "isCorrect": false },
+                        { "id": "d", "text": "熱門的主題型投資", "isCorrect": false }
+                    ],
+                    "explanation": "核心資產應選擇低成本、分散投資的指數型ETF，目標是追蹤市場報酬。衛星資產才是用來追求超額報酬的部位。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "再平衡策略",
+            "description": "維持目標配置比例的方法",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**再平衡（Rebalancing）**是定期調整投資組合，使其回到目標配置比例的過程。當某類資產漲多或跌多，會偏離原始比例，需要賣出漲多的、買入跌多的。",
+                    "highlights": [{ "text": "再平衡（Rebalancing）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "為什麼需要再平衡？",
+                    "color": "indigo",
+                    "items": [
+                        "維持風險控制：避免股票佔比過高",
+                        "紀律性操作：自動執行「賣高買低」",
+                        "情緒管理：減少主觀判斷干擾",
+                        "長期效益：研究顯示可提升報酬"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "再平衡範例",
+                    "steps": [
+                        { "label": "原始配置", "value": "股票60%、債券40%" },
+                        { "label": "一年後（股票大漲）", "value": "股票70%、債券30%" },
+                        { "label": "偏離幅度", "formula": "70% - 60%", "value": "10%", "highlight": true },
+                        { "label": "再平衡動作", "value": "賣出10%股票、買入10%債券" },
+                        { "label": "調整後配置", "value": "股票60%、債券40%", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "效果",
+                        "value": "賣高買低，鎖定獲利",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "定期再平衡",
+                            "description": "每年或每半年固定調整",
+                            "color": "indigo",
+                            "subtext": "簡單易執行"
+                        },
+                        {
+                            "title": "觸發式再平衡",
+                            "description": "偏離超過5-10%時調整",
+                            "color": "amber",
+                            "subtext": "交易成本較低"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "再平衡注意事項",
+                    "color": "zinc",
+                    "items": [
+                        "考慮交易成本和稅負",
+                        "不要過度頻繁調整",
+                        "可利用新增資金進行再平衡",
+                        "建議每年至少檢視一次"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "如果目標配置是股票60%、債券40%，一年後變成股票75%、債券25%，應該怎麼做？",
+                    "options": [
+                        { "id": "a", "text": "股票漲得好，應該加碼更多股票", "isCorrect": false },
+                        { "id": "b", "text": "賣出部分股票，買入債券，回到60/40", "isCorrect": true },
+                        { "id": "c", "text": "不需要調整，繼續持有", "isCorrect": false },
+                        { "id": "d", "text": "全部賣出，重新配置", "isCorrect": false }
+                    ],
+                    "explanation": "再平衡的核心是「賣高買低」。股票佔比從60%漲到75%，代表股票漲幅大，應賣出部分股票鎖定獲利，買入相對便宜的債券，維持原本的風險水準。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "不同人生階段的配置",
+            "description": "從新手到退休的投資旅程",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "不同人生階段有不同的財務目標和風險承受度，**資產配置應該隨著年齡和生活狀況調整**。",
+                    "highlights": [{ "text": "資產配置應該隨著年齡和生活狀況調整", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "📱 小資族（20-35歲）",
+                    "color": "emerald",
+                    "text": "建議配置：股票80-90%、債券/現金10-20%",
+                    "items": [
+                        "時間是最大優勢，可承受較高風險",
+                        "優先累積本金，定期定額投入",
+                        "專注成長型資產，追求資本增值",
+                        "建立3-6個月緊急預備金"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "👨‍💼 上班族（35-50歲）",
+                    "color": "indigo",
+                    "text": "建議配置：股票60-70%、債券30-40%",
+                    "items": [
+                        "收入穩定，但開始有家庭責任",
+                        "平衡成長與穩定",
+                        "開始規劃退休金",
+                        "考慮保險和子女教育基金"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🏠 準退休族（50-60歲）",
+                    "color": "amber",
+                    "text": "建議配置：股票40-50%、債券50-60%",
+                    "items": [
+                        "逐漸降低風險，保護累積資產",
+                        "開始配置更多穩定收益資產",
+                        "規劃退休後的現金流需求",
+                        "檢視保險保障是否足夠"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🌴 退休族群（60歲以上）",
+                    "color": "purple",
+                    "text": "建議配置：股票30-40%、債券/現金60-70%",
+                    "items": [
+                        "首重資產保護和穩定收益",
+                        "高配息資產提供生活費",
+                        "保留部分股票對抗通膨",
+                        "維持1-2年生活費現金部位"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["人生階段", "股票", "債券", "現金", "投資重點"],
+                    "rows": [
+                        ["20-35歲", "80-90%", "5-15%", "5%", "累積、成長"],
+                        ["35-50歲", "60-70%", "25-35%", "5%", "平衡、規劃"],
+                        ["50-60歲", "40-50%", "40-50%", "10%", "保護、轉型"],
+                        ["60歲以上", "30-40%", "40-50%", "20%", "收益、安全"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "30歲的小資族，以下哪種配置最適合？",
+                    "options": [
+                        { "id": "a", "text": "股票30%、債券70%", "isCorrect": false },
+                        { "id": "b", "text": "股票50%、債券50%", "isCorrect": false },
+                        { "id": "c", "text": "股票80%、債券20%", "isCorrect": true },
+                        { "id": "d", "text": "100%現金定存", "isCorrect": false }
+                    ],
+                    "explanation": "30歲正值財富累積期，有足夠時間承受市場波動。應以成長型資產（股票）為主，讓時間和複利發揮作用。過於保守的配置會錯失長期成長機會。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "ETF配置實戰",
+            "description": "用ETF建構低成本投資組合",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "使用**ETF（指數股票型基金）**建構投資組合是最簡單且成本效益最高的方法。ETF具有分散風險、管理費低、交易方便等優點。",
+                    "highlights": [{ "text": "ETF（指數股票型基金）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ETF的優勢",
+                    "color": "emerald",
+                    "items": [
+                        "分散風險：一檔ETF持有數十到數百檔股票",
+                        "成本低廉：管理費通常<0.5%",
+                        "交易方便：像股票一樣買賣",
+                        "透明度高：持股清單公開"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["類型", "台股ETF", "美股ETF", "特色"],
+                    "rows": [
+                        ["台股大盤", "0050、006208", "-", "追蹤台灣50指數"],
+                        ["美股大盤", "-", "VTI、VOO", "追蹤全美/S&P500"],
+                        ["全球股市", "00662", "VT", "分散全球市場"],
+                        ["美國債券", "00679B", "BND、AGG", "投資級債券"],
+                        ["高股息台股", "0056、00878", "-", "高殖利率股票"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "簡單三基金組合",
+                    "color": "indigo",
+                    "text": "經典的「三基金組合」只需三檔ETF即可涵蓋全球市場：",
+                    "items": [
+                        "① 美國股市 ETF（VTI）：40-60%",
+                        "② 國際股市 ETF（VXUS）：20-30%",
+                        "③ 美國債券 ETF（BND）：20-30%"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "台股投資人的ETF配置範例",
+                    "steps": [
+                        { "label": "投資金額", "value": "$100萬" },
+                        { "label": "0050（台股大盤）", "formula": "$100萬 × 40%", "value": "$40萬", "highlight": true },
+                        { "label": "VTI（美股大盤）", "formula": "$100萬 × 30%", "value": "$30萬", "highlight": true },
+                        { "label": "00679B（美債）", "formula": "$100萬 × 20%", "value": "$20萬", "highlight": true },
+                        { "label": "0056（高股息）", "formula": "$100萬 × 10%", "value": "$10萬", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "總管理費",
+                        "value": "約0.2-0.3%/年",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 實務建議",
+                    "color": "zinc",
+                    "items": [
+                        "先從單一市場ETF開始（如0050）",
+                        "逐步加入國際市場分散風險",
+                        "定期定額減少擇時壓力",
+                        "每年檢視並再平衡一次"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種做法最符合被動投資的精神？",
+                    "options": [
+                        { "id": "a", "text": "每天看盤，頻繁買賣ETF", "isCorrect": false },
+                        { "id": "b", "text": "定期定額買入大盤ETF，長期持有", "isCorrect": true },
+                        { "id": "c", "text": "只買單一個股，集中投資", "isCorrect": false },
+                        { "id": "d", "text": "追逐熱門題材ETF", "isCorrect": false }
+                    ],
+                    "explanation": "被動投資的核心是「定期定額買入大盤ETF，長期持有」。透過分散投資追蹤市場報酬，避免頻繁交易和追逐熱門，讓時間和複利為你工作。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "現代投資組合理論",
+            "description": "效率前緣、風險指標與科學化配置",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**現代投資組合理論（MPT）**由諾貝爾經濟學獎得主馬可維茲（Markowitz）在1950年代提出，是資產配置的科學基礎。",
+                    "highlights": [{ "text": "現代投資組合理論（MPT）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "MPT 核心原理",
+                    "color": "indigo",
+                    "items": [
+                        "投資者應該追求「風險調整後報酬」最大化",
+                        "組合不同資產可以降低整體風險（分散效益）",
+                        "相關性低的資產組合效果最好",
+                        "存在一條「效率前緣」代表最佳配置"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "系統風險",
+                            "description": "整體市場風險，無法分散",
+                            "color": "rose",
+                            "subtext": "又稱市場風險、Beta 風險"
+                        },
+                        {
+                            "title": "非系統風險",
+                            "description": "個別資產風險，可透過分散消除",
+                            "color": "emerald",
+                            "subtext": "又稱公司特有風險"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "效率前緣（Efficient Frontier）",
+                    "color": "emerald",
+                    "text": "效率前緣是一條曲線，代表在各風險水準下能獲得的最高報酬：",
+                    "items": [
+                        "曲線上的每個點都是「最佳配置」",
+                        "相同風險下，選報酬最高的組合",
+                        "相同報酬下，選風險最低的組合",
+                        "曲線以下的組合都是「次優」選擇"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["風險指標", "定義", "解讀"],
+                    "rows": [
+                        ["標準差 σ", "報酬的波動程度", "越低越穩定"],
+                        ["Beta β", "相對市場的波動敏感度", "β=1 與市場同步"],
+                        ["夏普比率", "（報酬-無風險利率）÷ 標準差", "越高越好，表示風險調整後報酬"],
+                        ["相關係數 ρ", "兩資產的連動程度", "-1到+1，越低分散效果越好"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Beta 係數解讀",
+                    "color": "amber",
+                    "items": [
+                        "β = 1.0：與市場同步波動",
+                        "β > 1.0：波動大於市場（積極型股票）",
+                        "β < 1.0：波動小於市場（防禦型股票）",
+                        "β = 0：與市場無相關（如現金）",
+                        "β < 0：與市場反向（如反向 ETF）"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "夏普比率計算範例",
+                    "steps": [
+                        { "label": "投資組合年報酬", "value": "12%" },
+                        { "label": "無風險利率（定存）", "value": "2%" },
+                        { "label": "投資組合標準差", "value": "15%" },
+                        { "label": "超額報酬", "formula": "12% - 2%", "value": "10%", "highlight": true },
+                        { "label": "夏普比率", "formula": "10% ÷ 15%", "value": "0.67", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "解讀",
+                        "value": "每承擔1%風險，可獲得0.67%超額報酬",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "兩檔基金報酬都是10%，A基金標準差15%，B基金標準差25%，哪檔表現較好？",
+                    "options": [
+                        { "id": "a", "text": "A基金，因為風險調整後報酬較高", "isCorrect": true },
+                        { "id": "b", "text": "B基金，因為波動大代表有潛力", "isCorrect": false },
+                        { "id": "c", "text": "一樣好，因為報酬相同", "isCorrect": false },
+                        { "id": "d", "text": "無法比較", "isCorrect": false }
+                    ],
+                    "explanation": "報酬相同時，波動（標準差）越低越好。A基金用較低的風險獲得相同報酬，夏普比率較高，代表風險調整後表現較好。"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "全天候投資組合",
+            "description": "Ray Dalio 的四季配置策略",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**全天候投資組合（All Weather Portfolio）**由橋水基金創辦人 Ray Dalio 設計，目標是在任何經濟環境下都能獲得穩定報酬。",
+                    "highlights": [{ "text": "全天候投資組合（All Weather Portfolio）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "四種經濟環境",
+                    "color": "indigo",
+                    "text": "經濟不外乎在這四種環境中循環：",
+                    "items": [
+                        "📈 經濟成長 + 通膨上升：股票、商品表現好",
+                        "📈 經濟成長 + 通膨下降：股票、債券表現好",
+                        "📉 經濟衰退 + 通膨上升：商品、黃金表現好",
+                        "📉 經濟衰退 + 通膨下降：債券表現好"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "股票 30%",
+                            "description": "經濟成長時表現好",
+                            "color": "emerald",
+                            "subtext": "VTI、SPY"
+                        },
+                        {
+                            "title": "長期債券 40%",
+                            "description": "通縮和衰退時表現好",
+                            "color": "indigo",
+                            "subtext": "TLT"
+                        },
+                        {
+                            "title": "中期債券 15%",
+                            "description": "穩定收益和緩衝",
+                            "color": "zinc",
+                            "subtext": "IEF"
+                        },
+                        {
+                            "title": "黃金 + 商品 15%",
+                            "description": "通膨保護",
+                            "color": "amber",
+                            "subtext": "GLD、DJP"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["資產類別", "配置比例", "代表ETF", "保護情境"],
+                    "rows": [
+                        ["美國股票", "30%", "VTI、SPY", "經濟成長"],
+                        ["長期公債", "40%", "TLT", "通縮、衰退"],
+                        ["中期公債", "15%", "IEF", "緩衝、穩定"],
+                        ["黃金", "7.5%", "GLD、IAU", "通膨、危機"],
+                        ["大宗商品", "7.5%", "DJP、GSG", "通膨"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "全天候組合歷史表現",
+                    "color": "emerald",
+                    "items": [
+                        "1984-2023年間年化報酬約 7.5%",
+                        "最大回撤約 20%（遠低於純股票的 50%+）",
+                        "波動度僅約 8%（純股票約 15%）",
+                        "在 2008 金融海嘯僅跌約 12%"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Ray Dalio 對黃金的看法",
+                    "color": "amber",
+                    "text": "建議配置約 15% 於黃金：",
+                    "items": [
+                        "「黃金是當其他資產都下跌時會上漲的資產」",
+                        "作為對沖極端風險的保險",
+                        "比美國公債更好的避險選擇",
+                        "長期抗通膨、保值功能"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 全天候組合的限制",
+                    "color": "zinc",
+                    "items": [
+                        "大量債券配置在升息環境表現不佳",
+                        "2022年股債同跌時組合也受挫",
+                        "長期報酬低於純股票組合",
+                        "需要定期再平衡維持比例"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "全天候投資組合配置大量債券（55%）的主要原因是？",
+                    "options": [
+                        { "id": "a", "text": "債券報酬比股票高", "isCorrect": false },
+                        { "id": "b", "text": "在經濟衰退和通縮時提供保護", "isCorrect": true },
+                        { "id": "c", "text": "債券沒有任何風險", "isCorrect": false },
+                        { "id": "d", "text": "為了賺取高利息", "isCorrect": false }
+                    ],
+                    "explanation": "全天候組合配置大量債券是因為在經濟衰退和通縮環境中，債券通常會上漲，可以對沖股票的損失。這不是為了追求高報酬，而是為了「任何環境都能生存」。"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "title": "目標日期基金與生命週期投資",
+            "description": "自動調整配置的懶人投資法",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**目標日期基金（Target Date Fund）**是一種「設定後就忘記」的投資工具，會根據目標退休年份自動調整股債比例。",
+                    "highlights": [{ "text": "目標日期基金（Target Date Fund）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "什麼是滑翔路徑（Glide Path）",
+                    "color": "indigo",
+                    "text": "滑翔路徑是基金隨時間自動調整配置的軌跡：",
+                    "items": [
+                        "年輕時：90% 股票、10% 債券（積極成長）",
+                        "中年時：逐漸降低股票比例",
+                        "退休時：50% 股票、50% 債券",
+                        "退休後：持續降至 30% 股票、70% 債券"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["年齡", "股票比例", "債券比例", "投資階段"],
+                    "rows": [
+                        ["25歲", "90%", "10%", "積極成長期"],
+                        ["35歲", "85%", "15%", "成長期"],
+                        ["45歲", "70%", "30%", "平衡期"],
+                        ["55歲", "55%", "45%", "過渡期"],
+                        ["65歲（退休）", "50%", "50%", "退休起點"],
+                        ["75歲", "30%", "70%", "保守期"]
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "Target Date 2050",
+                            "description": "適合現在 35 歲的投資人",
+                            "color": "emerald",
+                            "subtext": "目前股票比例約 85%"
+                        },
+                        {
+                            "title": "Target Date 2040",
+                            "description": "適合現在 45 歲的投資人",
+                            "color": "indigo",
+                            "subtext": "目前股票比例約 70%"
+                        },
+                        {
+                            "title": "Target Date 2030",
+                            "description": "適合現在 55 歲的投資人",
+                            "color": "amber",
+                            "subtext": "目前股票比例約 55%"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "目標日期基金優點",
+                    "color": "emerald",
+                    "items": [
+                        "全自動調整：不需要自己決定配置",
+                        "自動再平衡：省去手動操作",
+                        "分散投資：通常涵蓋全球股債",
+                        "簡單易懂：只需選擇退休年份"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "目標日期基金缺點",
+                    "color": "zinc",
+                    "items": [
+                        "費用較高：通常 0.1%-0.5%（比自己組合貴）",
+                        "彈性不足：無法客製化調整",
+                        "假設統一：忽略個人風險偏好差異",
+                        "台灣選擇有限：以美國產品為主"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "知名目標日期基金",
+                    "color": "amber",
+                    "items": [
+                        "Vanguard Target Retirement Funds（費用最低）",
+                        "Fidelity Freedom Funds",
+                        "T. Rowe Price Retirement Funds",
+                        "費用比較：Vanguard 約 0.12%，其他約 0.5-0.7%"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "現在30歲，預計65歲退休，應該選擇哪個目標日期基金？",
+                    "options": [
+                        { "id": "a", "text": "Target Date 2030", "isCorrect": false },
+                        { "id": "b", "text": "Target Date 2045", "isCorrect": false },
+                        { "id": "c", "text": "Target Date 2060", "isCorrect": true },
+                        { "id": "d", "text": "Target Date 2025", "isCorrect": false }
+                    ],
+                    "explanation": "30歲 + 35年 = 65歲退休 = 2060年（假設現在2025年）。選擇最接近預計退休年份的目標日期基金，它會根據這個日期自動調整配置。"
+                }
+            ]
+        },
+        {
+            "id": "10",
+            "title": "全球分散投資",
+            "description": "克服本土偏誤，佈局國際市場",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**全球分散投資**是將資金配置到不同國家和地區，降低單一市場風險。研究顯示，大多數投資人都有「本土偏誤」，過度投資本國市場。",
+                    "highlights": [{ "text": "全球分散投資", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "本土偏誤（Home Country Bias）",
+                    "color": "rose",
+                    "text": "投資人傾向過度投資本國市場的現象：",
+                    "items": [
+                        "台灣投資人：約 80% 資金投資台股",
+                        "美國投資人：約 70% 資金投資美股",
+                        "台灣僅佔全球市值約 2%",
+                        "過度集中等於放棄 98% 的投資機會"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["市場", "全球市值佔比", "代表指數", "特色"],
+                    "rows": [
+                        ["美國", "約 60%", "S&P 500", "全球最大，科技領先"],
+                        ["歐洲", "約 15%", "STOXX 600", "成熟市場，金融強"],
+                        ["日本", "約 6%", "TOPIX", "第三大經濟體"],
+                        ["新興市場", "約 12%", "MSCI EM", "高成長潛力"],
+                        ["台灣", "約 2%", "TAIEX", "半導體強勢"]
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "已開發市場",
+                            "description": "成熟穩定，波動較低",
+                            "color": "indigo",
+                            "subtext": "美、歐、日、澳"
+                        },
+                        {
+                            "title": "新興市場",
+                            "description": "高成長潛力，波動較大",
+                            "color": "emerald",
+                            "subtext": "中、印、巴西、東南亞"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "全球分散的好處",
+                    "color": "emerald",
+                    "items": [
+                        "降低單一國家政治、經濟風險",
+                        "參與不同市場的成長機會",
+                        "不同市場的經濟週期不同步",
+                        "長期風險調整後報酬更好"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "全球配置 ETF 推薦",
+                    "color": "amber",
+                    "items": [
+                        "VT：Vanguard 全球股市（涵蓋 9,000+ 檔股票）",
+                        "VXUS：Vanguard 非美國股市",
+                        "VEA：已開發市場（不含美國）",
+                        "VWO：新興市場",
+                        "ACWI：MSCI 全球指數"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["配置策略", "美國", "非美已開發", "新興市場", "台灣"],
+                    "rows": [
+                        ["全球市值加權", "60%", "25%", "13%", "2%"],
+                        ["台灣投資人建議", "40%", "15%", "10%", "35%"],
+                        ["保守型", "50%", "20%", "5%", "25%"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 全球分散注意事項",
+                    "color": "zinc",
+                    "items": [
+                        "匯率風險：投資海外會承受匯率波動",
+                        "投資成本：海外投資可能有較高費用",
+                        "稅務考量：不同國家股息稅率不同",
+                        "時區問題：難以即時追蹤海外市場"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "台灣投資人將90%資金投資台股，這種行為稱為？",
+                    "options": [
+                        { "id": "a", "text": "聰明投資", "isCorrect": false },
+                        { "id": "b", "text": "本土偏誤（Home Country Bias）", "isCorrect": true },
+                        { "id": "c", "text": "價值投資", "isCorrect": false },
+                        { "id": "d", "text": "分散投資", "isCorrect": false }
+                    ],
+                    "explanation": "過度集中投資本國市場稱為「本土偏誤」。台灣僅佔全球市值約2%，將90%資金放在台股等於錯過全球98%的投資機會，也過度暴露於單一市場風險。"
+                }
+            ]
+        },
+        {
+            "id": "11",
+            "title": "另類投資配置",
+            "description": "REITs、黃金與商品的角色",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**另類投資（Alternative Investments）**是股票和債券以外的投資類別，可以提供額外的分散效益和不同的報酬來源。",
+                    "highlights": [{ "text": "另類投資（Alternative Investments）", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "REITs 不動產信託",
+                            "description": "投資房地產的簡便方式",
+                            "color": "amber",
+                            "subtext": "VNQ、00712"
+                        },
+                        {
+                            "title": "黃金",
+                            "description": "避險資產、抗通膨",
+                            "color": "yellow",
+                            "subtext": "GLD、IAU"
+                        },
+                        {
+                            "title": "大宗商品",
+                            "description": "原物料、能源",
+                            "color": "zinc",
+                            "subtext": "GSG、DJP"
+                        },
+                        {
+                            "title": "私募股權",
+                            "description": "非上市公司投資",
+                            "color": "purple",
+                            "subtext": "門檻高、流動性低"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "REITs（不動產投資信託）",
+                    "color": "amber",
+                    "items": [
+                        "讓小額投資人也能參與房地產市場",
+                        "依法需將 90% 收益以股息發放",
+                        "殖利率通常 4-6%，高於一般股票",
+                        "與股票相關性約 0.6，提供分散效益",
+                        "代表 ETF：VNQ（美國）、00712（台灣）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "黃金的投資角色",
+                    "color": "yellow",
+                    "items": [
+                        "傳統避險資產：股市大跌時通常上漲",
+                        "抗通膨：長期購買力保持穩定",
+                        "與股票負相關：提供分散效益",
+                        "建議配置：5-15%（Ray Dalio 建議 15%）",
+                        "投資方式：GLD、IAU（黃金 ETF）"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["另類資產", "優點", "缺點", "建議配置"],
+                    "rows": [
+                        ["REITs", "高股息、房產曝險", "利率敏感、波動大", "5-15%"],
+                        ["黃金", "避險、抗通膨", "無股息、長期報酬低", "5-15%"],
+                        ["大宗商品", "通膨保護", "高波動、長期報酬差", "0-7.5%"],
+                        ["私募基金", "高報酬潛力", "流動性差、門檻高", "機構投資為主"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "50/30/20 新配置趨勢",
+                    "color": "indigo",
+                    "text": "因應股債同跌風險，部分機構採用新配置：",
+                    "items": [
+                        "50% 股票：維持成長動能",
+                        "30% 債券：降低債券曝險",
+                        "20% 另類投資：增加分散來源",
+                        "另類投資包含 REITs、黃金、商品等"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 另類投資注意事項",
+                    "color": "zinc",
+                    "items": [
+                        "另類投資通常波動較大",
+                        "部分另類資產流動性較差",
+                        "費用可能比傳統資產高",
+                        "建議配置不超過總資產 20%",
+                        "新手可從 REITs 和黃金 ETF 開始"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "投資組合中加入黃金的主要目的是？",
+                    "options": [
+                        { "id": "a", "text": "追求高報酬", "isCorrect": false },
+                        { "id": "b", "text": "獲得股息收入", "isCorrect": false },
+                        { "id": "c", "text": "避險和提供分散效益", "isCorrect": true },
+                        { "id": "d", "text": "短期交易獲利", "isCorrect": false }
+                    ],
+                    "explanation": "黃金的主要角色是「避險」和「分散效益」。黃金與股票通常呈負相關，當股市下跌時黃金往往上漲。它不是為了追求高報酬（長期報酬低於股票），也沒有股息。"
+                }
+            ]
+        },
+        {
+            "id": "12",
+            "title": "因子投資與Smart Beta",
+            "description": "價值、動能、品質因子策略",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**因子投資（Factor Investing）**是利用特定因子（如價值、動能、品質）來選股，追求超越市場的報酬。Smart Beta ETF 讓一般投資人也能使用這些策略。",
+                    "highlights": [{ "text": "因子投資（Factor Investing）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "五大經典投資因子",
+                    "color": "indigo",
+                    "items": [
+                        "價值（Value）：買入被低估的股票",
+                        "動能（Momentum）：買入近期表現強勢的股票",
+                        "品質（Quality）：買入高 ROE、低負債的優質公司",
+                        "規模（Size）：小型股長期報酬優於大型股",
+                        "低波動（Low Volatility）：低波動股票風險調整後報酬較好"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["因子", "定義", "代表 ETF", "適合情境"],
+                    "rows": [
+                        ["價值", "低 P/E、低 P/B 股票", "VTV、VLUE", "經濟復甦期"],
+                        ["動能", "近期漲幅領先股票", "MTUM", "趨勢行情"],
+                        ["品質", "高 ROE、低負債", "QUAL", "任何時期"],
+                        ["小型股", "市值較小公司", "VB、IJR", "經濟成長期"],
+                        ["低波動", "波動度較低股票", "USMV", "下跌市場"]
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "傳統指數 ETF",
+                            "description": "市值加權，追蹤大盤",
+                            "color": "indigo",
+                            "subtext": "VTI、SPY、VOO"
+                        },
+                        {
+                            "title": "Smart Beta ETF",
+                            "description": "因子加權，追求超額報酬",
+                            "color": "emerald",
+                            "subtext": "QUAL、MTUM、VLUE"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "價值因子詳解",
+                    "color": "amber",
+                    "items": [
+                        "選股標準：低本益比、低股價淨值比",
+                        "理論基礎：被低估的股票長期會回歸價值",
+                        "代表 ETF：VTV（大型價值股）、VLUE（多因子價值）",
+                        "風險：可能長期表現落後（如 2010-2020 年代）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "動能因子詳解",
+                    "color": "emerald",
+                    "items": [
+                        "選股標準：近 6-12 個月漲幅領先",
+                        "理論基礎：強者恆強，趨勢會延續",
+                        "代表 ETF：MTUM（iShares 動能因子）",
+                        "風險：趨勢反轉時回撤較大"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "品質因子詳解",
+                    "color": "purple",
+                    "items": [
+                        "選股標準：高 ROE、低負債、穩定獲利",
+                        "理論基礎：好公司長期表現優於差公司",
+                        "代表 ETF：QUAL（iShares 品質因子）",
+                        "優點：各種市況下表現相對穩定"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 因子投資注意事項",
+                    "color": "zinc",
+                    "items": [
+                        "單一因子可能長期表現不佳",
+                        "建議多因子組合，降低單一因子風險",
+                        "費用比傳統指數 ETF 稍高",
+                        "不保證一定能打敗市場",
+                        "適合有一定投資知識的人"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "「品質因子」主要選擇什麼類型的股票？",
+                    "options": [
+                        { "id": "a", "text": "近期漲幅最大的股票", "isCorrect": false },
+                        { "id": "b", "text": "本益比最低的股票", "isCorrect": false },
+                        { "id": "c", "text": "高 ROE、低負債的優質公司", "isCorrect": true },
+                        { "id": "d", "text": "市值最小的公司", "isCorrect": false }
+                    ],
+                    "explanation": "品質因子（Quality Factor）選擇高股東權益報酬率（ROE）、低負債比率、獲利穩定的優質公司。理論基礎是好公司長期會創造更好的報酬。"
+                }
+            ]
+        },
+        {
+            "id": "13",
+            "title": "再平衡進階策略",
+            "description": "閾值法、現金流法與稅務考量",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "進階的**再平衡策略**不只是定期調整，還要考慮觸發條件、交易成本和稅務影響，以最佳化執行效率。",
+                    "highlights": [{ "text": "再平衡策略", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "定期再平衡",
+                            "description": "固定時間調整（每年/每季）",
+                            "color": "indigo",
+                            "subtext": "簡單但可能交易過多"
+                        },
+                        {
+                            "title": "閾值再平衡",
+                            "description": "偏離超過門檻才調整",
+                            "color": "emerald",
+                            "subtext": "減少不必要交易"
+                        },
+                        {
+                            "title": "現金流再平衡",
+                            "description": "用新資金買入低配資產",
+                            "color": "amber",
+                            "subtext": "最節稅的方式"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "閾值再平衡（Threshold Rebalancing）",
+                    "color": "indigo",
+                    "items": [
+                        "設定容忍帶：目標配置 ± 5-10%",
+                        "例：股票目標60%，容忍範圍50-70%",
+                        "僅在突破容忍帶時調整",
+                        "減少小幅波動造成的頻繁交易",
+                        "研究顯示：5% 閾值效果最佳"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "現金流再平衡（Cash Flow Rebalancing）",
+                    "color": "emerald",
+                    "text": "最節稅的再平衡方式：",
+                    "items": [
+                        "新增投資：優先買入低於目標的資產",
+                        "提領資金：優先賣出高於目標的資產",
+                        "股息再投資：投入低配資產",
+                        "避免賣出：減少資本利得稅"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["再平衡方式", "優點", "缺點", "適合對象"],
+                    "rows": [
+                        ["每年定期", "簡單紀律", "可能錯失時機", "懶人投資者"],
+                        ["5% 閾值", "平衡效率與成本", "需要監控", "有時間關注者"],
+                        ["現金流", "最節稅", "調整速度慢", "定期有現金流者"],
+                        ["混合法", "兼顧各優點", "較複雜", "進階投資者"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "稅務考量",
+                    "color": "amber",
+                    "items": [
+                        "賣出獲利資產會產生資本利得稅（海外）",
+                        "持有超過一年享長期資本利得稅率優惠",
+                        "虧損可以抵稅（Tax Loss Harvesting）",
+                        "退休帳戶（401k、IRA）內再平衡免稅",
+                        "台灣目前無資本利得稅，較無此顧慮"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "混合再平衡策略範例",
+                    "steps": [
+                        { "label": "目標配置", "value": "股票60%、債券40%" },
+                        { "label": "設定閾值", "value": "±5%（股票容忍55-65%）", "highlight": true },
+                        { "label": "檢視頻率", "value": "每季檢視一次" },
+                        { "label": "觸發條件", "value": "股票超過65%或低於55%才調整" },
+                        { "label": "優先使用", "value": "新增資金進行調整" }
+                    ],
+                    "result": {
+                        "label": "效果",
+                        "value": "減少約50%不必要交易，節省成本",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "「現金流再平衡」的主要優點是？",
+                    "options": [
+                        { "id": "a", "text": "調整速度最快", "isCorrect": false },
+                        { "id": "b", "text": "最節稅，避免賣出產生資本利得", "isCorrect": true },
+                        { "id": "c", "text": "完全不需要監控", "isCorrect": false },
+                        { "id": "d", "text": "報酬最高", "isCorrect": false }
+                    ],
+                    "explanation": "現金流再平衡用新增資金買入低配資產，避免賣出高配資產產生資本利得稅。缺點是調整速度較慢，需要有穩定的新增現金流。"
+                }
+            ]
+        }
+    ]
+}

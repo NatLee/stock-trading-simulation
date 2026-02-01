@@ -1,0 +1,1462 @@
+{
+    "id": "us-stocks",
+    "title": "美股投資入門",
+    "description": "認識美國股市與投資方法",
+    "icon": "TrendingUp",
+    "color": "purple",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "美股市場概覽",
+            "description": "認識NYSE、NASDAQ與美國股市特點",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "highlight-box",
+                    "title": "適用市場",
+                    "color": "purple",
+                    "text": "🇺🇸 本課程專屬美國證券市場（U.S. Stock Market）"
+                },
+                {
+                    "type": "paragraph",
+                    "text": "**美股**是全球最大、流動性最高的股票市場，市值超過 50 兆美元，吸引全球投資人參與。",
+                    "highlights": [{ "text": "美股", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "NYSE 紐約證券交易所",
+                            "description": "全球最大交易所，傳統藍籌股為主",
+                            "color": "indigo",
+                            "subtext": "JPM、WMT、KO、DIS"
+                        },
+                        {
+                            "title": "NASDAQ 那斯達克",
+                            "description": "科技股與成長股集中地",
+                            "color": "emerald",
+                            "subtext": "AAPL、MSFT、GOOGL、AMZN"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "美股特點",
+                    "color": "indigo",
+                    "items": [
+                        "全球最多元的投資選擇（超過 6,000 檔股票）",
+                        "世界頂尖企業雲集（蘋果、微軟、特斯拉等）",
+                        "無漲跌幅限制（單日可漲跌數倍）",
+                        "1 股即可買賣，資金門檻低",
+                        "豐富的 ETF 產品選擇"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["指數", "成分股", "特點"],
+                    "rows": [
+                        ["道瓊工業指數 (DJIA)", "30 檔藍籌股", "最古老的股價加權指數"],
+                        ["S&P 500", "500 檔大型股", "最具代表性的市值加權指數"],
+                        ["那斯達克 100", "100 檔科技股", "科技股風向標"],
+                        ["羅素 2000", "2,000 檔小型股", "小型股表現指標"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "FAANG / 美股七雄",
+                    "color": "amber",
+                    "text": "美股市場由少數科技巨頭主導，這些公司對指數影響巨大",
+                    "items": [
+                        "Apple (AAPL)：消費電子與服務",
+                        "Microsoft (MSFT)：雲端與企業軟體",
+                        "Amazon (AMZN)：電商與雲端 AWS",
+                        "NVIDIA (NVDA)：AI 晶片霸主",
+                        "Google/Alphabet (GOOGL)：搜尋與廣告",
+                        "Meta (META)：社群媒體與元宇宙",
+                        "Tesla (TSLA)：電動車先驅"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪個不是美股的主要指數？",
+                    "options": [
+                        { "id": "a", "text": "道瓊工業指數", "isCorrect": false },
+                        { "id": "b", "text": "S&P 500 指數", "isCorrect": false },
+                        { "id": "c", "text": "台灣加權指數", "isCorrect": true },
+                        { "id": "d", "text": "那斯達克 100 指數", "isCorrect": false }
+                    ],
+                    "explanation": "台灣加權指數是台股的主要指數，不是美股指數。美股三大指數為道瓊、S&P 500 和那斯達克。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "開戶方式比較",
+            "description": "海外券商 vs 國內複委託",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "台灣投資人買美股有兩種主要方式：**海外券商**和**國內複委託**，各有優缺點。",
+                    "highlights": [
+                        { "text": "海外券商", "color": "emerald" },
+                        { "text": "國內複委託", "color": "amber" }
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "海外券商",
+                            "description": "直接在美國券商開戶交易",
+                            "color": "emerald",
+                            "subtext": "IB盈透、Firstrade、嘉信"
+                        },
+                        {
+                            "title": "國內複委託",
+                            "description": "透過台灣券商下單至海外",
+                            "color": "amber",
+                            "subtext": "國泰、富邦、元大、永豐"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["項目", "海外券商", "國內複委託"],
+                    "rows": [
+                        ["手續費", "低（$0-$1/筆）", "高（0.15-1%）"],
+                        ["最低投資額", "無限制", "部分有門檻"],
+                        ["開戶難度", "需英文，線上完成", "中文，臨櫃或線上"],
+                        ["資金安全", "SIPC保障$50萬", "台灣法規保障"],
+                        ["匯款成本", "需自行電匯", "台幣直接扣款"],
+                        ["稅務處理", "需自行申報", "券商協助處理"],
+                        ["商品種類", "全面（含選擇權）", "較受限"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "主流海外券商比較",
+                    "color": "indigo",
+                    "items": [
+                        "Interactive Brokers (IB)：專業級，費用最低，功能最全",
+                        "Firstrade：零手續費，中文介面，適合新手",
+                        "Charles Schwab：老牌券商，服務完善",
+                        "TD Ameritrade：研究工具強，已併入嘉信"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "複委託券商選擇",
+                    "color": "amber",
+                    "items": [
+                        "國泰證券：定期定額美股，手續費較低",
+                        "富邦證券：商品多元，研究報告完整",
+                        "永豐金證券：豐存股平台，介面友善",
+                        "元大證券：規模最大，據點多"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 選擇建議",
+                    "color": "zinc",
+                    "items": [
+                        "資金 < $10萬台幣：複委託（避免匯款成本）",
+                        "資金 $10-50萬：可考慮海外券商",
+                        "資金 > $50萬：建議海外券商（手續費差異大）",
+                        "想買選擇權：必須用海外券商",
+                        "怕麻煩/英文不好：複委託較適合"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種情況最適合使用複委託？",
+                    "options": [
+                        { "id": "a", "text": "想交易美股選擇權", "isCorrect": false },
+                        { "id": "b", "text": "投資金額小，不想處理匯款", "isCorrect": true },
+                        { "id": "c", "text": "頻繁交易，在意手續費", "isCorrect": false },
+                        { "id": "d", "text": "想投資冷門小型股", "isCorrect": false }
+                    ],
+                    "explanation": "複委託適合投資金額較小、不想處理國際匯款、偏好中文介面的投資人。大額投資、頻繁交易或想買選擇權的投資人較適合海外券商。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "美股交易規則詳解",
+            "description": "交易時間、結算、融資規則",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "了解美股的**交易規則**是投資的基礎，與台股有許多重要差異。",
+                    "highlights": [{ "text": "交易規則", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["項目", "美股規則"],
+                    "rows": [
+                        ["正常交易時段", "09:30-16:00（美東時間）"],
+                        ["盤前交易", "04:00-09:30（美東時間）"],
+                        ["盤後交易", "16:00-20:00（美東時間）"],
+                        ["台灣對應時間（夏令）", "21:30-04:00"],
+                        ["台灣對應時間（冬令）", "22:30-05:00"],
+                        ["交易單位", "1 股起"],
+                        ["結算週期", "T+1（2024年起）"],
+                        ["漲跌幅限制", "無（有熔斷機制）"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "美股交易時段說明",
+                    "color": "indigo",
+                    "items": [
+                        "盤前交易：流動性低，價差大，財報公布後可能劇烈波動",
+                        "正常交易：流動性最高，適合一般投資人",
+                        "盤後交易：流動性中等，可反應盤後新聞",
+                        "夏令時間：3月第2個週日至11月第1個週日"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "T+1 結算制度",
+                    "color": "emerald",
+                    "text": "美股從 2024 年 5 月 28 日起改為 T+1 結算",
+                    "items": [
+                        "今天賣出股票，明天資金即可到帳",
+                        "相較舊制 T+2，資金效率提高",
+                        "與台股 T+2 不同，美股資金週轉更快"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "融資規則 (Regulation T)",
+                    "color": "amber",
+                    "items": [
+                        "初始保證金：50%（買 $10,000 股票需 $5,000）",
+                        "維持保證金：25%（低於此會被追繳）",
+                        "融資利率：依券商而異，約 5-8% 年利率",
+                        "PDT 規則：$25,000 以下帳戶受當沖限制"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 重要注意事項",
+                    "color": "rose",
+                    "items": [
+                        "美股無漲跌幅限制，風險較高",
+                        "財報季（1/4/7/10月）波動較大",
+                        "注意時差，避免熬夜影響判斷",
+                        "匯率風險：美元升貶會影響報酬"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "美股的結算週期是？",
+                    "options": [
+                        { "id": "a", "text": "T+0（當日結算）", "isCorrect": false },
+                        { "id": "b", "text": "T+1（隔日結算）", "isCorrect": true },
+                        { "id": "c", "text": "T+2（兩日後結算）", "isCorrect": false },
+                        { "id": "d", "text": "T+3（三日後結算）", "isCorrect": false }
+                    ],
+                    "explanation": "美股從 2024 年 5 月起改為 T+1 結算，賣出股票後隔天資金即可使用。這比台股的 T+2 更快，資金運用效率更高。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "美股稅務完整指南",
+            "description": "股息稅、資本利得稅、W-8BEN表格",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "投資美股的**稅務處理**是許多投資人容易忽略的重點，了解稅務規則才能正確計算實際報酬。",
+                    "highlights": [{ "text": "稅務處理", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["稅種", "稅率", "說明"],
+                    "rows": [
+                        ["股息稅", "30%", "自動從股息中預扣"],
+                        ["資本利得稅", "0%", "非美國居民免稅"],
+                        ["遺產稅", "18-40%", "美國資產超過$60,000可能被課"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "W-8BEN 表格",
+                    "color": "indigo",
+                    "text": "非美國居民投資美股必須填寫的稅務表格",
+                    "items": [
+                        "證明您是外國人，可享稅務優惠",
+                        "資本利得免稅需依此表格認定",
+                        "有效期 3 年，需定期更新",
+                        "開戶時券商會要求填寫"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "股息稅計算範例",
+                    "steps": [
+                        { "label": "持有 AAPL 股數", "value": "100 股" },
+                        { "label": "每股股息", "value": "$0.96" },
+                        { "label": "股息總額", "formula": "100 × $0.96", "value": "$96" },
+                        { "label": "預扣稅 30%", "formula": "$96 × 30%", "value": "-$28.8", "highlight": true },
+                        { "label": "實際入帳", "value": "$67.2", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "稅後殖利率",
+                        "value": "實際只拿到 70%",
+                        "color": "amber"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "降低稅負的策略",
+                    "color": "emerald",
+                    "items": [
+                        "偏好成長股：不配息或低配息，靠價差獲利（免稅）",
+                        "選擇累積型 ETF：不配息，自動再投資",
+                        "避免高殖利率股：30% 預扣稅損失大",
+                        "長期持有：減少頻繁交易的隱性成本"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 遺產稅風險",
+                    "color": "rose",
+                    "items": [
+                        "外國人在美資產超過 $60,000 可能被課遺產稅",
+                        "稅率最高可達 40%",
+                        "建議大額投資人諮詢專業稅務顧問",
+                        "可考慮透過愛爾蘭註冊的 ETF 規避（如 CSPX）"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "台灣投資人賣出美股獲利，需要繳多少資本利得稅？",
+                    "options": [
+                        { "id": "a", "text": "30%", "isCorrect": false },
+                        { "id": "b", "text": "20%", "isCorrect": false },
+                        { "id": "c", "text": "0%（免稅）", "isCorrect": true },
+                        { "id": "d", "text": "依獲利金額累進課稅", "isCorrect": false }
+                    ],
+                    "explanation": "非美國居民的資本利得（價差收入）免稅，這是美股投資的一大優勢。但股息會被預扣 30% 稅款，無法退還。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "美股財報季攻略",
+            "description": "財報時間、重要指標與解讀方法",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "美股**財報季**（Earnings Season）是每季最重要的投資事件，股價常在財報公布後劇烈波動。",
+                    "highlights": [{ "text": "財報季", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["財報季", "時間", "涵蓋期間"],
+                    "rows": [
+                        ["Q1 財報", "4月中至5月中", "1-3月營運成果"],
+                        ["Q2 財報", "7月中至8月中", "4-6月營運成果"],
+                        ["Q3 財報", "10月中至11月中", "7-9月營運成果"],
+                        ["Q4 財報", "1月中至2月中", "10-12月營運成果"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "財報重要指標",
+                    "color": "indigo",
+                    "items": [
+                        "EPS（每股盈餘）：與分析師預期比較",
+                        "Revenue（營收）：是否超越預期",
+                        "Guidance（財測）：公司對下季/年的展望",
+                        "Margin（利潤率）：毛利率、營業利益率變化",
+                        "YoY Growth（年增率）：與去年同期比較"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "Beat（優於預期）",
+                            "description": "EPS 或營收超越分析師預期",
+                            "color": "emerald",
+                            "subtext": "通常股價上漲"
+                        },
+                        {
+                            "title": "Miss（低於預期）",
+                            "description": "EPS 或營收低於分析師預期",
+                            "color": "rose",
+                            "subtext": "通常股價下跌"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "財報解讀要點",
+                    "color": "amber",
+                    "items": [
+                        "不只看數字，還要聽電話會議（Earnings Call）",
+                        "關注 Guidance 比當季數字更重要",
+                        "注意一次性收益/損失的影響",
+                        "與同業比較，不只與自己比較",
+                        "觀察毛利率趨勢，反映競爭力"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "財報行情操作策略",
+                    "color": "zinc",
+                    "items": [
+                        "財報前：避免重倉，波動大難預測",
+                        "財報後：等開盤穩定再進場",
+                        "Gap Up/Down：缺口可能是趨勢開始",
+                        "長期投資：不用太在意單季波動"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "某公司 EPS Beat（優於預期），但股價反而下跌，最可能的原因是？",
+                    "options": [
+                        { "id": "a", "text": "市場非理性", "isCorrect": false },
+                        { "id": "b", "text": "Guidance（財測）不佳", "isCorrect": true },
+                        { "id": "c", "text": "EPS 數字有誤", "isCorrect": false },
+                        { "id": "d", "text": "股價已漲太多", "isCorrect": false }
+                    ],
+                    "explanation": "財報公布時，市場更關注未來展望（Guidance）。即使當季 EPS 超標，若公司下調財測或展望保守，股價仍可能下跌。這就是「Buy the rumor, sell the news」。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "ADR與國際投資",
+            "description": "美國存託憑證與跨國投資機會",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**ADR（American Depositary Receipt）**是外國公司在美國上市的憑證，讓投資人可以用美元投資海外企業。",
+                    "highlights": [{ "text": "ADR（American Depositary Receipt）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "什麼是 ADR？",
+                    "color": "indigo",
+                    "items": [
+                        "外國公司在美國發行的存託憑證",
+                        "以美元計價，在美國交易所交易",
+                        "1 單位 ADR 可能代表多股原股",
+                        "享有原股的股息權利（扣稅後）"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["ADR 代碼", "公司", "國家", "產業"],
+                    "rows": [
+                        ["TSM", "台積電", "台灣", "半導體"],
+                        ["BABA", "阿里巴巴", "中國", "電商"],
+                        ["NIO", "蔚來汽車", "中國", "電動車"],
+                        ["SONY", "索尼", "日本", "電子"],
+                        ["ASML", "艾司摩爾", "荷蘭", "半導體設備"],
+                        ["SAP", "思愛普", "德國", "企業軟體"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ADR 投資優缺點",
+                    "color": "emerald",
+                    "items": [
+                        "優點：用美元投資全球企業",
+                        "優點：在美國交易時間交易",
+                        "優點：資訊揭露符合美國標準",
+                        "缺點：可能有流動性較差的問題",
+                        "缺點：匯率風險（美元+原幣）",
+                        "缺點：中國 ADR 有政治風險"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "台積電 ADR (TSM) 特點",
+                    "color": "amber",
+                    "items": [
+                        "1 單位 ADR = 5 股台積電",
+                        "可與台股 2330 進行套利",
+                        "美股時段可交易台積電",
+                        "股息會被美國預扣 30% 稅"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 中國 ADR 風險提醒",
+                    "color": "rose",
+                    "items": [
+                        "VIE 結構：投資人實際持有開曼公司股份",
+                        "審計風險：可能被美國交易所除牌",
+                        "政策風險：中國政府監管不確定性",
+                        "匯率風險：人民幣波動影響"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "投資台積電 ADR (TSM) 與直接買台股 2330 的主要差異是？",
+                    "options": [
+                        { "id": "a", "text": "公司不同", "isCorrect": false },
+                        { "id": "b", "text": "交易時間、幣別、稅務不同", "isCorrect": true },
+                        { "id": "c", "text": "股息權利不同", "isCorrect": false },
+                        { "id": "d", "text": "沒有差異", "isCorrect": false }
+                    ],
+                    "explanation": "ADR 和原股代表同一家公司，股息權利相同。主要差異在於交易時間（美股 vs 台股）、計價幣別（美元 vs 台幣）、稅務處理（美國預扣稅 vs 台灣稅制）。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "美股訂單類型詳解",
+            "description": "Market、Limit、Stop 等各種訂單類型",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "美股提供多種**訂單類型**，靈活運用可以更好地控制買賣價格和風險。",
+                    "highlights": [{ "text": "訂單類型", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇺🇸🇹🇼 台美訂單差異",
+                    "color": "indigo",
+                    "text": "美股訂單類型比台股更多元，特別是停損相關訂單"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "Market Order 市價單",
+                            "description": "以當前最佳價格立即成交",
+                            "color": "emerald",
+                            "subtext": "保證成交，不保證價格"
+                        },
+                        {
+                            "title": "Limit Order 限價單",
+                            "description": "只以指定價格或更好價格成交",
+                            "color": "amber",
+                            "subtext": "保證價格，不保證成交"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["訂單類型", "觸發條件", "執行方式", "適用場景"],
+                    "rows": [
+                        ["Market Order", "立即", "市價成交", "急需買賣、流動性高的股票"],
+                        ["Limit Order", "達到指定價", "限價成交", "想控制買賣價格"],
+                        ["Stop Order", "達到停損價", "轉為市價單", "設定停損出場"],
+                        ["Stop-Limit", "達到停損價", "轉為限價單", "停損但控制滑價"],
+                        ["Trailing Stop", "價格回落特定幅度", "轉為市價單", "保護獲利、跟隨趨勢"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Stop Order 停損單",
+                    "color": "rose",
+                    "text": "當股價跌至停損價時，自動觸發賣出",
+                    "items": [
+                        "Sell Stop：設在現價下方，股價跌到觸發賣出",
+                        "Buy Stop：設在現價上方，股價漲到觸發買入",
+                        "注意：觸發後變成市價單，實際成交價可能滑價",
+                        "台股沒有原生停損單，需用條件單模擬"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Trailing Stop 移動停損",
+                    "color": "amber",
+                    "text": "停損價會隨股價上漲自動調高",
+                    "items": [
+                        "可設定固定金額（如跌 $5 觸發）或百分比（如跌 5% 觸發）",
+                        "股價上漲時，停損價跟著上調",
+                        "股價下跌時，停損價不動",
+                        "適合趨勢跟隨，讓利潤奔跑"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "訂單有效期",
+                    "color": "zinc",
+                    "items": [
+                        "Day Order：當日有效，收盤自動取消",
+                        "GTC（Good 'Til Canceled）：持續有效直到成交或取消",
+                        "GTC 通常有期限（如 90-180 天）",
+                        "台股只有當日有效單"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "你持有股票成本 $100，想在跌破 $90 時自動賣出，應該用什麼訂單？",
+                    "options": [
+                        { "id": "a", "text": "Limit Order $90", "isCorrect": false },
+                        { "id": "b", "text": "Stop Order $90", "isCorrect": true },
+                        { "id": "c", "text": "Market Order", "isCorrect": false },
+                        { "id": "d", "text": "Trailing Stop 10%", "isCorrect": false }
+                    ],
+                    "explanation": "Stop Order 設在 $90，當股價跌到 $90 時會觸發賣出。Limit Order $90 是限價買單會立即成交（現價高於 $90），Trailing Stop 10% 會從最高價往下 10% 觸發而非固定 $90。"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "盤前盤後交易",
+            "description": "Extended Hours Trading 延長交易時段",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "美股除了正常交易時段外，還有**盤前**和**盤後**交易，讓投資人可以在非正常時段買賣股票。",
+                    "highlights": [
+                        { "text": "盤前", "color": "amber" },
+                        { "text": "盤後", "color": "indigo" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇺🇸 美股獨有功能",
+                    "color": "purple",
+                    "text": "台股沒有盤前盤後交易，只有正常交易時段"
+                },
+                {
+                    "type": "table",
+                    "headers": ["時段", "美東時間", "台灣時間（夏令）", "台灣時間（冬令）"],
+                    "rows": [
+                        ["盤前交易", "04:00-09:30", "16:00-21:30", "17:00-22:30"],
+                        ["正常交易", "09:30-16:00", "21:30-04:00", "22:30-05:00"],
+                        ["盤後交易", "16:00-20:00", "04:00-08:00", "05:00-09:00"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "為什麼要用盤前盤後？",
+                    "color": "emerald",
+                    "items": [
+                        "財報公布：多數公司在盤後或盤前公布財報",
+                        "重大新聞：可在正常時段前反應消息",
+                        "時區優勢：對亞洲投資人較友善的時間",
+                        "搶先布局：在大家反應前先行動"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 盤前盤後風險",
+                    "color": "rose",
+                    "items": [
+                        "流動性低：交易量只有正常時段的 5-10%",
+                        "價差大：買賣價差可能是正常時段的 5-10 倍",
+                        "波動大：少量交易就能造成大幅價格波動",
+                        "訂單限制：通常只能用限價單",
+                        "不適合新手：建議累積經驗後再使用"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "適合使用",
+                            "description": "財報行情、重大新聞反應、經驗豐富",
+                            "color": "emerald",
+                            "subtext": "用限價單控制風險"
+                        },
+                        {
+                            "title": "不適合使用",
+                            "description": "一般交易、大額買賣、新手投資人",
+                            "color": "rose",
+                            "subtext": "等正常時段流動性較佳"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下關於盤前盤後交易的敘述，何者正確？",
+                    "options": [
+                        { "id": "a", "text": "流動性比正常時段高", "isCorrect": false },
+                        { "id": "b", "text": "買賣價差比正常時段小", "isCorrect": false },
+                        { "id": "c", "text": "適合對財報消息快速反應", "isCorrect": true },
+                        { "id": "d", "text": "台股也有盤前盤後交易", "isCorrect": false }
+                    ],
+                    "explanation": "盤前盤後交易的主要優勢是可以在正常交易時段外反應重大消息，特別是財報公布。但流動性低、價差大，風險較高。台股沒有盤前盤後交易。"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "title": "美股 ETF 精選",
+            "description": "S&P 500、那斯達克、產業 ETF 介紹",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**美股 ETF** 是投資美國市場最簡單的方式，一檔 ETF 就能分散投資數百甚至數千檔股票。",
+                    "highlights": [{ "text": "美股 ETF", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "大盤指數 ETF",
+                    "color": "indigo",
+                    "items": [
+                        "VOO / SPY：追蹤 S&P 500，美股入門首選",
+                        "QQQ：追蹤那斯達克 100，科技股為主",
+                        "VTI：全美股市場，超過 3,500 檔股票",
+                        "DIA：追蹤道瓊 30，傳統藍籌股"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["ETF", "追蹤指數", "費用率", "特色"],
+                    "rows": [
+                        ["VOO", "S&P 500", "0.03%", "費用最低，Vanguard"],
+                        ["SPY", "S&P 500", "0.09%", "歷史最久，流動性最高"],
+                        ["IVV", "S&P 500", "0.03%", "iShares，費用低"],
+                        ["QQQ", "那斯達克 100", "0.20%", "科技股集中"],
+                        ["VTI", "全美市場", "0.03%", "最分散，含小型股"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "產業 ETF",
+                    "color": "amber",
+                    "items": [
+                        "XLK：科技（AAPL、MSFT、NVDA）",
+                        "XLF：金融（JPM、BAC、BRK）",
+                        "XLE：能源（XOM、CVX）",
+                        "XLV：醫療保健（UNH、JNJ）",
+                        "ARKK：創新科技（主動管理）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "債券與配置型 ETF",
+                    "color": "emerald",
+                    "items": [
+                        "BND：美國總體債券市場",
+                        "TLT：20年以上美國公債",
+                        "LQD：投資等級公司債",
+                        "AOA / AOR：股債配置型，一站式投資"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "VOO vs 0050",
+                            "description": "美股 S&P 500 vs 台股前 50 大",
+                            "color": "indigo",
+                            "subtext": "VOO 更分散，費用更低"
+                        },
+                        {
+                            "title": "QQQ vs 0052",
+                            "description": "那斯達克 100 vs 台灣科技股",
+                            "color": "amber",
+                            "subtext": "QQQ 包含全球科技龍頭"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 ETF 選擇建議",
+                    "color": "zinc",
+                    "items": [
+                        "新手首選：VOO 或 VTI（低費用、高分散）",
+                        "科技偏好：QQQ（那斯達克 100）",
+                        "收息需求：SCHD（高股息）、VYM",
+                        "避險配置：BND（債券）、GLD（黃金）",
+                        "長期投資：VT（全球股市）"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "想投資美國整體股市，費用最低的選擇是？",
+                    "options": [
+                        { "id": "a", "text": "SPY（費用率 0.09%）", "isCorrect": false },
+                        { "id": "b", "text": "QQQ（費用率 0.20%）", "isCorrect": false },
+                        { "id": "c", "text": "VOO / VTI（費用率 0.03%）", "isCorrect": true },
+                        { "id": "d", "text": "ARKK（費用率 0.75%）", "isCorrect": false }
+                    ],
+                    "explanation": "Vanguard 的 VOO（S&P 500）和 VTI（全美市場）費用率只有 0.03%，是市場最低。SPY 雖然歷史最久但費用較高，QQQ 和 ARKK 費用更高。"
+                }
+            ]
+        },
+        {
+            "id": "10",
+            "title": "美股投資策略",
+            "description": "長期投資、定期定額、價值成長策略",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "投資美股可以採用多種**策略**，選擇適合自己的方式才能長期堅持。",
+                    "highlights": [{ "text": "策略", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "定期定額 (Dollar-Cost Averaging)",
+                    "color": "emerald",
+                    "text": "最適合新手的投資方式",
+                    "items": [
+                        "每月固定金額買入 VOO 或 VTI",
+                        "不需要擇時，降低心理壓力",
+                        "美股可買零股，$10 也能投資",
+                        "長期下來平均成本會趨於合理"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "指數投資策略",
+                    "color": "indigo",
+                    "text": "巴菲特推薦給一般投資人的方式",
+                    "items": [
+                        "買入並持有 S&P 500 指數 ETF",
+                        "不需要選股，不需要擇時",
+                        "長期年化報酬約 10%（歷史平均）",
+                        "適合忙碌的上班族"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "成長股策略",
+                            "description": "投資高成長公司，追求資本增值",
+                            "color": "amber",
+                            "subtext": "NVDA、TSLA、AMZN"
+                        },
+                        {
+                            "title": "價值股策略",
+                            "description": "投資被低估的公司，等待價值回歸",
+                            "color": "indigo",
+                            "subtext": "BRK、JPM、JNJ"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "股息成長策略",
+                    "color": "amber",
+                    "items": [
+                        "投資連續多年提高股息的公司",
+                        "股息貴族：連續 25 年以上提高股息",
+                        "代表 ETF：NOBL、VIG、SCHD",
+                        "注意：30% 股息稅會減少實際收益"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "定期定額試算（每月 $500 投資 VOO）",
+                    "steps": [
+                        { "label": "每月投資", "value": "$500" },
+                        { "label": "年投資額", "formula": "$500 × 12", "value": "$6,000" },
+                        { "label": "假設年化報酬", "value": "10%" },
+                        { "label": "10年後總值", "value": "約 $102,000", "highlight": true },
+                        { "label": "20年後總值", "value": "約 $380,000", "highlight": true },
+                        { "label": "本金投入", "formula": "$6,000 × 20", "value": "$120,000" }
+                    ],
+                    "result": {
+                        "label": "複利效果",
+                        "value": "20年後獲利約 $260,000（本金的 2.2 倍）",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種策略最適合沒時間研究個股的上班族？",
+                    "options": [
+                        { "id": "a", "text": "主動選股，尋找下一個 NVIDIA", "isCorrect": false },
+                        { "id": "b", "text": "定期定額買入 S&P 500 指數 ETF", "isCorrect": true },
+                        { "id": "c", "text": "頻繁交易，追逐熱門股", "isCorrect": false },
+                        { "id": "d", "text": "全部投資高風險成長股", "isCorrect": false }
+                    ],
+                    "explanation": "定期定額投資 S&P 500 指數 ETF 是最適合忙碌上班族的策略。不需要選股、不需要擇時，長期堅持就能獲得市場平均報酬。這也是巴菲特推薦給一般投資人的方式。"
+                }
+            ]
+        },
+        {
+            "id": "11",
+            "title": "美股選股技巧",
+            "description": "財報分析、估值方法與選股工具",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "美股有超過 6,000 檔股票可選擇，學會**選股技巧**是主動投資的關鍵能力。",
+                    "highlights": [{ "text": "選股技巧", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "價值型股票",
+                            "description": "市價低於內在價值，本益比、股價淨值比較低",
+                            "color": "indigo",
+                            "subtext": "BRK、JPM、WMT"
+                        },
+                        {
+                            "title": "成長型股票",
+                            "description": "營收、獲利高速成長，本益比通常較高",
+                            "color": "emerald",
+                            "subtext": "NVDA、TSLA、AMZN"
+                        },
+                        {
+                            "title": "配息型股票",
+                            "description": "穩定配息，適合追求現金流的投資人",
+                            "color": "amber",
+                            "subtext": "JNJ、PG、KO"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "財報三表必讀重點",
+                    "color": "indigo",
+                    "items": [
+                        "損益表：營收成長率、毛利率、營業利益率、EPS",
+                        "資產負債表：負債比率、流動比率、股東權益",
+                        "現金流量表：營業現金流為正且持續成長最重要",
+                        "重點：獲利要能轉換成現金，避免帳面獲利實際虧損"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["估值指標", "計算方式", "適用場景", "注意事項"],
+                    "rows": [
+                        ["本益比 P/E", "股價 ÷ EPS", "獲利穩定公司", "與同業和歷史比較"],
+                        ["股價淨值比 P/B", "股價 ÷ 每股淨值", "資產密集/金融股", "P/B < 1 可能被低估"],
+                        ["本益成長比 PEG", "P/E ÷ 盈餘成長率", "成長股評估", "PEG < 1 較有吸引力"],
+                        ["股價營收比 P/S", "市值 ÷ 營收", "虧損但有潛力公司", "科技新創常用"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "品質成長股篩選條件",
+                    "color": "emerald",
+                    "items": [
+                        "EPS 年成長率 > 15%",
+                        "營收年成長率 > 10%",
+                        "ROE（股東權益報酬率）> 15%",
+                        "負債權益比 < 1",
+                        "連續 3 年以上正向自由現金流"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "免費選股工具推薦",
+                    "color": "amber",
+                    "items": [
+                        "Finviz：60+ 篩選條件，技術面/基本面皆可",
+                        "Yahoo Finance：財報資料完整，免費使用",
+                        "Seeking Alpha：Quant Ratings 量化評級系統",
+                        "Stock Analysis：估值模型和財務數據",
+                        "TradingView：強大的技術分析圖表工具"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "評估一家成長股是否「物有所值」，最適合使用哪個指標？",
+                    "options": [
+                        { "id": "a", "text": "本益比 P/E", "isCorrect": false },
+                        { "id": "b", "text": "股價淨值比 P/B", "isCorrect": false },
+                        { "id": "c", "text": "本益成長比 PEG", "isCorrect": true },
+                        { "id": "d", "text": "殖利率", "isCorrect": false }
+                    ],
+                    "explanation": "PEG（本益成長比）= P/E ÷ 盈餘成長率，能同時考慮估值和成長性。PEG < 1 表示股價相對於成長速度被低估，是評估成長股最實用的指標。"
+                }
+            ]
+        },
+        {
+            "id": "12",
+            "title": "市場情緒指標",
+            "description": "VIX、Fear & Greed Index 與市場氣氛判斷",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "了解**市場情緒**有助於判斷市場過熱或過冷，避免在極端情緒下做出錯誤決策。",
+                    "highlights": [{ "text": "市場情緒", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "VIX 恐慌指數",
+                            "description": "衡量 S&P 500 選擇權隱含波動率",
+                            "color": "rose",
+                            "subtext": "又稱「華爾街恐懼指數」"
+                        },
+                        {
+                            "title": "Fear & Greed Index",
+                            "description": "CNN 綜合 7 項指標的市場情緒",
+                            "color": "amber",
+                            "subtext": "0-100，數字越高越貪婪"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["VIX 數值", "市場狀態", "投資建議"],
+                    "rows": [
+                        ["< 15", "低波動，投資人自滿", "謹慎，可能過度樂觀"],
+                        ["15-20", "正常波動", "標準市場環境"],
+                        ["20-30", "波動升高，不確定性增加", "提高警覺，控制部位"],
+                        ["> 30", "恐慌，市場壓力大", "可能是買入機會"]
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["Fear & Greed", "情緒狀態", "歷史經驗"],
+                    "rows": [
+                        ["0-25", "極度恐懼", "往往是市場底部"],
+                        ["25-45", "恐懼", "謹慎樂觀"],
+                        ["45-55", "中性", "觀望"],
+                        ["55-75", "貪婪", "注意風險"],
+                        ["75-100", "極度貪婪", "往往是市場頂部"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Fear & Greed 七項指標",
+                    "color": "indigo",
+                    "items": [
+                        "市場動能：S&P 500 vs 125 日均線",
+                        "股價強度：52 週新高 vs 新低數量",
+                        "股價廣度：上漲 vs 下跌股票數量",
+                        "賣權/買權比率：避險需求程度",
+                        "垃圾債券需求：風險偏好程度",
+                        "市場波動率：VIX 指數",
+                        "避險資產需求：股票 vs 債券報酬差"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 實戰應用",
+                    "color": "emerald",
+                    "items": [
+                        "巴菲特名言：「別人恐懼時我貪婪，別人貪婪時我恐懼」",
+                        "VIX > 30 時分批買入，歷史上多為好時機",
+                        "Fear & Greed < 20 時可考慮加碼",
+                        "不要單獨使用，需結合基本面判斷",
+                        "情緒指標是參考，不是精準的買賣訊號"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "VIX 指數飆升到 40，市場大跌，這時候應該？",
+                    "options": [
+                        { "id": "a", "text": "恐慌賣出所有持股", "isCorrect": false },
+                        { "id": "b", "text": "觀望，等市場穩定", "isCorrect": false },
+                        { "id": "c", "text": "分批買入優質股票", "isCorrect": true },
+                        { "id": "d", "text": "融資加碼放大槓桿", "isCorrect": false }
+                    ],
+                    "explanation": "VIX > 30 代表市場極度恐慌，歷史上往往是較好的買入時機。但應該「分批」買入而非一次 All-in，因為恐慌可能持續。融資加碼風險太高，恐慌期間波動大可能被斷頭。"
+                }
+            ]
+        },
+        {
+            "id": "13",
+            "title": "波段交易策略",
+            "description": "Swing Trading 的操作方法與技巧",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**波段交易（Swing Trading）**是介於當沖和長期投資之間的交易方式，持有期間從數天到數週不等。",
+                    "highlights": [{ "text": "波段交易（Swing Trading）", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "波段交易 vs 當沖",
+                            "description": "不需要盯盤，適合有工作的投資人",
+                            "color": "emerald",
+                            "subtext": "持有數天至數週"
+                        },
+                        {
+                            "title": "波段交易 vs 長期投資",
+                            "description": "更積極把握價格波動，潛在報酬較高",
+                            "color": "indigo",
+                            "subtext": "但需要更多技術分析"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "波段交易選股條件",
+                    "color": "indigo",
+                    "items": [
+                        "日均成交量 > 50 萬股（流動性充足）",
+                        "股價在明確的價格通道內波動",
+                        "有清晰的支撐和壓力位",
+                        "避開財報公布前後（波動過大）",
+                        "優先選擇 Beta > 1 的股票（波動性較大）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "進場策略",
+                    "color": "emerald",
+                    "items": [
+                        "支撐買入：股價回落至支撐位附近，出現止跌訊號時買入",
+                        "突破買入：股價放量突破壓力位時買入",
+                        "均線回測：股價回測移動平均線獲支撐時買入",
+                        "確認訊號：等待 K 線確認（錘子線、吞噬等）再進場"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "出場策略",
+                    "color": "amber",
+                    "items": [
+                        "目標價出場：達到壓力位或預設目標",
+                        "停損出場：跌破支撐位或停損點（通常 5-8%）",
+                        "時間出場：持有超過預期時間仍未達目標",
+                        "訊號出場：出現反轉 K 線型態時獲利了結"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["技術指標", "買入訊號", "賣出訊號"],
+                    "rows": [
+                        ["移動平均線", "股價站上 20MA 且均線向上", "股價跌破 20MA"],
+                        ["MACD", "金叉且柱狀轉正", "死叉且柱狀轉負"],
+                        ["RSI", "RSI < 30 超賣後反彈", "RSI > 70 超買後回落"],
+                        ["布林通道", "觸及下軌反彈", "觸及上軌回落"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 波段交易風險管理",
+                    "color": "rose",
+                    "items": [
+                        "單筆交易風險不超過總資金 2%",
+                        "設定明確停損，嚴格執行",
+                        "避開重大事件（財報、FOMC 會議）",
+                        "不要逆勢操作，順勢而為",
+                        "記錄每筆交易，定期檢討"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "波段交易最適合哪種類型的投資人？",
+                    "options": [
+                        { "id": "a", "text": "想要每天交易賺價差的人", "isCorrect": false },
+                        { "id": "b", "text": "有工作但想積極參與市場的人", "isCorrect": true },
+                        { "id": "c", "text": "完全不想看盤的長期投資者", "isCorrect": false },
+                        { "id": "d", "text": "資金很少的新手", "isCorrect": false }
+                    ],
+                    "explanation": "波段交易適合有工作但想積極參與市場的人。不需要像當沖一樣全天盯盤，但比長期投資更能把握價格波動。需要有一定的技術分析能力和風險承受度。"
+                }
+            ]
+        },
+        {
+            "id": "14",
+            "title": "美股股息投資進階",
+            "description": "SCHD、股息貴族與高殖利率策略",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**股息投資**是美股投資的重要策略，透過穩定的現金流創造被動收入。但要注意 30% 的預扣稅會影響實際收益。",
+                    "highlights": [{ "text": "股息投資", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "股息貴族（Dividend Aristocrats）",
+                    "color": "indigo",
+                    "text": "連續 25 年以上提高股息的 S&P 500 成分股",
+                    "items": [
+                        "代表企業經營穩定、現金流充裕",
+                        "目前約有 67 家公司符合資格",
+                        "代表公司：JNJ、KO、PG、MMM、WMT",
+                        "ETF：NOBL（ProShares S&P 500 Dividend Aristocrats）"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "SCHD",
+                            "description": "品質 + 股息成長 + 高殖利率三重篩選",
+                            "color": "emerald",
+                            "subtext": "殖利率約 3.8%，費用率 0.06%"
+                        },
+                        {
+                            "title": "VYM",
+                            "description": "高殖利率股票，市值加權",
+                            "color": "amber",
+                            "subtext": "殖利率約 3.0%，費用率 0.06%"
+                        },
+                        {
+                            "title": "NOBL",
+                            "description": "股息貴族指數，等權重",
+                            "color": "indigo",
+                            "subtext": "殖利率約 2.5%，費用率 0.35%"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "SCHD 選股標準（最受歡迎的股息 ETF）",
+                    "color": "emerald",
+                    "items": [
+                        "連續 10 年以上配發股息",
+                        "市值至少 5 億美元",
+                        "根據現金流負債比、ROE、殖利率、5年股息成長率篩選",
+                        "選出前 100 檔，市值加權",
+                        "單一股票上限 4%，單一產業上限 25%"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["ETF", "殖利率", "費用率", "10年報酬", "特色"],
+                    "rows": [
+                        ["SCHD", "3.8%", "0.06%", "11.6%", "品質篩選最嚴格"],
+                        ["VYM", "3.0%", "0.06%", "9.8%", "持股最分散"],
+                        ["VIG", "2.0%", "0.05%", "10.5%", "股息成長導向"],
+                        ["NOBL", "2.5%", "0.35%", "9.2%", "股息貴族專屬"]
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "股息稅後實際收益計算",
+                    "steps": [
+                        { "label": "投資金額", "value": "$100,000" },
+                        { "label": "SCHD 殖利率", "value": "3.8%" },
+                        { "label": "年股息總額", "formula": "$100,000 × 3.8%", "value": "$3,800" },
+                        { "label": "預扣稅 30%", "formula": "$3,800 × 30%", "value": "-$1,140", "highlight": true },
+                        { "label": "實際收到", "formula": "$3,800 - $1,140", "value": "$2,660", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "稅後實際殖利率",
+                        "value": "2.66%（比帳面少 30%）",
+                        "color": "amber"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 股息投資策略建議",
+                    "color": "zinc",
+                    "items": [
+                        "考慮稅後殖利率，不要只看帳面數字",
+                        "SCHD 與 S&P 500 重疊度低（僅 8%），適合配置",
+                        "股息再投資可享複利效果",
+                        "股息成長比高殖利率更重要（長期）",
+                        "台灣投資人可考慮累積型 ETF 避開股息稅"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "台灣投資人買美股 ETF 收到股息，會被預扣多少稅？",
+                    "options": [
+                        { "id": "a", "text": "0%（免稅）", "isCorrect": false },
+                        { "id": "b", "text": "10%", "isCorrect": false },
+                        { "id": "c", "text": "30%", "isCorrect": true },
+                        { "id": "d", "text": "依個人所得級距", "isCorrect": false }
+                    ],
+                    "explanation": "台灣與美國沒有稅務協定，所有股息都會被預扣 30% 且無法退還。這是美股股息投資的重大劣勢，因此許多投資人會選擇成長股或累積型 ETF 來避開股息稅。"
+                }
+            ]
+        },
+        {
+            "id": "15",
+            "title": "風險對沖策略",
+            "description": "反向 ETF、賣權與避險方法",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "當市場出現風險時，**對沖策略**可以保護投資組合，減少損失。但對沖也有成本，需要權衡利弊。",
+                    "highlights": [{ "text": "對沖策略", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "反向 ETF",
+                            "description": "指數下跌時上漲，不需要期權帳戶",
+                            "color": "rose",
+                            "subtext": "SH、SQQQ、SDOW"
+                        },
+                        {
+                            "title": "賣權（Put Options）",
+                            "description": "像保險一樣，支付權利金換取下檔保護",
+                            "color": "amber",
+                            "subtext": "需要期權交易權限"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "常用反向 ETF",
+                    "color": "rose",
+                    "items": [
+                        "SH：-1x S&P 500，指數跌 1% 它漲約 1%",
+                        "PSQ：-1x 那斯達克 100",
+                        "SDS：-2x S&P 500（槓桿型，風險更高）",
+                        "SQQQ：-3x 那斯達克 100（三倍槓桿）",
+                        "注意：槓桿型每日重置，長期持有會有耗損"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["對沖工具", "優點", "缺點", "適合情況"],
+                    "rows": [
+                        ["反向 ETF", "簡單，像股票一樣買賣", "長期耗損，槓桿型更嚴重", "短期避險"],
+                        ["賣權", "下檔保護明確，虧損有限", "需支付權利金，有時間價值耗損", "保護特定持股"],
+                        ["現金", "最安全，無額外成本", "錯過反彈，通膨侵蝕", "極度不確定時"],
+                        ["債券 ETF", "與股票負相關", "升息環境下也會跌", "長期資產配置"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "賣權（Put）避險原理",
+                    "color": "amber",
+                    "items": [
+                        "買入賣權 = 買保險，支付權利金",
+                        "若股價跌破履約價，賣權價值上升",
+                        "虧損有限（最多損失權利金）",
+                        "適合保護重要持股（如 AAPL、TSLA）",
+                        "需要開通期權交易權限"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "2020 疫情崩盤對沖效果",
+                    "color": "indigo",
+                    "text": "S&P 500 一個月內下跌 33.8% 時各工具表現",
+                    "items": [
+                        "SH（-1x S&P 500）：提供最佳下檔保護",
+                        "現金：保持原值但錯過後續反彈",
+                        "黃金 ETF：保護效果有限",
+                        "債券 ETF：短暫下跌後反彈"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 對沖注意事項",
+                    "color": "zinc",
+                    "items": [
+                        "對沖有成本，會降低整體報酬",
+                        "反向 ETF 不適合長期持有",
+                        "擇時對沖很難，建議用資產配置分散風險",
+                        "大多數長期投資者不需要頻繁對沖",
+                        "極端恐慌時買入通常比對沖更划算"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "你持有 $100,000 的 S&P 500 ETF（VOO），擔心短期下跌，最簡單的對沖方式是？",
+                    "options": [
+                        { "id": "a", "text": "賣掉全部 VOO", "isCorrect": false },
+                        { "id": "b", "text": "買入 SH（-1x S&P 500 反向 ETF）", "isCorrect": true },
+                        { "id": "c", "text": "買入 SQQQ（-3x 那斯達克）", "isCorrect": false },
+                        { "id": "d", "text": "融資買更多 VOO", "isCorrect": false }
+                    ],
+                    "explanation": "SH 是與 S&P 500 反向的 ETF，當市場下跌時會上漲，可以部分對沖 VOO 的損失。不需要賣掉持股，也不需要期權帳戶。SQQQ 是追蹤那斯達克的槓桿型 ETF，與 S&P 500 不完全對應。"
+                }
+            ]
+        },
+        {
+            "id": "16",
+            "title": "美股技術分析實戰",
+            "description": "MACD、RSI、均線的美股應用",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**技術分析**在美股特別重要，因為沒有漲跌幅限制，價格波動更大，需要更精準的進出場判斷。",
+                    "highlights": [{ "text": "技術分析", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "移動平均線（MA）應用",
+                    "color": "indigo",
+                    "items": [
+                        "20MA：短期趨勢，波段交易常用",
+                        "50MA：中期趨勢，機構投資者關注",
+                        "200MA：長期趨勢，多空分界線",
+                        "黃金交叉：短期 MA 上穿長期 MA，買入訊號",
+                        "死亡交叉：短期 MA 下穿長期 MA，賣出訊號"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "MACD 指標解讀",
+                    "color": "emerald",
+                    "items": [
+                        "快線（DIF）上穿慢線（DEA）= 金叉，考慮買入",
+                        "快線下穿慢線 = 死叉，考慮賣出",
+                        "零軸上方金叉：強勢買入訊號",
+                        "零軸下方死叉：強勢賣出訊號",
+                        "背離：價格新高但 MACD 未新高，警示反轉"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["MACD 參數", "適用場景", "特點"],
+                    "rows": [
+                        ["(6, 13, 5)", "短線/當沖", "訊號敏感，假訊號多"],
+                        ["(12, 26, 9)", "波段交易", "標準參數，平衡性好"],
+                        ["(20, 40, 10)", "長線投資", "訊號穩定，延遲較大"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "RSI 指標應用",
+                    "color": "amber",
+                    "items": [
+                        "RSI > 70：超買區，可能即將回落",
+                        "RSI < 30：超賣區，可能即將反彈",
+                        "RSI > 50：多方力量較強",
+                        "RSI < 50：空方力量較強",
+                        "背離：價格新高但 RSI 未新高，反轉訊號"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "多指標組合策略",
+                    "color": "zinc",
+                    "text": "高勝率買入條件組合",
+                    "items": [
+                        "股價站上 20MA 且均線向上",
+                        "MACD 金叉且柱狀轉正",
+                        "RSI 從超賣區（< 30）反彈向上",
+                        "成交量放大確認",
+                        "滿足 3 個以上條件再進場"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 美股技術分析注意事項",
+                    "color": "rose",
+                    "items": [
+                        "美股無漲跌幅限制，單日可漲跌數十%",
+                        "財報公布會造成跳空，技術分析失效",
+                        "重大新聞（Fed 決議、地緣政治）會打破技術面",
+                        "盤前盤後價格變動大，開盤可能跳空",
+                        "永遠設好停損，技術分析不是 100% 準確"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "MACD 在零軸上方出現金叉，這代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "弱勢反彈，謹慎觀望", "isCorrect": false },
+                        { "id": "b", "text": "強勢買入訊號", "isCorrect": true },
+                        { "id": "c", "text": "即將下跌的警訊", "isCorrect": false },
+                        { "id": "d", "text": "與趨勢無關", "isCorrect": false }
+                    ],
+                    "explanation": "MACD 在零軸上方代表中期趨勢向上，此時出現金叉是強勢買入訊號，代表短期動能也轉強，與中期趨勢一致。相反，零軸下方的金叉可能只是弱勢反彈。"
+                }
+            ]
+        }
+    ]
+}

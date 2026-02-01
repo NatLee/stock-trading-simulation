@@ -1,0 +1,1667 @@
+{
+    "id": "trading-scenarios",
+    "title": "進出場劇本大全",
+    "description": "各種情境的進出場策略實戰範例",
+    "icon": "BookOpen",
+    "color": "amber",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "突破買進策略",
+            "description": "突破壓力線後的進場時機",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**突破買進**是最常見的進場策略之一，在股價突破重要壓力位時進場，順勢操作。",
+                    "highlights": [{ "text": "突破買進", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "突破買進的有效條件",
+                    "color": "emerald",
+                    "items": [
+                        "成交量放大：突破當日量 > 5日均量 × 1.5",
+                        "突破幅度：股價突破壓力線 3% 以上",
+                        "收盤確認：收盤價站穩壓力線上方",
+                        "型態配合：從整理區間或底部型態突破"
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "劇本A：標準突破買進",
+                    "candles": [
+                        { "open": 86, "high": 90, "low": 84, "close": 88, "label": "整理" },
+                        { "open": 89, "high": 94, "low": 88, "close": 92, "label": "測頂" },
+                        { "open": 91, "high": 95, "low": 88, "close": 89, "label": "回落" },
+                        { "open": 90, "high": 96, "low": 89, "close": 94, "label": "再測" },
+                        { "open": 93, "high": 97, "low": 90, "close": 91, "label": "洗盤" },
+                        { "open": 92, "high": 98, "low": 91, "close": 96, "label": "蓄勢" },
+                        { "open": 97, "high": 110, "low": 96, "close": 108, "label": "突破!" },
+                        { "open": 106, "high": 118, "low": 103, "close": 115, "label": "續漲" },
+                        { "open": 116, "high": 124, "low": 114, "close": 122, "label": "目標" }
+                    ],
+                    "annotations": [
+                        { "index": 5, "text": "壓力$96", "position": "top" },
+                        { "index": 6, "text": "突破買入!", "position": "top" },
+                        { "index": 8, "text": "目標達成", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 88, "label": "整理" },
+                            { "x": 1, "y": 92, "label": "測頂" },
+                            { "x": 2, "y": 89, "label": "回落" },
+                            { "x": 3, "y": 94, "label": "再測" },
+                            { "x": 4, "y": 91, "label": "洗盤" },
+                            { "x": 5, "y": 96, "label": "蓄勢" },
+                            { "x": 6, "y": 108, "label": "突破" },
+                            { "x": 7, "y": 115, "label": "續漲" },
+                            { "x": 8, "y": 122, "label": "目標" }
+                        ],
+                        "markers": [
+                            { "x": 5, "y": 96, "type": "info", "label": "整理區間" },
+                            { "x": 6, "y": 108, "type": "buy", "label": "突破買入 $108" },
+                            { "x": 8, "y": 122, "type": "takeProfit", "label": "目標 $125" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 96, "label": "壓力線 $96" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 85, "yEnd": 96, "label": "整理區" },
+                            { "type": "profit", "yStart": 96, "yEnd": 130, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "K線圖展示：整理期間多次觸及壓力線$96但無法突破（長上影線），突破當天出現帶量長紅K，收在$108確認突破有效。停損設在壓力線下方$95，風險報酬比 1:1.3。"
+                },
+                {
+                    "type": "trade-example",
+                    "title": "突破買進實戰",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 108,
+                        "exitPrice": 122,
+                        "quantity": 1000,
+                        "stopLoss": 95,
+                        "takeProfit": 125,
+                        "fees": 180,
+                        "result": {
+                            "profit": 13820,
+                            "percentage": 12.8
+                        }
+                    },
+                    "explanation": "突破 $96 壓力線後在 $108 進場，停損 $95（風險 12%），目標 $125。最終在 $122 獲利了結，報酬率 12.8%。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 突破買進的風險",
+                    "color": "rose",
+                    "items": [
+                        "假突破：股價突破後迅速跌回，需嚴守停損",
+                        "追高風險：突破幅度過大時進場成本偏高",
+                        "量能不足：無量突破容易失敗"
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "劇本B：假突破後的應對",
+                    "candles": [
+                        { "open": 89, "high": 93, "low": 87, "close": 92, "label": "上漲" },
+                        { "open": 93, "high": 97, "low": 92, "close": 95, "label": "逼近" },
+                        { "open": 96, "high": 105, "low": 95, "close": 102, "label": "假突破" },
+                        { "open": 100, "high": 101, "low": 91, "close": 93, "label": "大跌!" },
+                        { "open": 92, "high": 93, "low": 86, "close": 88, "label": "續跌" },
+                        { "open": 87, "high": 89, "low": 83, "close": 85, "label": "破位" },
+                        { "open": 84, "high": 86, "low": 80, "close": 82, "label": "新低" }
+                    ],
+                    "annotations": [
+                        { "index": 2, "text": "假突破進場", "position": "top" },
+                        { "index": 3, "text": "停損出場!", "position": "bottom" },
+                        { "index": 6, "text": "避免更大損失", "position": "bottom" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 92, "label": "上漲" },
+                            { "x": 1, "y": 95, "label": "逼近" },
+                            { "x": 2, "y": 102, "label": "假突破" },
+                            { "x": 3, "y": 93, "label": "大跌" },
+                            { "x": 4, "y": 88, "label": "續跌" },
+                            { "x": 5, "y": 85, "label": "破位" },
+                            { "x": 6, "y": 82, "label": "新低" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 102, "type": "buy", "label": "進場 $102" },
+                            { "x": 3, "y": 93, "type": "stopLoss", "label": "觸發停損 $93" },
+                            { "x": 4, "y": 88, "type": "info", "label": "續跌" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 96, "label": "壓力線 $96" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 80, "yEnd": 96, "label": "風險區" }
+                        ]
+                    },
+                    "description": "K線圖顯示假突破特徵：突破當天雖收紅，但隔日出現「吞噬長黑K」將前一天漲幅完全吃掉，這是強烈的反轉訊號。執行停損雖虧損8.8%，但避免了後續跌至$82的-19.6%損失。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "突破買進策略中，以下哪個是有效突破的條件？",
+                    "options": [
+                        { "id": "a", "text": "突破時成交量萎縮", "isCorrect": false },
+                        { "id": "b", "text": "收盤價站穩壓力線上方且帶量", "isCorrect": true },
+                        { "id": "c", "text": "盤中短暫觸及壓力線即可", "isCorrect": false },
+                        { "id": "d", "text": "突破幅度只需 0.5%", "isCorrect": false }
+                    ],
+                    "explanation": "有效突破需要「帶量」且「收盤站穩」。盤中突破但收盤跌回、或無量突破，都可能是假突破的訊號。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "拉回買進策略",
+            "description": "等待回檔後的低風險進場",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**拉回買進**是等待股價突破後回測支撐再進場的策略，風險較低但可能錯過急漲行情。",
+                    "highlights": [{ "text": "拉回買進", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "突破買進",
+                            "description": "突破當下立即進場",
+                            "color": "amber",
+                            "subtext": "優：不錯過、缺：成本高"
+                        },
+                        {
+                            "title": "拉回買進",
+                            "description": "等待回測支撐再進場",
+                            "color": "emerald",
+                            "subtext": "優：成本低、缺：可能錯過"
+                        }
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本C：經典拉回買進",
+                    "candles": [
+                        { "open": 73, "high": 76, "low": 72, "close": 75, "label": "起漲" },
+                        { "open": 76, "high": 80, "low": 75, "close": 78, "label": "逼近" },
+                        { "open": 79, "high": 90, "low": 78, "close": 88, "label": "突破" },
+                        { "open": 87, "high": 88, "low": 83, "close": 85, "label": "回檔" },
+                        { "open": 84, "high": 85, "low": 79, "close": 81, "label": "錘子線" },
+                        { "open": 82, "high": 87, "low": 81, "close": 85, "label": "反彈" },
+                        { "open": 86, "high": 94, "low": 85, "close": 92, "label": "上攻" },
+                        { "open": 93, "high": 100, "low": 92, "close": 98, "label": "續漲" },
+                        { "open": 99, "high": 107, "low": 98, "close": 105, "label": "目標" }
+                    ],
+                    "annotations": [
+                        { "index": 2, "text": "突破$80", "position": "top" },
+                        { "index": 4, "text": "錘子線買入", "position": "bottom" },
+                        { "index": 8, "text": "獲利出場", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 72, "label": "" },
+                            { "x": 1, "y": 75, "label": "" },
+                            { "x": 2, "y": 78, "label": "" },
+                            { "x": 3, "y": 88, "label": "" },
+                            { "x": 4, "y": 85, "label": "" },
+                            { "x": 5, "y": 81, "label": "" },
+                            { "x": 6, "y": 85, "label": "" },
+                            { "x": 7, "y": 92, "label": "" },
+                            { "x": 8, "y": 98, "label": "" },
+                            { "x": 9, "y": 105, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 88, "type": "info", "label": "突破 $80" },
+                            { "x": 5, "y": 81, "type": "buy", "label": "拉回買入 $81" },
+                            { "x": 4, "y": 85, "type": "stopLoss", "label": "停損 $78" },
+                            { "x": 9, "y": 105, "type": "takeProfit", "label": "目標 $100+" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 80, "label": "壓力→支撐 $80" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 80, "yEnd": 110, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "K線圖顯示：突破$80後漲至$88，回測時出現「錘子線」（長下影線）在$81止跌，代表壓力轉支撐有效。此時進場風險僅3.7%，但報酬高達29.6%，風險報酬比達1:8！"
+                },
+                {
+                    "type": "trade-example",
+                    "title": "拉回買進實戰",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 81,
+                        "exitPrice": 102,
+                        "quantity": 1000,
+                        "stopLoss": 78,
+                        "takeProfit": 105,
+                        "fees": 150,
+                        "result": {
+                            "profit": 20850,
+                            "percentage": 25.7
+                        }
+                    },
+                    "explanation": "等待股價突破 $80 後回測至 $81 再進場，停損 $78（風險 3.7%）。最終在 $102 獲利了結，報酬率高達 25.7%。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "拉回買進的關鍵判斷",
+                    "color": "indigo",
+                    "items": [
+                        "回測時成交量應縮小（正常洗盤）",
+                        "回測不破原壓力線（現為支撐）",
+                        "出現止跌 K 線（錘子線、十字星等）",
+                        "再度帶量上攻時確認進場"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本D：深度回測的進場",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 55, "label": "" },
+                            { "x": 1, "y": 58, "label": "" },
+                            { "x": 2, "y": 68, "label": "" },
+                            { "x": 3, "y": 63, "label": "" },
+                            { "x": 4, "y": 58, "label": "" },
+                            { "x": 5, "y": 61, "label": "" },
+                            { "x": 6, "y": 65, "label": "" },
+                            { "x": 7, "y": 72, "label": "" },
+                            { "x": 8, "y": 78, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 68, "type": "info", "label": "突破 $60" },
+                            { "x": 4, "y": 58, "type": "info", "label": "深度回測" },
+                            { "x": 5, "y": 61, "type": "buy", "label": "確認後買入 $61" },
+                            { "x": 3, "y": 63, "type": "stopLoss", "label": "停損 $56" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 60, "label": "支撐 $60" },
+                            { "type": "support", "y": 55, "label": "前低 $55" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 55, "yEnd": 60, "label": "觀察區" }
+                        ]
+                    },
+                    "description": "股價突破 $60 後漲至 $68，但回測較深至 $58（跌破支撐）。此時先觀望，等股價重新站回 $60 以上（$61）再進場，停損設在前低 $55 下方。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "拉回買進時，回測過程中的成交量應該：",
+                    "options": [
+                        { "id": "a", "text": "持續放大", "isCorrect": false },
+                        { "id": "b", "text": "縮小（量縮回測）", "isCorrect": true },
+                        { "id": "c", "text": "完全沒有成交量", "isCorrect": false },
+                        { "id": "d", "text": "成交量不重要", "isCorrect": false }
+                    ],
+                    "explanation": "回測時成交量應該縮小，代表是正常的獲利了結或洗盤。如果回測時量能放大，可能代表有大量賣壓，後市較為危險。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "均線支撐買進",
+            "description": "利用均線作為進場依據",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**均線支撐買進**是葛蘭碧八大法則中的經典策略，在上升趨勢中，股價回檔至均線附近是良好的進場時機。",
+                    "highlights": [{ "text": "均線支撐買進", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "葛蘭碧買點 B3：均線支撐",
+                    "color": "emerald",
+                    "items": [
+                        "前提：均線呈上升趨勢",
+                        "時機：股價回檔接近或輕觸均線",
+                        "確認：在均線附近止跌反彈",
+                        "停損：跌破均線則出場"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本E：20日均線支撐買進",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 62, "label": "" },
+                            { "x": 1, "y": 68, "label": "" },
+                            { "x": 2, "y": 75, "label": "" },
+                            { "x": 3, "y": 72, "label": "" },
+                            { "x": 4, "y": 68, "label": "" },
+                            { "x": 5, "y": 72, "label": "" },
+                            { "x": 6, "y": 78, "label": "" },
+                            { "x": 7, "y": 82, "label": "" },
+                            { "x": 8, "y": 88, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 4, "y": 68, "type": "buy", "label": "均線支撐買入 $68" },
+                            { "x": 3, "y": 72, "type": "stopLoss", "label": "停損 $65" },
+                            { "x": 8, "y": 88, "type": "takeProfit", "label": "目標 $85+" }
+                        ],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 58}, {"x": 2, "y": 65}, {"x": 4, "y": 68}, {"x": 6, "y": 72}, {"x": 8, "y": 78}], "label": "20MA", "color": "#60a5fa" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 68, "yEnd": 92, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "股價從 $62 起漲，回檔至 20MA 附近（$68）獲得支撐。在均線止跌後進場 $68，停損設在均線下方 $65。最終漲至 $88，報酬 29.4%。"
+                },
+                {
+                    "type": "trade-example",
+                    "title": "均線支撐買進實戰",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 68,
+                        "exitPrice": 85,
+                        "quantity": 1000,
+                        "stopLoss": 65,
+                        "takeProfit": 88,
+                        "fees": 125,
+                        "result": {
+                            "profit": 16875,
+                            "percentage": 24.8
+                        }
+                    },
+                    "explanation": "股價回檔至 20MA $68 止跌，進場後設停損 $65（風險 4.4%）。在 $85 獲利了結，報酬率 24.8%。"
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "常用均線與適用情境",
+                    "items": [
+                        { "key": "5MA", "value": "極短線操作，適合當沖或隔日沖", "keyColor": "rose" },
+                        { "key": "10MA", "value": "短線操作，適合一週內的交易", "keyColor": "amber" },
+                        { "key": "20MA", "value": "短中線操作，最常用的均線", "keyColor": "emerald" },
+                        { "key": "60MA", "value": "中線操作，季線支撐較強", "keyColor": "indigo" },
+                        { "key": "120MA", "value": "長線操作，半年線是多空分界", "keyColor": "purple" }
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本F：均線跌破後的停損",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 85, "label": "" },
+                            { "x": 1, "y": 88, "label": "" },
+                            { "x": 2, "y": 82, "label": "" },
+                            { "x": 3, "y": 78, "label": "" },
+                            { "x": 4, "y": 75, "label": "" },
+                            { "x": 5, "y": 70, "label": "" },
+                            { "x": 6, "y": 65, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 82, "type": "buy", "label": "進場 $82" },
+                            { "x": 3, "y": 78, "type": "stopLoss", "label": "跌破均線停損 $78" },
+                            { "x": 6, "y": 65, "type": "info", "label": "續跌至 $65" }
+                        ],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 80}, {"x": 2, "y": 82}, {"x": 4, "y": 80}, {"x": 6, "y": 75}], "label": "20MA", "color": "#60a5fa" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 60, "yEnd": 80, "label": "風險區" }
+                        ]
+                    },
+                    "description": "在 $82 買入時，20MA 在 $80 附近。當股價跌破 $80 均線後執行停損，虧損 4.9%。若未停損，股價續跌至 $65，將虧損 20.7%。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "使用均線支撐策略時，最重要的前提是？",
+                    "options": [
+                        { "id": "a", "text": "均線必須向下", "isCorrect": false },
+                        { "id": "b", "text": "均線呈上升趨勢", "isCorrect": true },
+                        { "id": "c", "text": "均線必須水平", "isCorrect": false },
+                        { "id": "d", "text": "不需要看均線方向", "isCorrect": false }
+                    ],
+                    "explanation": "均線支撐策略的前提是均線必須呈上升趨勢。在下降趨勢中，均線反而是壓力而非支撐，不應使用此策略。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "停損停利設定",
+            "description": "科學的出場策略",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**停損停利**是交易中最重要的出場策略。好的進場只是開始，正確的出場才決定獲利。",
+                    "highlights": [{ "text": "停損停利", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "停損的三種方法",
+                    "color": "rose",
+                    "items": [
+                        "① 固定比例：虧損達 5-10% 時停損",
+                        "② 技術位停損：跌破支撐線、均線時停損",
+                        "③ K線停損：跌破進場 K 線低點時停損"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "風險報酬比計算",
+                    "steps": [
+                        { "label": "進場價格", "value": "$50.0" },
+                        { "label": "停損價格", "value": "$47.0" },
+                        { "label": "風險金額", "formula": "$50 - $47", "value": "$3", "highlight": true },
+                        { "label": "目標價格", "value": "$59.0" },
+                        { "label": "報酬金額", "formula": "$59 - $50", "value": "$9", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "風險報酬比",
+                        "value": "1:3 (風險 $3 換取報酬 $9)",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "風險報酬比的重要性",
+                    "color": "indigo",
+                    "items": [
+                        "1:2 → 勝率只需 34% 即可獲利",
+                        "1:3 → 勝率只需 25% 即可獲利",
+                        "1:1 → 勝率需超過 50% 才能獲利",
+                        "建議至少維持 1:2 的風險報酬比"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本G：移動停利策略",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 55, "label": "" },
+                            { "x": 2, "y": 60, "label": "" },
+                            { "x": 3, "y": 58, "label": "" },
+                            { "x": 4, "y": 65, "label": "" },
+                            { "x": 5, "y": 62, "label": "" },
+                            { "x": 6, "y": 70, "label": "" },
+                            { "x": 7, "y": 75, "label": "" },
+                            { "x": 8, "y": 72, "label": "" },
+                            { "x": 9, "y": 68, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 50, "type": "buy", "label": "進場 $50" },
+                            { "x": 2, "y": 60, "type": "info", "label": "停利上移至 $55" },
+                            { "x": 4, "y": 65, "type": "info", "label": "停利上移至 $60" },
+                            { "x": 7, "y": 75, "type": "info", "label": "最高點" },
+                            { "x": 9, "y": 68, "type": "sell", "label": "觸發停利 $68" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 47, "label": "原停損 $47" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 50, "yEnd": 80, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "進場 $50，原停損 $47。當股價漲至 $60 時，停利上移至 $55（保本）；漲至 $65 時上移至 $60；漲至 $75 高點後回檔，在 $68 觸發移動停利出場，獲利 36%。"
+                },
+                {
+                    "type": "trade-example",
+                    "title": "移動停利實戰",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 50,
+                        "exitPrice": 68,
+                        "quantity": 1000,
+                        "stopLoss": 47,
+                        "takeProfit": 75,
+                        "fees": 95,
+                        "result": {
+                            "profit": 17905,
+                            "percentage": 35.8
+                        }
+                    },
+                    "explanation": "採用移動停利策略，雖然沒有在最高點 $75 出場，但在 $68 鎖住 35.8% 的獲利，遠優於固定停利可能錯過的大行情。"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "固定停利",
+                            "description": "到達目標價即出場",
+                            "color": "amber",
+                            "subtext": "優：紀律明確、缺：可能少賺"
+                        },
+                        {
+                            "title": "移動停利",
+                            "description": "隨獲利上移停利點",
+                            "color": "emerald",
+                            "subtext": "優：抱住大行情、缺：可能回吐"
+                        }
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本H：分批停利策略",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 108, "label": "" },
+                            { "x": 2, "y": 115, "label": "" },
+                            { "x": 3, "y": 112, "label": "" },
+                            { "x": 4, "y": 125, "label": "" },
+                            { "x": 5, "y": 130, "label": "" },
+                            { "x": 6, "y": 122, "label": "" },
+                            { "x": 7, "y": 118, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 100, "type": "buy", "label": "進場 $100" },
+                            { "x": 2, "y": 115, "type": "sell", "label": "賣出 1/3" },
+                            { "x": 4, "y": 125, "type": "sell", "label": "賣出 1/3" },
+                            { "x": 7, "y": 118, "type": "sell", "label": "最後 1/3" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 115, "label": "第一目標" },
+                            { "type": "resistance", "y": 125, "label": "第二目標" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 100, "yEnd": 135, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "進場 $100，設定三個目標價 $115、$125、$135。到 $115 賣 1/3 (+15%)，到 $125 賣 1/3 (+25%)，剩餘部位設移動停利，最終在 $118 出場。平均獲利約 19.3%。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "風險報酬比 1:3 意味著什麼？",
+                    "options": [
+                        { "id": "a", "text": "需要 75% 勝率才能獲利", "isCorrect": false },
+                        { "id": "b", "text": "願意虧 1 元來賺 3 元", "isCorrect": true },
+                        { "id": "c", "text": "每筆交易固定虧 3%", "isCorrect": false },
+                        { "id": "d", "text": "一定會獲利", "isCorrect": false }
+                    ],
+                    "explanation": "風險報酬比 1:3 代表承擔 1 單位風險（如 $3）來追求 3 單位報酬（如 $9）。在這個比例下，即使勝率只有 25%（4筆贏1筆），長期也能獲利。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "加碼與減碼策略",
+            "description": "部位管理的藝術",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**加碼減碼**是資金管理的核心技巧，正確的部位調整可以放大獲利、控制風險。",
+                    "highlights": [{ "text": "加碼減碼", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "正金字塔加碼",
+                            "description": "上漲時逐步加碼，每次數量遞減",
+                            "color": "emerald",
+                            "subtext": "適合：趨勢行情"
+                        },
+                        {
+                            "title": "倒金字塔加碼",
+                            "description": "下跌時逐步加碼，越跌買越多",
+                            "color": "rose",
+                            "subtext": "適合：價值投資（高風險）"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "正金字塔加碼法",
+                    "color": "emerald",
+                    "text": "趨勢交易的最佳加碼方式",
+                    "items": [
+                        "第一筆：在突破時建立 50% 部位",
+                        "第二筆：確認趨勢後加碼 30%",
+                        "第三筆：趨勢持續時加碼 20%",
+                        "原則：只在獲利時加碼，避免攤平"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本I：正金字塔加碼",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 55, "label": "" },
+                            { "x": 2, "y": 52, "label": "" },
+                            { "x": 3, "y": 58, "label": "" },
+                            { "x": 4, "y": 62, "label": "" },
+                            { "x": 5, "y": 60, "label": "" },
+                            { "x": 6, "y": 68, "label": "" },
+                            { "x": 7, "y": 75, "label": "" },
+                            { "x": 8, "y": 80, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 55, "type": "buy", "label": "買入 500股@$55" },
+                            { "x": 4, "y": 62, "type": "buy", "label": "加碼 300股@$62" },
+                            { "x": 6, "y": 68, "type": "buy", "label": "加碼 200股@$68" },
+                            { "x": 8, "y": 80, "type": "takeProfit", "label": "全部出場 $80" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 50, "label": "支撐 $50" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 55, "yEnd": 85, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "第一筆 500 股@$55，第二筆 300 股@$62，第三筆 200 股@$68。平均成本 = (500×55 + 300×62 + 200×68) ÷ 1000 = $59.7。在 $80 全出，報酬 34%。"
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "金字塔加碼成本計算",
+                    "steps": [
+                        { "label": "第一筆", "formula": "500股 × $55", "value": "$27,500" },
+                        { "label": "第二筆", "formula": "300股 × $62", "value": "$18,600" },
+                        { "label": "第三筆", "formula": "200股 × $68", "value": "$13,600" },
+                        { "label": "總成本", "value": "$59,700", "highlight": true },
+                        { "label": "平均成本", "formula": "$59,700 ÷ 1,000股", "value": "$59.7" }
+                    ],
+                    "result": {
+                        "label": "出場獲利",
+                        "value": "$20,300 (34%)",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 倒金字塔（攤平）的風險",
+                    "color": "rose",
+                    "items": [
+                        "越跌越買會不斷擴大部位",
+                        "如果判斷錯誤，損失會加倍",
+                        "需要充足資金和強大心理素質",
+                        "僅適用於長期價值投資，不適合一般交易"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本J：錯誤的攤平示範",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 90, "label": "" },
+                            { "x": 2, "y": 80, "label": "" },
+                            { "x": 3, "y": 70, "label": "" },
+                            { "x": 4, "y": 60, "label": "" },
+                            { "x": 5, "y": 50, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 100, "type": "buy", "label": "買入 $100" },
+                            { "x": 1, "y": 90, "type": "buy", "label": "攤平 $90" },
+                            { "x": 2, "y": 80, "type": "buy", "label": "再攤 $80" },
+                            { "x": 3, "y": 70, "type": "buy", "label": "又攤 $70" },
+                            { "x": 5, "y": 50, "type": "stopLoss", "label": "被迫停損 $50" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "loss", "yStart": 45, "yEnd": 85, "label": "損失區" }
+                        ]
+                    },
+                    "description": "在 $100 買入後持續下跌，不停攤平。平均成本約 $85，但股價跌至 $50 時被迫停損，總損失超過 40%。攤平不等於降低風險，而是擴大風險！"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "正金字塔加碼的核心原則是？",
+                    "options": [
+                        { "id": "a", "text": "越跌買越多", "isCorrect": false },
+                        { "id": "b", "text": "只在獲利時加碼", "isCorrect": true },
+                        { "id": "c", "text": "每次買入相同數量", "isCorrect": false },
+                        { "id": "d", "text": "一次 all-in", "isCorrect": false }
+                    ],
+                    "explanation": "正金字塔加碼的核心是「只在獲利時加碼」，代表趨勢方向正確。若虧損時加碼（攤平），可能會在錯誤方向越陷越深。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "空頭市場策略",
+            "description": "下跌趨勢中的生存之道",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "空頭市場中，保護本金比追求獲利更重要。學會**識別空頭訊號**並採取正確策略，才能在熊市中生存。",
+                    "highlights": [{ "text": "識別空頭訊號", "color": "rose" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "空頭確認的「六字訣」",
+                    "color": "rose",
+                    "items": [
+                        "頭頭低：高點逐漸下移",
+                        "底底低：低點不斷下探",
+                        "跌破 20MA 且均線向下彎曲",
+                        "成交量在下跌時放大"
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "劇本K：空頭趨勢的識別",
+                    "candles": [
+                        { "open": 98, "high": 101, "low": 93, "close": 95, "label": "頭部" },
+                        { "open": 94, "high": 96, "low": 86, "close": 88, "label": "下跌" },
+                        { "open": 89, "high": 94, "low": 88, "close": 92, "label": "反彈" },
+                        { "open": 91, "high": 92, "low": 83, "close": 85, "label": "續跌" },
+                        { "open": 84, "high": 86, "low": 78, "close": 80, "label": "新低" },
+                        { "open": 81, "high": 87, "low": 80, "close": 85, "label": "反彈" },
+                        { "open": 84, "high": 86, "low": 76, "close": 78, "label": "跌破" },
+                        { "open": 77, "high": 79, "low": 68, "close": 70, "label": "暴跌" }
+                    ],
+                    "annotations": [
+                        { "index": 0, "text": "頭部$100", "position": "top" },
+                        { "index": 2, "text": "較低高$92", "position": "top" },
+                        { "index": 5, "text": "更低高$85", "position": "top" },
+                        { "index": 7, "text": "空頭確認", "position": "bottom" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 95, "label": "頭部" },
+                            { "x": 1, "y": 88, "label": "下跌" },
+                            { "x": 2, "y": 92, "label": "反彈" },
+                            { "x": 3, "y": 85, "label": "續跌" },
+                            { "x": 4, "y": 80, "label": "新低" },
+                            { "x": 5, "y": 85, "label": "反彈" },
+                            { "x": 6, "y": 78, "label": "跌破" },
+                            { "x": 7, "y": 70, "label": "暴跌" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 95, "type": "info", "label": "頭部 $100" },
+                            { "x": 2, "y": 92, "type": "info", "label": "較低高 $92" },
+                            { "x": 5, "y": 85, "type": "info", "label": "更低高 $85" },
+                            { "x": 1, "y": 88, "type": "stopLoss", "label": "停損點" }
+                        ],
+                        "lines": [
+                            { "type": "trendline", "points": [{"x": 0, "y": 95}, {"x": 2, "y": 92}, {"x": 5, "y": 85}], "label": "下降壓力線", "color": "#f43f5e" },
+                            { "type": "ma", "points": [{"x": 0, "y": 98}, {"x": 4, "y": 82}, {"x": 7, "y": 72}], "label": "20MA↓", "color": "#60a5fa" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 65, "yEnd": 92, "label": "空頭區" }
+                        ]
+                    },
+                    "description": "K線圖展示空頭特徵：連續長黑K代表賣壓沉重，每次反彈都是長上影線（賣壓湧現），高點逐漸下移（頭頭低），低點不斷下探（底底低）。此時不應做多，應保持觀望或做空。"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "空頭策略A：離場觀望",
+                            "description": "清空持股，保持現金等待",
+                            "color": "zinc",
+                            "subtext": "最保守，適合一般投資人"
+                        },
+                        {
+                            "title": "空頭策略B：放空交易",
+                            "description": "借券賣出或買進反向 ETF",
+                            "color": "rose",
+                            "subtext": "進階策略，需嚴控風險"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "空頭市場的生存原則",
+                    "color": "amber",
+                    "items": [
+                        "減少交易頻率，保持觀望",
+                        "若要進場，只做短線反彈",
+                        "嚴守停損，不攤平虧損部位",
+                        "保持現金比例在 50% 以上",
+                        "等待「底底高」訊號出現再轉多"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本L：空頭反彈的短線操作",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 70, "label": "" },
+                            { "x": 1, "y": 65, "label": "" },
+                            { "x": 2, "y": 60, "label": "" },
+                            { "x": 3, "y": 68, "label": "" },
+                            { "x": 4, "y": 72, "label": "" },
+                            { "x": 5, "y": 68, "label": "" },
+                            { "x": 6, "y": 62, "label": "" },
+                            { "x": 7, "y": 55, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 60, "type": "buy", "label": "反彈進場 $62" },
+                            { "x": 4, "y": 72, "type": "sell", "label": "壓力出場 $70" },
+                            { "x": 1, "y": 65, "type": "stopLoss", "label": "停損 $58" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 72, "label": "反彈壓力" },
+                            { "type": "support", "y": 60, "label": "短期支撐" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 60, "yEnd": 72, "label": "反彈區" }
+                        ]
+                    },
+                    "description": "空頭市場中股價跌至 $60 支撐後反彈，在 $62 進場做短線。目標設在前波低點（現壓力）$70 附近，停損 $58。成功獲利 12.9%，但不戀戰，快進快出。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "空頭市場中最重要的策略是？",
+                    "options": [
+                        { "id": "a", "text": "持續加碼攤平", "isCorrect": false },
+                        { "id": "b", "text": "積極做多搶反彈", "isCorrect": false },
+                        { "id": "c", "text": "保持現金、嚴守停損", "isCorrect": true },
+                        { "id": "d", "text": "忽略趨勢長期持有", "isCorrect": false }
+                    ],
+                    "explanation": "空頭市場的首要任務是保護本金，應該保持較高現金比例、減少交易、嚴守停損。攤平和過度交易是空頭市場虧損的主因。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "綜合實戰劇本",
+            "description": "多種情境的完整交易計畫",
+            "duration": "20分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "真正的交易需要**完整的交易計畫**，包含進場、停損、加碼、停利等所有環節。以下是三個完整的實戰劇本。",
+                    "highlights": [{ "text": "完整的交易計畫", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "劇本M：W底突破的完整操作",
+                    "color": "emerald",
+                    "text": "型態交易 + 分批進場 + 移動停利"
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "W底突破完整流程",
+                    "candles": [
+                        { "open": 73, "high": 76, "low": 63, "close": 65, "label": "下跌" },
+                        { "open": 64, "high": 65, "low": 56, "close": 58, "label": "第一底" },
+                        { "open": 59, "high": 72, "low": 58, "close": 70, "label": "反彈" },
+                        { "open": 69, "high": 70, "low": 58, "close": 60, "label": "第二底" },
+                        { "open": 61, "high": 74, "low": 60, "close": 72, "label": "突破50%" },
+                        { "open": 71, "high": 72, "low": 66, "close": 68, "label": "回測30%" },
+                        { "open": 69, "high": 80, "low": 68, "close": 78, "label": "上漲" },
+                        { "open": 79, "high": 87, "low": 78, "close": 85, "label": "加碼20%" },
+                        { "open": 84, "high": 93, "low": 81, "close": 92, "label": "停利" },
+                        { "open": 91, "high": 92, "low": 86, "close": 88, "label": "全出" }
+                    ],
+                    "annotations": [
+                        { "index": 1, "text": "第一底", "position": "bottom" },
+                        { "index": 3, "text": "第二底", "position": "bottom" },
+                        { "index": 4, "text": "突破買50%", "position": "top" },
+                        { "index": 5, "text": "回測買30%", "position": "bottom" },
+                        { "index": 7, "text": "加碼20%", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 65, "label": "下跌" },
+                            { "x": 1, "y": 58, "label": "第一底" },
+                            { "x": 2, "y": 70, "label": "反彈" },
+                            { "x": 3, "y": 60, "label": "第二底" },
+                            { "x": 4, "y": 72, "label": "突破" },
+                            { "x": 5, "y": 68, "label": "回測" },
+                            { "x": 6, "y": 78, "label": "上漲" },
+                            { "x": 7, "y": 85, "label": "加碼" },
+                            { "x": 8, "y": 92, "label": "停利" },
+                            { "x": 9, "y": 88, "label": "全出" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 58, "type": "info", "label": "第一底 $58" },
+                            { "x": 3, "y": 60, "type": "info", "label": "第二底 $60" },
+                            { "x": 4, "y": 72, "type": "buy", "label": "突破買 50%" },
+                            { "x": 5, "y": 68, "type": "buy", "label": "回測買 30%" },
+                            { "x": 7, "y": 85, "type": "buy", "label": "確認買 20%" },
+                            { "x": 8, "y": 92, "type": "sell", "label": "停利 $88" },
+                            { "x": 9, "y": 88, "type": "sell", "label": "全出" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 70, "label": "頸線 $70" },
+                            { "type": "support", "y": 58, "label": "底部 $58-60" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 70, "yEnd": 95, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "K線圖展示W底型態與分批進場：兩個底部都出現長下影線（錘子線），代表買盤支撐。突破頸線時長紅K確認，回測時十字線止跌。分批建倉平均成本$73.4，在$88-92分批停利，獲利約22%。"
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "劇本M交易計畫",
+                    "items": [
+                        { "key": "型態", "value": "W底，頸線 $70", "keyColor": "indigo" },
+                        { "key": "第一筆", "value": "突破 $70 後買 500股@$72", "keyColor": "emerald" },
+                        { "key": "第二筆", "value": "回測 $68 買 300股", "keyColor": "emerald" },
+                        { "key": "第三筆", "value": "站穩 $80 買 200股@$85", "keyColor": "emerald" },
+                        { "key": "停損", "value": "跌破 $65（第二底下方）", "keyColor": "rose" },
+                        { "key": "目標", "value": "$82（頸線 + 型態高度）", "keyColor": "amber" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "劇本N：均線金叉 + 突破操作",
+                    "color": "indigo",
+                    "text": "均線策略 + 型態確認 + 順勢加碼"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "均線金叉完整流程",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 42, "label": "" },
+                            { "x": 1, "y": 45, "label": "" },
+                            { "x": 2, "y": 48, "label": "" },
+                            { "x": 3, "y": 52, "label": "" },
+                            { "x": 4, "y": 50, "label": "" },
+                            { "x": 5, "y": 55, "label": "" },
+                            { "x": 6, "y": 58, "label": "" },
+                            { "x": 7, "y": 62, "label": "" },
+                            { "x": 8, "y": 68, "label": "" },
+                            { "x": 9, "y": 65, "label": "" },
+                            { "x": 10, "y": 72, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 52, "type": "info", "label": "5MA↑穿20MA" },
+                            { "x": 4, "y": 50, "type": "buy", "label": "金叉買入 $50" },
+                            { "x": 6, "y": 58, "type": "buy", "label": "突破加碼 $58" },
+                            { "x": 9, "y": 65, "type": "info", "label": "回測20MA" },
+                            { "x": 10, "y": 72, "type": "takeProfit", "label": "停利 $70" }
+                        ],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 44}, {"x": 3, "y": 48}, {"x": 6, "y": 54}, {"x": 10, "y": 65}], "label": "20MA", "color": "#60a5fa" },
+                            { "type": "ma", "points": [{"x": 0, "y": 42}, {"x": 3, "y": 50}, {"x": 6, "y": 56}, {"x": 10, "y": 68}], "label": "5MA", "color": "#f59e0b" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 50, "yEnd": 75, "label": "多頭趨勢" }
+                        ]
+                    },
+                    "description": "5MA 向上穿越 20MA 形成黃金交叉，確認多頭趨勢。(1)金叉後進場 $50；(2)突破前高 $55 時加碼@$58；(3)回測 20MA 不破後持有至 $70 停利，獲利 32%。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "劇本O：跌深反彈的短線操作",
+                    "color": "amber",
+                    "text": "RSI 超賣 + 支撐確認 + 快進快出"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "超賣反彈操作",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 85, "label": "" },
+                            { "x": 1, "y": 78, "label": "" },
+                            { "x": 2, "y": 70, "label": "" },
+                            { "x": 3, "y": 62, "label": "" },
+                            { "x": 4, "y": 55, "label": "" },
+                            { "x": 5, "y": 60, "label": "" },
+                            { "x": 6, "y": 68, "label": "" },
+                            { "x": 7, "y": 65, "label": "" },
+                            { "x": 8, "y": 58, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 4, "y": 55, "type": "info", "label": "RSI<20 超賣" },
+                            { "x": 5, "y": 60, "type": "buy", "label": "反彈進場 $58" },
+                            { "x": 6, "y": 68, "type": "sell", "label": "壓力停利 $66" },
+                            { "x": 4, "y": 55, "type": "stopLoss", "label": "停損 $52" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 55, "label": "強支撐 $55" },
+                            { "type": "resistance", "y": 70, "label": "反彈壓力 $70" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 55, "yEnd": 70, "label": "反彈區間" }
+                        ]
+                    },
+                    "description": "股價急跌至 $55 支撐，RSI 跌至 20 以下超賣區。等待止跌訊號後 $58 進場，停損 $52（風險 10%），目標前低 $70 附近。在 $66 獲利 13.8% 後出場，不戀戰。"
+                },
+                {
+                    "type": "trade-example",
+                    "title": "超賣反彈實戰",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 58,
+                        "exitPrice": 66,
+                        "quantity": 500,
+                        "stopLoss": 52,
+                        "takeProfit": 70,
+                        "fees": 50,
+                        "result": {
+                            "profit": 3950,
+                            "percentage": 13.6
+                        }
+                    },
+                    "explanation": "RSI 超賣反彈操作，風險 $6（10.3%），報酬 $8（13.8%）。風險報酬比 1:1.3，屬於短線小額獲利，重點是快進快出不貪心。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "完整的交易計畫應該包含哪些要素？",
+                    "options": [
+                        { "id": "a", "text": "只需要決定買什麼股票", "isCorrect": false },
+                        { "id": "b", "text": "進場點、停損點、目標價、部位大小", "isCorrect": true },
+                        { "id": "c", "text": "看感覺隨時進出", "isCorrect": false },
+                        { "id": "d", "text": "只需要設定停利點", "isCorrect": false }
+                    ],
+                    "explanation": "完整的交易計畫必須包含：(1)進場理由與價位、(2)停損價位與風險金額、(3)目標價位、(4)部位大小與加減碼規則。交易前先規劃好，才能避免情緒化決策。"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "倉位管理策略",
+            "description": "三種倉位管理法的應用",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**倉位管理**是控制風險、放大利潤的關鍵。正確的倉位管理能讓你在虧損時減少損失，在獲利時擴大收益。",
+                    "highlights": [{ "text": "倉位管理", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "矩形倉位法",
+                            "description": "每次進場金額相同，等額分批",
+                            "color": "zinc",
+                            "subtext": "適合：無法判斷方向時"
+                        },
+                        {
+                            "title": "正金字塔法",
+                            "description": "首次大量，後續遞減",
+                            "color": "emerald",
+                            "subtext": "適合：順勢加碼"
+                        },
+                        {
+                            "title": "倒金字塔法",
+                            "description": "首次少量，後續遞增",
+                            "color": "rose",
+                            "subtext": "適合：價值投資（高風險）"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "矩形倉位管理法",
+                    "color": "zinc",
+                    "items": [
+                        "將總資金等分成 3-5 份",
+                        "每次進場固定投入一份",
+                        "優點：分散風險，降低平均成本",
+                        "缺點：無法在最佳位置重倉"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "矩形法案例（資金 $100,000）",
+                    "steps": [
+                        { "label": "分成 5 等份", "value": "每份 $20,000" },
+                        { "label": "第一筆 @ $50", "formula": "$20,000 ÷ $50", "value": "400股" },
+                        { "label": "第二筆 @ $48", "formula": "$20,000 ÷ $48", "value": "416股" },
+                        { "label": "第三筆 @ $52", "formula": "$20,000 ÷ $52", "value": "384股" },
+                        { "label": "總持股", "value": "1,200股", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "平均成本",
+                        "value": "$50.0（$60,000 ÷ 1,200股）",
+                        "color": "indigo"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "正金字塔倉位法（順勢加碼）",
+                    "color": "emerald",
+                    "text": "最適合趨勢交易的方法",
+                    "items": [
+                        "比例分配：50% → 30% → 20%",
+                        "只在獲利且趨勢確認時加碼",
+                        "每次加碼量遞減，控制平均成本",
+                        "停損設在最近一次加碼點下方"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "正金字塔加碼實戰",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 48, "label": "" },
+                            { "x": 1, "y": 52, "label": "" },
+                            { "x": 2, "y": 50, "label": "" },
+                            { "x": 3, "y": 56, "label": "" },
+                            { "x": 4, "y": 54, "label": "" },
+                            { "x": 5, "y": 60, "label": "" },
+                            { "x": 6, "y": 58, "label": "" },
+                            { "x": 7, "y": 65, "label": "" },
+                            { "x": 8, "y": 70, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 52, "type": "buy", "label": "首次50% @ $52" },
+                            { "x": 3, "y": 56, "type": "buy", "label": "加碼30% @ $56" },
+                            { "x": 5, "y": 60, "type": "buy", "label": "加碼20% @ $60" },
+                            { "x": 8, "y": 70, "type": "takeProfit", "label": "全部出場" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 50, "label": "首次停損" },
+                            { "type": "support", "y": 54, "label": "第二次停損" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 52, "yEnd": 72, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "首次 $52 買入 50%，突破前高後 $56 加碼 30%，再創新高後 $60 加碼 20%。平均成本約 $55，在 $70 全部出場獲利 27%。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 倒金字塔法的風險",
+                    "color": "rose",
+                    "items": [
+                        "比例分配：10% → 20% → 30% → 40%",
+                        "越跌買越多，降低平均成本",
+                        "風險極高：如果判斷錯誤，虧損會加倍",
+                        "僅適用於長期價值投資，不適合一般交易"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "倒金字塔的危險",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 92, "label": "" },
+                            { "x": 2, "y": 85, "label": "" },
+                            { "x": 3, "y": 78, "label": "" },
+                            { "x": 4, "y": 70, "label": "" },
+                            { "x": 5, "y": 60, "label": "" },
+                            { "x": 6, "y": 55, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 100, "type": "buy", "label": "10% @ $100" },
+                            { "x": 1, "y": 92, "type": "buy", "label": "20% @ $92" },
+                            { "x": 2, "y": 85, "type": "buy", "label": "30% @ $85" },
+                            { "x": 3, "y": 78, "type": "buy", "label": "40% @ $78" },
+                            { "x": 6, "y": 55, "type": "stopLoss", "label": "被迫停損" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "loss", "yStart": 50, "yEnd": 85, "label": "虧損區" }
+                        ]
+                    },
+                    "description": "平均成本約 $84，但股價跌至 $55 時被迫停損，虧損超過 35%。倒金字塔在趨勢錯誤時會造成巨大損失，需要極強的資金實力和判斷能力。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "順勢交易時，最適合使用哪種倉位管理法？",
+                    "options": [
+                        { "id": "a", "text": "倒金字塔法，越跌買越多", "isCorrect": false },
+                        { "id": "b", "text": "正金字塔法，獲利時加碼", "isCorrect": true },
+                        { "id": "c", "text": "一次全部投入", "isCorrect": false },
+                        { "id": "d", "text": "不需要倉位管理", "isCorrect": false }
+                    ],
+                    "explanation": "正金字塔法只在獲利且趨勢確認時加碼，符合「讓利潤奔跑」的原則。每次加碼量遞減，可以控制平均成本不會被拉太高。"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "title": "分批進出實戰",
+            "description": "降低風險的進出場技巧",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**分批進出**是降低單一決策風險的有效方法，可以避免「all-in 在最差點位」或「賣飛大行情」的困境。",
+                    "highlights": [{ "text": "分批進出", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "分批進場",
+                            "description": "將資金分成多筆，逐步建倉",
+                            "color": "emerald",
+                            "subtext": "降低進場成本波動"
+                        },
+                        {
+                            "title": "分批出場",
+                            "description": "將持股分成多筆，逐步獲利",
+                            "color": "indigo",
+                            "subtext": "平衡獲利與持有"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "分批進場策略",
+                    "color": "emerald",
+                    "items": [
+                        "① 訊號觸發時：買入計畫部位的 40%",
+                        "② 確認訊號時：加碼 30%",
+                        "③ 趨勢確立時：加碼最後 30%",
+                        "優點：平均成本更優、心理壓力更小"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本P：分批進場實戰",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 45, "label": "" },
+                            { "x": 1, "y": 48, "label": "" },
+                            { "x": 2, "y": 46, "label": "" },
+                            { "x": 3, "y": 50, "label": "" },
+                            { "x": 4, "y": 48, "label": "" },
+                            { "x": 5, "y": 52, "label": "" },
+                            { "x": 6, "y": 56, "label": "" },
+                            { "x": 7, "y": 60, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 48, "type": "buy", "label": "首次40% @ $48" },
+                            { "x": 3, "y": 50, "type": "info", "label": "觀察確認" },
+                            { "x": 4, "y": 48, "type": "buy", "label": "回測30% @ $48" },
+                            { "x": 5, "y": 52, "type": "buy", "label": "突破30% @ $52" },
+                            { "x": 7, "y": 60, "type": "takeProfit", "label": "全部出場" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 50, "label": "壓力→支撐" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 48, "yEnd": 62, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "訊號觸發 $48 買入 40%，回測 $48 時加碼 30%，突破 $50 確認後 $52 加碼 30%。平均成本約 $49，在 $60 出場獲利 22%。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "分批出場策略",
+                    "color": "indigo",
+                    "items": [
+                        "① 第一目標：賣出 1/3，鎖住部分獲利",
+                        "② 第二目標：賣出 1/3，入袋為安",
+                        "③ 剩餘部位：設移動停利，跟隨趨勢",
+                        "優點：兼顧鎖利與抱住大行情"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本Q：分批出場實戰",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 55, "label": "" },
+                            { "x": 2, "y": 58, "label": "" },
+                            { "x": 3, "y": 62, "label": "" },
+                            { "x": 4, "y": 60, "label": "" },
+                            { "x": 5, "y": 68, "label": "" },
+                            { "x": 6, "y": 72, "label": "" },
+                            { "x": 7, "y": 68, "label": "" },
+                            { "x": 8, "y": 65, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 50, "type": "buy", "label": "進場 $50" },
+                            { "x": 2, "y": 58, "type": "sell", "label": "賣 1/3 +16%" },
+                            { "x": 5, "y": 68, "type": "sell", "label": "賣 1/3 +36%" },
+                            { "x": 8, "y": 65, "type": "sell", "label": "餘 1/3 停利" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 58, "label": "目標1" },
+                            { "type": "resistance", "y": 68, "label": "目標2" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 50, "yEnd": 75, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "進場 $50 後設定目標：$58 賣 1/3（+16%）、$68 賣 1/3（+36%）、剩餘設移動停利。最終 $65 觸發停利，平均獲利約 27%。"
+                },
+                {
+                    "type": "trade-example",
+                    "title": "分批出場收益計算",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 50,
+                        "quantity": 1500,
+                        "fees": 200,
+                        "result": {
+                            "profit": 20050,
+                            "percentage": 26.7
+                        }
+                    },
+                    "explanation": "1500股分三批出場：500股@$58（獲利$4,000）、500股@$68（獲利$9,000）、500股@$65（獲利$7,500）。總獲利 $20,500，報酬率 26.7%。"
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "分批進出的心法",
+                    "items": [
+                        { "key": "不求最佳", "value": "接受「平均」而非追求「最佳」點位", "keyColor": "indigo" },
+                        { "key": "紀律執行", "value": "按計畫分批，不因情緒改變", "keyColor": "emerald" },
+                        { "key": "彈性調整", "value": "市況變化時可調整比例", "keyColor": "amber" },
+                        { "key": "記錄檢討", "value": "每次交易後檢討分批效果", "keyColor": "zinc" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "分批出場策略的主要目的是？",
+                    "options": [
+                        { "id": "a", "text": "一定要賣在最高點", "isCorrect": false },
+                        { "id": "b", "text": "平衡鎖住獲利與追隨趨勢", "isCorrect": true },
+                        { "id": "c", "text": "增加交易成本", "isCorrect": false },
+                        { "id": "d", "text": "讓操作更複雜", "isCorrect": false }
+                    ],
+                    "explanation": "分批出場可以「既鎖住部分獲利，又保留追隨趨勢的機會」。不用猜測最高點在哪，透過分批取得平均獲利。"
+                }
+            ]
+        },
+        {
+            "id": "10",
+            "title": "多週期分析進出",
+            "description": "大週期定方向，小週期找點位",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**多週期分析**是結合不同時間週期的技術分析，用大週期判斷趨勢方向，小週期尋找精確的進出點位。",
+                    "highlights": [{ "text": "多週期分析", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "週期層級關係",
+                    "color": "indigo",
+                    "items": [
+                        "月線/週線：判斷主要趨勢方向",
+                        "日線：判斷中期趨勢，制定交易計畫",
+                        "60分鐘/15分鐘：尋找精確進出點位",
+                        "原則：順大週期方向，在小週期進場"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["交易類型", "趨勢週期", "進場週期", "持有時間"],
+                    "rows": [
+                        ["波段交易", "週線", "日線", "數週~數月"],
+                        ["短線交易", "日線", "60分鐘", "數日~2週"],
+                        ["當沖交易", "60分鐘", "5分鐘", "數分鐘~數小時"]
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "週線多頭 + 日線回檔",
+                            "description": "大趨勢向上，短期休息",
+                            "color": "emerald",
+                            "subtext": "買進機會"
+                        },
+                        {
+                            "title": "週線空頭 + 日線反彈",
+                            "description": "大趨勢向下，短期反彈",
+                            "color": "rose",
+                            "subtext": "減碼或觀望"
+                        }
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本R：週線定向、日線進場",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 85, "label": "W1" },
+                            { "x": 1, "y": 92, "label": "W2" },
+                            { "x": 2, "y": 88, "label": "W3" },
+                            { "x": 3, "y": 95, "label": "W4" },
+                            { "x": 4, "y": 90, "label": "W5" },
+                            { "x": 5, "y": 98, "label": "W6" },
+                            { "x": 6, "y": 105, "label": "W7" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 85, "type": "info", "label": "週線起漲" },
+                            { "x": 2, "y": 88, "type": "buy", "label": "日線回檔買入" },
+                            { "x": 4, "y": 90, "type": "buy", "label": "再次回檔加碼" },
+                            { "x": 6, "y": 105, "type": "takeProfit", "label": "目標出場" }
+                        ],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 80}, {"x": 3, "y": 88}, {"x": 6, "y": 95}], "label": "週線20MA", "color": "#60a5fa" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 85, "yEnd": 108, "label": "週線多頭區" }
+                        ]
+                    },
+                    "description": "週線確認多頭趨勢（站上20MA），在日線回檔至週線支撐時進場。W3 回檔至 $88 買入，W5 再次回檔 $90 加碼，最終 W7 到達目標 $105。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "多週期共振進場",
+                    "color": "emerald",
+                    "text": "當大小週期訊號一致時，勝率最高",
+                    "items": [
+                        "週線：多頭趨勢，價格在均線之上",
+                        "日線：出現買進訊號（突破、支撐反彈等）",
+                        "60分鐘：確認短線止跌轉強",
+                        "三週期共振 = 高勝率進場點"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本S：多週期共振進場",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 72, "label": "" },
+                            { "x": 1, "y": 75, "label": "" },
+                            { "x": 2, "y": 73, "label": "" },
+                            { "x": 3, "y": 78, "label": "" },
+                            { "x": 4, "y": 76, "label": "" },
+                            { "x": 5, "y": 74, "label": "" },
+                            { "x": 6, "y": 78, "label": "" },
+                            { "x": 7, "y": 82, "label": "" },
+                            { "x": 8, "y": 88, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 78, "type": "info", "label": "日線突破" },
+                            { "x": 5, "y": 74, "type": "info", "label": "60分回檔" },
+                            { "x": 6, "y": 78, "type": "buy", "label": "共振買入" },
+                            { "x": 8, "y": 88, "type": "takeProfit", "label": "目標出場" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 75, "label": "日線支撐" },
+                            { "type": "ma", "points": [{"x": 0, "y": 70}, {"x": 4, "y": 74}, {"x": 8, "y": 82}], "label": "週線20MA↑", "color": "#60a5fa" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 74, "yEnd": 90, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "週線20MA向上（多頭），日線突破 $78 後回測 $74-75 支撐，60分鐘出現止跌訊號。三週期共振後在 $78 進場，停損 $72，目標 $88，獲利 12.8%。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "週期衝突時的處理",
+                    "color": "amber",
+                    "items": [
+                        "大週期 > 小週期：永遠以大週期為主",
+                        "週期衝突時：降低部位或觀望",
+                        "不要逆大週期操作：週線空頭不做多",
+                        "小週期訊號只是「進場時機」而非「方向」"
+                    ]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "多週期分析檢查清單",
+                    "items": [
+                        { "key": "週線方向", "value": "確認主趨勢是多頭或空頭", "keyColor": "indigo" },
+                        { "key": "日線位置", "value": "目前在支撐、壓力還是中間", "keyColor": "emerald" },
+                        { "key": "小週期訊號", "value": "是否出現符合大方向的進場訊號", "keyColor": "amber" },
+                        { "key": "風險報酬", "value": "進場點的風險報酬比是否合理", "keyColor": "rose" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "多週期分析中，當週線空頭但日線出現反彈訊號時，應該？",
+                    "options": [
+                        { "id": "a", "text": "積極做多，抓反彈", "isCorrect": false },
+                        { "id": "b", "text": "觀望或僅做短線，不重倉", "isCorrect": true },
+                        { "id": "c", "text": "忽略週線，只看日線", "isCorrect": false },
+                        { "id": "d", "text": "加碼做多", "isCorrect": false }
+                    ],
+                    "explanation": "週線空頭代表主趨勢向下，日線反彈只是「逆勢操作」，風險較高。此時應該觀望，或僅以輕倉做短線反彈，不宜重倉做多。"
+                }
+            ]
+        },
+        {
+            "id": "11",
+            "title": "極端行情應對",
+            "description": "大漲大跌時的策略調整",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**極端行情**指的是市場出現劇烈波動的時期，如股災、瘋漲行情等。此時需要特殊的應對策略來保護資金。",
+                    "highlights": [{ "text": "極端行情", "color": "rose" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "恐慌性下跌",
+                            "description": "連續跌停、量大暴跌",
+                            "color": "rose",
+                            "subtext": "風險控制優先"
+                        },
+                        {
+                            "title": "瘋漲行情",
+                            "description": "連續漲停、量大追價",
+                            "color": "emerald",
+                            "subtext": "獲利保護優先"
+                        },
+                        {
+                            "title": "黑天鵝事件",
+                            "description": "突發利空、無預警大跌",
+                            "color": "purple",
+                            "subtext": "現金為王"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "恐慌性下跌時的應對",
+                    "color": "rose",
+                    "items": [
+                        "① 不要恐慌賣出：大跌往往是最差的賣點",
+                        "② 檢視持股品質：優質股可持有，劣質股停損",
+                        "③ 保持現金：不要急於抄底，等待止跌訊號",
+                        "④ 分批佈局：確認底部後分批進場",
+                        "⑤ 設定總損失上限：跌破上限全部出場"
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "劇本T：恐慌下跌後的佈局",
+                    "candles": [
+                        { "open": 98, "high": 101, "low": 83, "close": 85, "label": "暴跌" },
+                        { "open": 84, "high": 86, "low": 70, "close": 72, "label": "恐慌" },
+                        { "open": 71, "high": 73, "low": 63, "close": 65, "label": "殺低" },
+                        { "open": 66, "high": 70, "low": 64, "close": 68, "label": "止跌" },
+                        { "open": 67, "high": 68, "low": 60, "close": 62, "label": "買30%" },
+                        { "open": 63, "high": 72, "low": 62, "close": 70, "label": "加碼40%" },
+                        { "open": 71, "high": 80, "low": 70, "close": 78, "label": "加碼30%" },
+                        { "open": 79, "high": 87, "low": 78, "close": 85, "label": "反彈" }
+                    ],
+                    "annotations": [
+                        { "index": 2, "text": "恐慌低點", "position": "bottom" },
+                        { "index": 4, "text": "錘子線買30%", "position": "bottom" },
+                        { "index": 5, "text": "加碼40%", "position": "top" },
+                        { "index": 6, "text": "加碼30%", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 85, "label": "" },
+                            { "x": 2, "y": 72, "label": "" },
+                            { "x": 3, "y": 65, "label": "" },
+                            { "x": 4, "y": 68, "label": "" },
+                            { "x": 5, "y": 62, "label": "" },
+                            { "x": 6, "y": 70, "label": "" },
+                            { "x": 7, "y": 78, "label": "" },
+                            { "x": 8, "y": 85, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 72, "type": "info", "label": "恐慌賣壓" },
+                            { "x": 3, "y": 65, "type": "info", "label": "恐慌低點" },
+                            { "x": 5, "y": 62, "type": "buy", "label": "第一筆 30%" },
+                            { "x": 6, "y": 70, "type": "buy", "label": "確認加碼 40%" },
+                            { "x": 7, "y": 78, "type": "buy", "label": "趨勢確立 30%" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 62, "label": "底部支撐$62" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 60, "yEnd": 72, "label": "恐慌區" },
+                            { "type": "profit", "yStart": 72, "yEnd": 90, "label": "復甦區" }
+                        ]
+                    },
+                    "description": "K線圖展示恐慌行情：連續長黑K代表恐慌性賣壓，但出現「錘子線」時代表低檔有買盤承接。等待確認底部後分批佈局：30%@$62、40%@$70、30%@$78，平均成本$70，等待反彈。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "瘋漲行情時的應對",
+                    "color": "emerald",
+                    "items": [
+                        "① 不要追高：連續漲停後風險極高",
+                        "② 分批獲利：漲越多賣越多（倒金字塔出場）",
+                        "③ 移動停利：設定回檔 10-15% 即出場",
+                        "④ 保持冷靜：不要被市場情緒影響",
+                        "⑤ 留下一部分：萬一繼續漲不會完全錯過"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "劇本U：瘋漲時的獲利保護",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 58, "label": "" },
+                            { "x": 2, "y": 68, "label": "" },
+                            { "x": 3, "y": 78, "label": "" },
+                            { "x": 4, "y": 85, "label": "" },
+                            { "x": 5, "y": 90, "label": "" },
+                            { "x": 6, "y": 82, "label": "" },
+                            { "x": 7, "y": 75, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 50, "type": "buy", "label": "進場 $50" },
+                            { "x": 2, "y": 68, "type": "sell", "label": "賣 1/4 +36%" },
+                            { "x": 3, "y": 78, "type": "sell", "label": "賣 1/4 +56%" },
+                            { "x": 4, "y": 85, "type": "sell", "label": "賣 1/4 +70%" },
+                            { "x": 6, "y": 82, "type": "sell", "label": "停利出清" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "profit", "yStart": 50, "yEnd": 92, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "進場 $50 後股價瘋漲。採用倒金字塔出場：$68 賣 1/4、$78 賣 1/4、$85 賣 1/4。剩餘 1/4 設移動停利，在 $82 觸發全部出場。平均獲利約 53%。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "黑天鵝事件應對",
+                    "color": "purple",
+                    "items": [
+                        "平時保持 10-20% 現金部位",
+                        "設定總投資組合最大虧損上限（如 -15%）",
+                        "使用停損單自動執行",
+                        "不要在事件發生當下做重大決策",
+                        "等待市場冷靜後再評估"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "市場恐慌性下跌時，最正確的做法是？",
+                    "options": [
+                        { "id": "a", "text": "立即賣出所有持股", "isCorrect": false },
+                        { "id": "b", "text": "立即全部資金抄底", "isCorrect": false },
+                        { "id": "c", "text": "保持冷靜，等待止跌訊號後分批佈局", "isCorrect": true },
+                        { "id": "d", "text": "完全不理會，長期持有", "isCorrect": false }
+                    ],
+                    "explanation": "恐慌下跌時最差的決策是「恐慌賣出」或「急於抄底」。正確做法是保持冷靜、等待止跌訊號，然後分批佈局降低風險。"
+                }
+            ]
+        }
+    ]
+}

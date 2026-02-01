@@ -1,0 +1,564 @@
+{
+    "id": "etf",
+    "title": "ETF投資入門",
+    "description": "認識 ETF 與被動投資策略",
+    "icon": "PieChart",
+    "color": "indigo",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "ETF基礎認識",
+            "description": "什麼是 ETF？有什麼優勢？",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**ETF**（Exchange Traded Fund，指數股票型基金）是一種結合「股票的靈活性」與「基金的分散性」的投資工具。",
+                    "highlights": [{ "text": "ETF", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ETF 是什麼？",
+                    "color": "indigo",
+                    "text": "ETF 就像一個「水果籃」，讓你一次買進一籃子股票，而不是只買單一個股。它追蹤特定指數（如台灣 50 指數），讓你的投資表現貼近該指數。"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "ETF",
+                            "description": "可在股市即時買賣，費用低廉，分散風險",
+                            "color": "emerald",
+                            "subtext": "適合新手入門"
+                        },
+                        {
+                            "title": "共同基金",
+                            "description": "每日計算淨值，申購贖回較慢，管理費較高",
+                            "color": "amber",
+                            "subtext": "需透過銀行申購"
+                        },
+                        {
+                            "title": "個股",
+                            "description": "單一公司股票，波動大，需要研究分析",
+                            "color": "rose",
+                            "subtext": "風險集中"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ETF 的優勢",
+                    "color": "emerald",
+                    "items": [
+                        "分散風險：一檔 ETF 含多家公司股票",
+                        "費用低廉：管理費約 0.2%~0.5%，遠低於主動型基金",
+                        "交易便利：像股票一樣即時買賣",
+                        "透明度高：持股公開，隨時可查詢",
+                        "門檻低：可買零股，小資族也能投資"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪一項是 ETF 相較於個股的主要優勢？",
+                    "options": [
+                        { "id": "a", "text": "獲利潛力更高", "isCorrect": false },
+                        { "id": "b", "text": "風險分散，不怕單一公司出問題", "isCorrect": true },
+                        { "id": "c", "text": "完全沒有風險", "isCorrect": false },
+                        { "id": "d", "text": "可以當沖", "isCorrect": false }
+                    ],
+                    "explanation": "ETF 最大的優勢是風險分散。買進 0050 等於同時持有台灣前 50 大公司，即使其中一家公司出問題，對整體影響也很小。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "台股熱門ETF",
+            "description": "認識 0050、0056 等主流 ETF",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "台灣 ETF 市場已相當成熟，有超過 200 檔 ETF 可供選擇。以下介紹最熱門的幾檔。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["代號", "名稱", "追蹤指數", "特色"],
+                    "rows": [
+                        ["0050", "元大台灣50", "台灣50指數", "台股最大、最老牌 ETF"],
+                        ["0056", "元大高股息", "台灣高股息指數", "追求股息收入首選"],
+                        ["006208", "富邦台50", "台灣50指數", "費用較 0050 低"],
+                        ["00878", "國泰永續高股息", "ESG 高股息", "季配息、ESG 概念"],
+                        ["00881", "國泰台灣5G+", "台灣5G+通訊指數", "5G 主題投資"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "0050 元大台灣50",
+                    "color": "indigo",
+                    "items": [
+                        "追蹤台灣市值前 50 大企業",
+                        "2003 年上市，歷史最悠久",
+                        "半年配息（6月、12月）",
+                        "管理費 0.32%",
+                        "最大持股：台積電（約 50%）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "0056 元大高股息",
+                    "color": "emerald",
+                    "items": [
+                        "追蹤「台灣高股息指數」",
+                        "選出殖利率最高的 30 檔股票",
+                        "年配息（10月）或季配息",
+                        "適合追求現金流的投資人",
+                        "股價波動較 0050 小"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "0050 適合誰？",
+                            "description": "追求長期資本成長，看好台灣大型股",
+                            "color": "indigo",
+                            "subtext": "年輕人累積資產首選"
+                        },
+                        {
+                            "title": "0056 適合誰？",
+                            "description": "追求穩定配息收入，偏好低波動",
+                            "color": "emerald",
+                            "subtext": "退休族現金流首選"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "想要追求穩定的股息收入，應該選擇哪檔 ETF？",
+                    "options": [
+                        { "id": "a", "text": "0050 元大台灣50", "isCorrect": false },
+                        { "id": "b", "text": "0056 元大高股息", "isCorrect": true },
+                        { "id": "c", "text": "00881 國泰台灣5G+", "isCorrect": false },
+                        { "id": "d", "text": "以上皆可", "isCorrect": false }
+                    ],
+                    "explanation": "0056 專門追蹤高殖利率股票，適合想要穩定配息收入的投資人。0050 則較適合追求長期資本成長的人。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "ETF交易方式",
+            "description": "如何買賣 ETF？定期定額怎麼做？",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "ETF 的交易方式和股票相同，可以在股市開盤時間即時買賣。此外，還可以設定**定期定額**自動扣款。",
+                    "highlights": [{ "text": "定期定額", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "整股交易",
+                            "description": "1 張 = 1,000 股，金額較大",
+                            "color": "indigo",
+                            "subtext": "適合資金充裕的投資人"
+                        },
+                        {
+                            "title": "零股交易",
+                            "description": "以「股」為單位，最低 1 股",
+                            "color": "emerald",
+                            "subtext": "適合小資族"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["交易類型", "時間", "說明"],
+                    "rows": [
+                        ["整股", "09:00-13:30", "盤中即時撮合"],
+                        ["零股（盤中）", "09:00-13:30", "整點撮合（9:10, 10:00...）"],
+                        ["零股（盤後）", "13:40-14:30", "14:30 集合競價"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "定期定額的優點",
+                    "color": "emerald",
+                    "items": [
+                        "自動執行，克服人性弱點",
+                        "平攤成本，降低買在高點的風險",
+                        "門檻極低，最低 100 元起",
+                        "養成儲蓄投資習慣",
+                        "長期投資最適合的方式"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "定期定額試算（月投 $5,000）",
+                    "steps": [
+                        { "label": "每月投入", "value": "$5,000" },
+                        { "label": "年投入金額", "formula": "$5,000 × 12", "value": "$60,000" },
+                        { "label": "假設年報酬", "value": "8%", "highlight": true },
+                        { "label": "10年後本金", "value": "$600,000" }
+                    ],
+                    "result": {
+                        "label": "10年後總值（複利）",
+                        "value": "約 $91 萬",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "定期定額最大的優點是？",
+                    "options": [
+                        { "id": "a", "text": "保證獲利", "isCorrect": false },
+                        { "id": "b", "text": "可以擇時進場", "isCorrect": false },
+                        { "id": "c", "text": "平攤成本、克服追高殺低", "isCorrect": true },
+                        { "id": "d", "text": "沒有任何費用", "isCorrect": false }
+                    ],
+                    "explanation": "定期定額透過固定時間投入固定金額，高價時買少、低價時買多，自然平攤成本。更重要的是它自動執行，避免投資人因情緒而追高殺低。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "ETF費用與稅務",
+            "description": "了解投資 ETF 的各項成本",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "投資 ETF 的成本主要包括**交易成本**和**持有成本**，相較於主動型基金便宜許多。",
+                    "highlights": [
+                        { "text": "交易成本", "color": "white" },
+                        { "text": "持有成本", "color": "white" }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["費用項目", "費率", "說明"],
+                    "rows": [
+                        ["手續費", "0.1425%", "買進、賣出各一次（券商可能有折扣）"],
+                        ["證券交易稅", "0.1%", "僅賣出時收取（股票是 0.3%）"],
+                        ["管理費", "0.2%~0.5%", "每年從淨值內扣除"],
+                        ["保管費", "0.03%~0.1%", "每年從淨值內扣除"]
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "買賣 1 張 0050（假設 $150）",
+                    "steps": [
+                        { "label": "買進金額", "value": "$150,000" },
+                        { "label": "買進手續費", "formula": "0.1425%", "value": "$214" },
+                        { "label": "賣出手續費", "formula": "0.1425%", "value": "$214" },
+                        { "label": "證交稅", "formula": "0.1%", "value": "$150", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "總交易成本",
+                        "value": "$578 (約 0.39%)",
+                        "color": "amber"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ETF 配息稅務",
+                    "color": "zinc",
+                    "items": [
+                        "股利所得需納入綜合所得稅申報",
+                        "可選合併計稅（8.5% 抵減）或分離計稅（28%）",
+                        "單次配息超過 2 萬元，需繳 2.11% 健保補充保費",
+                        "海外 ETF 的海外所得有 100 萬免稅額"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "ETF 優勢",
+                            "description": "證交稅 0.1%（股票 0.3%），持有成本低",
+                            "color": "emerald",
+                            "subtext": "長期持有更划算"
+                        },
+                        {
+                            "title": "注意事項",
+                            "description": "內扣費用會降低淨值，但不會直接收取",
+                            "color": "amber",
+                            "subtext": "選擇低費用 ETF"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "ETF 的證券交易稅是多少？",
+                    "options": [
+                        { "id": "a", "text": "0.3%（與股票相同）", "isCorrect": false },
+                        { "id": "b", "text": "0.1%（股票的三分之一）", "isCorrect": true },
+                        { "id": "c", "text": "0%（完全免稅）", "isCorrect": false },
+                        { "id": "d", "text": "0.15%（與當沖相同）", "isCorrect": false }
+                    ],
+                    "explanation": "ETF 的證交稅僅 0.1%，是一般股票 0.3% 的三分之一。這是為了鼓勵長期投資，也是 ETF 的優勢之一。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "ETF投資策略",
+            "description": "適合新手的 ETF 投資方法",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "ETF 投資策略以**長期持有**和**定期定額**為主，不需要頻繁操作，適合忙碌的上班族。",
+                    "highlights": [
+                        { "text": "長期持有", "color": "emerald" },
+                        { "text": "定期定額", "color": "emerald" }
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "定期定額",
+                            "description": "每月固定日期投入固定金額",
+                            "color": "emerald",
+                            "subtext": "最適合新手"
+                        },
+                        {
+                            "title": "單筆投入",
+                            "description": "一次性投入大筆資金",
+                            "color": "indigo",
+                            "subtext": "適合有閒置資金者"
+                        },
+                        {
+                            "title": "低點加碼",
+                            "description": "大跌時增加投入金額",
+                            "color": "amber",
+                            "subtext": "需要判斷能力"
+                        },
+                        {
+                            "title": "再平衡",
+                            "description": "定期調整各類資產比例",
+                            "color": "cyan",
+                            "subtext": "適合組合投資"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "新手建議策略",
+                    "color": "emerald",
+                    "items": [
+                        "從 0050 或 006208 開始，追蹤大盤指數",
+                        "設定每月定期定額金額（如 $3,000-$10,000）",
+                        "持有至少 3-5 年以上",
+                        "不要因短期波動而停止扣款",
+                        "有閒錢時可在大跌時加碼"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ETF 投資注意事項",
+                    "color": "amber",
+                    "items": [
+                        "市場風險：大盤下跌時 ETF 也會跟跌",
+                        "折溢價風險：市價可能偏離淨值",
+                        "追蹤誤差：績效無法 100% 貼近指數",
+                        "不是保本商品：仍有虧損可能"
+                    ]
+                },
+                {
+                    "type": "trade-example",
+                    "title": "定期定額 0050 案例",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 120,
+                        "exitPrice": 150,
+                        "quantity": 500,
+                        "fees": 130,
+                        "result": {
+                            "profit": 14870,
+                            "percentage": 24.8
+                        }
+                    },
+                    "explanation": "假設 3 年內平均成本 $120，累積 500 股。若 3 年後股價漲到 $150，總投資 $60,000 成長為約 $75,000，報酬率約 25%（未含配息）。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種情況應該繼續定期定額扣款？",
+                    "options": [
+                        { "id": "a", "text": "股市大跌 20%", "isCorrect": true },
+                        { "id": "b", "text": "只有股市上漲時才扣款", "isCorrect": false },
+                        { "id": "c", "text": "看到新聞說股市會繼續跌", "isCorrect": false },
+                        { "id": "d", "text": "朋友說要停止扣款", "isCorrect": false }
+                    ],
+                    "explanation": "定期定額的精髓就是「無論漲跌都持續扣款」。股市大跌時正是以低價累積更多單位的好時機，這時停止扣款等於錯過低點買進的機會。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "海外ETF入門",
+            "description": "美股ETF與全球配置",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "除了台股 ETF，**海外 ETF** 讓你可以投資全球市場，進行更分散的資產配置。",
+                    "highlights": [{ "text": "海外 ETF", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["代號", "名稱", "追蹤指數", "特色"],
+                    "rows": [
+                        ["VOO", "Vanguard S&P 500", "標普500指數", "美股大型股，費用率0.03%"],
+                        ["QQQ", "Invesco Nasdaq 100", "那斯達克100", "科技股為主"],
+                        ["VTI", "Vanguard Total Stock", "全美股市指數", "涵蓋大中小型股"],
+                        ["VT", "Vanguard Total World", "全球股市指數", "一檔投資全世界"],
+                        ["BND", "Vanguard Total Bond", "美國債券指數", "債券配置用"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "投資海外 ETF 的方式",
+                    "color": "indigo",
+                    "items": [
+                        "複委託：透過國內券商下單，手續費較高",
+                        "海外券商：直接開戶，費用較低但較複雜",
+                        "國內 ETF：如 00646（元大S&P500）追蹤海外指數"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "複委託",
+                            "description": "透過國內券商買海外股票",
+                            "color": "indigo",
+                            "subtext": "手續費約 0.5-1%"
+                        },
+                        {
+                            "title": "海外券商",
+                            "description": "直接在美國券商開戶",
+                            "color": "emerald",
+                            "subtext": "費用低，但需自行處理稅務"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "全球資產配置範例",
+                    "color": "emerald",
+                    "items": [
+                        "VTI 60%：美國全市場股票",
+                        "VXUS 30%：美國以外國際股票",
+                        "BND 10%：美國債券",
+                        "定期再平衡，維持比例"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "想用一檔 ETF 投資全世界股市，應該選？",
+                    "options": [
+                        { "id": "a", "text": "VOO（只有美國大型股）", "isCorrect": false },
+                        { "id": "b", "text": "VT（全球股市指數）", "isCorrect": true },
+                        { "id": "c", "text": "0050（只有台灣）", "isCorrect": false },
+                        { "id": "d", "text": "BND（債券）", "isCorrect": false }
+                    ],
+                    "explanation": "VT（Vanguard Total World Stock ETF）追蹤全球股市指數，一檔就能投資全世界的股票市場，是最簡單的全球配置方式。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "ETF綜合練習",
+            "description": "測試你的ETF知識",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "透過綜合練習來檢驗你對 **ETF 投資**的理解程度。",
+                    "highlights": [{ "text": "ETF 投資", "color": "white" }]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【情境】定期定額遇到大跌",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 150, "label": "M1" },
+                            { "x": 1, "y": 145, "label": "" },
+                            { "x": 2, "y": 130, "label": "M3" },
+                            { "x": 3, "y": 110, "label": "" },
+                            { "x": 4, "y": 100, "label": "M5" },
+                            { "x": 5, "y": 115, "label": "" },
+                            { "x": 6, "y": 130, "label": "M7" },
+                            { "x": 7, "y": 145, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 150, "type": "buy", "label": "開始扣款$150" },
+                            { "x": 4, "y": 100, "type": "info", "label": "低點$100" },
+                            { "x": 7, "y": 145, "type": "info", "label": "回升$145" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "loss", "yStart": 95, "yEnd": 150, "label": "下跌期" }
+                        ]
+                    },
+                    "description": "你從 $150 開始定期定額 0050，每月投入 $5,000。股價一路跌至 $100（-33%）又回升至 $145。此時你的投資績效如何？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境答案】持續定期定額 8 個月後，投資績效最可能是？",
+                    "options": [
+                        { "id": "a", "text": "虧損 33%，因為從高點開始", "isCorrect": false },
+                        { "id": "b", "text": "虧損 3%，因為股價還沒回到 $150", "isCorrect": false },
+                        { "id": "c", "text": "獲利，因為低點累積了更多單位", "isCorrect": true },
+                        { "id": "d", "text": "剛好打平", "isCorrect": false }
+                    ],
+                    "explanation": "定期定額在下跌時以低價買入更多單位，平均成本會低於最初的 $150。即使股價只回到 $145，因為平均成本更低，實際上已經獲利。這就是定期定額的威力！"
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "定期定額成本計算",
+                    "steps": [
+                        { "label": "M1：$5,000 ÷ $150", "value": "33.3 股" },
+                        { "label": "M3：$5,000 ÷ $130", "value": "38.5 股" },
+                        { "label": "M5：$5,000 ÷ $100", "value": "50.0 股", "highlight": true },
+                        { "label": "M7：$5,000 ÷ $130", "value": "38.5 股" },
+                        { "label": "8個月總投入", "value": "$40,000" },
+                        { "label": "累積股數（約）", "value": "320 股" }
+                    ],
+                    "result": {
+                        "label": "平均成本",
+                        "value": "約 $125（低於起始$150）",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "table",
+                    "headers": ["題目", "正確答案"],
+                    "rows": [
+                        ["ETF 的證交稅是多少？", "0.1%（股票的 1/3）"],
+                        ["0050 最大持股是？", "台積電（約 50%）"],
+                        ["0056 的特色是？", "追蹤高股息股票"],
+                        ["定期定額的優點？", "平攤成本、克服追高殺低"],
+                        ["ETF 相較個股的優勢？", "風險分散"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ETF 投資總結",
+                    "color": "emerald",
+                    "items": [
+                        "ETF 是新手入門的最佳選擇",
+                        "定期定額是最適合上班族的投資方式",
+                        "長期持有比頻繁交易更有利",
+                        "費用率會影響長期績效",
+                        "全球配置可以降低單一市場風險"
+                    ]
+                }
+            ]
+        }
+    ]
+}

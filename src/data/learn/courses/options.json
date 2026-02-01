@@ -1,0 +1,498 @@
+{
+    "id": "options",
+    "title": "期權與衍生品入門",
+    "description": "認識選擇權交易的基礎知識",
+    "icon": "Zap",
+    "color": "amber",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "選擇權基礎概念",
+            "description": "認識 Call 與 Put 的基本原理",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**選擇權（Options）**是一種衍生性金融商品，給予持有人在特定時間內，以特定價格買入或賣出標的資產的「權利」，但非義務。",
+                    "highlights": [{ "text": "選擇權（Options）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "適用市場",
+                    "color": "indigo",
+                    "text": "🌐 本課程原理適用全球市場，但具體規則會因市場而異（台指選擇權 vs 美股選擇權）"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "買權 Call Option",
+                            "description": "買方有權在到期前以履約價「買入」標的",
+                            "color": "emerald",
+                            "subtext": "看漲時買入 Call"
+                        },
+                        {
+                            "title": "賣權 Put Option",
+                            "description": "買方有權在到期前以履約價「賣出」標的",
+                            "color": "rose",
+                            "subtext": "看跌時買入 Put"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "選擇權基本術語",
+                    "color": "indigo",
+                    "items": [
+                        "履約價（Strike Price）：約定的買賣價格",
+                        "權利金（Premium）：購買選擇權的成本",
+                        "到期日（Expiration Date）：選擇權的有效期限",
+                        "標的資產（Underlying）：選擇權連結的股票或指數",
+                        "合約規模：美股 1 合約 = 100 股"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["身份", "權利/義務", "風險/報酬"],
+                    "rows": [
+                        ["Call 買方", "有權以履約價買入", "最大虧損=權利金，獲利無限"],
+                        ["Call 賣方", "有義務以履約價賣出", "最大獲利=權利金，虧損無限"],
+                        ["Put 買方", "有權以履約價賣出", "最大虧損=權利金，獲利有限"],
+                        ["Put 賣方", "有義務以履約價買入", "最大獲利=權利金，虧損有限"]
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "Call Option 範例",
+                    "steps": [
+                        { "label": "標的股票現價", "value": "$100" },
+                        { "label": "Call 履約價", "value": "$105" },
+                        { "label": "權利金", "value": "$3/股" },
+                        { "label": "合約成本", "formula": "$3 × 100股", "value": "$300", "highlight": true },
+                        { "label": "損益平衡點", "formula": "$105 + $3", "value": "$108", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "股價須漲至",
+                        "value": "$108 以上才獲利",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "你認為某股票會上漲，應該買入什麼選擇權？",
+                    "options": [
+                        { "id": "a", "text": "買入 Call（買權）", "isCorrect": true },
+                        { "id": "b", "text": "買入 Put（賣權）", "isCorrect": false },
+                        { "id": "c", "text": "賣出 Call", "isCorrect": false },
+                        { "id": "d", "text": "賣出 Put", "isCorrect": false }
+                    ],
+                    "explanation": "買入 Call 讓你有權以履約價買入股票。如果股價上漲超過履約價+權利金，你就獲利。最大虧損僅限於權利金，但獲利潛力無限。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "買方策略：Long Call 與 Long Put",
+            "description": "選擇權買方的基本策略",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "作為選擇權**買方**，你支付權利金換取權利。最大虧損有限（權利金），但獲利潛力可觀。",
+                    "highlights": [{ "text": "買方", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Long Call（買入買權）",
+                    "color": "emerald",
+                    "text": "看漲策略：預期股價上漲時使用",
+                    "items": [
+                        "最大虧損：權利金（已知且有限）",
+                        "最大獲利：理論上無上限",
+                        "損益平衡：履約價 + 權利金",
+                        "適用情境：強烈看漲、想以小博大"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Long Put（買入賣權）",
+                    "color": "rose",
+                    "text": "看跌策略：預期股價下跌或避險時使用",
+                    "items": [
+                        "最大虧損：權利金（已知且有限）",
+                        "最大獲利：履約價 - 權利金（股價跌至 0）",
+                        "損益平衡：履約價 - 權利金",
+                        "適用情境：看空、持股保險"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["策略", "市場看法", "最大虧損", "最大獲利"],
+                    "rows": [
+                        ["Long Call", "強烈看漲", "權利金", "無限"],
+                        ["Long Put", "強烈看跌", "權利金", "履約價-權利金"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "買方優勢與劣勢",
+                    "color": "amber",
+                    "items": [
+                        "優勢：風險有限，最多虧權利金",
+                        "優勢：槓桿效果大，小資金控制大部位",
+                        "劣勢：時間價值消逝（Theta Decay）",
+                        "劣勢：勝率較低，需要行情配合",
+                        "劣勢：隱含波動率下降會虧損"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 買方操作要點",
+                    "color": "zinc",
+                    "items": [
+                        "選擇流動性好的合約（窄價差）",
+                        "避免買太價外的選擇權（機率低）",
+                        "注意到期日，預留足夠時間",
+                        "設定停損，不要讓權利金歸零"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "Long Put 的最大虧損是什麼？",
+                    "options": [
+                        { "id": "a", "text": "無限", "isCorrect": false },
+                        { "id": "b", "text": "履約價", "isCorrect": false },
+                        { "id": "c", "text": "權利金", "isCorrect": true },
+                        { "id": "d", "text": "股票市值", "isCorrect": false }
+                    ],
+                    "explanation": "買入選擇權（不論 Call 或 Put）的最大虧損都是權利金。即使股價朝相反方向大幅波動，你的損失也僅限於當初支付的權利金。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "賣方策略：Covered Call 與 Cash-Secured Put",
+            "description": "相對保守的選擇權賣方策略",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "選擇權**賣方策略**可以產生穩定收入，但需要有足夠的資金或股票作為擔保。以下介紹兩種較安全的賣方策略。",
+                    "highlights": [{ "text": "賣方策略", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Covered Call（掩護性買權）",
+                    "color": "emerald",
+                    "text": "持有股票 + 賣出 Call = 收取權利金",
+                    "items": [
+                        "適用：持有股票，認為短期不會大漲",
+                        "收益：收取權利金作為額外收入",
+                        "風險：股價大漲時，獲利被封頂",
+                        "優點：降低持股成本"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "Covered Call 範例",
+                    "steps": [
+                        { "label": "持有股票", "value": "100 股 AAPL @ $150" },
+                        { "label": "賣出 Call 履約價", "value": "$160" },
+                        { "label": "收取權利金", "value": "$3/股 = $300", "highlight": true },
+                        { "label": "情境1：股價 < $160", "value": "保留股票 + $300 權利金" },
+                        { "label": "情境2：股價 > $160", "value": "股票被 Call 走，獲利封頂在 $160" }
+                    ],
+                    "result": {
+                        "label": "最大獲利",
+                        "value": "$1,300（$10價差+$3權利金）×100",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Cash-Secured Put（現金擔保賣權）",
+                    "color": "amber",
+                    "text": "準備現金 + 賣出 Put = 等待低價買股",
+                    "items": [
+                        "適用：想買某股票，但希望更低價買入",
+                        "收益：收取權利金，無論是否被履約",
+                        "風險：股價大跌，需以履約價買入",
+                        "優點：降低買入成本或純收權利金"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "Cash-Secured Put 範例",
+                    "steps": [
+                        { "label": "想買的股票現價", "value": "$100" },
+                        { "label": "賣出 Put 履約價", "value": "$95" },
+                        { "label": "收取權利金", "value": "$2/股 = $200", "highlight": true },
+                        { "label": "需準備現金", "value": "$9,500（$95 × 100股）" },
+                        { "label": "實際買入成本", "formula": "$95 - $2", "value": "$93/股", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "情境",
+                        "value": "股價跌至$95以下=買到便宜股；否則淨賺$200",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "你持有 100 股 TSLA，認為短期會盤整，想賺取額外收入，應該用什麼策略？",
+                    "options": [
+                        { "id": "a", "text": "Long Call", "isCorrect": false },
+                        { "id": "b", "text": "Long Put", "isCorrect": false },
+                        { "id": "c", "text": "Covered Call", "isCorrect": true },
+                        { "id": "d", "text": "Cash-Secured Put", "isCorrect": false }
+                    ],
+                    "explanation": "Covered Call 適合持有股票且認為短期不會大漲的情況。賣出 Call 收取權利金，若股價未漲過履約價，你保留股票並賺取權利金。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "價差策略入門",
+            "description": "Bull Put Spread 與 Bear Call Spread",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**價差策略（Spread）**是同時買入和賣出選擇權，用以控制風險並降低成本。",
+                    "highlights": [{ "text": "價差策略（Spread）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Bull Put Spread（牛市賣權價差）",
+                    "color": "emerald",
+                    "text": "看漲策略：賣出高履約價 Put + 買入低履約價 Put",
+                    "items": [
+                        "方向：溫和看漲或中性偏多",
+                        "最大獲利：淨收取的權利金",
+                        "最大虧損：兩履約價差 - 淨權利金",
+                        "損益平衡：高履約價 - 淨權利金"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "Bull Put Spread 範例",
+                    "steps": [
+                        { "label": "股價", "value": "$100" },
+                        { "label": "賣出 Put 履約價 $95", "value": "收權利金 $3" },
+                        { "label": "買入 Put 履約價 $90", "value": "付權利金 $1" },
+                        { "label": "淨收權利金", "formula": "$3 - $1", "value": "$2/股 = $200", "highlight": true },
+                        { "label": "最大虧損", "formula": "($95-$90-$2)×100", "value": "$300", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "損益比",
+                        "value": "最大獲利 $200 vs 最大虧損 $300",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Bear Call Spread（熊市買權價差）",
+                    "color": "rose",
+                    "text": "看跌策略：賣出低履約價 Call + 買入高履約價 Call",
+                    "items": [
+                        "方向：溫和看跌或中性偏空",
+                        "最大獲利：淨收取的權利金",
+                        "最大虧損：兩履約價差 - 淨權利金",
+                        "損益平衡：低履約價 + 淨權利金"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["策略", "市場觀點", "建立方式", "最大風險"],
+                    "rows": [
+                        ["Bull Put Spread", "溫和看漲", "賣高Put+買低Put", "履約價差-權利金"],
+                        ["Bear Call Spread", "溫和看跌", "賣低Call+買高Call", "履約價差-權利金"],
+                        ["Bull Call Spread", "溫和看漲", "買低Call+賣高Call", "支付的淨權利金"],
+                        ["Bear Put Spread", "溫和看跌", "買高Put+賣低Put", "支付的淨權利金"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "價差策略優缺點",
+                    "color": "zinc",
+                    "items": [
+                        "優點：風險有限且已知",
+                        "優點：比單腳策略更低成本",
+                        "優點：降低希臘值風險",
+                        "缺點：獲利也有限",
+                        "缺點：需要管理兩個部位",
+                        "缺點：手續費較高（兩筆交易）"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "你認為股價會小漲或持平，想收取權利金，風險有限，應該用什麼策略？",
+                    "options": [
+                        { "id": "a", "text": "Long Call", "isCorrect": false },
+                        { "id": "b", "text": "Naked Put", "isCorrect": false },
+                        { "id": "c", "text": "Bull Put Spread", "isCorrect": true },
+                        { "id": "d", "text": "Long Straddle", "isCorrect": false }
+                    ],
+                    "explanation": "Bull Put Spread 適合溫和看漲的情況，可以收取權利金，而且透過買入更低履約價的 Put 限制了最大虧損，風險可控。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "希臘字母入門",
+            "description": "Delta、Gamma、Theta、Vega 的意義",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**希臘字母（Greeks）**用來衡量選擇權價格對各種因素的敏感度，是進階選擇權交易的必備知識。",
+                    "highlights": [{ "text": "希臘字母（Greeks）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Delta (Δ)",
+                    "color": "emerald",
+                    "text": "衡量標的價格變動對選擇權價格的影響",
+                    "items": [
+                        "Call Delta：0 到 +1（價內 Call 接近 1）",
+                        "Put Delta：0 到 -1（價內 Put 接近 -1）",
+                        "意義：Delta = 0.5 表示股價漲 $1，選擇權漲 $0.5",
+                        "應用：Delta 也可視為到期價內的機率"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Gamma (Γ)",
+                    "color": "indigo",
+                    "text": "衡量 Delta 變化的速度",
+                    "items": [
+                        "Gamma 高：Delta 變化快，風險較大",
+                        "價平選擇權 Gamma 最高",
+                        "接近到期時 Gamma 增加",
+                        "買方 Gamma 為正，賣方為負"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Theta (Θ)",
+                    "color": "amber",
+                    "text": "衡量時間消逝對選擇權價格的影響",
+                    "items": [
+                        "Theta 幾乎都是負數（時間價值消逝）",
+                        "買方：Theta 是敵人，每天損失價值",
+                        "賣方：Theta 是朋友，坐收時間價值",
+                        "接近到期時 Theta 衰減加速"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Vega (ν)",
+                    "color": "purple",
+                    "text": "衡量隱含波動率變化對價格的影響",
+                    "items": [
+                        "波動率上升 → 選擇權價格上升",
+                        "波動率下降 → 選擇權價格下降",
+                        "買方希望波動率上升",
+                        "賣方希望波動率下降"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["希臘字母", "衡量對象", "買方", "賣方"],
+                    "rows": [
+                        ["Delta", "標的價格敏感度", "正（Call）負（Put）", "負（Call）正（Put）"],
+                        ["Gamma", "Delta 變化速度", "正（獲利加速）", "負（風險增加）"],
+                        ["Theta", "時間消逝", "負（敵人）", "正（朋友）"],
+                        ["Vega", "波動率敏感度", "正（喜歡波動）", "負（厭惡波動）"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "你賣出了選擇權，最希望哪個希臘字母對你有利？",
+                    "options": [
+                        { "id": "a", "text": "高 Delta", "isCorrect": false },
+                        { "id": "b", "text": "高 Gamma", "isCorrect": false },
+                        { "id": "c", "text": "正 Theta", "isCorrect": true },
+                        { "id": "d", "text": "高 Vega", "isCorrect": false }
+                    ],
+                    "explanation": "賣方最大的優勢是 Theta（時間價值消逝）。隨著時間流逝，選擇權的時間價值會減少，這對賣方有利。賣方的 Theta 為正，每天都在賺取時間價值。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "台指選擇權 vs 美股選擇權",
+            "description": "兩個市場的差異與特點",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**台指選擇權**和**美股選擇權**雖然原理相同，但在規格、流動性、交易規則上有顯著差異。",
+                    "highlights": [
+                        { "text": "台指選擇權", "color": "indigo" },
+                        { "text": "美股選擇權", "color": "purple" }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["項目", "🇹🇼 台指選擇權", "🇺🇸 美股選擇權"],
+                    "rows": [
+                        ["標的", "台灣加權指數", "個股或 ETF"],
+                        ["合約規模", "指數 × $50", "100 股"],
+                        ["交割方式", "現金結算", "實物交割（股票）"],
+                        ["到期日", "每月第3個週三", "每週/月（多種選擇）"],
+                        ["交易時間", "08:45-13:45", "09:30-16:00（美東）"],
+                        ["流動性", "集中在近月、價平", "熱門股非常好"],
+                        ["最小跳動", "1 點 = $50", "$0.01 = $1"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇹🇼 台指選擇權特點",
+                    "color": "indigo",
+                    "items": [
+                        "以加權指數為標的，不能交易個股選擇權",
+                        "現金結算，不會收到或交付股票",
+                        "流動性集中在近月合約",
+                        "散戶與法人皆可參與",
+                        "可搭配台指期貨操作"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇺🇸 美股選擇權特點",
+                    "color": "purple",
+                    "items": [
+                        "可交易數千檔個股選擇權",
+                        "實物交割，到期可能收到股票",
+                        "每週到期的選擇權（Weekly Options）",
+                        "流動性極佳（熱門股如 AAPL、TSLA）",
+                        "需透過海外券商交易"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 新手注意事項",
+                    "color": "rose",
+                    "items": [
+                        "選擇權是高風險工具，可能快速虧損",
+                        "賣方風險理論上無限（裸賣）",
+                        "建議先用小部位練習",
+                        "理解希臘字母再進場",
+                        "設定嚴格停損"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "台指選擇權到期時如何結算？",
+                    "options": [
+                        { "id": "a", "text": "交付股票", "isCorrect": false },
+                        { "id": "b", "text": "現金結算", "isCorrect": true },
+                        { "id": "c", "text": "自動展期", "isCorrect": false },
+                        { "id": "d", "text": "轉為期貨", "isCorrect": false }
+                    ],
+                    "explanation": "台指選擇權採用現金結算，到期時根據結算價計算損益，直接以現金多退少補，不會有股票交割。美股選擇權則是實物交割，可能收到或交付股票。"
+                }
+            ]
+        }
+    ]
+}

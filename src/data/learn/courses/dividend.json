@@ -1,0 +1,710 @@
+{
+    "id": "dividend",
+    "title": "除權息與股利",
+    "description": "了解股利政策與除權息機制",
+    "icon": "Coins",
+    "color": "emerald",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "股利基礎知識",
+            "description": "認識現金股利與股票股利",
+            "duration": "8分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**股利**是公司將盈餘分配給股東的方式，分為「現金股利」和「股票股利」兩種。",
+                    "highlights": [{ "text": "股利", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "現金股利（除息）",
+                            "description": "公司直接發放現金給股東",
+                            "color": "emerald",
+                            "subtext": "例：配息 2 元 = 每股發 $2"
+                        },
+                        {
+                            "title": "股票股利（除權）",
+                            "description": "公司發放新股票給股東",
+                            "color": "indigo",
+                            "subtext": "例：配股 1 元 = 每股配 0.1 股"
+                        }
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "股利計算範例（持有 1 張 = 1,000 股）",
+                    "steps": [
+                        { "label": "現金股利（每股）", "value": "$2.5" },
+                        { "label": "可領現金", "formula": "1,000 股 × $2.5", "value": "$2,500", "highlight": true },
+                        { "label": "股票股利（每股）", "value": "$1" },
+                        { "label": "配股率", "formula": "$1 ÷ 面額 $10", "value": "10%" },
+                        { "label": "可領股數", "formula": "1,000 股 × 10%", "value": "100 股", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "總股利",
+                        "value": "$2,500 現金 + 100 股",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "股利的意義",
+                    "color": "zinc",
+                    "items": [
+                        "代表公司願意與股東分享獲利",
+                        "穩定配息的公司通常財務穩健",
+                        "高配息不代表是好投資（要看填息能力）",
+                        "成長型公司可能不配息，將盈餘再投資"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "「股票股利 1 元」代表什麼意思？",
+                    "options": [
+                        { "id": "a", "text": "每股可領 $1 現金", "isCorrect": false },
+                        { "id": "b", "text": "每股可配 0.1 股新股票", "isCorrect": true },
+                        { "id": "c", "text": "股價會漲 $1", "isCorrect": false },
+                        { "id": "d", "text": "需要繳 $1 的稅", "isCorrect": false }
+                    ],
+                    "explanation": "股票股利是以股票的面額 $10 為計算基準。配股 1 元 = 1/10 = 0.1 股。所以持有 1,000 股可獲得 100 股新股票。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "除權息機制",
+            "description": "了解除權息的計算與時程",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**除權息**是公司發放股利時，股價會相應調整的機制。除息後股價會下跌相當於現金股利的金額。",
+                    "highlights": [{ "text": "除權息", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "除息參考價計算",
+                    "color": "indigo",
+                    "text": "除息參考價 = 除息前股價 - 現金股利\n例：股價 $50，配息 $2 → 除息參考價 = $48"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "除權參考價計算",
+                    "color": "purple",
+                    "text": "除權參考價 = 除權前股價 ÷ (1 + 配股率)\n例：股價 $50，配股 $1(10%) → 除權參考價 = $50 ÷ 1.1 ≈ $45.45"
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "同時除權息計算",
+                    "steps": [
+                        { "label": "除息前股價", "value": "$100" },
+                        { "label": "現金股利", "value": "$3" },
+                        { "label": "股票股利", "formula": "$2（配股率 20%）", "value": "20%" },
+                        { "label": "公式", "value": "(股價-現金股利)÷(1+配股率)" }
+                    ],
+                    "result": {
+                        "label": "除權息參考價",
+                        "value": "$80.83",
+                        "color": "amber"
+                    }
+                },
+                {
+                    "type": "table",
+                    "headers": ["時間點", "說明"],
+                    "rows": [
+                        ["最後買進日", "這天買進可參與配股配息"],
+                        ["除權息交易日", "股價調整日，當日起買進者無法參與"],
+                        ["最後過戶日", "股票過戶截止日"],
+                        ["停止過戶期間", "約 5 個工作天"],
+                        ["股利發放日", "現金入帳，約除息後 1 個月"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 重要觀念",
+                    "color": "amber",
+                    "text": "除權息只是「左手換右手」，你的總資產並沒有立即增加。股價下跌的金額等於你收到的股利，真正獲利要等股價「填權息」才算。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "某股票股價 $80，即將除息 $4，除息後參考價是多少？",
+                    "options": [
+                        { "id": "a", "text": "$80", "isCorrect": false },
+                        { "id": "b", "text": "$84", "isCorrect": false },
+                        { "id": "c", "text": "$76", "isCorrect": true },
+                        { "id": "d", "text": "$72", "isCorrect": false }
+                    ],
+                    "explanation": "除息參考價 = 除息前股價 - 現金股利 = $80 - $4 = $76。這就是為什麼說除息只是「左手換右手」，股價會相應下調。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "填權息觀念",
+            "description": "什麼是填權息？如何判斷？",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**填權息**是指除權息後，股價漲回除權息前的價格水準。只有填權息成功，參與除權息的投資人才真正獲利。",
+                    "highlights": [{ "text": "填權息", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "填權息成功",
+                            "description": "股價漲回除息前水準",
+                            "color": "emerald",
+                            "subtext": "真正賺到股利"
+                        },
+                        {
+                            "title": "貼權息",
+                            "description": "股價持續下跌，未能回補",
+                            "color": "rose",
+                            "subtext": "賺股利賠價差"
+                        }
+                    ]
+                },
+                {
+                    "type": "trade-example",
+                    "title": "填權息成功案例",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 50,
+                        "exitPrice": 52,
+                        "quantity": 1000,
+                        "fees": 100,
+                        "result": {
+                            "profit": 3900,
+                            "percentage": 7.8
+                        }
+                    },
+                    "explanation": "以 $50 買進 1,000 股，參與除息 $2 後股價調整為 $48。10 天後股價漲回 $52 完成填息。總報酬 = 股利 $2,000 + 價差 $2,000 = $4,000，扣除手續費 $100 後淨獲利 $3,900（報酬率 7.8%）。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "判斷是否參與除權息",
+                    "color": "indigo",
+                    "items": [
+                        "公司獲利是否穩定？配息是否持續？",
+                        "歷史填權息天數多久？（越短越好）",
+                        "目前股價位置是否合理？",
+                        "大盤多空氛圍如何？",
+                        "是否有特殊利多或利空消息？"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["指標", "良好", "注意"],
+                    "rows": [
+                        ["歷史填息天數", "< 30天", "> 90天"],
+                        ["配息穩定度", "連續5年以上", "時有時無"],
+                        ["殖利率", "4%-7%", "> 10%（可能有問題）"],
+                        ["股價位置", "相對低點", "歷史高點"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種情況最有機會順利填息？",
+                    "options": [
+                        { "id": "a", "text": "歷史填息天數超過 180 天", "isCorrect": false },
+                        { "id": "b", "text": "配息不穩定，時有時無", "isCorrect": false },
+                        { "id": "c", "text": "歷年平均 20 天內填息，獲利穩定成長", "isCorrect": true },
+                        { "id": "d", "text": "殖利率高達 15%", "isCorrect": false }
+                    ],
+                    "explanation": "歷史填息天數短代表市場對公司有信心，獲利穩定成長則確保未來配息能力。殖利率過高（如 15%）要小心是股價大跌造成的「假殖利率」。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "現金殖利率",
+            "description": "計算與判斷合理殖利率",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**現金殖利率**是衡量股息報酬的重要指標，計算方式為「現金股利 ÷ 買進股價」。",
+                    "highlights": [{ "text": "現金殖利率", "color": "white" }]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "殖利率計算",
+                    "steps": [
+                        { "label": "買進股價", "value": "$50" },
+                        { "label": "現金股利", "value": "$2.5" },
+                        { "label": "現金殖利率", "formula": "$2.5 ÷ $50", "value": "5%", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "年化報酬（僅股息）",
+                        "value": "5%",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "殖利率參考標準",
+                    "color": "zinc",
+                    "items": [
+                        "< 3%：偏低，可能是成長股或股價被高估",
+                        "3%-5%：正常水準",
+                        "5%-7%：相對優質的高殖利率",
+                        "> 8%：過高，需檢查是否有特殊原因"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 殖利率陷阱",
+                    "color": "rose",
+                    "items": [
+                        "股價大跌造成的「假高殖利率」",
+                        "一次性配發的特別股利",
+                        "公司獲利衰退，未來可能降低配息",
+                        "靠借貸或賣資產來配息"
+                    ]
+                },
+                {
+                    "type": "indicator-example",
+                    "title": "殖利率比較",
+                    "indicator": "現金殖利率",
+                    "values": [
+                        { "label": "股票 A", "value": "4.5%", "signal": "neutral" },
+                        { "label": "股票 B", "value": "8.5%", "signal": "bearish" },
+                        { "label": "股票 C", "value": "5.2%", "signal": "bullish" }
+                    ],
+                    "interpretation": "股票 B 殖利率異常高，可能是股價大跌或獲利不穩定造成。股票 C 殖利率合理且為看漲信號，可能是較安全的選擇。選擇高殖利率股時，務必確認配息的可持續性。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "一檔股票殖利率高達 12%，以下哪個原因最可能？",
+                    "options": [
+                        { "id": "a", "text": "公司非常賺錢", "isCorrect": false },
+                        { "id": "b", "text": "股價大跌導致殖利率「被動」提高", "isCorrect": true },
+                        { "id": "c", "text": "這是最好的投資標的", "isCorrect": false },
+                        { "id": "d", "text": "公司要倒閉前會大量配息", "isCorrect": false }
+                    ],
+                    "explanation": "殖利率 = 股利 ÷ 股價。股價大跌會讓殖利率「被動」升高，這種高殖利率是假象。投資前要確認高殖利率是來自「高股利」而非「低股價」。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "股利節稅策略",
+            "description": "了解股利所得稅與節稅方法",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "highlight-box",
+                    "title": "🇹🇼 台股股利稅務",
+                    "color": "indigo",
+                    "text": "以下為台灣股利稅制，美股稅務請參考下方說明"
+                },
+                {
+                    "type": "paragraph",
+                    "text": "股利所得需要繳稅，台灣目前有兩種計稅方式可供選擇：**合併計稅**和**分離計稅**。",
+                    "highlights": [
+                        { "text": "合併計稅", "color": "emerald" },
+                        { "text": "分離計稅", "color": "amber" }
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "合併計稅",
+                            "description": "股利併入綜合所得，享 8.5% 抵減（上限 8 萬元）",
+                            "color": "emerald",
+                            "subtext": "適合所得稅率 30% 以下者"
+                        },
+                        {
+                            "title": "分離計稅",
+                            "description": "股利單獨以 28% 稅率計算",
+                            "color": "amber",
+                            "subtext": "適合高所得或大額股利者"
+                        }
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "合併計稅試算（股利 $50,000）",
+                    "steps": [
+                        { "label": "股利所得", "value": "$50,000" },
+                        { "label": "可抵減稅額", "formula": "$50,000 × 8.5%", "value": "$4,250", "highlight": true },
+                        { "label": "假設所得稅率", "value": "12%" },
+                        { "label": "應納稅額", "formula": "$50,000 × 12%", "value": "$6,000" },
+                        { "label": "抵減後實繳", "formula": "$6,000 - $4,250", "value": "$1,750" }
+                    ],
+                    "result": {
+                        "label": "實際稅率",
+                        "value": "3.5%",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "二代健保補充保費",
+                    "color": "rose",
+                    "text": "單次股利所得超過 $20,000 時，需繳納 2.11% 的健保補充保費。例如領到 $50,000 股利，需繳 $50,000 × 2.11% = $1,055。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["所得稅率", "建議計稅方式", "說明"],
+                    "rows": [
+                        ["5%", "合併計稅", "抵減額可能退稅"],
+                        ["12%", "合併計稅", "實際稅負約 3.5%"],
+                        ["20%", "合併計稅", "實際稅負約 11.5%"],
+                        ["30%", "視金額而定", "需精算比較"],
+                        ["40%", "分離計稅", "28% 低於 40%"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "所得稅率為 12% 的投資人，股利應該選擇？",
+                    "options": [
+                        { "id": "a", "text": "分離計稅（28%）", "isCorrect": false },
+                        { "id": "b", "text": "合併計稅（享 8.5% 抵減）", "isCorrect": true },
+                        { "id": "c", "text": "兩者稅負相同", "isCorrect": false },
+                        { "id": "d", "text": "股利不需繳稅", "isCorrect": false }
+                    ],
+                    "explanation": "所得稅率 12% 低於 28%，選合併計稅還能享有 8.5% 抵減，實際稅負僅約 3.5%。分離計稅固定 28% 反而更高。高所得者（40%）才適合分離計稅。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇺🇸 美股股利稅務",
+                    "color": "purple",
+                    "text": "台灣投資人投資美股需注意以下稅務規定"
+                },
+                {
+                    "type": "table",
+                    "headers": ["項目", "稅率/說明"],
+                    "rows": [
+                        ["股息預扣稅", "30%（自動從股息中扣除）"],
+                        ["W-8BEN表格", "填寫後可享租稅協定優惠（如有）"],
+                        ["資本利得稅", "非美國居民免稅"],
+                        ["遺產稅", "美國資產超過$60,000可能被課稅"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "美股股息預扣稅範例",
+                    "color": "amber",
+                    "items": [
+                        "假設持有蘋果（AAPL）股票，配息 $100",
+                        "美國預扣 30%：$100 × 30% = $30",
+                        "實際入帳：$100 - $30 = $70",
+                        "這 $30 無法申請退稅（台美無租稅協定）"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "🇹🇼 台股股息",
+                            "description": "8.5%抵減或28%分離計稅",
+                            "color": "emerald",
+                            "subtext": "實際稅負通常 3-28%"
+                        },
+                        {
+                            "title": "🇺🇸 美股股息",
+                            "description": "固定預扣 30%",
+                            "color": "purple",
+                            "subtext": "無法退稅，高殖利率股不利"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 美股存股建議",
+                    "color": "zinc",
+                    "items": [
+                        "偏好成長股而非高股息股（減少預扣稅損失）",
+                        "或選擇不配息的成長型 ETF（如 VOO）",
+                        "資本利得（價差）免稅，比領股息更有效率",
+                        "若要領息，選殖利率 2% 以下的股票"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "存股策略入門",
+            "description": "長期累積優質股票的投資方法",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**存股**是指透過長期持有穩定配息的優質股票，讓股息收入持續累積，達到資產增值與被動收入的目標。",
+                    "highlights": [{ "text": "存股", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "存股的核心理念",
+                    "color": "emerald",
+                    "items": [
+                        "選擇穩定配息的優質公司",
+                        "定期定額或逢低加碼",
+                        "股息再投入（複利效應）",
+                        "長期持有，享受時間複利"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "存股優點",
+                            "description": "穩定現金流、心理壓力小、不需盯盤",
+                            "color": "emerald",
+                            "subtext": "適合上班族、長期投資者"
+                        },
+                        {
+                            "title": "存股缺點",
+                            "description": "報酬率可能低於成長股、需要時間累積",
+                            "color": "amber",
+                            "subtext": "不適合想快速致富者"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "適合存股的標的特徵",
+                    "color": "indigo",
+                    "items": [
+                        "① 連續配息 5 年以上",
+                        "② 殖利率穩定在 4-6%",
+                        "③ 填息成功率高（>80%）",
+                        "④ 產業具防禦性（電信、金融、民生）",
+                        "⑤ 獲利穩定，不受景氣影響"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["存股標的類型", "代表個股", "特點"],
+                    "rows": [
+                        ["金融股", "兆豐金、玉山金、合庫金", "官股穩定、殖利率約4-5%"],
+                        ["電信股", "中華電、台灣大、遠傳", "現金流穩定、波動低"],
+                        ["ETF", "0056、00878、00713", "分散風險、省選股時間"],
+                        ["傳產龍頭", "統一、台塑、中鋼", "產業地位穩固"]
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "存股複利試算（每月存$10,000）",
+                    "steps": [
+                        { "label": "每月投入", "value": "$10,000" },
+                        { "label": "年投入金額", "formula": "$10,000 × 12", "value": "$120,000" },
+                        { "label": "假設殖利率", "value": "5%" },
+                        { "label": "10年後本金", "value": "$1,200,000" },
+                        { "label": "10年後市值（含複利）", "value": "約$1,550,000", "highlight": true },
+                        { "label": "年股息收入", "formula": "$1,550,000 × 5%", "value": "$77,500/年", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "月被動收入",
+                        "value": "約$6,500/月",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種股票最適合存股？",
+                    "options": [
+                        { "id": "a", "text": "高波動的AI概念股", "isCorrect": false },
+                        { "id": "b", "text": "連續10年穩定配息的金控股", "isCorrect": true },
+                        { "id": "c", "text": "虧損但有題材的生技股", "isCorrect": false },
+                        { "id": "d", "text": "剛上市的新創公司", "isCorrect": false }
+                    ],
+                    "explanation": "存股首重穩定配息，連續多年配息代表公司獲利穩定。金控股通常符合這個條件，且股價波動較小，適合長期持有累積資產。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "高殖利率選股技巧",
+            "description": "如何挑選真正的高股息好股",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**高殖利率**看起來很誘人，但不是殖利率越高就越好。需要搭配「填息能力」和「獲利穩定性」來判斷，避免落入「賺股息、賠價差」的陷阱。",
+                    "highlights": [{ "text": "高殖利率", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "殖利率公式複習",
+                    "color": "indigo",
+                    "text": "殖利率 = 現金股利 ÷ 股價 × 100%\n例：配息 $3，股價 $50 → 殖利率 = 6%"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 高殖利率陷阱",
+                    "color": "rose",
+                    "items": [
+                        "股價大跌導致殖利率「被動提高」",
+                        "一次性業外收入導致超額配息",
+                        "公司基本面惡化，未來可能減少配息",
+                        "填息困難，賺股息賠價差"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "優質高殖利率股篩選條件",
+                    "color": "emerald",
+                    "items": [
+                        "① 連續 5 年配息穩定或成長",
+                        "② 近 3 年殖利率維持 4-7%",
+                        "③ 近 3 年填息成功率 100%",
+                        "④ 填息天數平均 < 60 天",
+                        "⑤ 本益比 < 15 倍，P/B < 1.5 倍",
+                        "⑥ 負債比率 < 60%"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "真正的高殖利率股",
+                            "description": "獲利穩定、填息快速",
+                            "color": "emerald",
+                            "subtext": "長期持有價值"
+                        },
+                        {
+                            "title": "假性高殖利率股",
+                            "description": "股價暴跌、業績衰退",
+                            "color": "rose",
+                            "subtext": "可能是價值陷阱"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["檢查項目", "安全標準", "警示信號"],
+                    "rows": [
+                        ["連續配息年數", "≥ 5年", "< 3年或中斷"],
+                        ["近3年填息率", "100%", "< 70%"],
+                        ["平均填息天數", "< 60天", "> 180天"],
+                        ["股利發放率", "40-80%", "> 100%（吃老本）"],
+                        ["EPS趨勢", "穩定或成長", "連年衰退"]
+                    ]
+                },
+                {
+                    "type": "indicator-example",
+                    "title": "殖利率股比較分析",
+                    "indicator": "高殖利率評估",
+                    "values": [
+                        { "label": "A股殖利率", "value": "8%", "signal": "neutral" },
+                        { "label": "A股填息率", "value": "50%", "signal": "bearish" },
+                        { "label": "B股殖利率", "value": "5%", "signal": "neutral" },
+                        { "label": "B股填息率", "value": "100%", "signal": "bullish" }
+                    ],
+                    "interpretation": "A股殖利率雖高但填息率低，代表股息領到但股價跌更多。B股殖利率較低但年年填息，長期報酬反而更好。選股應優先考慮填息能力。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "某股票殖利率高達10%，但近3年都無法填息，應該怎麼看？",
+                    "options": [
+                        { "id": "a", "text": "殖利率很高，趕快買入", "isCorrect": false },
+                        { "id": "b", "text": "可能是價值陷阱，需謹慎評估", "isCorrect": true },
+                        { "id": "c", "text": "填息不重要，有配息就好", "isCorrect": false },
+                        { "id": "d", "text": "10% 殖利率一定是好股票", "isCorrect": false }
+                    ],
+                    "explanation": "無法填息代表股價趨勢向下，投資人領到股息但股價跌更多，實際上是虧損的。異常高的殖利率通常是股價大跌造成的，需警惕公司基本面是否惡化。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "股息成長投資法",
+            "description": "追求股息持續成長的投資策略",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**股息成長投資法（Dividend Growth Investing, DGI）**是追求「股息年年增加」的投資策略，比單純追求高殖利率更能創造長期財富。",
+                    "highlights": [{ "text": "股息成長投資法（Dividend Growth Investing, DGI）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "股息成長投資的核心",
+                    "color": "emerald",
+                    "items": [
+                        "選擇連續多年增加股息的公司",
+                        "股息成長率 > 通膨率（保持購買力）",
+                        "長期持有，讓股息自動成長",
+                        "股息再投入，加速複利效果"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "高殖利率策略",
+                            "description": "追求當下高股息收入",
+                            "color": "amber",
+                            "subtext": "例：殖利率6%但股息不成長"
+                        },
+                        {
+                            "title": "股息成長策略",
+                            "description": "追求股息年年增加",
+                            "color": "emerald",
+                            "subtext": "例：殖利率3%但年增10%"
+                        }
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "股息成長威力示範（初始殖利率3%）",
+                    "steps": [
+                        { "label": "投入本金", "value": "$100萬" },
+                        { "label": "第1年股息", "formula": "$100萬 × 3%", "value": "$30,000" },
+                        { "label": "股息年成長率", "value": "10%" },
+                        { "label": "第5年股息", "formula": "$30,000 × 1.1^4", "value": "$43,923" },
+                        { "label": "第10年股息", "formula": "$30,000 × 1.1^9", "value": "$70,687", "highlight": true },
+                        { "label": "第10年實質殖利率", "formula": "$70,687 ÷ $100萬", "value": "7.07%", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "10年股息成長",
+                        "value": "增加 136%",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "美國股息貴族 (Dividend Aristocrats)",
+                    "color": "indigo",
+                    "text": "連續25年以上增加股息的S&P 500成分股，被稱為「股息貴族」。這些公司通常具有強大護城河和穩定獲利能力。",
+                    "items": [
+                        "可口可樂：連續 60+ 年增加股息",
+                        "嬌生 (J&J)：連續 60+ 年增加股息",
+                        "P&G：連續 65+ 年增加股息"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "股息成長股篩選條件",
+                    "color": "zinc",
+                    "items": [
+                        "連續 5 年以上增加股息",
+                        "股息發放率 < 70%（有成長空間）",
+                        "EPS 成長率 > 股息成長率",
+                        "自由現金流充足",
+                        "負債比率合理"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "為什麼「股息成長率」比「當前殖利率」更重要？",
+                    "options": [
+                        { "id": "a", "text": "因為殖利率會隨股價波動", "isCorrect": false },
+                        { "id": "b", "text": "因為股息成長可對抗通膨，長期收入更高", "isCorrect": true },
+                        { "id": "c", "text": "因為高殖利率的公司都是爛公司", "isCorrect": false },
+                        { "id": "d", "text": "兩者同等重要", "isCorrect": false }
+                    ],
+                    "explanation": "股息成長可以對抗通膨、維持購買力，且長期下來的累積收入遠高於固定股息。3%殖利率但年增10%的股票，10年後實質殖利率可達7%以上。"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,764 @@
+{
+    "id": "fundamentals",
+    "title": "基本面分析",
+    "description": "學習評估公司價值與財報分析",
+    "icon": "FileText",
+    "color": "cyan",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "三大財務報表",
+            "description": "損益表、資產負債表、現金流量表",
+            "duration": "20分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**基本面分析**是透過分析公司「體質」來評估其真實價值，判斷股價是否被低估或高估。",
+                    "highlights": [{ "text": "基本面分析", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "📊 損益表 (Income Statement)",
+                    "color": "emerald",
+                    "text": "顯示公司在一段期間內賺不賺錢",
+                    "items": [
+                        "營收 (Revenue)：公司的總銷售收入",
+                        "毛利 (Gross Profit)：營收 - 銷貨成本",
+                        "營業利益：毛利 - 營業費用",
+                        "稅後淨利：最終獲利，計算EPS的基礎"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "📋 資產負債表 (Balance Sheet)",
+                    "color": "indigo",
+                    "text": "揭示公司在特定時間點的財務狀況",
+                    "items": [
+                        "資產 = 負債 + 股東權益",
+                        "流動資產：一年內可變現的資產",
+                        "負債比率：評估公司財務風險",
+                        "股東權益：公司的淨值"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💰 現金流量表 (Cash Flow Statement)",
+                    "color": "amber",
+                    "text": "真實反映現金的流入與流出",
+                    "items": [
+                        "營業現金流：本業產生的現金（最重要）",
+                        "投資現金流：購買/出售資產",
+                        "籌資現金流：借款/還款/發股利"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "✅ 健康公司特徵",
+                    "color": "emerald",
+                    "items": [
+                        "營業現金流為正且穩定成長",
+                        "投資現金流適度為負（持續投資）",
+                        "籌資現金流為負（還債或發股利）",
+                        "自由現金流 = 營業現金流 - 資本支出 > 0"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "關鍵估值指標",
+            "description": "EPS、本益比、ROE、ROA",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**估值指標**幫助投資者判斷股價是否合理，是否值得買入。",
+                    "highlights": [{ "text": "估值指標", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "EPS (每股盈餘)",
+                    "color": "indigo",
+                    "text": "公司為每股股票賺取的利潤",
+                    "items": [
+                        "計算：稅後淨利 ÷ 流通在外股數",
+                        "EPS成長率是關鍵觀察指標",
+                        "連續多年EPS成長的公司較優質"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "本益比 (P/E Ratio)",
+                    "color": "amber",
+                    "text": "股價相對於每股盈餘的倍數",
+                    "items": [
+                        "計算：股價 ÷ EPS",
+                        "可理解為「回本年數」",
+                        "P/E = 20 表示需20年回本",
+                        "需與同業及歷史P/E比較才有意義"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "ROE (股東權益報酬率)",
+                            "description": "稅後淨利 ÷ 股東權益，衡量公司運用股東資金的效率",
+                            "color": "emerald",
+                            "subtext": "ROE > 15% 為優秀"
+                        },
+                        {
+                            "title": "ROA (資產報酬率)",
+                            "description": "稅後淨利 ÷ 總資產，衡量公司運用全部資產的效率",
+                            "color": "cyan",
+                            "subtext": "ROA > 5% 為不錯"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 使用建議",
+                    "color": "zinc",
+                    "items": [
+                        "不同產業的合理P/E不同",
+                        "成長股P/E通常較高",
+                        "價值股P/E通常較低",
+                        "結合多個指標綜合判斷"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "EPS 與本益比計算",
+                    "steps": [
+                        { "label": "稅後淨利", "value": "$10 億" },
+                        { "label": "流通股數", "value": "1 億股" },
+                        { "label": "每股盈餘 (EPS)", "formula": "$10億 ÷ 1億股", "value": "$10", "highlight": true },
+                        { "label": "當前股價", "value": "$200" },
+                        { "label": "本益比 (P/E)", "formula": "$200 ÷ $10", "value": "20 倍", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "回本年數",
+                        "value": "約 20 年",
+                        "color": "amber"
+                    }
+                },
+                {
+                    "type": "indicator-example",
+                    "title": "實例：台積電 vs 傳產股比較",
+                    "indicator": "估值指標",
+                    "values": [
+                        { "label": "台積電 P/E", "value": "22x", "signal": "neutral" },
+                        { "label": "傳產股 P/E", "value": "10x", "signal": "neutral" },
+                        { "label": "台積電 ROE", "value": "28%", "signal": "bullish" },
+                        { "label": "傳產股 ROE", "value": "12%", "signal": "neutral" }
+                    ],
+                    "interpretation": "台積電的 P/E 較高，但 ROE 也明顯更高，代表公司運用資金的效率更好。高成長股通常會有較高的估值，因為投資者願意為未來成長付出溢價。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "一家公司的 P/E 比率為 8，同業平均為 15，這代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "這家公司一定是好的投資標的", "isCorrect": false },
+                        { "id": "b", "text": "這家公司可能被低估，值得進一步研究", "isCorrect": true },
+                        { "id": "c", "text": "這家公司一定有問題，應該避開", "isCorrect": false },
+                        { "id": "d", "text": "P/E 低沒有任何意義", "isCorrect": false }
+                    ],
+                    "explanation": "P/E 低於同業平均可能代表被低估，但也可能是因為公司面臨困境。需要進一步研究公司的營運狀況、成長前景等因素，才能判斷是否為好的投資機會。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "價值投資概念",
+            "description": "內在價值與安全邊際",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**價值投資**的核心理念：股價短期可能受市場情緒波動，但長期終將回歸內在價值。",
+                    "highlights": [{ "text": "價值投資", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "內在價值 vs 市場價格",
+                    "color": "indigo",
+                    "items": [
+                        "內在價值：公司真正值多少錢",
+                        "市場價格：股票目前的交易價格",
+                        "市場價格 < 內在價值 → 低估，可買入",
+                        "市場價格 > 內在價值 → 高估，應觀望"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🛡️ 安全邊際",
+                    "color": "emerald",
+                    "text": "以低於內在價值的價格買入，為判斷錯誤留下緩衝空間",
+                    "items": [
+                        "例如：估計內在價值 $100",
+                        "要求20%安全邊際",
+                        "買入價應低於 $80"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "巴菲特的投資哲學",
+                    "color": "amber",
+                    "items": [
+                        "用合理的價格買入優秀的公司",
+                        "長期持有，讓複利發揮作用",
+                        "只投資自己能理解的公司",
+                        "市場恐慌時貪婪，市場貪婪時恐懼"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "長期投資",
+                            "description": "著重公司基本面，持有數年",
+                            "color": "emerald",
+                            "subtext": "風險較低，報酬穩定"
+                        },
+                        {
+                            "title": "短期交易",
+                            "description": "著重價格波動，頻繁買賣",
+                            "color": "rose",
+                            "subtext": "風險較高，需要經驗"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "股價淨值比與其他指標",
+            "description": "PBR、負債比率、流動比率的應用",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "除了本益比和ROE，還有其他重要的**財務指標**可以幫助評估公司價值和風險。",
+                    "highlights": [{ "text": "財務指標", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "股價淨值比 (P/B Ratio)",
+                    "color": "indigo",
+                    "text": "股價相對於每股淨值的倍數",
+                    "items": [
+                        "計算：股價 ÷ 每股淨值",
+                        "P/B < 1：股價低於公司淨資產，可能被低估",
+                        "P/B > 3：股價遠高於淨值，需有高成長支撐",
+                        "適合評估金融業、景氣循環股"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "P/B Ratio 計算範例",
+                    "steps": [
+                        { "label": "股東權益", "value": "$50 億" },
+                        { "label": "流通股數", "value": "5 億股" },
+                        { "label": "每股淨值", "formula": "$50億 ÷ 5億股", "value": "$10", "highlight": true },
+                        { "label": "當前股價", "value": "$8" },
+                        { "label": "P/B Ratio", "formula": "$8 ÷ $10", "value": "0.8 倍", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "解讀",
+                        "value": "股價低於淨值，可能被低估",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "負債比率",
+                    "color": "amber",
+                    "text": "評估公司財務風險的重要指標",
+                    "items": [
+                        "計算：總負債 ÷ 總資產 × 100%",
+                        "< 50%：財務結構穩健",
+                        "50-70%：中度槓桿，需關注",
+                        "> 70%：高度槓桿，風險較高"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "流動比率與速動比率",
+                    "color": "cyan",
+                    "items": [
+                        "流動比率 = 流動資產 ÷ 流動負債",
+                        "速動比率 = (流動資產 - 存貨) ÷ 流動負債",
+                        "流動比率 > 200%：短期償債能力佳",
+                        "速動比率 > 100%：立即償債能力佳"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["指標", "理想範圍", "風險警示"],
+                    "rows": [
+                        ["本益比 (P/E)", "10-25倍", "> 40倍或虧損"],
+                        ["股價淨值比 (P/B)", "0.8-2.5倍", "> 5倍或 < 0.5倍"],
+                        ["ROE", "> 15%", "< 8% 或大幅下滑"],
+                        ["負債比率", "< 60%", "> 80%"],
+                        ["流動比率", "> 150%", "< 100%"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "一家公司的 P/B = 0.6，這代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "公司經營非常好，股價合理", "isCorrect": false },
+                        { "id": "b", "text": "股價低於淨資產，可能被低估或有問題", "isCorrect": true },
+                        { "id": "c", "text": "公司負債過高", "isCorrect": false },
+                        { "id": "d", "text": "P/B 數值沒有意義", "isCorrect": false }
+                    ],
+                    "explanation": "P/B = 0.6 代表股價只有淨資產的 60%，這可能是被低估的機會，但也可能是公司面臨困境導致股價下跌。需進一步分析公司營運狀況才能判斷。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "財報分析實戰練習",
+            "description": "透過案例學習財務指標應用",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "透過**實際案例**來練習財報分析，學習如何綜合運用各種財務指標評估公司。",
+                    "highlights": [{ "text": "實際案例", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["指標", "A公司", "B公司", "產業平均"],
+                    "rows": [
+                        ["股價", "$120", "$45", "-"],
+                        ["EPS", "$6", "$3", "-"],
+                        ["本益比", "20倍", "15倍", "18倍"],
+                        ["ROE", "22%", "10%", "15%"],
+                        ["負債比率", "35%", "65%", "50%"],
+                        ["營收成長率", "+25%", "+5%", "+12%"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "根據上表，哪家公司是較佳的投資標的？",
+                    "options": [
+                        { "id": "a", "text": "A公司，因為股價較高", "isCorrect": false },
+                        { "id": "b", "text": "B公司，因為本益比較低", "isCorrect": false },
+                        { "id": "c", "text": "A公司，因為ROE高、成長快、負債低", "isCorrect": true },
+                        { "id": "d", "text": "兩家公司差不多", "isCorrect": false }
+                    ],
+                    "explanation": "A公司的ROE(22%)遠高於產業平均(15%)，營收成長率(25%)也明顯優於B公司(5%)，且負債比率(35%)更低。雖然本益比略高於B公司，但高ROE和高成長率支撐較高的估值。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "財報分析檢查清單",
+                    "color": "indigo",
+                    "items": [
+                        "① 營收是否持續成長？（看損益表）",
+                        "② ROE是否穩定在15%以上？",
+                        "③ 負債比率是否在安全範圍？",
+                        "④ 營業現金流是否為正？（最重要）",
+                        "⑤ 本益比是否合理？（與歷史和同業比較）"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "綜合估值練習",
+                    "steps": [
+                        { "label": "C公司股價", "value": "$80" },
+                        { "label": "EPS (今年)", "value": "$5" },
+                        { "label": "本益比", "formula": "$80 ÷ $5", "value": "16 倍" },
+                        { "label": "每股淨值", "value": "$50" },
+                        { "label": "P/B Ratio", "formula": "$80 ÷ $50", "value": "1.6 倍" },
+                        { "label": "ROE", "value": "18%" },
+                        { "label": "EPS成長率", "value": "+20%", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "評估結論",
+                        "value": "估值合理，成長性佳，可考慮買入",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "景氣循環股的估值陷阱",
+                    "color": "rose",
+                    "items": [
+                        "景氣高峰時EPS最高，本益比看起來很低",
+                        "此時買入反而是高點，因為即將進入衰退",
+                        "景氣谷底時EPS最低，本益比看起來很高",
+                        "此時賣出反而是低點，因為即將復甦",
+                        "結論：景氣循環股應「高P/E買，低P/E賣」"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "一家航運公司目前本益比只有5倍，EPS創歷史新高，應該買入嗎？",
+                    "options": [
+                        { "id": "a", "text": "應該買入，P/E很低代表便宜", "isCorrect": false },
+                        { "id": "b", "text": "需謹慎，可能是景氣高峰，後續EPS會下滑", "isCorrect": true },
+                        { "id": "c", "text": "本益比低就是便宜，一定要買", "isCorrect": false },
+                        { "id": "d", "text": "航運股不適合投資", "isCorrect": false }
+                    ],
+                    "explanation": "航運是典型的景氣循環股。EPS創新高往往代表景氣高峰，此時低P/E反而是賣出訊號。因為接下來運價和獲利可能下滑，股價也會跟著修正。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "巴菲特3M投資法則",
+            "description": "股神的選股智慧：管理層、護城河、安全邊際",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "股神巴菲特的投資哲學可歸納為 **3M 法則**：Management（管理層）、Moat（護城河）、Margin of Safety（安全邊際）。",
+                    "highlights": [{ "text": "3M 法則", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "Management 管理層",
+                            "description": "評估公司領導團隊的能力與誠信",
+                            "color": "indigo",
+                            "subtext": "好的管理層能創造長期價值"
+                        },
+                        {
+                            "title": "Moat 護城河",
+                            "description": "公司是否擁有持久的競爭優勢",
+                            "color": "emerald",
+                            "subtext": "護城河越寬越深越好"
+                        },
+                        {
+                            "title": "Margin of Safety 安全邊際",
+                            "description": "以低於內在價值的價格買入",
+                            "color": "amber",
+                            "subtext": "為判斷錯誤留下緩衝"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "評估管理層的5個面向",
+                    "color": "indigo",
+                    "items": [
+                        "① 誠信：是否對股東坦誠？有無財務造假紀錄？",
+                        "② 能力：過往經營績效如何？ROE是否穩定？",
+                        "③ 資本配置：是否善用現金？回購或發股利？",
+                        "④ 內部人持股：管理層是否大量持有公司股票？",
+                        "⑤ 薪酬合理性：高管薪酬是否與業績掛鉤？"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 巴菲特名言",
+                    "color": "zinc",
+                    "text": "「價格是你付出的，價值是你得到的。」「只有當潮水退去時，你才知道誰在裸泳。」「我們的目標是以合理的價格買入優秀的公司，而不是以便宜的價格買入平庸的公司。」"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "巴菲特3M法則中的「Moat」指的是什麼？",
+                    "options": [
+                        { "id": "a", "text": "公司的市值大小", "isCorrect": false },
+                        { "id": "b", "text": "公司的持久競爭優勢", "isCorrect": true },
+                        { "id": "c", "text": "公司的管理團隊", "isCorrect": false },
+                        { "id": "d", "text": "公司的負債比率", "isCorrect": false }
+                    ],
+                    "explanation": "Moat（護城河）是指公司擁有的持久競爭優勢，如品牌力、專利、網絡效應等，能保護公司免受競爭對手侵蝕，維持長期獲利能力。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "經濟護城河分析",
+            "description": "識別公司的持久競爭優勢",
+            "duration": "20分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**經濟護城河**是公司保護自身免受競爭對手侵蝕的持久優勢。護城河越寬越深，公司的長期獲利能力越穩定。",
+                    "highlights": [{ "text": "經濟護城河", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "品牌護城河",
+                    "color": "rose",
+                    "text": "強大的品牌讓消費者願意支付溢價",
+                    "items": [
+                        "例：可口可樂、蘋果、LV、愛馬仕",
+                        "消費者認可品牌價值，不輕易轉換",
+                        "品牌建立需要數十年時間",
+                        "具備定價權，毛利率通常較高"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "網絡效應護城河",
+                    "color": "indigo",
+                    "text": "使用者越多，產品價值越高",
+                    "items": [
+                        "例：Facebook、LINE、微信、Visa",
+                        "新進者難以突破既有網絡",
+                        "用戶遷移成本高，黏著度強",
+                        "科技公司常見的護城河類型"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "成本優勢護城河",
+                    "color": "emerald",
+                    "text": "能以更低成本提供相同品質的產品",
+                    "items": [
+                        "例：台積電、好市多、沃爾瑪",
+                        "規模經濟：量越大，單位成本越低",
+                        "技術領先：製程效率優於競爭對手",
+                        "地理位置：靠近原料或市場"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "轉換成本護城河",
+                    "color": "amber",
+                    "text": "客戶更換供應商的成本很高",
+                    "items": [
+                        "例：Oracle、SAP、Microsoft Office",
+                        "學習成本：用戶熟悉現有系統",
+                        "整合成本：與其他系統深度整合",
+                        "資料遷移：大量數據難以轉移"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "政府特許護城河",
+                    "color": "purple",
+                    "text": "政府授予的獨家經營權或專利保護",
+                    "items": [
+                        "例：電信業者、公用事業、製藥公司",
+                        "專利權：獨家生產某種產品的權利",
+                        "特許經營：政府授予的壟斷地位",
+                        "監管障礙：新進者需大量合規成本"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["護城河類型", "代表企業", "持久性"],
+                    "rows": [
+                        ["品牌", "可口可樂、蘋果", "★★★★★"],
+                        ["網絡效應", "Facebook、Visa", "★★★★★"],
+                        ["成本優勢", "台積電、好市多", "★★★★☆"],
+                        ["轉換成本", "微軟、Oracle", "★★★★☆"],
+                        ["政府特許", "電信業、製藥業", "★★★☆☆"]
+                    ]
+                },
+                {
+                    "type": "indicator-example",
+                    "title": "護城河評估指標",
+                    "indicator": "財務特徵",
+                    "values": [
+                        { "label": "ROE持續>15%", "value": "10年以上", "signal": "bullish" },
+                        { "label": "毛利率", "value": ">40%", "signal": "bullish" },
+                        { "label": "營收成長", "value": "穩定增長", "signal": "bullish" },
+                        { "label": "市佔率", "value": "領先同業", "signal": "bullish" }
+                    ],
+                    "interpretation": "擁有強大護城河的公司通常能維持ROE長期高於15%，毛利率優於同業，市佔率穩定或成長。這些財務特徵反映了其競爭優勢的強度。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "下列哪家公司最可能擁有「網絡效應」護城河？",
+                    "options": [
+                        { "id": "a", "text": "統一超商（7-11）", "isCorrect": false },
+                        { "id": "b", "text": "台積電", "isCorrect": false },
+                        { "id": "c", "text": "Line（通訊軟體）", "isCorrect": true },
+                        { "id": "d", "text": "中華電信", "isCorrect": false }
+                    ],
+                    "explanation": "Line是典型的網絡效應案例：使用者越多，對新用戶的吸引力越大（朋友都在用）。統一超商是通路優勢，台積電是成本/技術優勢，中華電信是特許經營優勢。"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "自由現金流分析",
+            "description": "評估公司真正的賺錢能力",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**自由現金流（FCF）**是公司在支付所有營運費用和資本支出後，可自由運用的現金。這是評估公司真正賺錢能力的關鍵指標。",
+                    "highlights": [{ "text": "自由現金流（FCF）", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "自由現金流公式",
+                    "color": "indigo",
+                    "text": "自由現金流 = 營業現金流 - 資本支出",
+                    "items": [
+                        "營業現金流：本業產生的現金",
+                        "資本支出：購買設備、廠房等投資",
+                        "FCF > 0：公司有餘裕發股利或還債",
+                        "FCF < 0：需要借錢或增資維持營運"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "自由現金流計算範例",
+                    "steps": [
+                        { "label": "營業現金流", "value": "$50 億" },
+                        { "label": "資本支出", "value": "-$20 億" },
+                        { "label": "自由現金流", "formula": "$50億 - $20億", "value": "$30 億", "highlight": true },
+                        { "label": "流通股數", "value": "10 億股" },
+                        { "label": "每股自由現金流", "formula": "$30億 ÷ 10億股", "value": "$3/股", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "解讀",
+                        "value": "公司每年每股可產生$3自由現金",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "為何自由現金流比淨利更重要？",
+                    "color": "amber",
+                    "items": [
+                        "淨利可被會計手法調整（折舊、應收帳款）",
+                        "現金流難以造假，代表真金白銀",
+                        "有現金才能發股利、回購股票、還債",
+                        "長期FCF為負的公司可能面臨財務危機"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "淨利為正，FCF為負",
+                            "description": "帳面賺錢但現金被應收帳款吃掉",
+                            "color": "rose",
+                            "subtext": "⚠️ 可能有問題"
+                        },
+                        {
+                            "title": "淨利為正，FCF為正",
+                            "description": "帳面和實際都賺錢",
+                            "color": "emerald",
+                            "subtext": "✓ 財務健康"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "自由現金流的運用",
+                    "color": "zinc",
+                    "items": [
+                        "發放股息：回饋股東",
+                        "股票回購：提升每股價值",
+                        "償還負債：降低財務風險",
+                        "併購擴張：推動公司成長",
+                        "研發投資：維持競爭優勢"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "一家公司連續5年淨利成長，但自由現金流持續為負，這代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "公司經營非常成功", "isCorrect": false },
+                        { "id": "b", "text": "需要警惕，獲利品質可能有問題", "isCorrect": true },
+                        { "id": "c", "text": "這是正常的成長期現象", "isCorrect": false },
+                        { "id": "d", "text": "自由現金流不重要", "isCorrect": false }
+                    ],
+                    "explanation": "淨利成長但FCF為負可能代表：應收帳款大幅增加（客戶延遲付款）、存貨積壓、或過度資本支出。長期下來可能面臨現金週轉問題，需要深入分析原因。"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "title": "成長股 vs 價值股",
+            "description": "兩種投資風格的比較與選擇",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**成長股**和**價值股**是兩種主要的投資風格。了解兩者差異，有助於根據自己的風險偏好選擇適合的投資策略。",
+                    "highlights": [
+                        { "text": "成長股", "color": "emerald" },
+                        { "text": "價值股", "color": "indigo" }
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "成長股 (Growth Stock)",
+                            "description": "營收和獲利快速成長的公司",
+                            "color": "emerald",
+                            "subtext": "高P/E、低股息、高波動"
+                        },
+                        {
+                            "title": "價值股 (Value Stock)",
+                            "description": "股價低於內在價值的公司",
+                            "color": "indigo",
+                            "subtext": "低P/E、高股息、低波動"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["特徵", "成長股", "價值股"],
+                    "rows": [
+                        ["本益比", "通常 > 25倍", "通常 < 15倍"],
+                        ["股息殖利率", "低或不配息", "通常 > 3%"],
+                        ["營收成長率", "> 20%", "0-10%"],
+                        ["波動度", "高", "低"],
+                        ["代表產業", "科技、生技", "金融、傳產"],
+                        ["投資期限", "中長期", "長期"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "成長股特徵",
+                    "color": "emerald",
+                    "items": [
+                        "營收年增率 > 20%",
+                        "市場給予較高估值（高P/E）",
+                        "多數盈餘再投資，較少發股利",
+                        "股價波動較大，下跌時幅度也大",
+                        "例：NVIDIA、台積電、特斯拉"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "價值股特徵",
+                    "color": "indigo",
+                    "items": [
+                        "股價相對基本面被低估",
+                        "本益比低於產業平均",
+                        "穩定配發股息",
+                        "股價波動較小，防禦性強",
+                        "例：金融股、電信股、公用事業"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "選擇建議",
+                    "color": "amber",
+                    "items": [
+                        "年輕投資者：可多配置成長股，時間能化解波動",
+                        "退休族群：宜多配置價值股，穩定領息",
+                        "平衡策略：成長股50% + 價值股50%",
+                        "避免極端：不要全押單一風格"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種股票最可能是「價值股」？",
+                    "options": [
+                        { "id": "a", "text": "本益比35倍、營收年增25%的AI公司", "isCorrect": false },
+                        { "id": "b", "text": "本益比10倍、殖利率5%的電信股", "isCorrect": true },
+                        { "id": "c", "text": "虧損中但股價飆漲的新創公司", "isCorrect": false },
+                        { "id": "d", "text": "本益比50倍的電動車概念股", "isCorrect": false }
+                    ],
+                    "explanation": "低本益比（10倍）加上高殖利率（5%）是典型的價值股特徵。電信股營收穩定但成長有限，因此估值較低，適合追求穩定股息收入的投資者。"
+                }
+            ]
+        }
+    ]
+}

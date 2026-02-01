@@ -1,0 +1,544 @@
+{
+    "id": "basics",
+    "title": "交易基礎",
+    "description": "了解股票交易的基本概念",
+    "icon": "BookOpen",
+    "color": "indigo",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "什麼是股票？",
+            "description": "股票代表公司的所有權份額",
+            "duration": "5分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**股票**是公司為了籌集資金而發行的所有權憑證。當你購買一家公司的股票時，你就成為了該公司的股東。",
+                    "highlights": [{ "text": "股票", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "📌 重點",
+                    "color": "indigo",
+                    "items": [
+                        "股票代表公司的一部分所有權",
+                        "股價會隨市場供需變動",
+                        "股東可能獲得股利分紅",
+                        "股票上市後可在證券交易所買賣"
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "text": "股票價格由市場的買賣雙方決定。當更多人想買入時，價格上漲；當更多人想賣出時，價格下跌。這就是所謂的**供需法則**。",
+                    "highlights": [{ "text": "供需法則", "color": "emerald" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 股票代碼",
+                    "color": "zinc",
+                    "text": "每支股票都有唯一的代碼，例如台積電 (2330)、鴻海 (2317)。在交易時需要輸入股票代碼來下單。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "買入與賣出",
+            "description": "了解交易的基本操作",
+            "duration": "8分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "股票交易的基本操作就是**買入**和**賣出**。",
+                    "highlights": [
+                        { "text": "買入", "color": "emerald" },
+                        { "text": "賣出", "color": "rose" }
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "買入 (做多)",
+                            "description": "預期股價上漲時買入，等價格上漲後賣出獲利。",
+                            "color": "emerald",
+                            "subtext": "買低賣高 = 獲利"
+                        },
+                        {
+                            "title": "賣出 (平倉)",
+                            "description": "將持有的股票賣出，實現盈虧。",
+                            "color": "rose",
+                            "subtext": "賣出價 - 買入價 = 損益"
+                        }
+                    ]
+                },
+                {
+                    "type": "code-block",
+                    "title": "範例計算：",
+                    "lines": [
+                        { "value": "買入: 100股 × $50 = $5,000" },
+                        { "value": "賣出: 100股 × $55 = $5,500" },
+                        { "value": "獲利: $500 (10%)", "color": "emerald" }
+                    ]
+                },
+                {
+                    "type": "trade-example",
+                    "title": "實戰範例：買入台積電",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 580,
+                        "exitPrice": 620,
+                        "quantity": 100,
+                        "stopLoss": 550,
+                        "takeProfit": 650,
+                        "fees": 166,
+                        "result": {
+                            "profit": 3834,
+                            "percentage": 6.6
+                        }
+                    },
+                    "explanation": "這筆交易以 $580 買入 100 股，設定止損在 $550（-5.2%），目標價 $650（+12%）。最終在 $620 獲利出場，扣除手續費後獲利 6.6%。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "訂單類型",
+            "description": "市價單 vs 限價單",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "下單時需要選擇訂單類型，主要有兩種："
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "市價單 (Market Order)",
+                    "color": "amber",
+                    "text": "以當前市場價格立即成交。",
+                    "items": [
+                        "優點：保證成交",
+                        "缺點：成交價可能與預期不同",
+                        "適合：急需買賣、流動性高的股票"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "限價單 (Limit Order)",
+                    "color": "indigo",
+                    "text": "設定一個價格，只有達到該價格才會成交。",
+                    "items": [
+                        "優點：可以控制成交價格",
+                        "缺點：可能不會成交",
+                        "適合：有明確目標價的交易"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "手續費與成本",
+            "description": "交易費用如何計算",
+            "duration": "6分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "股票交易會產生以下成本："
+                },
+                {
+                    "type": "table",
+                    "headers": ["費用項目", "費率"],
+                    "rows": [
+                        ["手續費 (券商)", "0.1425%"],
+                        ["證交稅 (賣出時)", "0.3%"],
+                        ["電子下單折扣", "約 6折"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 注意",
+                    "color": "rose",
+                    "text": "頻繁交易會累積大量手續費，侵蝕獲利。新手應避免過度交易 (過度頻繁買賣)。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "多空與融資融券",
+            "description": "做空機制與信用交易基礎",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "除了買入股票期待上漲（**做多**），還可以透過**融券放空**在下跌中獲利。",
+                    "highlights": [
+                        { "text": "做多", "color": "emerald" },
+                        { "text": "融券放空", "color": "rose" }
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "做多 (Long)",
+                            "description": "買進股票，等價格上漲後賣出獲利",
+                            "color": "emerald",
+                            "subtext": "看漲時使用"
+                        },
+                        {
+                            "title": "做空 (Short)",
+                            "description": "借券賣出，等價格下跌後買回獲利",
+                            "color": "rose",
+                            "subtext": "看跌時使用"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "融資 (Margin Trading)",
+                    "color": "indigo",
+                    "text": "向券商借錢買股票，用槓桿放大獲利（或虧損）",
+                    "items": [
+                        "自備款約 40-60%，其餘向券商借",
+                        "需支付融資利息（約年利率 6%）",
+                        "風險：股價下跌可能被追繳保證金（斷頭）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "融券 (Short Selling)",
+                    "color": "amber",
+                    "text": "向券商借股票賣出，之後買回還券",
+                    "items": [
+                        "需繳交約 90% 的保證金",
+                        "需支付借券費用",
+                        "風險：股價上漲虧損無上限"
+                    ]
+                },
+                {
+                    "type": "code-block",
+                    "title": "融券獲利範例",
+                    "lines": [
+                        { "value": "融券賣出: 100股 × $100 = $10,000" },
+                        { "value": "股價下跌至 $80" },
+                        { "value": "買回還券: 100股 × $80 = $8,000" },
+                        { "value": "獲利: $2,000 (20%)", "color": "emerald" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 新手注意",
+                    "color": "rose",
+                    "items": [
+                        "融資融券屬於信用交易，風險較高",
+                        "建議新手先用現股交易累積經驗",
+                        "融券的虧損理論上無上限（股價可以無限上漲）",
+                        "遇到軋空行情可能損失慘重"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "預期某股票會下跌，想從中獲利，應該怎麼做？",
+                    "options": [
+                        { "id": "a", "text": "融資買進", "isCorrect": false },
+                        { "id": "b", "text": "融券放空", "isCorrect": true },
+                        { "id": "c", "text": "現股買進", "isCorrect": false },
+                        { "id": "d", "text": "定期定額", "isCorrect": false }
+                    ],
+                    "explanation": "融券放空是「先賣後買」，借券賣出後等股價下跌再買回還券，賺取價差。但風險較高，新手不建議使用。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "台股交易規則",
+            "description": "漲跌幅、交易時間、零股交易",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "highlight-box",
+                    "title": "適用市場",
+                    "color": "indigo",
+                    "text": "🇹🇼 本單元內容專屬台灣證券交易所（TWSE）規則"
+                },
+                {
+                    "type": "paragraph",
+                    "text": "了解台股的**交易規則**是投資的基本功，包括交易時間、漲跌幅限制等。",
+                    "highlights": [{ "text": "交易規則", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["項目", "內容"],
+                    "rows": [
+                        ["交易時間", "09:00-13:30（盤中）"],
+                        ["盤後零股", "13:40-14:30"],
+                        ["漲跌幅限制", "±10%（普通股）"],
+                        ["最小跳動單位", "依股價區間不同"],
+                        ["交割時間", "T+2（成交後兩個營業日）"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "漲跌幅限制",
+                    "color": "indigo",
+                    "items": [
+                        "普通股票：±10%",
+                        "初上市前5日：無漲跌幅限制",
+                        "ETF：±10%（部分槓桿型除外）",
+                        "漲停：當日最高價（昨收 × 1.1）",
+                        "跌停：當日最低價（昨收 × 0.9）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "零股交易",
+                    "color": "emerald",
+                    "items": [
+                        "最小單位：1 股",
+                        "盤中零股：09:00-13:30，整點撮合",
+                        "盤後零股：13:40-14:30，14:30 集合競價",
+                        "適合小資族、定期定額投資"
+                    ]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "股價升降單位",
+                    "items": [
+                        { "key": "未滿 10 元", "value": "0.01 元", "keyColor": "zinc" },
+                        { "key": "10-50 元", "value": "0.05 元", "keyColor": "zinc" },
+                        { "key": "50-100 元", "value": "0.1 元", "keyColor": "zinc" },
+                        { "key": "100-500 元", "value": "0.5 元", "keyColor": "zinc" },
+                        { "key": "500-1000 元", "value": "1 元", "keyColor": "zinc" },
+                        { "key": "1000 元以上", "value": "5 元", "keyColor": "zinc" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "某股票昨日收盤價 $100，今天的漲停價是多少？",
+                    "options": [
+                        { "id": "a", "text": "$105", "isCorrect": false },
+                        { "id": "b", "text": "$110", "isCorrect": true },
+                        { "id": "c", "text": "$115", "isCorrect": false },
+                        { "id": "d", "text": "$120", "isCorrect": false }
+                    ],
+                    "explanation": "台股普通股漲跌幅限制為 ±10%。昨收 $100 × 1.1 = $110 即為今日漲停價。跌停價則是 $100 × 0.9 = $90。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "交易實戰練習",
+            "description": "模擬交易情境演練",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "透過**模擬情境**來練習交易決策，學習在不同情況下如何操作。",
+                    "highlights": [{ "text": "模擬情境", "color": "white" }]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【情境1】突破買進時機",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 95, "label": "" },
+                            { "x": 1, "y": 98, "label": "" },
+                            { "x": 2, "y": 97, "label": "" },
+                            { "x": 3, "y": 102, "label": "" },
+                            { "x": 4, "y": 105, "label": "" },
+                            { "x": 5, "y": 108, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 102, "type": "buy", "label": "突破進場?" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 100, "label": "壓力線 $100" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 95, "yEnd": 100, "label": "盤整區" }
+                        ]
+                    },
+                    "description": "股價在 $95-100 之間盤整多日後，突然放量突破 $100 壓力線。此時應該如何操作？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境1答案】股價突破 $100 壓力，最佳操作是？",
+                    "options": [
+                        { "id": "a", "text": "等跌回 $95 再買", "isCorrect": false },
+                        { "id": "b", "text": "在突破點附近買進，停損設在 $95 下方", "isCorrect": true },
+                        { "id": "c", "text": "等漲到 $120 再追", "isCorrect": false },
+                        { "id": "d", "text": "放空做空", "isCorrect": false }
+                    ],
+                    "explanation": "突破壓力線時是進場時機，停損設在盤整區下緣（$95下方）。風險約 5-7%，可根據風險承受度計算倉位大小。"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【情境2】虧損處理",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 105, "label": "" },
+                            { "x": 2, "y": 102, "label": "" },
+                            { "x": 3, "y": 98, "label": "" },
+                            { "x": 4, "y": 93, "label": "" },
+                            { "x": 5, "y": 90, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 105, "type": "buy", "label": "買進 $105" },
+                            { "x": 3, "y": 98, "type": "stopLoss", "label": "停損點 $98" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 98, "label": "停損線" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 88, "yEnd": 98, "label": "虧損區" }
+                        ]
+                    },
+                    "description": "你在 $105 買進，設定停損 $98（-7%）。股價跌至停損點，你應該怎麼做？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境2答案】股價跌至停損點 $98，應該？",
+                    "options": [
+                        { "id": "a", "text": "執行停損賣出", "isCorrect": true },
+                        { "id": "b", "text": "再等等看，也許會反彈", "isCorrect": false },
+                        { "id": "c", "text": "加碼攤平成本", "isCorrect": false },
+                        { "id": "d", "text": "把停損改到 $90", "isCorrect": false }
+                    ],
+                    "explanation": "嚴格執行停損是風險管理的核心。猶豫或移動停損點往往導致更大虧損。從圖中可見，股價繼續跌至 $90，若不停損虧損將擴大至 -14%。"
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "倉位計算練習",
+                    "steps": [
+                        { "label": "總資金", "value": "$100,000" },
+                        { "label": "單筆風險", "value": "2%" },
+                        { "label": "最大虧損金額", "formula": "$100,000 × 2%", "value": "$2,000", "highlight": true },
+                        { "label": "買入價", "value": "$50" },
+                        { "label": "停損價", "value": "$46" },
+                        { "label": "每股風險", "formula": "$50 - $46", "value": "$4" },
+                        { "label": "可買股數", "formula": "$2,000 ÷ $4", "value": "500 股", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "持倉金額",
+                        "value": "$25,000 (25%資金)",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "根據上述計算，如果停損點設在 $45（每股風險 $5），可買幾股？",
+                    "options": [
+                        { "id": "a", "text": "500 股", "isCorrect": false },
+                        { "id": "b", "text": "400 股", "isCorrect": true },
+                        { "id": "c", "text": "600 股", "isCorrect": false },
+                        { "id": "d", "text": "1000 股", "isCorrect": false }
+                    ],
+                    "explanation": "最大虧損金額 $2,000 ÷ 每股風險 $5 = 400 股。停損設得越遠，可買的股數越少，這樣才能保持相同的風險水準。"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "美股交易規則",
+            "description": "美國股市的交易時間、規則與特點",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "highlight-box",
+                    "title": "適用市場",
+                    "color": "purple",
+                    "text": "🇺🇸 本單元內容適用美國證券市場（NYSE、NASDAQ）"
+                },
+                {
+                    "type": "paragraph",
+                    "text": "**美股**是全球最大的股票市場，包含紐約證券交易所（NYSE）和納斯達克（NASDAQ）兩大主要交易所。",
+                    "highlights": [{ "text": "美股", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["項目", "美股規則", "與台股差異"],
+                    "rows": [
+                        ["交易時間", "09:30-16:00（美東時間）", "台股 09:00-13:30"],
+                        ["台灣對應時間", "夏令 21:30-04:00 / 冬令 22:30-05:00", "需熬夜看盤"],
+                        ["漲跌幅限制", "無限制（有熔斷機制）", "台股 ±10%"],
+                        ["交易單位", "1股起", "台股 1張=1000股"],
+                        ["結算週期", "T+1（2024年起）", "台股 T+2"],
+                        ["股價小數位", "最小 $0.01", "台股依價位不同"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "美股三大交易所",
+                    "color": "indigo",
+                    "items": [
+                        "NYSE（紐約證交所）：傳統藍籌股為主，如 JPM、KO、WMT",
+                        "NASDAQ（那斯達克）：科技股為主，如 AAPL、MSFT、GOOGL、AMZN",
+                        "AMEX（美國證交所）：規模較小，多為 ETF"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "熔斷機制（Circuit Breaker）",
+                    "color": "rose",
+                    "text": "美股沒有每日漲跌幅限制，但有市場熔斷機制防止極端波動",
+                    "items": [
+                        "第一級（-7%）：暫停交易 15 分鐘",
+                        "第二級（-13%）：暫停交易 15 分鐘",
+                        "第三級（-20%）：當日停止交易",
+                        "僅適用於下跌，上漲無限制"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "盤前交易",
+                            "description": "04:00-09:30（美東）可提前交易",
+                            "color": "amber",
+                            "subtext": "流動性較低，價差較大"
+                        },
+                        {
+                            "title": "盤後交易",
+                            "description": "16:00-20:00（美東）延長交易",
+                            "color": "cyan",
+                            "subtext": "財報公布後常有波動"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "台灣投資人買美股的方式",
+                    "color": "emerald",
+                    "items": [
+                        "海外券商：如 IB（盈透）、Firstrade、嘉信",
+                        "國內複委託：透過台灣券商下單，手續費較高",
+                        "海外券商優點：手續費低、商品多、即時交易",
+                        "複委託優點：中文介面、資金在國內、法規保障"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 美股稅務須知",
+                    "color": "amber",
+                    "items": [
+                        "股息預扣稅：外國人被預扣 30%（可填 W-8BEN 表格）",
+                        "資本利得稅：非美國居民免稅（但需申報）",
+                        "遺產稅：超過 6 萬美元的美國資產可能被課稅",
+                        "建議諮詢專業會計師處理稅務問題"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "美股的每日漲跌幅限制是多少？",
+                    "options": [
+                        { "id": "a", "text": "±10%", "isCorrect": false },
+                        { "id": "b", "text": "±20%", "isCorrect": false },
+                        { "id": "c", "text": "無限制，但有熔斷機制", "isCorrect": true },
+                        { "id": "d", "text": "±30%", "isCorrect": false }
+                    ],
+                    "explanation": "美股沒有每日漲跌幅限制，個股可以在一天內漲跌任意幅度。但整體市場有熔斷機制，當 S&P 500 指數下跌達 7%、13%、20% 時會觸發暫停交易。"
+                }
+            ]
+        }
+    ]
+}

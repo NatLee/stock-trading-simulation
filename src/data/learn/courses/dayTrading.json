@@ -1,0 +1,869 @@
+{
+    "id": "dayTrading",
+    "title": "當沖交易",
+    "description": "學習當日沖銷的技巧與風險管理",
+    "icon": "Zap",
+    "color": "rose",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "當沖基礎概念",
+            "description": "了解當沖的定義與資格條件",
+            "duration": "8分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**當沖**（Day Trading）是指在同一交易日內買進及賣出相同股票，當天完成沖銷，盤後不持有任何部位的交易方式。",
+                    "highlights": [{ "text": "當沖", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "現股當沖",
+                            "description": "使用現金進行買賣，風險相對較低",
+                            "color": "emerald",
+                            "icon": "💵"
+                        },
+                        {
+                            "title": "資券當沖",
+                            "description": "使用融資融券操作，槓桿較高風險較大",
+                            "color": "rose",
+                            "icon": "⚡"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇹🇼 台股：現股當沖資格條件",
+                    "color": "indigo",
+                    "items": [
+                        "證券帳戶開立滿 3 個月",
+                        "最近 1 年成交筆數達 10 筆以上",
+                        "簽署風險預告書與當沖同意書"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇹🇼 台股：資券當沖額外條件",
+                    "color": "amber",
+                    "items": [
+                        "最近 1 年成交金額達 25 萬元",
+                        "需開立信用交易帳戶",
+                        "維持率需符合規定"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇺🇸 美股：PDT 規則（Pattern Day Trader）",
+                    "color": "purple",
+                    "text": "在美國進行當沖交易需遵守 PDT 規則",
+                    "items": [
+                        "帳戶資產需維持 $25,000 美元以上",
+                        "5 個交易日內超過 4 次當沖即被標記為 PDT",
+                        "被標記後帳戶將被限制，直到補足資金",
+                        "現金帳戶不受 PDT 限制，但需等待 T+1 結算"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["項目", "🇹🇼 台股當沖", "🇺🇸 美股當沖"],
+                    "rows": [
+                        ["資格門檻", "開戶滿3個月+10筆交易", "帳戶 $25,000 以上（保證金帳戶）"],
+                        ["當沖限制", "無次數限制", "5日內超過4次需符合PDT規則"],
+                        ["交易時間", "09:00-13:30（4.5小時）", "09:30-16:00（6.5小時）"],
+                        ["結算週期", "T+2", "T+1"],
+                        ["違約風險", "可能面臨違約交割", "帳戶被限制交易"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪一項不是現股當沖的開戶條件？",
+                    "options": [
+                        { "id": "a", "text": "帳戶開立滿 3 個月", "isCorrect": false },
+                        { "id": "b", "text": "最近 1 年成交達 10 筆", "isCorrect": false },
+                        { "id": "c", "text": "帳戶資產達 50 萬元", "isCorrect": true },
+                        { "id": "d", "text": "簽署風險預告書", "isCorrect": false }
+                    ],
+                    "explanation": "現股當沖沒有最低資產門檻要求，主要是帳戶年資和交易經驗的條件。但要注意的是，當沖無法沖銷時需要有足夠資金進行交割。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "當沖成本計算",
+            "description": "了解當沖的交易成本與損益平衡",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "當沖交易的獲利關鍵在於精確計算成本。由於當沖利潤通常較薄，了解成本結構至關重要。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["費用項目", "費率", "說明"],
+                    "rows": [
+                        ["證交稅", "0.15%", "減半優惠至2027年底（原0.3%）"],
+                        ["買進手續費", "0.1425%", "券商可能有折扣"],
+                        ["賣出手續費", "0.1425%", "券商可能有折扣"],
+                        ["總成本", "約0.435%", "不含券商折扣"]
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "當沖成本試算（股價 $100）",
+                    "steps": [
+                        { "label": "買進金額", "value": "$100,000" },
+                        { "label": "買進手續費", "formula": "$100,000 × 0.1425%", "value": "$143" },
+                        { "label": "賣出手續費", "formula": "$100,000 × 0.1425%", "value": "$143" },
+                        { "label": "證交稅", "formula": "$100,000 × 0.15%", "value": "$150" },
+                        { "label": "總交易成本", "value": "$436", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "損益平衡點",
+                        "value": "股價需漲 $0.44 (約0.44%)",
+                        "color": "amber"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 實用技巧",
+                    "color": "emerald",
+                    "text": "股價越高，跳動一個 Tick 的百分比越小。例如 $100 以上的股票跳動 1 個 Tick（$0.5）約 0.5%，通常 1-2 個 Tick 就能覆蓋成本。"
+                },
+                {
+                    "type": "trade-example",
+                    "title": "當沖獲利案例",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 150,
+                        "exitPrice": 152,
+                        "quantity": 1000,
+                        "fees": 660,
+                        "result": {
+                            "profit": 1340,
+                            "percentage": 0.89
+                        }
+                    },
+                    "explanation": "以 $150 買進 1 張（1000股），$152 賣出，價差 $2,000。扣除手續費和證交稅約 $660 後，淨獲利 $1,340，報酬率約 0.89%。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "當沖選股策略",
+            "description": "如何挑選適合當沖的標的",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "當沖選股的核心在於找到**波動性大**且**流動性高**的股票，讓你能夠快速進出場並獲取價差。",
+                    "highlights": [
+                        { "text": "波動性大", "color": "white" },
+                        { "text": "流動性高", "color": "white" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "當沖選股四大條件",
+                    "color": "indigo",
+                    "items": [
+                        "成交量大：日成交量 > 3,000 張，確保流動性",
+                        "波動幅度：當日振幅 > 3%，有足夠獲利空間",
+                        "價格適中：$50-200 區間，成本效益最佳",
+                        "題材熱度：有新聞或題材帶動，容易有行情"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "✓ 適合當沖",
+                            "description": "電子股、題材股、法人關注股",
+                            "color": "emerald",
+                            "subtext": "波動大、成交量充足"
+                        },
+                        {
+                            "title": "✗ 不適合當沖",
+                            "description": "冷門股、ETF、金融股",
+                            "color": "rose",
+                            "subtext": "波動小、流動性差"
+                        }
+                    ]
+                },
+                {
+                    "type": "list",
+                    "items": [
+                        "觀察開盤前的委買委賣量，預判當日熱度",
+                        "追蹤創新高且成交量激增的標的",
+                        "關注美股相關概念股的連動性",
+                        "避開即將除權息或有重大消息的股票"
+                    ],
+                    "ordered": true
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種股票最適合當沖操作？",
+                    "options": [
+                        { "id": "a", "text": "日成交量 500 張的傳產股", "isCorrect": false },
+                        { "id": "b", "text": "日成交量 8,000 張、當日漲幅 4% 的電子股", "isCorrect": true },
+                        { "id": "c", "text": "股價 $15 的低價股", "isCorrect": false },
+                        { "id": "d", "text": "0050 ETF", "isCorrect": false }
+                    ],
+                    "explanation": "高成交量確保進出場順利，較大漲幅代表有行情波動。電子股通常波動較大，適合當沖。低價股雖然成本低，但跳動幅度可能不足以覆蓋成本。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "進出場時機",
+            "description": "掌握當沖的最佳交易時段",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "當沖的進出場時機至關重要。不同時段的市場特性不同，需要採用不同的策略。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["時段", "特性", "操作建議"],
+                    "rows": [
+                        ["09:00-09:30", "波動最大", "觀察為主，不急於進場"],
+                        ["09:30-10:30", "趨勢形成", "最佳進場時段"],
+                        ["10:30-12:00", "盤整震盪", "謹慎操作"],
+                        ["12:00-13:00", "量縮盤整", "避免進場"],
+                        ["13:00-13:30", "尾盤變化", "必須平倉出場"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "開盤30分鐘法則",
+                    "color": "amber",
+                    "text": "開盤前30分鐘波動劇烈，建議新手先觀察趨勢方向，待9:30後趨勢明確再進場，可降低被假突破欺騙的機率。"
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "進場信號",
+                    "items": [
+                        { "key": "突破進場", "value": "股價突破前波高點，量能放大時跟進", "keyColor": "emerald" },
+                        { "key": "拉回進場", "value": "強勢股拉回至均線支撐，確認不破再買", "keyColor": "cyan" },
+                        { "key": "開高走高", "value": "開盤跳空且持續上漲，順勢做多", "keyColor": "indigo" }
+                    ]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "出場信號",
+                    "items": [
+                        { "key": "獲利目標", "value": "達到 5-10 個 Tick 獲利即可出場", "keyColor": "emerald" },
+                        { "key": "停損執行", "value": "虧損達設定點位（如 -1%）立即出場", "keyColor": "rose" },
+                        { "key": "時間限制", "value": "13:20 前必須完成所有交易", "keyColor": "amber" }
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "範例：開盤突破進場",
+                    "candles": [
+                        { "open": 100, "high": 102, "low": 99, "close": 101, "label": "09:00" },
+                        { "open": 101, "high": 104, "low": 100, "close": 103, "label": "09:15" },
+                        { "open": 103, "high": 107, "low": 102, "close": 106, "label": "09:30" },
+                        { "open": 106, "high": 109, "low": 105, "close": 108, "label": "09:45" }
+                    ],
+                    "description": "開盤後觀察到股價持續創高，09:30 確認突破前高 $104 後進場做多，目標設在 $108-110。",
+                    "annotations": [
+                        { "index": 2, "text": "進場點", "position": "bottom" },
+                        { "index": 3, "text": "獲利出場", "position": "top" }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "當沖風險管理",
+            "description": "認識當沖的風險與防範措施",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "當沖雖然不留倉過夜，但仍有許多風險需要注意。最嚴重的是**違約交割**，可能導致法律責任。",
+                    "highlights": [{ "text": "違約交割", "color": "rose" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 違約交割風險",
+                    "color": "rose",
+                    "text": "當沖若無法在當日沖銷（如漲跌停鎖住），必須在 T+2 日準備 100% 現金進行交割。若資金不足將構成違約交割，面臨違約金、民事賠償甚至刑事責任。"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "隔夜風險",
+                            "description": "無法沖銷時受國際市場波動影響",
+                            "color": "amber",
+                            "icon": "🌙"
+                        },
+                        {
+                            "title": "槓桿風險",
+                            "description": "資券當沖虧損可能超過本金",
+                            "color": "rose",
+                            "icon": "📊"
+                        },
+                        {
+                            "title": "流動性風險",
+                            "description": "冷門股可能無法順利出場",
+                            "color": "purple",
+                            "icon": "🔒"
+                        },
+                        {
+                            "title": "心理風險",
+                            "description": "頻繁交易導致情緒失控",
+                            "color": "zinc",
+                            "icon": "🧠"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "風險控制原則",
+                    "color": "emerald",
+                    "items": [
+                        "單日虧損上限：設定每日最大虧損金額（如 -2%）",
+                        "單筆風險控制：每筆交易風險不超過總資金 1%",
+                        "保留緊急資金：帳戶保留足夠資金應對無法沖銷情況",
+                        "避開極端行情：重大消息日或高波動時降低部位"
+                    ]
+                },
+                {
+                    "type": "trade-example",
+                    "title": "風險案例：漲停無法沖銷",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 100,
+                        "quantity": 2000,
+                        "stopLoss": 98
+                    },
+                    "explanation": "買進後股價漲停鎖住，無法賣出沖銷。此時必須準備 $200,000 的交割款。若隔日跳空下跌開出，還會面臨虧損。這就是為何當沖要選擇流動性高的標的。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "當沖無法沖銷時，最嚴重的後果是什麼？",
+                    "options": [
+                        { "id": "a", "text": "被券商收取額外手續費", "isCorrect": false },
+                        { "id": "b", "text": "隔日自動幫你賣出", "isCorrect": false },
+                        { "id": "c", "text": "違約交割，可能面臨法律責任", "isCorrect": true },
+                        { "id": "d", "text": "只是帳面虧損，沒有實際損失", "isCorrect": false }
+                    ],
+                    "explanation": "違約交割是非常嚴重的問題，會被列入聯徵紀錄，影響信用，甚至可能面臨刑事責任。當沖前一定要確保有足夠資金應對無法沖銷的情況。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "隔日沖策略",
+            "description": "今買明賣的短線操作技巧",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**隔日沖**是「今天買、明天賣」(T+1) 的短線操作方式，不需要特殊資格申請，但需承擔隔夜風險。",
+                    "highlights": [{ "text": "隔日沖", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "當沖",
+                            "description": "當日買賣完成，不持倉過夜",
+                            "color": "cyan",
+                            "subtext": "稅率 0.15%，需申請資格"
+                        },
+                        {
+                            "title": "隔日沖",
+                            "description": "今買明賣，持倉過夜",
+                            "color": "amber",
+                            "subtext": "稅率 0.3%，無需申請"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "主力隔日沖三大手法",
+                    "color": "indigo",
+                    "items": [
+                        "① 打板策略：在股價上漲 7-9% 時大量買進推升至漲停，隔日早盤開高出貨",
+                        "② 權證套利：大量買進權證與標的，發行券商被迫避險買進推升股價",
+                        "③ 消息驅動：利用重大消息發布前後的市場反應進行短線操作"
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "隔日沖進出示意",
+                    "candles": [
+                        { "open": 52.0, "high": 54.5, "low": 51.0, "close": 53.5, "label": "前一日" },
+                        { "open": 54.0, "high": 58.0, "low": 53.5, "close": 57.5, "label": "買進日" },
+                        { "open": 59.0, "high": 60.5, "low": 56.0, "close": 57.0, "label": "賣出日" }
+                    ],
+                    "description": "買進日尾盤進場 $57.5，隔日開盤跳空高開 $59.0，在早盤 9:00-9:30 趁高出貨。獲利約 2.6%，扣除 0.3% 稅和 0.285% 手續費，淨利約 2%。",
+                    "annotations": [
+                        { "index": 1, "text": "尾盤買進", "position": "bottom" },
+                        { "index": 2, "text": "開高賣出", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "trade-example",
+                    "title": "隔日沖實戰案例",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 57.5,
+                        "exitPrice": 59.0,
+                        "quantity": 2000,
+                        "fees": 510,
+                        "result": {
+                            "profit": 2490,
+                            "percentage": 2.17
+                        }
+                    },
+                    "explanation": "尾盤 $57.5 買進 2 張，隔日開盤 $59.0 賣出，價差 $3,000。扣除手續費 $330 和證交稅 $354 後，淨獲利約 $2,490（2.17%）。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "識別隔日沖主力",
+                    "color": "amber",
+                    "items": [
+                        "查看盤後券商進出表，特定分點經常為隔日沖主力",
+                        "隔日沖佔當日成交量 20% 以上時，隔日賣壓沉重",
+                        "漲停板被鎖且大戶買超，隔日有出貨壓力",
+                        "常見隔日沖券商分點可記錄追蹤"
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "遇到隔日沖的應對",
+                    "candles": [
+                        { "open": 51, "high": 56, "low": 50, "close": 55, "label": "前日" },
+                        { "open": 56, "high": 58, "low": 55, "close": 58, "label": "漲停" },
+                        { "open": 57, "high": 58, "low": 53, "close": 55, "label": "開高殺" },
+                        { "open": 54, "high": 55, "low": 51, "close": 52, "label": "洗盤" },
+                        { "open": 53, "high": 57, "low": 52, "close": 56, "label": "止跌" },
+                        { "open": 57, "high": 62, "low": 56, "close": 60, "label": "復甦" },
+                        { "open": 61, "high": 65, "low": 60, "close": 63, "label": "續漲" }
+                    ],
+                    "annotations": [
+                        { "index": 1, "text": "漲停鎖定", "position": "top" },
+                        { "index": 2, "text": "隔日倒貨", "position": "bottom" },
+                        { "index": 4, "text": "賣壓消化", "position": "bottom" },
+                        { "index": 5, "text": "重新上漲", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 55, "label": "" },
+                            { "x": 1, "y": 58, "label": "" },
+                            { "x": 2, "y": 55, "label": "" },
+                            { "x": 3, "y": 52, "label": "" },
+                            { "x": 4, "y": 56, "label": "" },
+                            { "x": 5, "y": 60, "label": "" },
+                            { "x": 6, "y": 63, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 58, "type": "info", "label": "漲停被鎖" },
+                            { "x": 2, "y": 55, "type": "stopLoss", "label": "隔日開高殺" },
+                            { "x": 3, "y": 52, "type": "buy", "label": "等賣壓消化" },
+                            { "x": 6, "y": 63, "type": "takeProfit", "label": "重新上漲" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 50, "label": "支撐$50" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 50, "yEnd": 55, "label": "洗盤區" }
+                        ]
+                    },
+                    "description": "K線圖顯示：漲停當日長紅K被鎖，但隔日出現「開高走低長黑K」代表主力倒貨。等待長下影線（買盤承接）出現後再進場，避免被隔日沖主力收割。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下關於隔日沖的敘述，何者正確？",
+                    "options": [
+                        { "id": "a", "text": "隔日沖享有當沖稅率減半優惠", "isCorrect": false },
+                        { "id": "b", "text": "隔日沖主力通常在隔日早盤出貨", "isCorrect": true },
+                        { "id": "c", "text": "隔日沖需要申請特殊資格", "isCorrect": false },
+                        { "id": "d", "text": "隔日沖沒有任何風險", "isCorrect": false }
+                    ],
+                    "explanation": "隔日沖主力的標準操作是今日尾盤買進、隔日早盤(9:00-9:30)趁高出貨。隔日沖不享有稅率優惠（0.3%），且有隔夜風險。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "主力籌碼分析",
+            "description": "從籌碼面判斷主力動向",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**籌碼分析**是判斷主力進出的重要工具，透過換手率、券商進出等數據，可以提早發現主力動向。",
+                    "highlights": [{ "text": "籌碼分析", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "換手率判斷主力動向",
+                    "color": "indigo",
+                    "items": [
+                        "換手率 = 成交量 ÷ 流通在外股數 × 100%",
+                        "低檔 + 換手 5-10% + 收紅 = 主力吸籌訊號",
+                        "盤整期 + 換手穩定 3-6% = 洗盤格局",
+                        "高檔 + 換手 > 20% + 收黑 = 主力出貨訊號"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["換手率", "位置", "訊號", "建議"],
+                    "rows": [
+                        ["< 3%", "任何", "冷門股/無量", "觀望"],
+                        ["3-6%", "盤整", "洗盤格局", "等待突破"],
+                        ["5-10%", "低檔", "可能吸籌", "關注後續"],
+                        ["10-20%", "突破", "放量突破", "考慮進場"],
+                        ["> 20%", "高檔", "疑似出貨", "獲利了結"]
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "主力吸籌範例",
+                    "candles": [
+                        { "open": 45.0, "high": 46.5, "low": 44.0, "close": 44.5, "label": "低量" },
+                        { "open": 44.5, "high": 48.0, "low": 44.0, "close": 47.5, "label": "放量收紅" },
+                        { "open": 47.5, "high": 49.0, "low": 46.0, "close": 46.5, "label": "洗盤" },
+                        { "open": 47.0, "high": 52.0, "low": 46.5, "close": 51.0, "label": "突破" }
+                    ],
+                    "description": "第一根低量觀望，第二根換手率突然放大至 8% 且收紅，代表有資金進場。第三根量縮洗盤，第四根放量突破確認主力拉抬意圖。",
+                    "annotations": [
+                        { "index": 1, "text": "換手8%", "position": "top" },
+                        { "index": 3, "text": "帶量突破", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "主力進出 5 步驟 SOP",
+                    "color": "emerald",
+                    "items": [
+                        "① 篩股：追蹤低檔盤整但近期換手突然放大的標的",
+                        "② 量價確認：放量上漲且收紅，收盤接近日高",
+                        "③ 洗盤判斷：量縮回檔，等待放量突破再加碼",
+                        "④ 高檔警示：單日換手 > 20% 時評估減碼",
+                        "⑤ 例行檢核：每日確認高檔巨量、停損執行情況"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "籌碼分析實戰流程",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 40, "label": "" },
+                            { "x": 1, "y": 42, "label": "" },
+                            { "x": 2, "y": 45, "label": "" },
+                            { "x": 3, "y": 43, "label": "" },
+                            { "x": 4, "y": 48, "label": "" },
+                            { "x": 5, "y": 52, "label": "" },
+                            { "x": 6, "y": 55, "label": "" },
+                            { "x": 7, "y": 58, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 45, "type": "info", "label": "換手10%吸籌" },
+                            { "x": 3, "y": 43, "type": "info", "label": "量縮洗盤" },
+                            { "x": 4, "y": 48, "type": "buy", "label": "放量突破進場" },
+                            { "x": 7, "y": 58, "type": "info", "label": "換手25%警示" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 45, "label": "壓力→支撐" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 45, "yEnd": 60, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "低檔換手率突然放大至 10%，觀察後續走勢。量縮回測不破 $43 後放量突破 $45，在 $48 進場。高檔換手率升至 25% 時警示，評估獲利了結。"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "三大法人買超",
+                            "description": "外資、投信、自營商持續買進",
+                            "color": "emerald",
+                            "subtext": "中長期看好"
+                        },
+                        {
+                            "title": "融資增加",
+                            "description": "散戶借錢買股比例上升",
+                            "color": "amber",
+                            "subtext": "需注意籌碼亂度"
+                        },
+                        {
+                            "title": "券商特定分點",
+                            "description": "單一券商大量買進",
+                            "color": "cyan",
+                            "subtext": "可能是主力佈局"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "股價在低檔時，換手率突然從 2% 升至 8% 且收紅 K，這代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "主力正在出貨", "isCorrect": false },
+                        { "id": "b", "text": "可能是主力吸籌訊號", "isCorrect": true },
+                        { "id": "c", "text": "股價即將下跌", "isCorrect": false },
+                        { "id": "d", "text": "沒有任何意義", "isCorrect": false }
+                    ],
+                    "explanation": "低檔放量收紅是典型的主力吸籌訊號，代表有大資金在低位買進籌碼。此時應該密切關注後續走勢，等待確認後進場。"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "當沖實戰技法",
+            "description": "Tick 流與日內波段操作",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "當沖可依據操作風格分為 **Tick 流交易**（搶極短價差）和**日內波段**（抓日內趨勢），兩者策略大不相同。",
+                    "highlights": [
+                        { "text": "Tick 流交易", "color": "white" },
+                        { "text": "日內波段", "color": "white" }
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "Tick 流交易",
+                            "description": "賺取 5-10 個 Tick 的極短價差",
+                            "color": "rose",
+                            "subtext": "持倉時間：秒~分鐘"
+                        },
+                        {
+                            "title": "日內波段",
+                            "description": "跟隨日內趨勢做較大波段",
+                            "color": "indigo",
+                            "subtext": "持倉時間：數小時"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "Tick 流操作要點",
+                    "color": "rose",
+                    "items": [
+                        "選擇：每日成交量 > 5,000 張的高流動性股",
+                        "進場：追強勢股的急拉或急跌反彈",
+                        "目標：獲利 5-10 個 Tick 即出場",
+                        "停損：虧損 3-5 個 Tick 立即認賠",
+                        "次數：一天操作不超過 3-5 趟"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "Tick 流獲利計算（股價 $150）",
+                    "steps": [
+                        { "label": "每 Tick 金額", "value": "$0.5" },
+                        { "label": "買進 1 張", "value": "$150,000" },
+                        { "label": "目標 8 Tick", "formula": "$0.5 × 8 × 1000 股", "value": "$4,000" },
+                        { "label": "交易成本", "formula": "約 0.43%", "value": "$650", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "淨獲利",
+                        "value": "$3,350（約 2.2%）",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "日內波段操作要點",
+                    "color": "indigo",
+                    "items": [
+                        "時機：開盤後 30 分鐘確認趨勢方向",
+                        "進場：趨勢確立後順勢進場",
+                        "持有：可持有至中盤 11-12 點或尾盤 13 點",
+                        "出場：趨勢反轉或達到當日目標",
+                        "風控：設定當日最大虧損上限"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "日內波段進出示意",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "09:00" },
+                            { "x": 1, "y": 102, "label": "09:15" },
+                            { "x": 2, "y": 101, "label": "09:30" },
+                            { "x": 3, "y": 104, "label": "10:00" },
+                            { "x": 4, "y": 106, "label": "10:30" },
+                            { "x": 5, "y": 105, "label": "11:00" },
+                            { "x": 6, "y": 108, "label": "12:00" },
+                            { "x": 7, "y": 107, "label": "13:00" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 101, "type": "info", "label": "趨勢確認" },
+                            { "x": 3, "y": 104, "type": "buy", "label": "突破進場" },
+                            { "x": 6, "y": 108, "type": "takeProfit", "label": "目標出場" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 103, "label": "開盤高點" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 103, "yEnd": 110, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "09:30 確認多方趨勢，10:00 突破開盤高點 $103 後在 $104 進場。持有至中午達到 $108 目標出場，獲利約 3.8%。"
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "當沖常見進場型態",
+                    "candles": [
+                        { "open": 98.0, "high": 102.0, "low": 97.0, "close": 101.0, "label": "開盤K" },
+                        { "open": 101.0, "high": 103.0, "low": 100.0, "close": 100.5, "label": "回測" },
+                        { "open": 101.0, "high": 106.0, "low": 100.0, "close": 105.5, "label": "突破" }
+                    ],
+                    "description": "開盤 K 線強勢收紅，回測不破均價線後第三根帶量突破。這是典型的「開紅回測突破」進場型態，適合日內波段操作。",
+                    "annotations": [
+                        { "index": 0, "text": "強勢開盤", "position": "top" },
+                        { "index": 2, "text": "突破進場", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "當沖紀律：絕對不能做的事",
+                    "color": "rose",
+                    "items": [
+                        "❌ 沒有停損就不要進場",
+                        "❌ 不要在 12:30 後才開新倉",
+                        "❌ 虧損後不要凹單攤平",
+                        "❌ 不要同時操作超過 2-3 檔股票",
+                        "❌ 連續虧損 3 次後應該休息"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "Tick 流交易的核心原則是什麼？",
+                    "options": [
+                        { "id": "a", "text": "追求大波段，持有到收盤", "isCorrect": false },
+                        { "id": "b", "text": "快進快出，獲利 5-10 Tick 即出場", "isCorrect": true },
+                        { "id": "c", "text": "逢低攤平，降低成本", "isCorrect": false },
+                        { "id": "d", "text": "只在尾盤進場", "isCorrect": false }
+                    ],
+                    "explanation": "Tick 流交易的核心是「快進快出」，獲利目標只有 5-10 個 Tick。不貪心、不凹單，靠高頻次的小額獲利累積報酬。"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "title": "當沖心態管理",
+            "description": "克服情緒陷阱的關鍵",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "當沖最大的敵人不是市場，而是**自己的情緒**。統計顯示，90% 的當沖虧損來自於情緒化交易。",
+                    "highlights": [{ "text": "自己的情緒", "color": "rose" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "恐懼",
+                            "description": "害怕虧損而不敢進場，或過早出場",
+                            "color": "amber",
+                            "icon": "😰"
+                        },
+                        {
+                            "title": "貪婪",
+                            "description": "獲利後不願出場，期待更多",
+                            "color": "rose",
+                            "icon": "🤑"
+                        },
+                        {
+                            "title": "復仇心理",
+                            "description": "虧損後急於扳回，加大部位",
+                            "color": "purple",
+                            "icon": "😤"
+                        },
+                        {
+                            "title": "過度自信",
+                            "description": "連續獲利後放鬆警惕",
+                            "color": "zinc",
+                            "icon": "😎"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "當沖者的致命錯誤",
+                    "color": "rose",
+                    "items": [
+                        "凹單：虧損後不停損，期待反彈",
+                        "報復性交易：虧損後加大部位想快速扳回",
+                        "過度交易：一天進出超過 5 次以上",
+                        "移動停損：股價下跌時不斷下修停損點",
+                        "情緒進場：因為「感覺」而非「訊號」進場"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["錯誤行為", "心理原因", "正確做法"],
+                    "rows": [
+                        ["凹單不停損", "不願承認錯誤", "嚴守停損紀律"],
+                        ["追高殺低", "FOMO 錯失恐懼", "等待回測進場"],
+                        ["連續交易", "想快速獲利", "設定每日次數上限"],
+                        ["重倉壓注", "過度自信", "單筆風險 < 總資金 2%"],
+                        ["臨時改計畫", "受市場波動影響", "進場前寫下交易計畫"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "當沖紀律養成 5 原則",
+                    "color": "emerald",
+                    "items": [
+                        "① 交易前：制定明確的進出場計畫，寫下來",
+                        "② 進場時：只在符合條件時進場，不猜測",
+                        "③ 持倉中：設好停損停利後不動搖",
+                        "④ 出場後：無論盈虧都記錄檢討",
+                        "⑤ 收盤後：當日總結，明日再戰"
+                    ]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "每日交易檢查清單",
+                    "items": [
+                        { "key": "今日最大虧損", "value": "設定為總資金的 2%", "keyColor": "rose" },
+                        { "key": "單筆風險上限", "value": "不超過總資金的 0.5%", "keyColor": "amber" },
+                        { "key": "最大交易次數", "value": "3-5 次為上限", "keyColor": "indigo" },
+                        { "key": "強制休息條件", "value": "連虧 3 次或達到虧損上限", "keyColor": "purple" },
+                        { "key": "收盤前", "value": "13:20 前必須平倉", "keyColor": "zinc" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 高手的心態秘訣",
+                    "color": "indigo",
+                    "text": "把每次交易視為「執行計畫」而非「賭博」",
+                    "items": [
+                        "接受虧損是交易的一部分",
+                        "專注於過程而非結果",
+                        "小虧小賺是正常，大賺大虧要檢討",
+                        "保持平常心，不因單次結果影響情緒"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "當沖連續虧損 3 次後，最正確的做法是？",
+                    "options": [
+                        { "id": "a", "text": "加大部位快速扳回", "isCorrect": false },
+                        { "id": "b", "text": "暫停交易，檢討原因", "isCorrect": true },
+                        { "id": "c", "text": "換一檔股票繼續操作", "isCorrect": false },
+                        { "id": "d", "text": "凹單等待反彈", "isCorrect": false }
+                    ],
+                    "explanation": "連續虧損代表可能判斷方向錯誤或市場不適合當沖。此時應該暫停交易、冷靜檢討，而不是急於扳回。情緒化交易只會擴大虧損。"
+                }
+            ]
+        }
+    ]
+}

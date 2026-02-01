@@ -1,0 +1,604 @@
+{
+    "id": "risk-management",
+    "title": "進階風險管理",
+    "description": "專業的資金控管與風險控制",
+    "icon": "Shield",
+    "color": "purple",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "止損策略詳解",
+            "description": "多種止損方法與設定技巧",
+            "duration": "16分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**止損**是保護資金最重要的手段，80%的重大虧損來自拒絕止損，而不是判斷錯誤。",
+                    "highlights": [{ "text": "止損", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "百分比停損法",
+                    "color": "indigo",
+                    "items": [
+                        "低波動商品（ETF、指數）：3%-5%",
+                        "一般股票：5%-8%",
+                        "高波動商品：10%-15%",
+                        "根據自身風險承受度調整"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "技術面停損",
+                    "color": "amber",
+                    "items": [
+                        "支撐位停損：跌破關鍵支撐位1%-2%",
+                        "均線停損：短線用MA10/MA20，波段用MA50",
+                        "趨勢線停損：跌破上升趨勢線下方1%",
+                        "K棒形態停損：設在進場K棒的底部"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ATR波動度停損",
+                    "color": "emerald",
+                    "text": "根據市場波動程度動態調整止損距離",
+                    "items": [
+                        "止損距離 = 1.5 ~ 2 倍 ATR",
+                        "波動大時自動放寬止損",
+                        "避免被正常震盪洗出場"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 虧損複利效應",
+                    "color": "rose",
+                    "items": [
+                        "虧損 10% 需反彈 11.1% 回本",
+                        "虧損 30% 需反彈 42.8% 回本",
+                        "虧損 50% 需反彈 100% 回本",
+                        "小虧損容易回本，大虧損難以翻身"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "倉位控制計算",
+            "description": "科學化的資金配置方法",
+            "duration": "14分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**倉位控制**決定每筆交易投入多少資金，是風險管理的核心。",
+                    "highlights": [{ "text": "倉位控制", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "單筆風險控制原則",
+                    "color": "indigo",
+                    "items": [
+                        "每筆交易風險 = 總資金的 1%-2%",
+                        "新手建議從 1% 開始",
+                        "有經驗後可提高至 2%-3%",
+                        "永遠不要超過 5%"
+                    ]
+                },
+                {
+                    "type": "code-block",
+                    "title": "倉位計算公式",
+                    "lines": [
+                        { "value": "最大風險金額 = 總資金 × 風險比例" },
+                        { "value": "止損距離 = 買入價 - 止損價" },
+                        { "value": "可買股數 = 最大風險金額 ÷ 止損距離", "color": "emerald" }
+                    ]
+                },
+                {
+                    "type": "code-block",
+                    "title": "實例計算",
+                    "lines": [
+                        { "value": "總資金: $100,000" },
+                        { "value": "風險比例: 2%" },
+                        { "value": "最大風險: $2,000" },
+                        { "value": "股價: $50，止損價: $45" },
+                        { "value": "止損距離: $5" },
+                        { "value": "可買股數: $2,000 ÷ $5 = 400股", "color": "emerald" },
+                        { "value": "持倉金額: 400 × $50 = $20,000", "color": "amber" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "動態調整原則",
+                    "color": "zinc",
+                    "items": [
+                        "寬止損 = 小倉位",
+                        "緊止損 = 大倉位",
+                        "但風險金額保持不變"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "倉位計算練習",
+                    "steps": [
+                        { "label": "總資金", "value": "$50,000" },
+                        { "label": "風險比例", "value": "2%" },
+                        { "label": "最大風險金額", "formula": "$50,000 × 2%", "value": "$1,000", "highlight": true },
+                        { "label": "股票價格", "value": "$25" },
+                        { "label": "止損價格", "value": "$23" },
+                        { "label": "止損距離", "formula": "$25 - $23", "value": "$2" }
+                    ],
+                    "result": {
+                        "label": "可買股數",
+                        "value": "500 股 ($12,500)",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "trade-example",
+                    "title": "套用倉位控制的交易",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 25,
+                        "quantity": 500,
+                        "stopLoss": 23,
+                        "takeProfit": 30
+                    },
+                    "explanation": "根據 2% 風險原則，我們計算出可買 500 股。若股價跌至止損點 $23，最大虧損為 $1,000，正好是總資金的 2%。這種方式能有效控制風險。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "移動停損技巧",
+            "description": "鎖定利潤的進階方法",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**移動停損 (Trailing Stop)** 讓止損點隨價格上漲而移動，在保護利潤的同時不過早離場。",
+                    "highlights": [{ "text": "移動停損 (Trailing Stop)", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "固定點數移動停損",
+                    "color": "indigo",
+                    "text": "止損點與最高價保持固定距離",
+                    "items": [
+                        "例如：始終設在最高價下方 $5",
+                        "股價創新高時，止損點跟著上移",
+                        "股價回落時，止損點不動"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "百分比移動停損",
+                    "color": "amber",
+                    "text": "止損點與最高價保持固定百分比距離",
+                    "items": [
+                        "例如：始終設在最高價的 95%",
+                        "適合波動較大的股票",
+                        "自動適應價格變化"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "均線追蹤停損",
+                    "color": "emerald",
+                    "text": "以移動平均線作為動態止損點",
+                    "items": [
+                        "短線：跌破 MA10 或 MA20 離場",
+                        "波段：跌破 MA50 離場",
+                        "均線能過濾短期雜訊"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 實戰應用",
+                    "color": "zinc",
+                    "items": [
+                        "獲利達 10% 後啟動移動停損",
+                        "初始可設較寬，獲利增加後逐步收緊",
+                        "不同市場環境使用不同方法"
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "移動停損示意圖",
+                    "candles": [
+                        { "open": 99, "high": 106, "low": 98, "close": 105, "label": "D1-2" },
+                        { "open": 106, "high": 114, "low": 105, "close": 112, "label": "D3-4" },
+                        { "open": 113, "high": 120, "low": 112, "close": 118, "label": "D5-6" },
+                        { "open": 119, "high": 127, "low": 118, "close": 125, "label": "高點" },
+                        { "open": 124, "high": 125, "low": 118, "close": 120, "label": "回檔" },
+                        { "open": 119, "high": 120, "low": 114, "close": 116, "label": "停損" },
+                        { "open": 117, "high": 120, "low": 115, "close": 118, "label": "盤整" }
+                    ],
+                    "annotations": [
+                        { "index": 0, "text": "進場$100", "position": "bottom" },
+                        { "index": 3, "text": "高點$125", "position": "top" },
+                        { "index": 5, "text": "觸發停損$118", "position": "bottom" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 105, "label": "D1-2" },
+                            { "x": 1, "y": 112, "label": "D3-4" },
+                            { "x": 2, "y": 118, "label": "D5-6" },
+                            { "x": 3, "y": 125, "label": "高點" },
+                            { "x": 4, "y": 120, "label": "回檔" },
+                            { "x": 5, "y": 116, "label": "停損" },
+                            { "x": 6, "y": 118, "label": "盤整" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 105, "type": "buy", "label": "進場 $100" },
+                            { "x": 5, "y": 116, "type": "sell", "label": "觸發停損" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 95, "label": "初始停損 $95" },
+                            { "type": "trendline", "points": [{ "x": 2, "y": 112 }, { "x": 5, "y": 119 }], "label": "移動停損線", "color": "#f97316" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 100, "yEnd": 116, "label": "鎖定獲利" }
+                        ]
+                    },
+                    "description": "K線圖展示移動停損策略：隨著股價上漲（連續長紅K），停損線也跟著上移。當出現「高檔長黑K」（賣壓出現）且跌破移動停損線時出場，成功鎖定16%獲利，避免後續可能的回吐。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "風險回報比設定",
+            "description": "長期獲利的數學基礎",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**風險回報比 (Risk-Reward Ratio)** 是每筆交易的預期獲利與可能損失的比率。",
+                    "highlights": [{ "text": "風險回報比 (Risk-Reward Ratio)", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "2:1 原則",
+                    "color": "indigo",
+                    "text": "預期獲利應至少是可能損失的 2 倍",
+                    "items": [
+                        "風險: $1,000 → 目標獲利: $2,000",
+                        "即使勝率只有 40%，仍能獲利",
+                        "這是專業交易者的基本要求"
+                    ]
+                },
+                {
+                    "type": "code-block",
+                    "title": "數學驗證",
+                    "lines": [
+                        { "value": "10筆交易，風險回報比 2:1" },
+                        { "value": "勝率 40%：4勝6敗" },
+                        { "value": "獲利: 4 × $2,000 = $8,000", "color": "emerald" },
+                        { "value": "虧損: 6 × $1,000 = $6,000", "color": "rose" },
+                        { "value": "淨獲利: $2,000", "color": "amber" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "勝率與報酬率的關係",
+                    "color": "amber",
+                    "items": [
+                        "高勝率 + 低報酬比 = 可行",
+                        "低勝率 + 高報酬比 = 可行",
+                        "低勝率 + 低報酬比 = 必虧",
+                        "目標：找到適合自己的平衡點"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["風險回報比", "損益兩平勝率"],
+                    "rows": [
+                        ["1:1", "50%"],
+                        ["2:1", "33%"],
+                        ["3:1", "25%"],
+                        ["4:1", "20%"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "✅ 執行紀律",
+                    "color": "emerald",
+                    "items": [
+                        "交易前先計算風險回報比",
+                        "風險回報比不佳的交易不做",
+                        "止損、止盈數字進場前確定",
+                        "執行時不重新評估，嚴格遵守"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "凱利公式與資金配置",
+            "description": "科學化的最佳下注比例",
+            "duration": "16分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**凱利公式**是一種數學化的資金管理工具，用於計算具有正期望值投資的最佳資金配置比例。",
+                    "highlights": [{ "text": "凱利公式", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "凱利公式",
+                    "color": "indigo",
+                    "text": "f* = (bp - q) / b",
+                    "items": [
+                        "f* = 最佳投注比例",
+                        "b = 賠率（獲利/虧損比）",
+                        "p = 獲勝機率",
+                        "q = 失敗機率 (1 - p)"
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "凱利公式計算範例",
+                    "steps": [
+                        { "label": "獲勝機率 (p)", "value": "60%" },
+                        { "label": "失敗機率 (q)", "value": "40%" },
+                        { "label": "賠率 (b)", "value": "2 (賺2虧1)", "highlight": true },
+                        { "label": "凱利比例", "formula": "(2×0.6 - 0.4) / 2", "value": "40%", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "建議",
+                        "value": "理論最佳投注比例為 40%",
+                        "color": "indigo"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 實戰應用注意事項",
+                    "color": "rose",
+                    "items": [
+                        "凱利公式假設勝率和賠率已知且固定",
+                        "實際交易中這兩者都是估計值，有誤差",
+                        "建議使用「折扣凱利」：採用 25%-50% 的凱利值",
+                        "例如凱利算出 40%，實際使用 10%-20%"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["勝率", "賠率 1:1", "賠率 2:1", "賠率 3:1"],
+                    "rows": [
+                        ["40%", "不下注", "10%", "20%"],
+                        ["50%", "0%", "25%", "33%"],
+                        ["60%", "20%", "40%", "47%"],
+                        ["70%", "40%", "55%", "60%"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "簡化版資金配置法",
+                    "color": "emerald",
+                    "items": [
+                        "保守型：單筆風險 1%，最多持有 5 檔",
+                        "穩健型：單筆風險 2%，最多持有 8 檔",
+                        "積極型：單筆風險 3%，最多持有 10 檔",
+                        "無論如何，單一標的不超過總資金 20%"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "你的交易系統勝率50%、賠率2:1，凱利公式建議下注25%。實際應該使用多少？",
+                    "options": [
+                        { "id": "a", "text": "25%，完全按照公式", "isCorrect": false },
+                        { "id": "b", "text": "6%-12%，使用折扣凱利", "isCorrect": true },
+                        { "id": "c", "text": "50%，因為勝率50%", "isCorrect": false },
+                        { "id": "d", "text": "凱利公式不適用於交易", "isCorrect": false }
+                    ],
+                    "explanation": "實際交易中應使用「折扣凱利」，通常是理論值的 25%-50%。凱利建議 25%，實際使用 6%-12% 較為安全，避免因估計誤差導致過度下注。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "最大回撤與心理管理",
+            "description": "控制虧損、保持紀律的關鍵",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**最大回撤 (Maximum Drawdown)** 是衡量投資組合從高點下跌到低點的最大幅度，是評估風險的重要指標。",
+                    "highlights": [{ "text": "最大回撤 (Maximum Drawdown)", "color": "white" }]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "最大回撤示意圖",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 110, "label": "" },
+                            { "x": 2, "y": 125, "label": "" },
+                            { "x": 3, "y": 115, "label": "" },
+                            { "x": 4, "y": 105, "label": "" },
+                            { "x": 5, "y": 95, "label": "" },
+                            { "x": 6, "y": 108, "label": "" },
+                            { "x": 7, "y": 120, "label": "" },
+                            { "x": 8, "y": 135, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 125, "type": "info", "label": "高點 $125" },
+                            { "x": 5, "y": 95, "type": "stopLoss", "label": "低點 $95" },
+                            { "x": 8, "y": 135, "type": "takeProfit", "label": "新高 $135" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "loss", "yStart": 95, "yEnd": 125, "label": "回撤 24%" }
+                        ]
+                    },
+                    "description": "從高點$125跌至低點$95，最大回撤 = (125-95)/125 = 24%。雖然最終創新高$135，但過程中承受了24%的回撤。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["回撤幅度", "回本所需漲幅", "心理壓力"],
+                    "rows": [
+                        ["10%", "11.1%", "可承受"],
+                        ["20%", "25%", "中等"],
+                        ["30%", "42.9%", "較大"],
+                        ["40%", "66.7%", "很大"],
+                        ["50%", "100%", "極大"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "控制最大回撤的方法",
+                    "color": "indigo",
+                    "items": [
+                        "設定每日/每週最大虧損上限",
+                        "分散投資，不重倉單一標的",
+                        "使用移動停損鎖住利潤",
+                        "市況不佳時降低倉位",
+                        "遵守交易紀律，不凹單"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "交易心理管理要點",
+                    "color": "amber",
+                    "items": [
+                        "接受虧損是交易的一部分",
+                        "不要因單筆虧損影響判斷",
+                        "連虧時降低倉位或休息",
+                        "連贏時保持謙虛，不過度自信",
+                        "專注於執行計畫，而非盈虧結果"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "每日交易檢查清單",
+                    "color": "zinc",
+                    "items": [
+                        "□ 今日最大虧損是否觸及上限？",
+                        "□ 倉位是否過於集中？",
+                        "□ 是否嚴格執行停損？",
+                        "□ 是否有情緒化交易？",
+                        "□ 今日值得記錄的經驗教訓？"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "你的帳戶從$100,000跌到$70,000，需要多少漲幅才能回本？",
+                    "options": [
+                        { "id": "a", "text": "30%", "isCorrect": false },
+                        { "id": "b", "text": "42.9%", "isCorrect": true },
+                        { "id": "c", "text": "35%", "isCorrect": false },
+                        { "id": "d", "text": "50%", "isCorrect": false }
+                    ],
+                    "explanation": "虧損30%後剩$70,000，需要漲回$100,000。漲幅 = (100,000-70,000)/70,000 = 42.9%。這就是為什麼控制最大回撤如此重要！"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "風險管理綜合練習",
+            "description": "實戰情境的風險評估與決策",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "透過**情境練習**來強化風險管理能力，學習在各種情況下做出正確的風險決策。",
+                    "highlights": [{ "text": "情境練習", "color": "white" }]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【情境1】突破後的倉位管理",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 48, "label": "" },
+                            { "x": 1, "y": 50, "label": "" },
+                            { "x": 2, "y": 52, "label": "" },
+                            { "x": 3, "y": 58, "label": "" },
+                            { "x": 4, "y": 55, "label": "" },
+                            { "x": 5, "y": 62, "label": "" },
+                            { "x": 6, "y": 68, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 58, "type": "buy", "label": "突破進場 $58" },
+                            { "x": 2, "y": 52, "type": "stopLoss", "label": "停損 $52" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 55, "label": "壓力→支撐" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 55, "yEnd": 70, "label": "獲利區" }
+                        ]
+                    },
+                    "description": "總資金$100,000，單筆風險2%。突破$55壓力後在$58進場，停損設$52。請計算可買股數。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境1答案】根據上述條件，可買多少股？",
+                    "options": [
+                        { "id": "a", "text": "200股", "isCorrect": false },
+                        { "id": "b", "text": "333股", "isCorrect": true },
+                        { "id": "c", "text": "500股", "isCorrect": false },
+                        { "id": "d", "text": "1000股", "isCorrect": false }
+                    ],
+                    "explanation": "最大風險 = $100,000 × 2% = $2,000。止損距離 = $58 - $52 = $6。可買股數 = $2,000 ÷ $6 = 333股。持倉金額約 $19,300，佔總資金19.3%。"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【情境2】連續虧損後的決策",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 98, "label": "" },
+                            { "x": 2, "y": 95, "label": "" },
+                            { "x": 3, "y": 92, "label": "" },
+                            { "x": 4, "y": 90, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 1, "y": 98, "type": "stopLoss", "label": "虧損1: -2%" },
+                            { "x": 2, "y": 95, "type": "stopLoss", "label": "虧損2: -3%" },
+                            { "x": 3, "y": 92, "type": "stopLoss", "label": "虧損3: -3%" },
+                            { "x": 4, "y": 90, "type": "info", "label": "累計: -10%" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "loss", "yStart": 88, "yEnd": 100, "label": "虧損區" }
+                        ]
+                    },
+                    "description": "帳戶從$100,000連續虧損至$90,000（-10%）。接下來看到一個「很好的進場機會」，你應該怎麼做？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境2答案】連虧10%後看到機會，正確做法是？",
+                    "options": [
+                        { "id": "a", "text": "加大部位賭一把扳回", "isCorrect": false },
+                        { "id": "b", "text": "暫停交易，檢討策略後再決定", "isCorrect": true },
+                        { "id": "c", "text": "正常進場，不受之前虧損影響", "isCorrect": false },
+                        { "id": "d", "text": "直接放棄交易", "isCorrect": false }
+                    ],
+                    "explanation": "連續虧損代表策略可能不適合當前市場，或執行有問題。正確做法是暫停交易、檢討原因，而不是急於「扳回」。情緒化加碼是擴大虧損的主因。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "風險管理核心原則總結",
+                    "color": "emerald",
+                    "items": [
+                        "① 單筆風險不超過總資金 2%",
+                        "② 設定每日最大虧損上限（如 5%）",
+                        "③ 連虧 3 次後強制休息檢討",
+                        "④ 最大回撤控制在 20% 以內",
+                        "⑤ 永遠先想虧損，再想獲利"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪個是風險管理最重要的原則？",
+                    "options": [
+                        { "id": "a", "text": "追求最大獲利", "isCorrect": false },
+                        { "id": "b", "text": "先控制虧損，再追求獲利", "isCorrect": true },
+                        { "id": "c", "text": "分散投資到100檔股票", "isCorrect": false },
+                        { "id": "d", "text": "永遠滿倉操作", "isCorrect": false }
+                    ],
+                    "explanation": "風險管理的核心是「先想輸、再想贏」。只要控制好每筆虧損，長期下來即使勝率不高，也能靠良好的賠率獲利。而忽視風險只追求獲利，終將導致重大虧損。"
+                }
+            ]
+        }
+    ]
+}

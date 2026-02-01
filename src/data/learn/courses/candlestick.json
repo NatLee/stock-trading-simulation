@@ -1,0 +1,778 @@
+{
+    "id": "candlestick",
+    "title": "K線圖入門",
+    "description": "學習閱讀和分析K線圖",
+    "icon": "BarChart3",
+    "color": "emerald",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "K線的組成",
+            "description": "開盤、收盤、最高、最低",
+            "duration": "7分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**K線**（蠟燭圖）是顯示股價走勢最常用的圖表類型。最早由日本江戶時代的白米商人本間宗久發明。",
+                    "highlights": [{ "text": "K線", "color": "white" }]
+                },
+                {
+                    "type": "code-block",
+                    "title": "K線四要素 (OHLC)：",
+                    "lines": [
+                        { "label": "O", "value": "pen (開盤價)：時段開始的價格", "color": "indigo" },
+                        { "label": "H", "value": "igh (最高價)：時段內的最高價", "color": "emerald" },
+                        { "label": "L", "value": "ow (最低價)：時段內的最低價", "color": "rose" },
+                        { "label": "C", "value": "lose (收盤價)：時段結束的價格", "color": "amber" }
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "陽線",
+                            "description": "收盤 > 開盤 (上漲)",
+                            "color": "emerald",
+                            "icon": "📈"
+                        },
+                        {
+                            "title": "陰線",
+                            "description": "收盤 < 開盤 (下跌)",
+                            "color": "rose",
+                            "icon": "📉"
+                        }
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "text": "實體上方的細線稱為**上影線**（表示最高價），下方的細線稱為**下影線**（表示最低價）。",
+                    "highlights": [
+                        { "text": "上影線", "color": "white" },
+                        { "text": "下影線", "color": "white" }
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "K線實例：陽線與陰線比較",
+                    "candles": [
+                        { "open": 52.5, "high": 54.8, "low": 51.2, "close": 54.2, "label": "陽線" },
+                        { "open": 53.8, "high": 55.0, "low": 50.5, "close": 51.0, "label": "陰線" },
+                        { "open": 48.0, "high": 51.5, "low": 48.0, "close": 51.5, "label": "光頭陽線" },
+                        { "open": 51.5, "high": 51.5, "low": 48.0, "close": 48.0, "label": "光頭陰線" }
+                    ],
+                    "description": "左邊兩根K線展示典型的陽線和陰線，右邊兩根是沒有影線的「光頭光腳」K線，代表多方或空方完全主導盤勢。",
+                    "annotations": [
+                        { "index": 0, "text": "+3.2%", "position": "top" },
+                        { "index": 1, "text": "-5.2%", "position": "bottom" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "如果一根K線的收盤價為 $52，開盤價為 $48，這是什麼類型的K線？",
+                    "options": [
+                        { "id": "a", "text": "陰線（下跌）", "isCorrect": false },
+                        { "id": "b", "text": "陽線（上漲）", "isCorrect": true },
+                        { "id": "c", "text": "十字線", "isCorrect": false },
+                        { "id": "d", "text": "無法判斷", "isCorrect": false }
+                    ],
+                    "explanation": "收盤價 $52 大於開盤價 $48，代表這段時間內價格上漲，因此這是一根陽線。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "常見K線型態",
+            "description": "錘子線、十字星、吞噬型態",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "理解K線型態有助於判斷市場情緒和潛在的價格反轉："
+                },
+                {
+                    "type": "info-card",
+                    "title": "錘形線 (Hammer)",
+                    "description": "下影線長、實體小，出現在下跌趨勢底部，預示可能反轉上漲",
+                    "icon": "🔨"
+                },
+                {
+                    "type": "info-card",
+                    "title": "十字線 (Doji)",
+                    "description": "開盤價與收盤價接近，表示買賣雙方力量平衡，可能預示趨勢反轉",
+                    "icon": "✚"
+                },
+                {
+                    "type": "info-card",
+                    "title": "吞噬型態 (Engulfing)",
+                    "description": "由兩根K線組成，後一根完全包住前一根，表示市場力量顯著轉變",
+                    "icon": "🌓"
+                },
+                {
+                    "type": "info-card",
+                    "title": "晨星/夜星",
+                    "description": "三根K線組成的反轉型態，晨星預示上漲，夜星預示下跌",
+                    "icon": "⭐"
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "範例：錘形線與吊人線",
+                    "candles": [
+                        { "open": 45.5, "high": 46.2, "low": 38.0, "close": 45.0, "label": "錘形線" },
+                        { "open": 62.0, "high": 63.0, "low": 55.0, "close": 62.5, "label": "吊人線" }
+                    ],
+                    "description": "錘形線出現在下跌底部是看漲訊號；吊人線外形相同但出現在上漲頂部，是看跌訊號。關鍵是觀察出現的位置！",
+                    "annotations": [
+                        { "index": 0, "text": "底部反轉", "position": "bottom" },
+                        { "index": 1, "text": "頂部警訊", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "範例：十字線變體",
+                    "candles": [
+                        { "open": 50.0, "high": 55.0, "low": 45.0, "close": 50.0, "label": "長腳十字" },
+                        { "open": 52.0, "high": 58.0, "low": 51.5, "close": 52.0, "label": "墓碑十字" },
+                        { "open": 48.0, "high": 48.5, "low": 42.0, "close": 48.0, "label": "蜻蜓十字" },
+                        { "open": 50.0, "high": 50.5, "low": 49.5, "close": 50.0, "label": "標準十字" }
+                    ],
+                    "description": "十字線有多種變體：長腳十字代表多空激烈交戰；墓碑十字（長上影）預示頂部；蜻蜓十字（長下影）預示底部。",
+                    "annotations": [
+                        { "index": 1, "text": "頭部警訊", "position": "top" },
+                        { "index": 2, "text": "底部訊號", "position": "bottom" }
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "範例：看漲吞噬與看跌吞噬",
+                    "candles": [
+                        { "open": 43.0, "high": 43.8, "low": 41.5, "close": 41.8, "label": "小陰線" },
+                        { "open": 41.2, "high": 47.5, "low": 40.8, "close": 46.8, "label": "大陽線" },
+                        { "open": 55.0, "high": 57.5, "low": 54.2, "close": 56.8, "label": "小陽線" },
+                        { "open": 57.0, "high": 57.8, "low": 50.0, "close": 51.2, "label": "大陰線" }
+                    ],
+                    "description": "左邊：小陰線被大陽線完全吞噬，是「看漲吞噬」。右邊：小陽線被大陰線完全吞噬，是「看跌吞噬」。吞噬型態是強烈的反轉訊號。",
+                    "annotations": [
+                        { "index": 1, "text": "看漲!", "position": "top" },
+                        { "index": 3, "text": "看跌!", "position": "bottom" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "錘形線和吊人線的主要區別是什麼？",
+                    "options": [
+                        { "id": "a", "text": "K線形狀不同", "isCorrect": false },
+                        { "id": "b", "text": "出現的位置不同", "isCorrect": true },
+                        { "id": "c", "text": "成交量不同", "isCorrect": false },
+                        { "id": "d", "text": "影線長度不同", "isCorrect": false }
+                    ],
+                    "explanation": "錘形線和吊人線外形完全相同（小實體、長下影線），但出現的位置不同：錘形線出現在下跌底部是看漲訊號，吊人線出現在上漲頂部是看跌訊號。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "成交量分析",
+            "description": "量價關係解讀",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**成交量**是指一段時間內買賣的股票數量，是技術分析的重要指標。",
+                    "highlights": [{ "text": "成交量", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "量價關係",
+                    "color": "indigo",
+                    "items": [
+                        "價漲量增：上漲趨勢健康，買盤強勁",
+                        "價漲量縮：上漲動能不足，可能反轉",
+                        "價跌量增：下跌趨勢強烈，賣壓沉重",
+                        "價跌量縮：下跌動能減弱，可能止跌"
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "text": "成交量可以確認價格趨勢的強度，沒有成交量配合的價格變動通常不可靠。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "進階單根K線型態",
+            "description": "大陽線、大陰線、紡錘線與十字變體",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "除了基本K線型態外，還有許多**進階單根K線**能提供更精確的市場訊號。",
+                    "highlights": [{ "text": "進階單根K線", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "大陽線 (Long White/Green)",
+                    "color": "emerald",
+                    "text": "實體很長、影線短或無，表示買方強勢主導，股價大幅上漲",
+                    "items": ["出現在底部區域時，可能預示反轉上漲"]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "大陰線 (Long Black/Red)",
+                    "color": "rose",
+                    "text": "實體很長、影線短或無，表示賣方強勢主導，股價大幅下跌",
+                    "items": ["出現在頂部區域時，可能預示反轉下跌"]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "紡錘線 (Spinning Top)",
+                    "color": "zinc",
+                    "text": "實體很小、上下影線較長，表示多空力量均衡，市場猶豫不決",
+                    "items": ["常出現在趨勢轉折點前，需配合後續K線確認"]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "十字線變體",
+                    "color": "indigo",
+                    "items": [
+                        "墓碑十字：長上影線、無下影線，預示頂部反轉",
+                        "蜻蜓十字：長下影線、無上影線，預示底部反轉",
+                        "長腳十字：上下影線都長，市場極度猶豫",
+                        "四價同值：開高低收相同，極端冷門或停牌"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "雙K線組合型態",
+            "description": "孕育型態、貫穿線、母子線",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**雙K線組合**由兩根連續的K線組成，比單根K線提供更可靠的交易訊號。",
+                    "highlights": [{ "text": "雙K線組合", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "看漲孕育型態 (Bullish Harami)",
+                    "color": "emerald",
+                    "text": "第一根為大陰線，第二根小陽線完全在前一根實體內",
+                    "items": ["訊號：下跌趨勢中出現，預示可能反轉上漲"]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "看跌孕育型態 (Bearish Harami)",
+                    "color": "rose",
+                    "text": "第一根為大陽線，第二根小陰線完全在前一根實體內",
+                    "items": ["訊號：上漲趨勢中出現，預示可能反轉下跌"]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "貫穿線 (Piercing Line)",
+                    "color": "zinc",
+                    "text": "下跌中出現大陰線後，第二根陽線開低但收在前一根實體的50%以上",
+                    "items": ["看漲反轉訊號，陽線貫穿越深越強"]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "烏雲蓋頂 (Dark Cloud Cover)",
+                    "color": "zinc",
+                    "text": "上漲中出現大陽線後，第二根陰線開高但收在前一根實體的50%以下",
+                    "items": ["看跌反轉訊號，陰線覆蓋越深越強"]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 判斷要點",
+                    "color": "amber",
+                    "items": [
+                        "型態需出現在明確的趨勢之後",
+                        "配合成交量確認訊號強度",
+                        "等待第三根K線確認再進場"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "多K線組合與缺口",
+            "description": "三白兵、三黑鴉、島形反轉與缺口類型",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**多K線組合**通常由三根以上K線組成，訊號可靠度更高。",
+                    "highlights": [{ "text": "多K線組合", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "三白兵",
+                            "description": "連續三根陽線，每根收盤價都高於前一根",
+                            "color": "emerald",
+                            "subtext": "強烈看漲訊號，常見於底部反轉"
+                        },
+                        {
+                            "title": "三黑鴉",
+                            "description": "連續三根陰線，每根收盤價都低於前一根",
+                            "color": "rose",
+                            "subtext": "強烈看跌訊號，常見於頂部反轉"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "島形反轉 (Island Reversal)",
+                    "color": "indigo",
+                    "text": "股價跳空形成「孤島」，前後都有缺口隔開",
+                    "items": [
+                        "島形底部：下跌缺口 → 盤整 → 上漲缺口",
+                        "島形頂部：上漲缺口 → 盤整 → 下跌缺口"
+                    ]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "跳空缺口類型",
+                    "items": [
+                        { "key": "普通缺口", "value": "盤整區出現，通常會回補" },
+                        { "key": "突破缺口", "value": "趨勢開始，帶量突破重要價位", "keyColor": "amber" },
+                        { "key": "逃逸缺口", "value": "趨勢中段，顯示趨勢加速", "keyColor": "indigo" },
+                        { "key": "竭盡缺口", "value": "趨勢末端，很快會回補", "keyColor": "rose" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 缺口交易策略",
+                    "color": "amber",
+                    "items": [
+                        "突破缺口不回補，可順勢追進",
+                        "竭盡缺口回補後，考慮反向操作",
+                        "缺口的支撐/壓力作用很強"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5b",
+            "title": "陰陽線進階解讀",
+            "description": "深入理解紅K、黑K的意涵",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "K線又稱為「**陰陽線**」或「蠟燭線」，其名稱源自日本。**陽線**代表上漲（收>開），**陰線**代表下跌（收<開）。",
+                    "highlights": [
+                        { "text": "陰陽線", "color": "white" },
+                        { "text": "陽線", "color": "emerald" },
+                        { "text": "陰線", "color": "rose" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "不同市場的顏色規則",
+                    "color": "zinc",
+                    "items": [
+                        "台灣、中國、日本：紅色=上漲（陽線），綠色/黑色=下跌（陰線）",
+                        "美國、歐洲、香港：綠色=上漲，紅色=下跌",
+                        "使用軟體前先確認顏色設定，避免誤判！"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "紅K / 陽線",
+                            "description": "收盤價 > 開盤價，代表買方力量較強",
+                            "color": "emerald",
+                            "icon": "📈"
+                        },
+                        {
+                            "title": "黑K / 陰線",
+                            "description": "收盤價 < 開盤價，代表賣方力量較強",
+                            "color": "rose",
+                            "icon": "📉"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "實體長度的意義",
+                    "color": "indigo",
+                    "items": [
+                        "長紅K（大陽線）：買方完全主導，強烈看漲",
+                        "短紅K（小陽線）：買方略佔上風，多空拉鋸",
+                        "長黑K（大陰線）：賣方完全主導，強烈看跌",
+                        "短黑K（小陰線）：賣方略佔上風，觀望為主"
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "陰陽線強度比較",
+                    "candles": [
+                        { "open": 125.0, "high": 135.5, "low": 124.0, "close": 134.8, "label": "長紅K" },
+                        { "open": 128.0, "high": 130.5, "low": 127.2, "close": 129.5, "label": "短紅K" },
+                        { "open": 132.0, "high": 133.5, "low": 118.0, "close": 119.2, "label": "長黑K" },
+                        { "open": 120.0, "high": 121.5, "low": 117.8, "close": 118.5, "label": "短黑K" }
+                    ],
+                    "description": "長紅K漲幅達7.8%顯示買方強勢；長黑K跌幅達9.7%顯示賣壓沉重。短K線漲跌幅僅1-2%，代表多空拉鋸。",
+                    "annotations": [
+                        { "index": 0, "text": "+7.8%", "position": "top" },
+                        { "index": 2, "text": "-9.7%", "position": "bottom" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "影線長度的意義",
+                    "color": "amber",
+                    "items": [
+                        "長上影線：盤中漲高後被賣壓打下，賣方反撲",
+                        "長下影線：盤中跌低後被買盤拉起，買方承接",
+                        "上下影線都長：多空激烈交戰，方向不明",
+                        "沒有影線（光頭光腳）：該方力量完全主導"
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "影線形態分析",
+                    "candles": [
+                        { "open": 78.0, "high": 85.5, "low": 77.5, "close": 79.2, "label": "長上影" },
+                        { "open": 76.5, "high": 78.0, "low": 68.0, "close": 77.0, "label": "長下影" },
+                        { "open": 72.0, "high": 78.5, "low": 72.0, "close": 78.5, "label": "光頭陽" },
+                        { "open": 78.5, "high": 78.5, "low": 72.0, "close": 72.0, "label": "光頭陰" }
+                    ],
+                    "description": "長上影線（盤中漲至$85.5後被打至$79.2）顯示上檔賣壓沉重；長下影線（盤中跌至$68後被拉回$77）顯示下檔有強力買盤支撐。",
+                    "annotations": [
+                        { "index": 0, "text": "賣壓重", "position": "top" },
+                        { "index": 1, "text": "買盤撐", "position": "bottom" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "一根「長上影線的小紅K」代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "強烈看漲訊號", "isCorrect": false },
+                        { "id": "b", "text": "盤中漲高但遇賣壓，上方有壓力", "isCorrect": true },
+                        { "id": "c", "text": "買方完全主導", "isCorrect": false },
+                        { "id": "d", "text": "即將大漲", "isCorrect": false }
+                    ],
+                    "explanation": "雖然收盤是紅K（上漲），但長上影線代表盤中曾漲更高卻被打回來。這表示上方有賣壓存在，後續要注意能否突破該高點。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "K線組合型態實戰",
+            "description": "晨星、夜星、三白兵、三黑鴉的識別與應用",
+            "duration": "20分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**多K線組合型態**比單根K線訊號更可靠，是技術分析中的重要工具。本單元深入解析四種經典組合型態。",
+                    "highlights": [{ "text": "多K線組合型態", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "晨星 (Morning Star) - 底部反轉訊號",
+                    "color": "emerald",
+                    "items": [
+                        "第一根：下跌趨勢中的大陰線",
+                        "第二根：向下跳空的小K線（十字或紡錘）",
+                        "第三根：向上跳空的大陽線，收復第一根大部分跌幅",
+                        "可靠度：★★★★☆"
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "晨星型態示意",
+                    "candles": [
+                        { "open": 58.0, "high": 59.0, "low": 50.0, "close": 51.0, "label": "大陰線" },
+                        { "open": 49.5, "high": 51.0, "low": 48.0, "close": 50.0, "label": "十字星" },
+                        { "open": 52.0, "high": 60.0, "low": 51.5, "close": 59.0, "label": "大陽線" }
+                    ],
+                    "description": "經典晨星：第一根大陰線跌幅達12%，第二根小十字代表賣壓減弱，第三根大陽線漲幅達13.5%並收復大部分失土，確認反轉訊號。",
+                    "annotations": [
+                        { "index": 0, "text": "-12%", "position": "bottom" },
+                        { "index": 1, "text": "猶豫", "position": "bottom" },
+                        { "index": 2, "text": "+13.5%", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "夜星 (Evening Star) - 頭部反轉訊號",
+                    "color": "rose",
+                    "items": [
+                        "第一根：上漲趨勢中的大陽線",
+                        "第二根：向上跳空的小K線（十字或紡錘）",
+                        "第三根：向下跳空的大陰線，吞噬第一根大部分漲幅",
+                        "可靠度：★★★★☆"
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "夜星型態示意",
+                    "candles": [
+                        { "open": 72.0, "high": 82.0, "low": 71.0, "close": 80.5, "label": "大陽線" },
+                        { "open": 83.0, "high": 85.0, "low": 81.0, "close": 82.5, "label": "紡錘" },
+                        { "open": 80.0, "high": 81.0, "low": 70.0, "close": 71.0, "label": "大陰線" }
+                    ],
+                    "description": "典型夜星：上漲趨勢中第一根大陽線漲幅11.8%，第二根小紡錘顯示追價動能減弱，第三根大陰線收復漲幅並創新低，確認頭部訊號。",
+                    "annotations": [
+                        { "index": 0, "text": "+11.8%", "position": "top" },
+                        { "index": 1, "text": "動能減弱", "position": "top" },
+                        { "index": 2, "text": "-12.5%", "position": "bottom" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "三白兵 (Three White Soldiers) - 強力看漲",
+                    "color": "emerald",
+                    "items": [
+                        "連續三根陽線，每根收盤價高於前一根",
+                        "每根開盤價在前一根實體內",
+                        "實體要夠長，上影線要短",
+                        "常出現在底部或突破後，確認多頭趨勢"
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "三白兵型態",
+                    "candles": [
+                        { "open": 40.0, "high": 45.0, "low": 39.5, "close": 44.5, "label": "第一兵" },
+                        { "open": 43.5, "high": 49.0, "low": 43.0, "close": 48.5, "label": "第二兵" },
+                        { "open": 47.5, "high": 53.0, "low": 47.0, "close": 52.5, "label": "第三兵" }
+                    ],
+                    "description": "標準三白兵：三根陽線依序上漲，每根開盤在前一根實體內，收盤創新高。三根累計漲幅達31%，是強烈的多頭訊號。",
+                    "annotations": [
+                        { "index": 0, "text": "+11%", "position": "top" },
+                        { "index": 1, "text": "+9%", "position": "top" },
+                        { "index": 2, "text": "+8%", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "三黑鴉 (Three Black Crows) - 強力看跌",
+                    "color": "rose",
+                    "items": [
+                        "連續三根陰線，每根收盤價低於前一根",
+                        "每根開盤價在前一根實體內",
+                        "實體要夠長，下影線要短",
+                        "常出現在頂部或跌破後，確認空頭趨勢"
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "三黑鴉型態",
+                    "candles": [
+                        { "open": 85.0, "high": 86.0, "low": 78.0, "close": 79.0, "label": "第一鴉" },
+                        { "open": 80.0, "high": 81.0, "low": 73.0, "close": 74.0, "label": "第二鴉" },
+                        { "open": 75.0, "high": 76.0, "low": 68.0, "close": 69.0, "label": "第三鴉" }
+                    ],
+                    "description": "典型三黑鴉：三根陰線連續下跌，每根收盤接近最低價（下影線短）。三根累計跌幅達18.8%，是強烈的空頭訊號。",
+                    "annotations": [
+                        { "index": 0, "text": "-7%", "position": "bottom" },
+                        { "index": 1, "text": "-6.3%", "position": "bottom" },
+                        { "index": 2, "text": "-6.8%", "position": "bottom" }
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "【線圖分析題】請判斷此走勢的K線型態",
+                    "candles": [
+                        { "open": 67, "high": 68, "low": 63, "close": 65, "label": "D1" },
+                        { "open": 65, "high": 66, "low": 58, "close": 60, "label": "D2" },
+                        { "open": 60, "high": 61, "low": 53, "close": 55, "label": "D3" },
+                        { "open": 55, "high": 56, "low": 46, "close": 48, "label": "大陰線" },
+                        { "open": 48, "high": 49, "low": 44, "close": 46, "label": "小K線" },
+                        { "open": 46, "high": 54, "low": 45, "close": 52, "label": "大陽線" },
+                        { "open": 52, "high": 60, "low": 51, "close": 58, "label": "D7" },
+                        { "open": 58, "high": 67, "low": 57, "close": 65, "label": "D8" }
+                    ],
+                    "annotations": [
+                        { "type": "info", "index": 3, "label": "陰" },
+                        { "type": "info", "index": 4, "label": "小" },
+                        { "type": "buy", "index": 5, "label": "陽!" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 65, "label": "" },
+                            { "x": 1, "y": 60, "label": "" },
+                            { "x": 2, "y": 55, "label": "" },
+                            { "x": 3, "y": 48, "label": "" },
+                            { "x": 4, "y": 46, "label": "" },
+                            { "x": 5, "y": 52, "label": "" },
+                            { "x": 6, "y": 58, "label": "" },
+                            { "x": 7, "y": 65, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 48, "type": "info", "label": "大陰線" },
+                            { "x": 4, "y": 46, "type": "info", "label": "小K線" },
+                            { "x": 5, "y": 52, "type": "buy", "label": "大陽線" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 45, "label": "底部區" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 45, "yEnd": 55, "label": "反轉區" }
+                        ]
+                    },
+                    "description": "股價持續下跌後，在底部出現「大陰線 → 小K線 → 大陽線」的組合，這是什麼型態？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "上方線圖中，第3-5根K線形成的組合是什麼型態？",
+                    "options": [
+                        { "id": "a", "text": "夜星型態，預示下跌", "isCorrect": false },
+                        { "id": "b", "text": "晨星型態，預示反轉上漲", "isCorrect": true },
+                        { "id": "c", "text": "三黑鴉，持續下跌", "isCorrect": false },
+                        { "id": "d", "text": "吞噬型態", "isCorrect": false }
+                    ],
+                    "explanation": "這是典型的晨星型態：下跌趨勢中出現大陰線，接著是小K線（代表賣壓減弱），最後是大陽線確認反轉。從圖中可見股價隨後果然反轉上漲。"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "K線圖形分析練習",
+            "description": "透過實例強化K線判讀能力",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "透過**實戰練習**來強化K線判讀能力。以下提供多組K線圖形，請嘗試分析並回答問題。",
+                    "highlights": [{ "text": "實戰練習", "color": "white" }]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "【練習1】判斷此K線型態",
+                    "candles": [
+                        { "open": 92.0, "high": 98.0, "low": 91.0, "close": 97.0, "label": "K1" },
+                        { "open": 97.5, "high": 102.0, "low": 97.0, "close": 101.0, "label": "K2" },
+                        { "open": 100.5, "high": 100.8, "low": 92.0, "close": 93.0, "label": "K3" }
+                    ],
+                    "description": "上漲趨勢中出現這三根K線組合，請判斷這是什麼訊號？",
+                    "annotations": [
+                        { "index": 0, "text": "+5.4%", "position": "top" },
+                        { "index": 1, "text": "+3.6%", "position": "top" },
+                        { "index": 2, "text": "???", "position": "bottom" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【練習1答案】上方K線組合是什麼型態？",
+                    "options": [
+                        { "id": "a", "text": "三白兵，繼續看漲", "isCorrect": false },
+                        { "id": "b", "text": "空頭吞噬，可能反轉", "isCorrect": true },
+                        { "id": "c", "text": "晨星，底部訊號", "isCorrect": false },
+                        { "id": "d", "text": "沒有明顯型態", "isCorrect": false }
+                    ],
+                    "explanation": "第三根K3是大陰線，它的實體完全包覆（吞噬）了K2的實體，形成「空頭吞噬」型態。這出現在上漲趨勢中，是反轉下跌的警訊。"
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "【練習2】分析此K線走勢",
+                    "candles": [
+                        { "open": 55.0, "high": 56.0, "low": 48.0, "close": 49.0, "label": "K1" },
+                        { "open": 48.5, "high": 49.0, "low": 45.0, "close": 46.0, "label": "K2" },
+                        { "open": 45.5, "high": 46.0, "low": 43.0, "close": 44.0, "label": "K3" },
+                        { "open": 44.5, "high": 53.0, "low": 44.0, "close": 52.0, "label": "K4" }
+                    ],
+                    "description": "連續三根陰線後出現一根大陽線，請分析這代表什麼？",
+                    "annotations": [
+                        { "index": 2, "text": "底部?", "position": "bottom" },
+                        { "index": 3, "text": "+17%", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【練習2答案】K4大陽線的出現代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "繼續下跌的訊號", "isCorrect": false },
+                        { "id": "b", "text": "可能是底部反轉，多頭吞噬", "isCorrect": true },
+                        { "id": "c", "text": "假突破，不可信", "isCorrect": false },
+                        { "id": "d", "text": "夜星型態", "isCorrect": false }
+                    ],
+                    "explanation": "K4大陽線吞噬了K3甚至K2的跌幅，形成強烈的「多頭吞噬」訊號。配合連續三根陰線後的出現，這是典型的底部反轉訊號，後續可能上漲。"
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "【練習3】綜合判斷",
+                    "candles": [
+                        { "open": 98, "high": 102, "low": 97, "close": 100, "label": "D1" },
+                        { "open": 100, "high": 110, "low": 99, "close": 108, "label": "D2" },
+                        { "open": 108, "high": 117, "low": 107, "close": 115, "label": "D3" },
+                        { "open": 115, "high": 122, "low": 114, "close": 120, "label": "高點A" },
+                        { "open": 120, "high": 121, "low": 116, "close": 118, "label": "D5" },
+                        { "open": 118, "high": 124, "low": 117, "close": 122, "label": "高點B" },
+                        { "open": 122, "high": 125, "low": 117, "close": 119, "label": "長上影" },
+                        { "open": 119, "high": 120, "low": 110, "close": 112, "label": "D8" },
+                        { "open": 112, "high": 113, "low": 103, "close": 105, "label": "D9" }
+                    ],
+                    "annotations": [
+                        { "type": "info", "index": 3, "label": "頂A" },
+                        { "type": "info", "index": 5, "label": "頂B" },
+                        { "type": "sell", "index": 6, "label": "上影線" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 108, "label": "" },
+                            { "x": 2, "y": 115, "label": "" },
+                            { "x": 3, "y": 120, "label": "" },
+                            { "x": 4, "y": 118, "label": "" },
+                            { "x": 5, "y": 122, "label": "" },
+                            { "x": 6, "y": 119, "label": "" },
+                            { "x": 7, "y": 112, "label": "" },
+                            { "x": 8, "y": 105, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 120, "type": "info", "label": "高點A" },
+                            { "x": 5, "y": 122, "type": "info", "label": "高點B" },
+                            { "x": 6, "y": 119, "type": "sell", "label": "長上影線" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 122, "label": "壓力區" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 118, "yEnd": 122, "label": "頭部區" }
+                        ]
+                    },
+                    "description": "股價在高點區域出現兩次衝高（高點A和B），且第6根K線有長上影線，請判斷這走勢的意義。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【練習3答案】此走勢最可能的解讀是？",
+                    "options": [
+                        { "id": "a", "text": "突破在即，即將大漲", "isCorrect": false },
+                        { "id": "b", "text": "可能形成雙頂(M頭)，注意回檔風險", "isCorrect": true },
+                        { "id": "c", "text": "底部盤整，準備上攻", "isCorrect": false },
+                        { "id": "d", "text": "趨勢將繼續向上", "isCorrect": false }
+                    ],
+                    "explanation": "股價兩次衝高至$120-122附近都無法突破，加上第6根K線出現長上影線（賣壓沉重），這是潛在的雙頂（M頭）訊號，後續果然下跌。此時應該謹慎，不宜追高。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "K線判讀四步驟總結",
+                    "color": "indigo",
+                    "items": [
+                        "Step 1（60%）：判斷大趨勢方向（多頭/空頭/盤整）",
+                        "Step 2（25%）：找出關鍵支撐壓力位",
+                        "Step 3（10%）：識別K線型態訊號",
+                        "Step 4（5%）：用成交量確認訊號強度"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "K線判讀時，哪個要素權重最高？",
+                    "options": [
+                        { "id": "a", "text": "單根K線型態", "isCorrect": false },
+                        { "id": "b", "text": "成交量", "isCorrect": false },
+                        { "id": "c", "text": "大趨勢方向", "isCorrect": true },
+                        { "id": "d", "text": "上下影線長度", "isCorrect": false }
+                    ],
+                    "explanation": "大趨勢方向佔判讀權重的60%！再精準的K線訊號，如果逆大趨勢操作，勝率也會大打折扣。永遠要先判斷趨勢方向，再參考K線型態。"
+                }
+            ]
+        }
+    ]
+}

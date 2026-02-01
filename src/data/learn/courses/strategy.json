@@ -1,0 +1,827 @@
+{
+    "id": "strategy",
+    "title": "交易策略",
+    "description": "建立你的交易系統",
+    "icon": "Brain",
+    "color": "rose",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "趨勢交易",
+            "description": "順勢而為的策略",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**趨勢交易**的核心理念是「順勢而為」—— 上漲時買入，下跌時賣出。",
+                    "highlights": [{ "text": "趨勢交易", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "趨勢判斷方法",
+                    "color": "indigo",
+                    "items": [
+                        "價格在MA上方 = 上升趨勢",
+                        "價格在MA下方 = 下降趨勢",
+                        "高點越來越高 = 上升趨勢",
+                        "低點越來越低 = 下降趨勢"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 注意",
+                    "color": "amber",
+                    "text": "趨勢交易在盤整市場效果較差，容易被假突破欺騙。"
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "範例：判斷上升趨勢",
+                    "candles": [
+                        { "open": 100, "high": 108, "low": 98, "close": 105, "label": "Day 1" },
+                        { "open": 106, "high": 115, "low": 104, "close": 112, "label": "Day 2" },
+                        { "open": 110, "high": 122, "low": 108, "close": 120, "label": "Day 3" },
+                        { "open": 118, "high": 130, "low": 116, "close": 128, "label": "Day 4" }
+                    ],
+                    "description": "這是典型的上升趨勢：每根K線的高點和低點都比前一根高，呈現「高點越來越高、低點越來越高」的特徵。在這種趨勢中應順勢做多。",
+                    "annotations": [
+                        { "index": 0, "text": "起漲", "position": "bottom" },
+                        { "index": 3, "text": "趨勢延續", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "趨勢交易進出場示意",
+                    "candles": [
+                        { "open": 98, "high": 102, "low": 94, "close": 100, "label": "W1" },
+                        { "open": 99, "high": 106, "low": 96, "close": 105, "label": "W2" },
+                        { "open": 104, "high": 112, "low": 97, "close": 98, "label": "回調" },
+                        { "open": 99, "high": 112, "low": 98, "close": 110, "label": "W3" },
+                        { "open": 109, "high": 119, "low": 104, "close": 105, "label": "回調" },
+                        { "open": 106, "high": 120, "low": 105, "close": 118, "label": "W4" },
+                        { "open": 117, "high": 126, "low": 114, "close": 115, "label": "W6破線" }
+                    ],
+                    "annotations": [
+                        { "index": 2, "text": "買入$98", "position": "bottom" },
+                        { "index": 4, "text": "加碼$105", "position": "bottom" },
+                        { "index": 6, "text": "出場$115", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "W1" },
+                            { "x": 1, "y": 105, "label": "W2" },
+                            { "x": 2, "y": 98, "label": "回調" },
+                            { "x": 3, "y": 110, "label": "W3" },
+                            { "x": 4, "y": 105, "label": "回調" },
+                            { "x": 5, "y": 118, "label": "W4" },
+                            { "x": 6, "y": 115, "label": "W6破線" }
+                        ],
+                        "markers": [
+                            { "x": 2, "y": 98, "type": "buy", "label": "回調買入" },
+                            { "x": 4, "y": 105, "type": "buy", "label": "加碼" },
+                            { "x": 6, "y": 115, "type": "sell", "label": "破線出場" }
+                        ],
+                        "lines": [
+                            { "type": "trendline", "points": [{ "x": 0, "y": 95 }, { "x": 5, "y": 115 }], "label": "上升趨勢線" },
+                            { "type": "support", "y": 95, "label": "支撐$95" }
+                        ]
+                    },
+                    "description": "上升趨勢中，在回調至趨勢線附近時買入（W2回調出現長下影線）。K線圖可看到每次回調都有買盤承接（下影線），趨勢持續時可加碼。當股價跌破上升趨勢線時（W6出現長黑K），代表趨勢可能結束，應獲利出場。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "在上升趨勢中，最佳的買入時機是？",
+                    "options": [
+                        { "id": "a", "text": "股價創新高時追買", "isCorrect": false },
+                        { "id": "b", "text": "股價回調至支撐位時買入", "isCorrect": true },
+                        { "id": "c", "text": "等待趨勢反轉再買入", "isCorrect": false },
+                        { "id": "d", "text": "隨時都可以買入", "isCorrect": false }
+                    ],
+                    "explanation": "在上升趨勢中，最佳的買入時機是股價回調至移動平均線或支撐位附近時。這樣可以獲得較好的風險報酬比，避免追高被套。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "風險管理",
+            "description": "止損與資金控管",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**風險管理**是交易中最重要的一環，決定了你能在市場存活多久。",
+                    "highlights": [{ "text": "風險管理", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🛑 止損規則",
+                    "color": "rose",
+                    "items": [
+                        "每筆交易風險不超過總資金的 2%",
+                        "設定明確的止損點位",
+                        "止損後不追單復仇"
+                    ]
+                },
+                {
+                    "type": "code-block",
+                    "title": "資金控管範例",
+                    "lines": [
+                        { "value": "總資金: $100,000" },
+                        { "value": "單筆風險: 2% = $2,000" },
+                        { "value": "止損幅度: 5%" },
+                        { "value": "最大持倉: $2,000 ÷ 5% = $40,000", "color": "amber" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 黃金法則",
+                    "color": "emerald",
+                    "text": "保護本金比獲利更重要。活著才能繼續交易。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "交易心理",
+            "description": "控制情緒，理性決策",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**交易心理**是決定交易成敗的關鍵因素。",
+                    "highlights": [{ "text": "交易心理", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "😰 恐懼",
+                    "color": "rose",
+                    "text": "害怕損失導致過早止盈或無法止損"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🤑 貪婪",
+                    "color": "amber",
+                    "text": "追求更高獲利導致錯過賣點或過度交易"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "😤 復仇心態",
+                    "color": "indigo",
+                    "text": "虧損後急於回本，加大倉位導致更大虧損"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "✅ 解決方法",
+                    "color": "emerald",
+                    "items": [
+                        "制定交易計畫並嚴格執行",
+                        "用小資金練習直到穩定獲利",
+                        "記錄交易日誌，定期檢討",
+                        "接受虧損是交易的一部分"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "波段交易策略",
+            "description": "捕捉中期價格波動",
+            "duration": "16分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**波段交易**是在中期趨勢中捕捉股價階段性波動，在回調低點買入、趨勢高位賣出。",
+                    "highlights": [{ "text": "波段交易", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "波段行情特徵",
+                    "color": "indigo",
+                    "items": [
+                        "高點不斷抬高，低點不斷上移",
+                        "均線呈多頭排列向上發散",
+                        "上漲時量增，回調時量縮",
+                        "有基本面支撐（業績、政策）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "介入時機",
+                    "color": "emerald",
+                    "items": [
+                        "股價回調至20日/30日均線附近止跌",
+                        "出現「縮量止跌 + 放量反彈」組合",
+                        "技術指標出現底部背離",
+                        "MACD金叉、RSI脫離超賣區"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "離場信號",
+                    "color": "rose",
+                    "items": [
+                        "股價跌破20日線且成交量放大",
+                        "出現「放量滯漲」或「價升量縮」",
+                        "MACD紅柱縮短，KDJ高位拐頭"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "分批操作策略",
+                    "color": "zinc",
+                    "items": [
+                        "第一批：30%倉位，確認止跌時進場",
+                        "第二批：40%倉位，突破確認後加碼",
+                        "第三批：30%倉位，趨勢確立再加碼"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "突破交易策略",
+            "description": "捕捉趨勢啟動點",
+            "duration": "14分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**突破交易**是在價格突破重要支撐/壓力位時順勢進場，捕捉趨勢啟動的關鍵時刻。",
+                    "highlights": [{ "text": "突破交易", "color": "white" }]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "常見突破類型",
+                    "items": [
+                        { "key": "橫盤突破", "value": "長期盤整後的方向選擇", "keyColor": "amber" },
+                        { "key": "趨勢線突破", "value": "下降/上升趨勢線被突破", "keyColor": "indigo" },
+                        { "key": "形態突破", "value": "頭肩底/三角形等完成", "keyColor": "emerald" },
+                        { "key": "均線突破", "value": "突破重要均線如MA60", "keyColor": "rose" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "真突破判斷",
+                    "color": "emerald",
+                    "items": [
+                        "突破時成交量明顯放大（至少1.5倍）",
+                        "收盤價站穩突破位上方",
+                        "突破後回踩不破原壓力位",
+                        "多個指標同時確認"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "假突破特徵",
+                    "color": "rose",
+                    "items": [
+                        "突破時無量或量能不足",
+                        "很快跌回原區間內",
+                        "只有影線突破，收盤未站穩"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "支撐壓力互換",
+                    "color": "amber",
+                    "text": "突破後，原來的壓力位會變成新的支撐位；跌破後，原來的支撐位會變成新的壓力位。"
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "橫盤突破交易示意",
+                    "candles": [
+                        { "open": 100, "high": 104, "low": 97, "close": 102, "label": "D1-2" },
+                        { "open": 101, "high": 105, "low": 98, "close": 99, "label": "D3-4" },
+                        { "open": 100, "high": 103, "low": 96, "close": 101, "label": "D5-6" },
+                        { "open": 102, "high": 112, "low": 101, "close": 110, "label": "突破D7" },
+                        { "open": 108, "high": 109, "low": 103, "close": 105, "label": "回測D8" },
+                        { "open": 106, "high": 118, "low": 105, "close": 116, "label": "D9-10" },
+                        { "open": 117, "high": 126, "low": 115, "close": 125, "label": "目標D11" }
+                    ],
+                    "annotations": [
+                        { "index": 3, "text": "放量突破!", "position": "top" },
+                        { "index": 4, "text": "回測支撐", "position": "bottom" },
+                        { "index": 6, "text": "目標達成", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 102, "label": "D1-2" },
+                            { "x": 1, "y": 99, "label": "D3-4" },
+                            { "x": 2, "y": 101, "label": "D5-6" },
+                            { "x": 3, "y": 110, "label": "突破D7" },
+                            { "x": 4, "y": 105, "label": "回測D8" },
+                            { "x": 5, "y": 116, "label": "D9-10" },
+                            { "x": 6, "y": 125, "label": "目標D11" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 110, "type": "buy", "label": "突破進場" },
+                            { "x": 4, "y": 105, "type": "info", "label": "回測支撐" },
+                            { "x": 6, "y": 125, "type": "takeProfit", "label": "目標到達" }
+                        ],
+                        "lines": [
+                            { "type": "resistance", "y": 105, "label": "壓力線$105" },
+                            { "type": "support", "y": 97, "label": "支撐線$97" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 97, "yEnd": 105, "label": "盤整區" }
+                        ]
+                    },
+                    "description": "股價在 $97-$105 區間盤整多日，D7 放量突破壓力線 $105 後進場。K線視角可看到突破當日為帶量長紅，隔日回測（長下影線）確認支撐有效。目標價可設為盤整區間高度（$8）加上突破點，約 $113-115。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "趨勢追蹤進階",
+            "description": "多頭排列與加碼時機",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**趨勢追蹤進階**著重於在確認趨勢後，如何持續參與並適時加碼。",
+                    "highlights": [{ "text": "趨勢追蹤進階", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "多頭排列",
+                    "color": "emerald",
+                    "text": "均線由上到下依次為：MA5 > MA10 > MA20 > MA60",
+                    "items": [
+                        "所有均線同步上揚",
+                        "價格位於所有均線上方",
+                        "回調時以均線為支撐"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "空頭排列",
+                    "color": "rose",
+                    "text": "均線由上到下依次為：MA60 > MA20 > MA10 > MA5",
+                    "items": [
+                        "所有均線同步下降",
+                        "價格位於所有均線下方",
+                        "反彈時以均線為壓力"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "加碼時機",
+                    "color": "indigo",
+                    "items": [
+                        "第一次加碼：突破新高且回測不破",
+                        "第二次加碼：回調至20日線獲得支撐",
+                        "停止加碼：均線開始糾結或走平"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "趨勢轉折信號",
+                    "color": "zinc",
+                    "items": [
+                        "價格跌破重要均線（如MA20）",
+                        "均線開始走平或交叉",
+                        "高點不再創新高",
+                        "成交量與價格出現背離"
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "多頭排列 K 線型態",
+                    "candles": [
+                        { "open": 100, "high": 106, "low": 99, "close": 105, "label": "突破" },
+                        { "open": 105, "high": 112, "low": 104, "close": 110, "label": "續漲" },
+                        { "open": 109, "high": 115, "low": 108, "close": 114, "label": "加速" },
+                        { "open": 113, "high": 118, "low": 111, "close": 116, "label": "高點" }
+                    ],
+                    "description": "多頭趨勢中的典型 K 線走勢：每根 K 線的低點都高於前一根，呈現「低點墊高」特徵。這種走勢適合順勢做多。",
+                    "annotations": [
+                        { "index": 0, "text": "起漲點", "position": "bottom" },
+                        { "index": 3, "text": "高點墊高", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種 K 線特徵代表多頭排列？",
+                    "options": [
+                        { "id": "a", "text": "每根 K 線的高點和低點都在下降", "isCorrect": false },
+                        { "id": "b", "text": "每根 K 線的低點不斷墊高", "isCorrect": true },
+                        { "id": "c", "text": "K 線在固定區間內震盪", "isCorrect": false },
+                        { "id": "d", "text": "連續出現長上影線", "isCorrect": false }
+                    ],
+                    "explanation": "多頭排列的特徵是「低點墊高、高點創新高」，這代表買方力量持續增強，趨勢向上。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "波段操作技巧",
+            "description": "抓住主升段，避開主跌段",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**波段操作**是針對股市波段性運行特徵的有效操作方法，目標是抓住上升波段、避開下跌波段。",
+                    "highlights": [{ "text": "波段操作", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "上升波段",
+                            "description": "高點越來越高，低點也越來越高",
+                            "color": "emerald",
+                            "subtext": "持股待漲"
+                        },
+                        {
+                            "title": "下跌波段",
+                            "description": "高點越來越低，低點也越來越低",
+                            "color": "rose",
+                            "subtext": "空手觀望"
+                        },
+                        {
+                            "title": "橫盤波段",
+                            "description": "高低點在一定區間震盪",
+                            "color": "amber",
+                            "subtext": "高拋低吸或觀望"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "波段買入時機",
+                    "color": "emerald",
+                    "items": [
+                        "股價突破橫盤區間上軌",
+                        "股價回調至日均線（MA20）附近獲得支撐",
+                        "放量突破長期盤整平台",
+                        "MACD 紅柱持續放大、KDJ 金叉"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "波段賣出時機",
+                    "color": "rose",
+                    "items": [
+                        "股價跌破上升趨勢線",
+                        "均線破位（跌破MA20且無法收復）",
+                        "MACD 紅柱縮短、KDJ 高位死叉",
+                        "成交量放大但股價不漲（量價背離）"
+                    ]
+                },
+                {
+                    "type": "candlestick-example",
+                    "title": "波段操作示意",
+                    "candles": [
+                        { "open": 100, "high": 108, "low": 98, "close": 106, "label": "突破" },
+                        { "open": 106, "high": 112, "low": 104, "close": 108, "label": "上漲" },
+                        { "open": 108, "high": 110, "low": 102, "close": 104, "label": "回調" },
+                        { "open": 104, "high": 118, "low": 103, "close": 116, "label": "續漲" }
+                    ],
+                    "description": "第1根K線突破盤整區進場，第3根回調至支撐不破繼續持有，第4根主升段獲利。波段操作重點是「抱住主升段」，不被短期波動洗出。",
+                    "annotations": [
+                        { "index": 0, "text": "進場", "position": "bottom" },
+                        { "index": 2, "text": "不停損", "position": "bottom" },
+                        { "index": 3, "text": "獲利", "position": "top" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "波段操作原則",
+                    "color": "indigo",
+                    "items": [
+                        "同一股票盡量一次性買入、賣出，避免反覆進出",
+                        "設置明確的止損位，通常在重要支撐下方",
+                        "只操作 1-2 支股票，專注研究",
+                        "重視「勢能」而非「價格」，趨勢未破前持有"
+                    ]
+                },
+                {
+                    "type": "trade-example",
+                    "title": "波段操作案例",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 85,
+                        "exitPrice": 108,
+                        "quantity": 1000,
+                        "stopLoss": 80,
+                        "fees": 270,
+                        "result": {
+                            "profit": 22730,
+                            "percentage": 26.7
+                        }
+                    },
+                    "explanation": "在突破盤整區 $85 時進場，停損設在前低 $80。過程中有 3 次回調但未破均線支撐，堅定持有。當股價跌破上升趨勢線 $108 時獲利出場，波段獲利 26.7%。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "波段操作中，股價回調至均線附近但未跌破，應該怎麼做？",
+                    "options": [
+                        { "id": "a", "text": "立即賣出停損", "isCorrect": false },
+                        { "id": "b", "text": "繼續持有，等待反彈", "isCorrect": true },
+                        { "id": "c", "text": "加碼攤平成本", "isCorrect": false },
+                        { "id": "d", "text": "不管它，過幾天再看", "isCorrect": false }
+                    ],
+                    "explanation": "波段操作的精髓是「持有主升段」。只要趨勢未被破壞（未跌破重要支撐），就應該繼續持有。回調至均線是正常的技術性調整，往往是加碼而非賣出的時機。"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "逆勢交易策略",
+            "description": "在超買超賣區間尋找反轉機會",
+            "duration": "14分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**逆勢交易**是在市場極端情緒時反向操作，在超賣區買入、超買區賣出。風險較高但獲利潛力大。",
+                    "highlights": [{ "text": "逆勢交易", "color": "white" }]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "逆勢交易示意圖",
+                    "candles": [
+                        { "open": 98, "high": 100, "low": 90, "close": 92, "label": "下跌" },
+                        { "open": 91, "high": 93, "low": 80, "close": 82, "label": "續跌" },
+                        { "open": 81, "high": 83, "low": 68, "close": 70, "label": "恐慌" },
+                        { "open": 69, "high": 70, "low": 62, "close": 65, "label": "錘子線" },
+                        { "open": 66, "high": 75, "low": 64, "close": 72, "label": "反彈" },
+                        { "open": 73, "high": 88, "low": 72, "close": 85, "label": "上漲" },
+                        { "open": 86, "high": 96, "low": 84, "close": 95, "label": "獲利出" }
+                    ],
+                    "annotations": [
+                        { "index": 3, "text": "錘子線RSI=18", "position": "bottom" },
+                        { "index": 6, "text": "獲利+46%", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 92, "label": "下跌" },
+                            { "x": 1, "y": 82, "label": "續跌" },
+                            { "x": 2, "y": 70, "label": "恐慌" },
+                            { "x": 3, "y": 65, "label": "錘子線" },
+                            { "x": 4, "y": 72, "label": "反彈" },
+                            { "x": 5, "y": 85, "label": "上漲" },
+                            { "x": 6, "y": 95, "label": "獲利出" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 65, "type": "buy", "label": "逆勢買入 RSI=18" },
+                            { "x": 6, "y": 95, "type": "sell", "label": "獲利出場" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 65, "label": "超賣區" }
+                        ],
+                        "zones": [
+                            { "type": "profit", "yStart": 65, "yEnd": 98, "label": "反彈+46%" }
+                        ]
+                    },
+                    "description": "K線圖清楚顯示恐慌賣壓的過程：連續長黑K代表賣壓沉重。關鍵是第4根K線出現「錘子線」（長下影線），代表低檔有買盤承接，配合RSI=18的超賣訊號，是逆勢進場的好時機。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "逆勢交易適用條件",
+                    "color": "indigo",
+                    "items": [
+                        "RSI < 20 或 > 80（極端值）",
+                        "股價急跌/急漲遠離均線（乖離過大）",
+                        "市場出現恐慌性賣壓或瘋狂追漲",
+                        "基本面沒有重大惡化（跌勢只是情緒）",
+                        "出現底部反轉 K 線型態（如錘子線）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 逆勢交易風險",
+                    "color": "rose",
+                    "items": [
+                        "「接刀」風險：下跌可能繼續，沒有底",
+                        "不適合趨勢明確的行情",
+                        "需要較強的心理素質",
+                        "必須嚴格設定停損",
+                        "不適合新手使用"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "順勢交易",
+                            "description": "跟隨趨勢方向操作",
+                            "color": "emerald",
+                            "subtext": "勝率較高、適合新手"
+                        },
+                        {
+                            "title": "逆勢交易",
+                            "description": "在極端點反向操作",
+                            "color": "amber",
+                            "subtext": "風險較高、需要經驗"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下何者最適合逆勢抄底？",
+                    "options": [
+                        { "id": "a", "text": "股價持續下跌，RSI=45", "isCorrect": false },
+                        { "id": "b", "text": "股價急跌，RSI=15，出現錘子線", "isCorrect": true },
+                        { "id": "c", "text": "股價創新高，人人看好", "isCorrect": false },
+                        { "id": "d", "text": "公司發布重大利空", "isCorrect": false }
+                    ],
+                    "explanation": "RSI=15 是極度超賣，加上錘子線（反轉訊號），是逆勢抄底的理想條件。但仍需設定嚴格停損，因為「接刀」風險永遠存在。"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "title": "區間交易策略",
+            "description": "在盤整市場中獲利",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**區間交易**是在股價盤整時，於支撐位買入、壓力位賣出，反覆操作獲取價差。",
+                    "highlights": [{ "text": "區間交易", "color": "white" }]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "區間交易示意圖",
+                    "candles": [
+                        { "open": 100, "high": 103, "low": 95, "close": 96, "label": "觸支撐" },
+                        { "open": 97, "high": 104, "low": 96, "close": 103, "label": "反彈" },
+                        { "open": 102, "high": 105, "low": 96, "close": 97, "label": "回落" },
+                        { "open": 98, "high": 105, "low": 97, "close": 104, "label": "再彈" },
+                        { "open": 103, "high": 106, "low": 97, "close": 98, "label": "回落" },
+                        { "open": 99, "high": 118, "low": 98, "close": 115, "label": "突破!" }
+                    ],
+                    "annotations": [
+                        { "index": 0, "text": "買$96", "position": "bottom" },
+                        { "index": 1, "text": "賣$103", "position": "top" },
+                        { "index": 2, "text": "買$97", "position": "bottom" },
+                        { "index": 3, "text": "賣$104", "position": "top" },
+                        { "index": 5, "text": "突破!", "position": "top" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 96, "label": "觸支撐" },
+                            { "x": 1, "y": 103, "label": "反彈" },
+                            { "x": 2, "y": 97, "label": "回落" },
+                            { "x": 3, "y": 104, "label": "再彈" },
+                            { "x": 4, "y": 98, "label": "回落" },
+                            { "x": 5, "y": 115, "label": "突破" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 96, "type": "buy", "label": "買入" },
+                            { "x": 1, "y": 103, "type": "sell", "label": "賣出" },
+                            { "x": 2, "y": 97, "type": "buy", "label": "買入" },
+                            { "x": 3, "y": 104, "type": "sell", "label": "賣出" },
+                            { "x": 5, "y": 115, "type": "info", "label": "突破！" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 95, "label": "支撐$95" },
+                            { "type": "resistance", "y": 105, "label": "壓力$105" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 95, "yEnd": 105, "label": "盤整區間" }
+                        ]
+                    },
+                    "description": "K線圖顯示股價在 $95-105 區間內來回震盪。每次觸及支撐位時出現長下影線（買盤承接），觸及壓力位時出現長上影線（賣壓沉重）。最後一根帶量長紅K突破區間，策略需改變。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "區間交易操作要點",
+                    "color": "indigo",
+                    "items": [
+                        "確認區間：至少 2 次觸及支撐和壓力",
+                        "在支撐位上方 1-2% 買入",
+                        "在壓力位下方 1-2% 賣出",
+                        "停損設在區間外 2-3%",
+                        "區間突破後立即改變策略"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "區間交易注意事項",
+                    "color": "amber",
+                    "items": [
+                        "不適合趨勢明確的行情",
+                        "注意假突破的可能",
+                        "盤整時間越長，突破後走勢越大",
+                        "配合成交量判斷突破真假"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "區間交易中，股價突破壓力線時應該怎麼做？",
+                    "options": [
+                        { "id": "a", "text": "繼續在壓力位賣出", "isCorrect": false },
+                        { "id": "b", "text": "改變策略，順勢做多", "isCorrect": true },
+                        { "id": "c", "text": "立即放空", "isCorrect": false },
+                        { "id": "d", "text": "不理會，繼續區間操作", "isCorrect": false }
+                    ],
+                    "explanation": "區間被突破代表盤整結束，繼續區間操作會虧損。正確做法是順應新趨勢，在回測壓力轉支撐時做多。"
+                }
+            ]
+        },
+        {
+            "id": "10",
+            "title": "策略綜合練習",
+            "description": "實戰情境的策略選擇",
+            "duration": "18分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "不同的市場狀況需要不同的**交易策略**，學會識別市場狀態並選擇合適策略是成功的關鍵。",
+                    "highlights": [{ "text": "交易策略", "color": "white" }]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【練習1】判斷市場狀態",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 80, "label": "" },
+                            { "x": 1, "y": 85, "label": "" },
+                            { "x": 2, "y": 82, "label": "" },
+                            { "x": 3, "y": 90, "label": "" },
+                            { "x": 4, "y": 88, "label": "" },
+                            { "x": 5, "y": 95, "label": "" },
+                            { "x": 6, "y": 92, "label": "" },
+                            { "x": 7, "y": 100, "label": "" }
+                        ],
+                        "markers": [],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 78}, {"x": 4, "y": 85}, {"x": 7, "y": 93}], "label": "20MA", "color": "#60a5fa" }
+                        ],
+                        "zones": []
+                    },
+                    "description": "觀察上圖的走勢特徵：高點不斷抬高、低點也不斷上移、價格在 20MA 上方。這是什麼市場狀態？應該用什麼策略？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【練習1答案】上圖市場狀態和適合策略是？",
+                    "options": [
+                        { "id": "a", "text": "盤整市場，適合區間交易", "isCorrect": false },
+                        { "id": "b", "text": "上升趨勢，適合順勢做多", "isCorrect": true },
+                        { "id": "c", "text": "下降趨勢，適合放空", "isCorrect": false },
+                        { "id": "d", "text": "超賣區，適合逆勢抄底", "isCorrect": false }
+                    ],
+                    "explanation": "高點和低點都在上升，股價在 20MA 上方，這是典型的上升趨勢。適合使用順勢交易策略，在回調至均線時買入。"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【練習2】策略選擇",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 98, "label": "" },
+                            { "x": 2, "y": 102, "label": "" },
+                            { "x": 3, "y": 97, "label": "" },
+                            { "x": 4, "y": 101, "label": "" },
+                            { "x": 5, "y": 99, "label": "" },
+                            { "x": 6, "y": 103, "label": "" },
+                            { "x": 7, "y": 98, "label": "" }
+                        ],
+                        "markers": [],
+                        "lines": [
+                            { "type": "support", "y": 96, "label": "支撐" },
+                            { "type": "resistance", "y": 104, "label": "壓力" }
+                        ],
+                        "zones": [
+                            { "type": "neutral", "yStart": 96, "yEnd": 104, "label": "盤整區" }
+                        ]
+                    },
+                    "description": "股價在 $96-104 之間來回震盪，已經盤整了 2 週。應該採用什麼策略？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【練習2答案】盤整 2 週後，應該採用什麼策略？",
+                    "options": [
+                        { "id": "a", "text": "追漲殺跌", "isCorrect": false },
+                        { "id": "b", "text": "區間交易：支撐買、壓力賣", "isCorrect": true },
+                        { "id": "c", "text": "全力做多", "isCorrect": false },
+                        { "id": "d", "text": "全力放空", "isCorrect": false }
+                    ],
+                    "explanation": "明顯的盤整區間適合區間交易，在 $96-97 附近買入，在 $103-104 附近賣出。但要注意突破後立即改變策略。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["市場狀態", "特徵", "適合策略"],
+                    "rows": [
+                        ["上升趨勢", "高低點上升、價>均線", "順勢做多、回調買入"],
+                        ["下降趨勢", "高低點下降、價<均線", "觀望或放空"],
+                        ["盤整區間", "價格在區間內震盪", "區間交易、等待突破"],
+                        ["超買區", "RSI>80、急漲遠離均線", "減碼、不追高"],
+                        ["超賣區", "RSI<20、急跌遠離均線", "觀察抄底機會"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "策略選擇核心原則",
+                    "color": "emerald",
+                    "items": [
+                        "先判斷市場狀態，再選擇策略",
+                        "不要在盤整時追趨勢",
+                        "不要在趨勢中做區間操作",
+                        "市場狀態改變時，策略也要改變",
+                        "沒有「萬用策略」，只有「適合的策略」"
+                    ]
+                }
+            ]
+        }
+    ]
+}

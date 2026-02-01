@@ -1,0 +1,509 @@
+{
+    "id": "us-tw-comparison",
+    "title": "美股台股全面比較",
+    "description": "深入了解兩個市場的差異與選擇",
+    "icon": "Scale",
+    "color": "indigo",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "市場規模與結構差異",
+            "description": "認識兩個市場的基本差異",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**美股**和**台股**在市場規模、結構、產業組成上有顯著差異，了解這些差異有助於做出更好的投資決策。",
+                    "highlights": [
+                        { "text": "美股", "color": "purple" },
+                        { "text": "台股", "color": "indigo" }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["項目", "🇺🇸 美股", "🇹🇼 台股"],
+                    "rows": [
+                        ["市場規模", "約 50 兆美元", "約 2 兆美元"],
+                        ["上市公司數", "約 6,000 家", "約 1,000 家"],
+                        ["日均成交量", "約 4,000 億美元", "約 100 億美元"],
+                        ["全球市值佔比", "約 45%", "約 2%"],
+                        ["最大公司", "Apple（3兆美元）", "台積電（20兆台幣）"],
+                        ["投資人口", "約 1.5 億人", "約 1,200 萬人"]
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "🇺🇸 美股市場特點",
+                            "description": "全球最大、最成熟的股票市場",
+                            "color": "purple",
+                            "subtext": "產業多元、企業全球化"
+                        },
+                        {
+                            "title": "🇹🇼 台股市場特點",
+                            "description": "科技代工產業鏈為主的市場",
+                            "color": "indigo",
+                            "subtext": "高殖利率、熟悉度高"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "產業結構比較",
+                    "color": "amber",
+                    "items": [
+                        "美股：科技、金融、醫療、消費、能源均衡發展",
+                        "台股：電子業佔 60% 以上，台積電一家佔 30%",
+                        "美股：品牌公司為主（Apple、Nike、麥當勞）",
+                        "台股：代工公司為主（台積電、鴻海、日月光）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "市場特性差異",
+                    "color": "zinc",
+                    "items": [
+                        "美股：內需市場大，企業獲利穩定",
+                        "台股：出口導向，受全球景氣影響大",
+                        "美股：機構法人主導，散戶佔 15%",
+                        "台股：散戶活躍，佔成交量 60% 以上"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "關於美股與台股的市場規模，以下何者正確？",
+                    "options": [
+                        { "id": "a", "text": "台股市值大於美股", "isCorrect": false },
+                        { "id": "b", "text": "美股市值約是台股的 25 倍", "isCorrect": true },
+                        { "id": "c", "text": "兩個市場規模相近", "isCorrect": false },
+                        { "id": "d", "text": "台股上市公司數量更多", "isCorrect": false }
+                    ],
+                    "explanation": "美股市值約 50 兆美元，台股約 2 兆美元，美股約是台股的 25 倍。美股上市公司約 6,000 家，也遠多於台股的 1,000 家。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "交易規則完整比較",
+            "description": "時間、單位、漲跌幅、結算全面對照",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "美股與台股的**交易規則**有許多重要差異，投資前必須了解這些差異。",
+                    "highlights": [{ "text": "交易規則", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["規則", "🇺🇸 美股", "🇹🇼 台股"],
+                    "rows": [
+                        ["交易時間", "09:30-16:00（美東）", "09:00-13:30"],
+                        ["交易時長", "6.5 小時", "4.5 小時"],
+                        ["盤前盤後", "有（04:00-20:00）", "無"],
+                        ["最小交易單位", "1 股", "1 張（1,000股）"],
+                        ["零股交易", "隨時可買", "盤中/盤後零股"],
+                        ["漲跌幅限制", "無（有熔斷機制）", "±10%"],
+                        ["結算週期", "T+1", "T+2"],
+                        ["股票代碼", "英文字母（AAPL）", "數字（2330）"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "漲跌幅差異影響",
+                    "color": "rose",
+                    "items": [
+                        "美股無限制：單日可漲跌數十甚至數百%",
+                        "台股 ±10%：最多漲跌停，風險較可控",
+                        "美股熔斷：指數跌 7%/13%/20% 會暫停交易",
+                        "投資美股需更注意停損，避免重大虧損"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "交易單位差異影響",
+                    "color": "emerald",
+                    "items": [
+                        "美股 1 股起：$200 就能買 1 股 Apple",
+                        "台股 1 張起：台積電 1 張需 80 萬+",
+                        "美股零股無額外限制，台股零股有特定時段",
+                        "美股對小資族更友善"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "看盤顏色",
+                            "description": "美股：綠漲紅跌\n台股：紅漲綠跌",
+                            "color": "amber",
+                            "subtext": "剛轉換市場容易搞混"
+                        },
+                        {
+                            "title": "交易時間",
+                            "description": "美股：台灣的深夜\n台股：台灣的白天",
+                            "color": "indigo",
+                            "subtext": "美股需熬夜或隔日看盤"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "實用建議",
+                    "color": "zinc",
+                    "items": [
+                        "時差問題：可用限價單提前掛單",
+                        "漲跌幅：美股務必設停損",
+                        "零股優勢：美股適合定期定額小額投資",
+                        "結算速度：美股 T+1 資金周轉較快"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪項是美股獨有、台股沒有的功能？",
+                    "options": [
+                        { "id": "a", "text": "融資融券", "isCorrect": false },
+                        { "id": "b", "text": "盤前盤後交易", "isCorrect": true },
+                        { "id": "c", "text": "零股交易", "isCorrect": false },
+                        { "id": "d", "text": "漲跌幅限制", "isCorrect": false }
+                    ],
+                    "explanation": "盤前盤後交易是美股獨有的功能，可以在正常交易時段外進行買賣。台股沒有盤前盤後交易。融資融券和零股交易台股都有，漲跌幅限制則是台股有而美股沒有。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "投資成本全面比較",
+            "description": "手續費、稅務、匯款成本",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "投資成本直接影響報酬率，了解美股與台股的**成本結構**差異很重要。",
+                    "highlights": [{ "text": "成本結構", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["成本項目", "🇺🇸 美股", "🇹🇼 台股"],
+                    "rows": [
+                        ["交易手續費", "$0（海外券商）", "0.1425%（買賣各收）"],
+                        ["證交稅", "無", "0.3%（賣出時收）"],
+                        ["ETF 費用率", "0.03-0.20%", "0.30-0.50%"],
+                        ["股息稅", "30%（預扣）", "8.5%抵減或28%分離"],
+                        ["資本利得稅", "0%（外國人）", "無"],
+                        ["匯款成本", "約 $800-1,500 台幣", "無"]
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "交易成本比較：買賣 $10,000 股票",
+                    "steps": [
+                        { "label": "交易金額", "value": "$10,000（約30萬台幣）" },
+                        { "label": "", "value": "【台股成本】" },
+                        { "label": "買入手續費", "formula": "30萬 × 0.1425%", "value": "$427.5" },
+                        { "label": "賣出手續費", "formula": "30萬 × 0.1425%", "value": "$427.5" },
+                        { "label": "證交稅", "formula": "30萬 × 0.3%", "value": "$900" },
+                        { "label": "台股總成本", "value": "$1,755", "highlight": true },
+                        { "label": "", "value": "【美股成本（海外券商）】" },
+                        { "label": "買入手續費", "value": "$0" },
+                        { "label": "賣出手續費", "value": "$0" },
+                        { "label": "美股總成本", "value": "$0", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "成本差異",
+                        "value": "美股交易成本遠低於台股",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "股息稅比較",
+                    "color": "amber",
+                    "items": [
+                        "美股：股息被預扣 30%，無法退還",
+                        "台股：可選 8.5% 抵減（低所得者划算）或 28% 分離課稅",
+                        "高股息策略：台股稅務較優",
+                        "成長股策略：美股資本利得免稅較優"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "隱藏成本考量",
+                    "color": "rose",
+                    "items": [
+                        "匯率風險：美元升貶影響報酬",
+                        "電匯費用：每次約 $800-1,500 台幣",
+                        "時間成本：美股需熬夜或隔日處理",
+                        "學習成本：美股資訊多為英文"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "對於追求高股息的投資人，哪個市場稅務較優惠？",
+                    "options": [
+                        { "id": "a", "text": "美股（資本利得免稅）", "isCorrect": false },
+                        { "id": "b", "text": "台股（股息稅較低）", "isCorrect": true },
+                        { "id": "c", "text": "兩者相同", "isCorrect": false },
+                        { "id": "d", "text": "無法比較", "isCorrect": false }
+                    ],
+                    "explanation": "美股股息被預扣 30% 且無法退還，台股股息可選 8.5% 抵減或 28% 分離課稅。對高股息策略，台股稅務明顯較優。但對成長股策略，美股資本利得免稅反而更划算。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "投資標的特色差異",
+            "description": "可投資的公司類型與產業差異",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "美股與台股可投資的**標的類型**有很大差異，這影響了投資組合的建構方式。",
+                    "highlights": [{ "text": "標的類型", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇺🇸 美股可投資的公司類型",
+                    "color": "purple",
+                    "items": [
+                        "全球消費品牌：Apple、Nike、McDonald's、Starbucks",
+                        "科技巨頭：Google、Meta、Amazon、Microsoft",
+                        "金融龍頭：JPMorgan、Visa、Mastercard",
+                        "醫療製藥：Johnson & Johnson、Pfizer、UnitedHealth",
+                        "能源巨擘：ExxonMobil、Chevron",
+                        "這些公司你每天都在使用他們的產品！"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇹🇼 台股可投資的公司類型",
+                    "color": "indigo",
+                    "items": [
+                        "半導體製造：台積電、聯電、日月光",
+                        "電子代工：鴻海、廣達、仁寶",
+                        "金融股：國泰金、富邦金、中信金",
+                        "傳產龍頭：台塑、統一、中鋼",
+                        "多為 B2B 企業，一般人較不熟悉"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "美股：品牌公司",
+                            "description": "投資你熟悉的品牌，容易理解基本面",
+                            "color": "purple",
+                            "subtext": "喝星巴克？買 SBUX"
+                        },
+                        {
+                            "title": "台股：供應鏈公司",
+                            "description": "投資科技產業鏈，需了解產業知識",
+                            "color": "indigo",
+                            "subtext": "懂代工生態更有優勢"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "ETF 選擇差異",
+                    "color": "amber",
+                    "items": [
+                        "美股 ETF：數千檔，涵蓋全球各類資產",
+                        "台股 ETF：約 200 檔，以台股為主",
+                        "美股有債券、商品、REITs、國際市場 ETF",
+                        "台股 ETF 多集中在台灣股市"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["投資需求", "美股選擇", "台股選擇"],
+                    "rows": [
+                        ["大盤指數", "VOO、SPY", "0050、006208"],
+                        ["科技股", "QQQ、XLK", "0052、00881"],
+                        ["高股息", "SCHD、VYM", "0056、00878"],
+                        ["債券", "BND、TLT", "選擇有限"],
+                        ["全球市場", "VT、VXUS", "無法投資"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "想投資 Apple、Google、Amazon 這類公司，應該選擇？",
+                    "options": [
+                        { "id": "a", "text": "台股個股", "isCorrect": false },
+                        { "id": "b", "text": "台股 ETF", "isCorrect": false },
+                        { "id": "c", "text": "美股個股或 ETF", "isCorrect": true },
+                        { "id": "d", "text": "台股 ADR", "isCorrect": false }
+                    ],
+                    "explanation": "Apple、Google、Amazon 都是美國上市公司，只能透過美股投資。可以直接買個股，或透過 VOO、QQQ 等 ETF 間接投資。台股無法直接投資這些公司。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "風險特性比較",
+            "description": "波動性、匯率、政治風險差異",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "了解兩個市場的**風險特性**差異，有助於做好風險管理。",
+                    "highlights": [{ "text": "風險特性", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["風險類型", "🇺🇸 美股", "🇹🇼 台股"],
+                    "rows": [
+                        ["單日波動", "無上限", "最多 ±10%"],
+                        ["匯率風險", "有（美元波動）", "無"],
+                        ["政治風險", "較低", "兩岸關係影響"],
+                        ["流動性風險", "極低", "部分小型股較高"],
+                        ["資訊落差", "可能有（英文）", "低"],
+                        ["時差風險", "有（深夜交易）", "無"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "美股特有風險",
+                    "color": "rose",
+                    "items": [
+                        "無漲跌幅限制：極端情況可能單日跌 50%+",
+                        "匯率風險：美元貶值會侵蝕報酬",
+                        "時差問題：無法即時反應突發事件",
+                        "資訊落差：需具備英文閱讀能力",
+                        "遺產稅風險：大額資產需注意"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "台股特有風險",
+                    "color": "amber",
+                    "items": [
+                        "產業集中：電子業佔比過高",
+                        "台積電依賴：單一公司影響過大",
+                        "地緣政治：兩岸關係緊張時波動大",
+                        "市場規模小：外資進出影響大",
+                        "散戶主導：容易追高殺低"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "分散風險：美股優",
+                            "description": "可投資全球、各類資產",
+                            "color": "emerald",
+                            "subtext": "VT 一檔投資全球 9,000 檔股票"
+                        },
+                        {
+                            "title": "控制風險：台股優",
+                            "description": "漲跌幅限制提供保護",
+                            "color": "indigo",
+                            "subtext": "最多跌停 10%，有緩衝時間"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪項是投資美股需要額外考慮的風險？",
+                    "options": [
+                        { "id": "a", "text": "漲跌幅限制", "isCorrect": false },
+                        { "id": "b", "text": "匯率波動", "isCorrect": true },
+                        { "id": "c", "text": "中文資訊不足", "isCorrect": false },
+                        { "id": "d", "text": "交易時間太短", "isCorrect": false }
+                    ],
+                    "explanation": "投資美股需要用美元計價，因此匯率波動是額外風險。美元貶值時，即使股價不變，換回台幣也會減少。這是台股投資不需要考慮的因素。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "選擇哪個市場？",
+            "description": "根據個人情況做出最佳選擇",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "沒有絕對優劣，選擇適合自己的市場才是最重要的。以下提供選擇的參考框架。",
+                    "highlights": []
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "適合投資美股的人",
+                    "color": "purple",
+                    "items": [
+                        "想投資全球頂尖品牌公司",
+                        "追求成長股、資本增值",
+                        "有一定英文能力",
+                        "投資金額較大（可分攤匯款成本）",
+                        "能接受深夜交易或隔日處理",
+                        "想要更多元的資產配置選擇"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "適合投資台股的人",
+                    "color": "indigo",
+                    "items": [
+                        "偏好高股息、穩定配息",
+                        "想即時反應市場變化",
+                        "投資金額較小",
+                        "不想處理匯款、稅務等問題",
+                        "熟悉本土企業與產業",
+                        "重視股息稅務優惠"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "💡 最佳解答：兩者都投資",
+                            "description": "台股 + 美股分散配置，發揮各自優勢",
+                            "color": "emerald",
+                            "subtext": "例如：台股存股 + 美股指數"
+                        },
+                        {
+                            "title": "新手建議",
+                            "description": "先從熟悉的台股開始，再逐步擴展到美股",
+                            "color": "amber",
+                            "subtext": "學習基礎後再跨市場"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "配置建議範例",
+                    "color": "zinc",
+                    "items": [
+                        "保守型：台股 70% + 美股 30%",
+                        "平衡型：台股 50% + 美股 50%",
+                        "積極型：台股 30% + 美股 70%",
+                        "全球配置：台股 30% + 美股 50% + 其他市場 20%",
+                        "配置比例應根據個人風險承受度調整"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["投資目標", "建議市場", "理由"],
+                    "rows": [
+                        ["高股息收入", "台股", "股息稅較低"],
+                        ["長期成長", "美股", "全球龍頭、複利效果"],
+                        ["科技投資", "兩者皆可", "美股品牌、台股供應鏈"],
+                        ["資產分散", "美股", "可投資全球市場"],
+                        ["簡單入門", "台股", "熟悉度高、無時差"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種配置策略最能發揮台股和美股的各自優勢？",
+                    "options": [
+                        { "id": "a", "text": "100% 投資台股", "isCorrect": false },
+                        { "id": "b", "text": "100% 投資美股", "isCorrect": false },
+                        { "id": "c", "text": "台股高股息 + 美股成長指數", "isCorrect": true },
+                        { "id": "d", "text": "隨便選一個市場就好", "isCorrect": false }
+                    ],
+                    "explanation": "台股高股息策略可享受較低的股息稅，美股成長指數（如 VOO、QQQ）可享受資本利得免稅和全球龍頭公司的成長。兩者結合可同時獲得現金流和長期增值。"
+                }
+            ]
+        }
+    ]
+}

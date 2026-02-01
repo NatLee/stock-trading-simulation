@@ -1,0 +1,914 @@
+{
+    "id": "psychology",
+    "title": "交易心理學",
+    "description": "克服情緒，建立正確交易心態",
+    "icon": "Brain",
+    "color": "amber",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "常見心理偏差",
+            "description": "認識影響交易決策的心理陷阱",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "投資決策往往受到**心理偏差**的影響，這些偏差會導致我們做出不理性的決定，造成不必要的虧損。",
+                    "highlights": [{ "text": "心理偏差", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "過度自信 (Overconfidence)",
+                    "color": "rose",
+                    "text": "高估自己的分析能力和判斷力，導致頻繁交易、重倉押注。偶爾的成功經驗被誤認為是能力，陷入「我覺得對=真的對」的誤區。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "損失厭惡 (Loss Aversion)",
+                    "color": "amber",
+                    "text": "人們對損失的敏感度是對收益的 2-3 倍。這導致「死扛虧損股」不願停損，小虧變大虧；另一面是「急賣獲利股」，錯過大行情。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "近因偏差 (Recency Bias)",
+                    "color": "indigo",
+                    "text": "過度重視近期事件，忽略長期趨勢。例如看到某股連續漲停就追高，卻忽視其本益比已遠超合理水平。"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "確認偏誤",
+                            "description": "只關注支持自己觀點的資訊",
+                            "color": "rose",
+                            "subtext": "忽略相反的警訊"
+                        },
+                        {
+                            "title": "錨定效應",
+                            "description": "被最初的價格或資訊「錨住」",
+                            "color": "amber",
+                            "subtext": "「它曾經漲到 X 元」"
+                        },
+                        {
+                            "title": "從眾心理",
+                            "description": "跟隨群眾行動，怕錯過行情",
+                            "color": "purple",
+                            "subtext": "「大家都在買」"
+                        },
+                        {
+                            "title": "沉沒成本",
+                            "description": "因為已投入成本而不願放棄",
+                            "color": "zinc",
+                            "subtext": "「已經跌這麼多了」"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "投資人買進後股票下跌，但堅持不賣因為「已經跌很多了」，這是什麼心理偏差？",
+                    "options": [
+                        { "id": "a", "text": "過度自信", "isCorrect": false },
+                        { "id": "b", "text": "沉沒成本謬誤", "isCorrect": true },
+                        { "id": "c", "text": "從眾心理", "isCorrect": false },
+                        { "id": "d", "text": "近因偏差", "isCorrect": false }
+                    ],
+                    "explanation": "沉沒成本謬誤是指因為已經投入的成本而不願放棄，但這些成本已經無法收回，不應影響未來決策。正確做法是評估股票未來價值，而非過去買入價格。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "散戶常見錯誤",
+            "description": "避免新手最常犯的投資錯誤",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "研究顯示，帳戶規模較小的**散戶**在股市中的表現往往不如預期，主要原因是一些反覆出現的行為錯誤。",
+                    "highlights": [{ "text": "散戶", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "❌ 錯誤一：追漲殺跌",
+                    "color": "rose",
+                    "text": "統計顯示，散戶買入的股票多數隔日下跌，賣出的股票則上漲。這是因為在股價上漲時追高買進，下跌時恐慌殺出。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "❌ 錯誤二：頻繁交易",
+                    "color": "amber",
+                    "text": "交易次數越多，成本越高，虧損機率越大。研究指出小額帳戶年交易成本可高達 8.2%，幾乎吃掉所有獲利。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "❌ 錯誤三：賺小賠大",
+                    "color": "purple",
+                    "text": "股票一賺錢就急著獲利了結，虧錢時卻死抱不放期待解套。結果是獲利的股票只賺一點點，虧損的股票卻越賠越多。"
+                },
+                {
+                    "type": "table",
+                    "headers": ["錯誤行為", "心理原因", "正確做法"],
+                    "rows": [
+                        ["追高殺低", "FOMO（錯失恐懼）", "制定計劃，分批進場"],
+                        ["頻繁交易", "過度自信、刺激感", "減少交易，等待機會"],
+                        ["不停損", "損失厭惡", "嚴格執行停損紀律"],
+                        ["亂聽明牌", "從眾心理", "自己做功課研究"]
+                    ]
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "頻繁交易的代價",
+                    "steps": [
+                        { "label": "初始資金", "value": "$100,000" },
+                        { "label": "年交易次數", "value": "200 次" },
+                        { "label": "每次成本", "formula": "約 0.4%", "value": "$400" },
+                        { "label": "年交易成本", "formula": "200 × $400 ÷ 2", "value": "$40,000", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "光成本就虧",
+                        "value": "40% 本金！",
+                        "color": "rose"
+                    }
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種行為最可能導致長期虧損？",
+                    "options": [
+                        { "id": "a", "text": "設定停損點並嚴格執行", "isCorrect": false },
+                        { "id": "b", "text": "每天進出場交易數次", "isCorrect": true },
+                        { "id": "c", "text": "定期定額投資 ETF", "isCorrect": false },
+                        { "id": "d", "text": "做好研究後長期持有", "isCorrect": false }
+                    ],
+                    "explanation": "頻繁交易不但增加交易成本，還容易受情緒影響做出錯誤決策。減少交易次數、等待好機會，通常比頻繁操作更能獲利。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "情緒管理方法",
+            "description": "學習控制交易中的情緒",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "成功的交易者不是沒有情緒，而是**懂得管理情緒**。建立一套情緒管理機制，可以避免在衝動下做出錯誤決定。",
+                    "highlights": [{ "text": "懂得管理情緒", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "情緒熔斷機制",
+                    "color": "emerald",
+                    "items": [
+                        "設定每日最大虧損限額，達標後停止交易",
+                        "連續虧損 3 次後，暫停交易至少 1 小時",
+                        "感到焦慮或興奮時，先離開螢幕冷靜",
+                        "大賺或大賠後，給自己一天的冷靜期"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "貪婪的表現",
+                            "description": "獲利後加碼、忽略風險、期待更高",
+                            "color": "amber",
+                            "subtext": "「再漲一點我就賣」"
+                        },
+                        {
+                            "title": "恐懼的表現",
+                            "description": "虧損後恐慌、過早出場、不敢進場",
+                            "color": "purple",
+                            "subtext": "「萬一繼續跌怎麼辦」"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "交易日誌的重要性",
+                    "color": "indigo",
+                    "items": [
+                        "記錄每筆交易的原因和結果",
+                        "記錄當時的情緒狀態",
+                        "定期回顧，找出情緒交易的模式",
+                        "從錯誤中學習，避免重蹈覆轍"
+                    ]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "情緒檢查清單（交易前問自己）",
+                    "items": [
+                        { "key": "動機", "value": "我是因為分析還是因為情緒想交易？", "keyColor": "indigo" },
+                        { "key": "計劃", "value": "我有明確的進場、停損、停利計劃嗎？", "keyColor": "emerald" },
+                        { "key": "風險", "value": "這筆交易的風險我能承受嗎？", "keyColor": "amber" },
+                        { "key": "狀態", "value": "我現在的情緒狀態適合交易嗎？", "keyColor": "purple" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "連續虧損 3 筆後，最好的做法是？",
+                    "options": [
+                        { "id": "a", "text": "加大部位想要翻本", "isCorrect": false },
+                        { "id": "b", "text": "暫停交易，冷靜檢討", "isCorrect": true },
+                        { "id": "c", "text": "繼續交易，相信運氣會好轉", "isCorrect": false },
+                        { "id": "d", "text": "換一檔股票繼續操作", "isCorrect": false }
+                    ],
+                    "explanation": "連續虧損後情緒容易失控，此時做出的決策品質較差。暫停交易、冷靜檢討原因，是避免更大虧損的最佳做法。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "建立交易紀律",
+            "description": "用系統化流程對抗人性弱點",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**交易紀律**是克服心理弱點的最佳工具。透過事先制定的規則和流程，讓交易決策不受情緒干擾。",
+                    "highlights": [{ "text": "交易紀律", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "制定交易計劃 SOP",
+                    "color": "emerald",
+                    "items": [
+                        "進場條件：滿足哪些條件才能買入？",
+                        "部位大小：這筆交易投入多少資金？",
+                        "停損價位：虧損多少必須出場？",
+                        "停利目標：獲利多少要獲利了結？",
+                        "時間限制：持有多久後重新評估？"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "✓ 有紀律的交易者",
+                            "description": "按計劃執行，不論結果如何",
+                            "color": "emerald",
+                            "subtext": "長期穩定獲利"
+                        },
+                        {
+                            "title": "✗ 無紀律的交易者",
+                            "description": "隨心所欲，情緒主導決策",
+                            "color": "rose",
+                            "subtext": "偶爾大賺，最終大賠"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["紀律項目", "具體規則（範例）"],
+                    "rows": [
+                        ["資金管理", "單筆風險不超過總資金 2%"],
+                        ["停損執行", "虧損達 -7% 無條件出場"],
+                        ["獲利了結", "獲利 20% 先賣一半"],
+                        ["交易頻率", "每週最多交易 3 次"],
+                        ["休息機制", "連虧 3 次，休息一天"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "紀律執行的關鍵",
+                    "color": "amber",
+                    "text": "最難的不是制定規則，而是執行。當停損點到達時，不要想「再等等看」；當獲利目標達成時，不要想「再漲一點」。嚴格執行，才能長期獲利。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "股票漲到你設定的停利點，但你覺得還會繼續漲，應該怎麼做？",
+                    "options": [
+                        { "id": "a", "text": "不賣，等漲更多", "isCorrect": false },
+                        { "id": "b", "text": "按原計劃執行停利", "isCorrect": true },
+                        { "id": "c", "text": "加碼買進", "isCorrect": false },
+                        { "id": "d", "text": "看其他人的意見再決定", "isCorrect": false }
+                    ],
+                    "explanation": "嚴格執行交易計劃是成功的關鍵。如果每次都因為「感覺」而改變計劃，那計劃就失去意義了。可以賣出一半鎖定獲利，剩餘部位讓利潤奔跑。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "成功交易者心態",
+            "description": "培養長期獲利的正確思維",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "成功的交易者擁有一些共同的心態特質，這些特質讓他們能夠在市場中長期生存並獲利。"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "接受不確定性",
+                            "description": "沒有任何策略能 100% 獲利",
+                            "color": "indigo",
+                            "subtext": "追求長期正期望值"
+                        },
+                        {
+                            "title": "接受損失",
+                            "description": "停損是成本，不是失敗",
+                            "color": "amber",
+                            "subtext": "小虧是為了避免大虧"
+                        },
+                        {
+                            "title": "保持耐心",
+                            "description": "等待好機會，不強迫交易",
+                            "color": "emerald",
+                            "subtext": "不是每天都要交易"
+                        },
+                        {
+                            "title": "持續學習",
+                            "description": "市場永遠有新東西要學",
+                            "color": "cyan",
+                            "subtext": "從每筆交易中學習"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 關鍵觀念轉換",
+                    "color": "emerald",
+                    "items": [
+                        "從「預測市場」轉為「反應市場」",
+                        "從「追求每筆獲利」轉為「追求長期正期望值」",
+                        "從「證明自己對」轉為「承認錯誤並修正」",
+                        "從「情緒交易」轉為「系統交易」"
+                    ]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "成功交易者的習慣",
+                    "items": [
+                        { "key": "事前準備", "value": "每次交易前都有完整的計劃", "keyColor": "indigo" },
+                        { "key": "事後檢討", "value": "每筆交易後都記錄並分析", "keyColor": "emerald" },
+                        { "key": "風險優先", "value": "先想會虧多少，再想能賺多少", "keyColor": "amber" },
+                        { "key": "保持謙遜", "value": "知道市場比自己聰明", "keyColor": "purple" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "📌 核心原則",
+                    "color": "zinc",
+                    "text": "真正的贏家靠「理性的SOP」而非「感性的情緒」。股市本質上是零和遊戲，管住自己的手、減少交易次數，往往比頻繁操作能賺得更多。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "成功交易者對「虧損」的看法是？",
+                    "options": [
+                        { "id": "a", "text": "虧損代表失敗，要避免所有虧損", "isCorrect": false },
+                        { "id": "b", "text": "虧損是交易成本的一部分", "isCorrect": true },
+                        { "id": "c", "text": "只要不賣就不算虧損", "isCorrect": false },
+                        { "id": "d", "text": "虧損的股票要攤平成本", "isCorrect": false }
+                    ],
+                    "explanation": "成功交易者把小虧損視為交易的必要成本，就像做生意要付租金一樣。重點是控制虧損的大小，讓整體期望值為正。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "FOMO與追高陷阱",
+            "description": "認識錯失恐懼與克服方法",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**FOMO（Fear Of Missing Out）** 是指害怕錯過獲利機會的心理，是導致追高殺低的主要原因之一。",
+                    "highlights": [{ "text": "FOMO（Fear Of Missing Out）", "color": "white" }]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "FOMO 追高陷阱圖解",
+                    "candles": [
+                        { "open": 48, "high": 52, "low": 47, "close": 50, "label": "D1" },
+                        { "open": 50, "high": 60, "low": 49, "close": 58, "label": "漲停" },
+                        { "open": 58, "high": 70, "low": 57, "close": 68, "label": "續漲" },
+                        { "open": 68, "high": 84, "low": 67, "close": 82, "label": "大漲" },
+                        { "open": 82, "high": 97, "low": 81, "close": 95, "label": "追高買" },
+                        { "open": 95, "high": 96, "low": 86, "close": 88, "label": "開跌" },
+                        { "open": 88, "high": 89, "low": 73, "close": 75, "label": "暴跌" },
+                        { "open": 75, "high": 76, "low": 63, "close": 65, "label": "殺低賣" }
+                    ],
+                    "annotations": [
+                        { "type": "buy", "index": 4, "label": "FOMO追高" },
+                        { "type": "sell", "index": 7, "label": "恐慌殺低" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 50, "label": "" },
+                            { "x": 1, "y": 58, "label": "" },
+                            { "x": 2, "y": 68, "label": "" },
+                            { "x": 3, "y": 82, "label": "" },
+                            { "x": 4, "y": 95, "label": "" },
+                            { "x": 5, "y": 88, "label": "" },
+                            { "x": 6, "y": 75, "label": "" },
+                            { "x": 7, "y": 65, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 4, "y": 95, "type": "buy", "label": "FOMO追高買入" },
+                            { "x": 7, "y": 65, "type": "sell", "label": "恐慌殺低賣出" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "loss", "yStart": 60, "yEnd": 95, "label": "虧損 -31%" }
+                        ]
+                    },
+                    "description": "看到股價從 $50 漲到 $95（+90%），怕錯過而追高買入。結果股價回跌，恐慌在 $65 賣出，虧損 31%。這就是典型的追高殺低。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "FOMO 的表現",
+                    "color": "rose",
+                    "items": [
+                        "看到股票連續漲停就想追",
+                        "「這次不買會後悔」的強烈衝動",
+                        "朋友賺錢我也想跟進",
+                        "網路討論熱烈就覺得非買不可",
+                        "買完後才想研究這家公司"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "克服 FOMO 的方法",
+                    "color": "emerald",
+                    "items": [
+                        "記住：錯過一次機會不會怎樣，市場永遠有機會",
+                        "建立選股清單，只買清單內的股票",
+                        "設定買入價格，價格沒到就不動",
+                        "問自己：「如果沒聽過這消息，我會買嗎？」",
+                        "用小資金測試，不要一次重壓"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "FOMO 交易",
+                            "description": "看漲追高、聽消息、衝動決定",
+                            "color": "rose",
+                            "subtext": "結果：買在高點"
+                        },
+                        {
+                            "title": "理性交易",
+                            "description": "按計劃、等回調、冷靜評估",
+                            "color": "emerald",
+                            "subtext": "結果：買在相對低點"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "某股票連漲5天從$50漲到$90，朋友說趕快買，你應該？",
+                    "options": [
+                        { "id": "a", "text": "立刻買入，怕錯過", "isCorrect": false },
+                        { "id": "b", "text": "先研究基本面，設定合理買入價", "isCorrect": true },
+                        { "id": "c", "text": "全部資金壓進去", "isCorrect": false },
+                        { "id": "d", "text": "明天再看漲不漲", "isCorrect": false }
+                    ],
+                    "explanation": "連漲 5 天後買入風險很高。正確做法是先研究公司基本面，設定你認為合理的買入價，等回調再考慮進場。錯過這次，還有下次機會。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "交易日誌實戰",
+            "description": "如何記錄與檢討交易",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**交易日誌**是提升交易能力最有效的工具，透過記錄和檢討，找出自己的盲點。",
+                    "highlights": [{ "text": "交易日誌", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "交易日誌應記錄的內容",
+                    "color": "indigo",
+                    "items": [
+                        "日期、股票代號、買入/賣出價格",
+                        "進場理由（技術面、基本面、消息）",
+                        "停損點和停利目標",
+                        "當時的情緒狀態（冷靜/衝動/恐懼）",
+                        "實際結果與檢討"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["項目", "範例記錄"],
+                    "rows": [
+                        ["日期", "2025/02/01"],
+                        ["標的", "2330 台積電"],
+                        ["方向", "買進"],
+                        ["進場價", "$650"],
+                        ["停損價", "$620 (-4.6%)"],
+                        ["目標價", "$720 (+10.8%)"],
+                        ["進場理由", "突破月線、外資連買"],
+                        ["情緒狀態", "稍微衝動，沒等回測"],
+                        ["實際結果", "獲利 +6.5%"],
+                        ["檢討", "應等回測再進場，成本可更好"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "每週檢討重點",
+                    "color": "emerald",
+                    "items": [
+                        "本週勝率多少？平均獲利/虧損比？",
+                        "哪些交易是按計劃執行？哪些是衝動？",
+                        "情緒化交易的結果如何？",
+                        "有沒有反覆出現的錯誤？",
+                        "下週要改進什麼？"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "有記錄的交易者",
+                            "description": "知道自己的問題在哪，持續改進",
+                            "color": "emerald",
+                            "subtext": "進步最快"
+                        },
+                        {
+                            "title": "沒記錄的交易者",
+                            "description": "重複犯相同錯誤，難以進步",
+                            "color": "rose",
+                            "subtext": "原地踏步"
+                        }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "交易日誌最重要的功能是？",
+                    "options": [
+                        { "id": "a", "text": "計算賺了多少錢", "isCorrect": false },
+                        { "id": "b", "text": "發現自己的交易模式與盲點", "isCorrect": true },
+                        { "id": "c", "text": "向朋友炫耀", "isCorrect": false },
+                        { "id": "d", "text": "記錄法人買賣超", "isCorrect": false }
+                    ],
+                    "explanation": "交易日誌最重要的功能是透過記錄發現自己反覆出現的錯誤模式，例如「總是在衝動時買入」或「總是停損執行不確實」，然後針對這些問題改進。"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "心理測驗與自我評估",
+            "description": "評估你的交易心態",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "透過**自我評估**來了解你目前的交易心態，找出需要改進的地方。",
+                    "highlights": [{ "text": "自我評估", "color": "white" }]
+                },
+                {
+                    "type": "combo-chart-example",
+                    "title": "【情境測試】虧損後的反應",
+                    "candles": [
+                        { "open": 98, "high": 102, "low": 97, "close": 100, "label": "買入" },
+                        { "open": 100, "high": 101, "low": 93, "close": 95, "label": "D2" },
+                        { "open": 95, "high": 96, "low": 86, "close": 88, "label": "D3" },
+                        { "open": 88, "high": 89, "low": 80, "close": 82, "label": "D4" },
+                        { "open": 82, "high": 83, "low": 76, "close": 78, "label": "現在" }
+                    ],
+                    "annotations": [
+                        { "type": "buy", "index": 0, "label": "買入$100" },
+                        { "type": "info", "index": 4, "label": "-22%" }
+                    ],
+                    "lineData": {
+                        "points": [
+                            { "x": 0, "y": 100, "label": "" },
+                            { "x": 1, "y": 95, "label": "" },
+                            { "x": 2, "y": 88, "label": "" },
+                            { "x": 3, "y": 82, "label": "" },
+                            { "x": 4, "y": 78, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 0, "y": 100, "type": "buy", "label": "買入 $100" },
+                            { "x": 4, "y": 78, "type": "info", "label": "目前 -22%" }
+                        ],
+                        "lines": [
+                            { "type": "support", "y": 90, "label": "停損線 $90 (-10%)" }
+                        ],
+                        "zones": [
+                            { "type": "loss", "yStart": 75, "yEnd": 100, "label": "虧損區" }
+                        ]
+                    },
+                    "description": "你買入的股票已經虧損 22%，而你當初設的停損是 -10%。你會怎麼做？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【情境測試答案】面對 -22% 虧損（停損是 -10%），你會？",
+                    "options": [
+                        { "id": "a", "text": "繼續等，相信會反彈回來", "isCorrect": false },
+                        { "id": "b", "text": "加碼攤平成本", "isCorrect": false },
+                        { "id": "c", "text": "立即賣出，檢討為何沒在停損點執行", "isCorrect": true },
+                        { "id": "d", "text": "不看帳戶，眼不見為淨", "isCorrect": false }
+                    ],
+                    "explanation": "正確做法是立即停損，然後檢討為何沒在 -10% 時執行。紀律的執行比「這次會不會反彈」更重要。繼續凹單或攤平通常會導致更大虧損。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "交易心態自評量表",
+                    "color": "indigo",
+                    "items": [
+                        "□ 我能在停損點到達時果斷賣出",
+                        "□ 我不會因為一次虧損而情緒失控",
+                        "□ 我不會在沒有計劃的情況下衝動交易",
+                        "□ 我能接受虧損是交易的一部分",
+                        "□ 連續獲利後我不會過度自信加大部位",
+                        "□ 我有記錄交易日誌的習慣"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["勾選數量", "評估結果", "建議"],
+                    "rows": [
+                        ["6 項", "優秀！心態成熟", "持續保持"],
+                        ["4-5 項", "不錯，但有改進空間", "針對弱點加強"],
+                        ["2-3 項", "需要加強紀律", "從模擬交易開始"],
+                        ["0-1 項", "心態需要調整", "先暫停實盤交易"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "改善交易心態的步驟",
+                    "color": "emerald",
+                    "items": [
+                        "1. 承認自己有心理弱點（每個人都有）",
+                        "2. 用交易日誌記錄情緒化交易",
+                        "3. 制定具體規則來約束自己",
+                        "4. 從小資金開始，降低情緒影響",
+                        "5. 定期檢討，持續改進"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "連贏 5 筆後，正確的心態是？",
+                    "options": [
+                        { "id": "a", "text": "我太厲害了，加大部位繼續賺", "isCorrect": false },
+                        { "id": "b", "text": "保持謙虛，維持相同的風險控管", "isCorrect": true },
+                        { "id": "c", "text": "把獲利全部再投入", "isCorrect": false },
+                        { "id": "d", "text": "分享給朋友跟單", "isCorrect": false }
+                    ],
+                    "explanation": "連贏後容易過度自信，反而是最容易犯錯的時候。保持謙虛、維持相同的風險控管，才能長期穩定獲利。"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "title": "行為金融學入門",
+            "description": "理解市場中的非理性行為",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**行為金融學**結合心理學與金融學，研究投資者的非理性行為如何影響市場。理解這些行為可以幫助你避免常見陷阱，甚至從中獲利。",
+                    "highlights": [{ "text": "行為金融學", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "傳統金融學 vs 行為金融學",
+                    "color": "indigo",
+                    "items": [
+                        "傳統觀點：投資者是理性的，市場是有效的",
+                        "行為觀點：投資者會犯系統性錯誤，市場會偏離效率",
+                        "現實：兩者都有道理，但行為因素不可忽視"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "展望理論",
+                            "description": "人們評估損益是相對的，而非絕對的",
+                            "color": "amber",
+                            "subtext": "獲得諾貝爾經濟學獎"
+                        },
+                        {
+                            "title": "心理帳戶",
+                            "description": "人們把錢分成不同帳戶區別對待",
+                            "color": "indigo",
+                            "subtext": "「這是投資的錢」"
+                        },
+                        {
+                            "title": "框架效應",
+                            "description": "同一問題的不同描述會影響決策",
+                            "color": "purple",
+                            "subtext": "「90%存活」vs「10%死亡」"
+                        },
+                        {
+                            "title": "處置效應",
+                            "description": "急於賣出獲利股、死抱虧損股",
+                            "color": "rose",
+                            "subtext": "典型的賺小賠大"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "展望理論的核心發現",
+                    "color": "amber",
+                    "items": [
+                        "損失的痛苦是獲得快樂的 2-2.5 倍",
+                        "確定性效應：偏好確定的小獲利，而非機率性的大獲利",
+                        "反射效應：面對損失時反而願意冒險",
+                        "這解釋了為何投資人傾向「停利太早、停損太慢」"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "市場異象（Anomalies）",
+                    "color": "emerald",
+                    "items": [
+                        "動能效應：漲的股票傾向繼續漲（短期）",
+                        "均值回歸：漲太多的會回跌、跌太多的會反彈（長期）",
+                        "一月效應：年初報酬通常較高",
+                        "星期一效應：週一報酬通常較低"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "「損失厭惡」意味著什麼？",
+                    "options": [
+                        { "id": "a", "text": "投資人討厭所有風險", "isCorrect": false },
+                        { "id": "b", "text": "損失帶來的痛苦比同等獲利帶來的快樂更強烈", "isCorrect": true },
+                        { "id": "c", "text": "投資人會避免所有損失", "isCorrect": false },
+                        { "id": "d", "text": "市場會自動避免損失", "isCorrect": false }
+                    ],
+                    "explanation": "損失厭惡是行為金融學的核心發現之一。損失 $100 的痛苦約是獲得 $100 快樂的 2 倍。這導致投資人不願停損（實現損失太痛苦），卻急於停利（確保獲利）。"
+                }
+            ]
+        },
+        {
+            "id": "10",
+            "title": "市場情緒與逆向投資",
+            "description": "在恐慌與貪婪中保持理性",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "巴菲特說：「別人恐懼時我貪婪，別人貪婪時我恐懼。」這就是**逆向投資**的精髓：在市場極端情緒時採取相反行動。",
+                    "highlights": [{ "text": "逆向投資", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "市場情緒週期",
+                    "color": "indigo",
+                    "items": [
+                        "① 懷疑 → ② 謹慎樂觀 → ③ 興奮",
+                        "④ 狂熱（高點）→ ⑤ 焦慮 → ⑥ 否認",
+                        "⑦ 恐慌 → ⑧ 絕望（低點）→ ① 懷疑...",
+                        "循環往復，週而復始"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "市場極度樂觀時",
+                            "description": "股價通常被高估",
+                            "color": "rose",
+                            "subtext": "應謹慎、減碼"
+                        },
+                        {
+                            "title": "市場極度悲觀時",
+                            "description": "股價通常被低估",
+                            "color": "emerald",
+                            "subtext": "可考慮佈局"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "恐慌指標參考",
+                    "color": "amber",
+                    "items": [
+                        "VIX 恐慌指數 > 30：市場恐慌，可能是買點",
+                        "VIX 恐慌指數 < 15：市場平靜，需謹慎",
+                        "融資餘額大增：散戶槓桿過高，可能是高點",
+                        "融資餘額大減：散戶恐慌賣出，可能是低點"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "⚠️ 逆向投資的注意事項",
+                    "color": "rose",
+                    "items": [
+                        "逆向不等於盲目抄底或逃頂",
+                        "需要搭配基本面分析和技術分析",
+                        "市場可能比你想像的更瘋狂",
+                        "要有足夠的心理承受能力和時間等待"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["市場信號", "大眾行為", "逆向操作"],
+                    "rows": [
+                        ["連續大漲、新聞狂熱", "瘋狂追高", "分批減碼"],
+                        ["連續大跌、恐慌蔓延", "恐慌殺出", "分批佈局"],
+                        ["成交量暴增", "大家都在進場", "謹慎觀望"],
+                        ["成交量極低", "大家都離場", "開始關注"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "當市場恐慌指數VIX飆升到40，新聞充斥悲觀消息，你應該？",
+                    "options": [
+                        { "id": "a", "text": "趕快賣出所有持股", "isCorrect": false },
+                        { "id": "b", "text": "開始分批佈局優質股", "isCorrect": true },
+                        { "id": "c", "text": "等新聞轉好再買", "isCorrect": false },
+                        { "id": "d", "text": "完全不理會", "isCorrect": false }
+                    ],
+                    "explanation": "市場極度恐慌時（VIX > 30-40），往往是長期投資者佈局的好時機。但要注意分批進場、控制風險，不要想精準抄底。巴菲特說的「別人恐懼時我貪婪」就是這個意思。"
+                }
+            ]
+        },
+        {
+            "id": "11",
+            "title": "投資的長期思維",
+            "description": "建立財富累積的正確觀念",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "成功的投資是**長期累積**的過程。時間是最強大的盟友，複利效應需要時間才能展現威力。",
+                    "highlights": [{ "text": "長期累積", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "複利的威力",
+                    "color": "emerald",
+                    "text": "愛因斯坦說複利是「世界第八大奇蹟」。每年 10% 報酬，30 年後本金會成長 17.4 倍。關鍵是耐心持有，讓時間為你工作。"
+                },
+                {
+                    "type": "calculation-example",
+                    "title": "長期投資的複利效果",
+                    "steps": [
+                        { "label": "初始投資", "value": "$100萬" },
+                        { "label": "年化報酬率", "value": "8%" },
+                        { "label": "10年後", "formula": "$100萬 × 1.08^10", "value": "$216萬" },
+                        { "label": "20年後", "formula": "$100萬 × 1.08^20", "value": "$466萬" },
+                        { "label": "30年後", "formula": "$100萬 × 1.08^30", "value": "$1,006萬", "highlight": true }
+                    ],
+                    "result": {
+                        "label": "30年成長",
+                        "value": "10倍以上！",
+                        "color": "emerald"
+                    }
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "長期投資的心態",
+                    "color": "indigo",
+                    "items": [
+                        "接受短期波動是正常的",
+                        "不要因為短期下跌而恐慌賣出",
+                        "定期投入，不要試圖擇時",
+                        "專注於資產品質，而非價格波動",
+                        "股息再投入，加速複利效果"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "短線思維",
+                            "description": "追求快速獲利，頻繁進出",
+                            "color": "rose",
+                            "subtext": "壓力大、成本高"
+                        },
+                        {
+                            "title": "長線思維",
+                            "description": "持續累積，等待複利",
+                            "color": "emerald",
+                            "subtext": "壓力小、成本低"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "💡 投資箴言",
+                    "color": "zinc",
+                    "items": [
+                        "「市場短期是投票機，長期是秤重機」— 葛拉漢",
+                        "「時間是好公司的朋友，爛公司的敵人」— 巴菲特",
+                        "「真正的財富是慢慢累積的」",
+                        "「耐心是投資人最重要的美德」"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "對於長期投資者來說，股市大跌應該怎麼看？",
+                    "options": [
+                        { "id": "a", "text": "災難來了，趕快賣出", "isCorrect": false },
+                        { "id": "b", "text": "優質資產打折的機會", "isCorrect": true },
+                        { "id": "c", "text": "投資失敗了", "isCorrect": false },
+                        { "id": "d", "text": "市場永遠不會漲回來", "isCorrect": false }
+                    ],
+                    "explanation": "對長期投資者而言，股市大跌是「優質資產打折」的機會。如果一家好公司的基本面沒變，股價下跌只是讓你能以更便宜的價格買入。關鍵是確保買的是好公司，且有足夠的時間等待。"
+                }
+            ]
+        }
+    ]
+}

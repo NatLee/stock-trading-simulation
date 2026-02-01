@@ -1,0 +1,486 @@
+{
+    "id": "sector",
+    "title": "產業分析與景氣循環",
+    "description": "學習產業輪動與景氣週期投資策略",
+    "icon": "PieChart",
+    "color": "cyan",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "景氣循環四階段",
+            "description": "復甦、擴張、衰退、蕭條的特徵",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**景氣循環**（Business Cycle）是經濟活動周期性波動的現象，了解循環週期有助於做出更好的投資決策。",
+                    "highlights": [{ "text": "景氣循環", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "適用市場",
+                    "color": "indigo",
+                    "text": "🌐 景氣循環理論適用全球市場，但各國週期可能不同步"
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "復甦期 Recovery",
+                            "description": "經濟觸底回升，利率低，企業獲利改善",
+                            "color": "emerald",
+                            "subtext": "適合買進股票"
+                        },
+                        {
+                            "title": "擴張期 Expansion",
+                            "description": "經濟成長加速，就業改善，通膨上升",
+                            "color": "amber",
+                            "subtext": "股市多頭後期"
+                        },
+                        {
+                            "title": "衰退期 Recession",
+                            "description": "經濟成長趨緩，央行升息，企業獲利下滑",
+                            "color": "rose",
+                            "subtext": "防禦性配置"
+                        },
+                        {
+                            "title": "蕭條期 Depression",
+                            "description": "經濟萎縮，失業上升，央行降息刺激",
+                            "color": "zinc",
+                            "subtext": "等待觸底訊號"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["階段", "GDP", "通膨", "利率", "股市"],
+                    "rows": [
+                        ["復甦期", "轉正成長", "低", "低", "上漲"],
+                        ["擴張期", "高成長", "上升", "上升", "高點"],
+                        ["衰退期", "成長趨緩", "高", "高", "修正"],
+                        ["蕭條期", "負成長", "下降", "下降", "底部"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "景氣循環指標",
+                    "color": "indigo",
+                    "items": [
+                        "領先指標：股市、建築許可、消費者信心",
+                        "同步指標：GDP、工業生產、就業",
+                        "落後指標：失業率、CPI、企業獲利",
+                        "注意：指標間有時間差，需綜合判斷"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "在景氣循環的哪個階段，股市通常表現最好？",
+                    "options": [
+                        { "id": "a", "text": "擴張期後期", "isCorrect": false },
+                        { "id": "b", "text": "衰退期", "isCorrect": false },
+                        { "id": "c", "text": "復甦期", "isCorrect": true },
+                        { "id": "d", "text": "蕭條期", "isCorrect": false }
+                    ],
+                    "explanation": "復甦期是股市表現最好的階段。此時經濟從谷底回升，利率仍低，企業獲利改善，股市通常領先經濟復甦約 6-9 個月開始上漲。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "產業輪動策略",
+            "description": "不同景氣階段的產業配置",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**產業輪動**（Sector Rotation）是根據景氣循環階段，調整投資組合的產業配置，以獲取超額報酬。",
+                    "highlights": [{ "text": "產業輪動", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "復甦期 → 週期性成長股",
+                    "color": "emerald",
+                    "items": [
+                        "金融股：利率見底，淨利差改善",
+                        "非必需消費：消費信心回復",
+                        "工業股：資本支出增加",
+                        "科技股：企業IT投資回溫"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "擴張期 → 原物料與能源",
+                    "color": "amber",
+                    "items": [
+                        "能源股：需求旺盛，油價上漲",
+                        "原物料：通膨受惠",
+                        "工業股：產能利用率高",
+                        "科技股（後期）：獲利成長見頂"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "衰退期 → 防禦性資產",
+                    "color": "rose",
+                    "items": [
+                        "必需消費：需求穩定（食品、日用品）",
+                        "醫療保健：剛性需求",
+                        "公用事業：穩定現金流",
+                        "債券：避險資產"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "蕭條期 → 等待轉機",
+                    "color": "zinc",
+                    "items": [
+                        "現金為王：保持流動性",
+                        "高品質債券：避險",
+                        "開始布局成長股（底部）",
+                        "金融股（央行降息受惠）"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["景氣階段", "領先產業", "落後產業"],
+                    "rows": [
+                        ["復甦期", "金融、科技、非必需消費", "公用事業、必需消費"],
+                        ["擴張期", "能源、原物料、工業", "醫療、公用事業"],
+                        ["衰退期", "醫療、必需消費、公用事業", "金融、科技、非必需消費"],
+                        ["蕭條期", "現金、債券", "能源、原物料"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "在經濟衰退期，應該增加哪類股票的配置？",
+                    "options": [
+                        { "id": "a", "text": "科技股", "isCorrect": false },
+                        { "id": "b", "text": "能源股", "isCorrect": false },
+                        { "id": "c", "text": "必需消費股", "isCorrect": true },
+                        { "id": "d", "text": "金融股", "isCorrect": false }
+                    ],
+                    "explanation": "必需消費股（如食品、日用品）在衰退期表現較佳，因為不論經濟好壞，人們都需要這些產品。這類股票被稱為「防禦性股票」，在經濟下行時能提供保護。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "產業分類系統",
+            "description": "GICS 分類與台股產業",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "了解產業分類系統有助於進行**產業分析**和**比較研究**。美股使用 GICS 系統，台股有自己的分類方式。",
+                    "highlights": [
+                        { "text": "產業分析", "color": "emerald" },
+                        { "text": "比較研究", "color": "amber" }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇺🇸 GICS 產業分類（美股）",
+                    "color": "purple",
+                    "text": "全球行業分類標準（Global Industry Classification Standard）",
+                    "items": [
+                        "資訊科技 (Information Technology)",
+                        "醫療保健 (Health Care)",
+                        "金融 (Financials)",
+                        "非必需消費 (Consumer Discretionary)",
+                        "通訊服務 (Communication Services)",
+                        "工業 (Industrials)",
+                        "必需消費 (Consumer Staples)",
+                        "能源 (Energy)",
+                        "公用事業 (Utilities)",
+                        "原物料 (Materials)",
+                        "不動產 (Real Estate)"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇹🇼 台股產業分類",
+                    "color": "indigo",
+                    "items": [
+                        "電子業：半導體、電腦週邊、光電、通信",
+                        "金融業：銀行、保險、證券",
+                        "傳產業：塑化、紡織、鋼鐵、食品",
+                        "其他：航運、觀光、營建、生技"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["美股 GICS", "台股對應", "代表公司"],
+                    "rows": [
+                        ["資訊科技", "電子-半導體", "台積電、聯發科"],
+                        ["金融", "金融業", "國泰金、富邦金"],
+                        ["必需消費", "食品", "統一、大統益"],
+                        ["非必需消費", "觀光、百貨", "晶華、遠百"],
+                        ["能源", "塑化（部分）", "台塑、台化"],
+                        ["原物料", "鋼鐵、塑化", "中鋼、台泥"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "台股產業特色",
+                    "color": "amber",
+                    "items": [
+                        "電子業佔加權指數超過 60%",
+                        "半導體（台積電）獨大",
+                        "金融股為第二大族群",
+                        "傳產股股息殖利率較高",
+                        "產業集中度高於美股"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "台股中，哪個產業佔加權指數權重最高？",
+                    "options": [
+                        { "id": "a", "text": "金融業", "isCorrect": false },
+                        { "id": "b", "text": "電子業", "isCorrect": true },
+                        { "id": "c", "text": "傳產業", "isCorrect": false },
+                        { "id": "d", "text": "營建業", "isCorrect": false }
+                    ],
+                    "explanation": "台股電子業佔加權指數超過 60%，其中台積電一家就佔約 30%。這使得台股與科技業景氣高度連動，投資台股時需特別關注半導體產業動態。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "主要產業分析",
+            "description": "科技、金融、能源、消費產業特性",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "深入了解各**產業特性**，才能做出正確的投資判斷。以下介紹主要產業的特點與關鍵指標。",
+                    "highlights": [{ "text": "產業特性", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "科技業 Technology",
+                    "color": "emerald",
+                    "text": "成長性高、波動大、研發密集",
+                    "items": [
+                        "關鍵指標：營收成長率、毛利率、研發費用佔比",
+                        "驅動因素：創新週期、技術領先、規模經濟",
+                        "風險：技術迭代、競爭激烈、高估值",
+                        "代表：AAPL、MSFT、NVDA（美）/ 台積電、聯發科（台）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "金融業 Financials",
+                    "color": "indigo",
+                    "text": "利率敏感、資本密集、監管嚴格",
+                    "items": [
+                        "關鍵指標：淨利差、逾放比、資本適足率、ROE",
+                        "驅動因素：利率環境、信貸需求、資產品質",
+                        "風險：信用風險、流動性風險、監管風險",
+                        "代表：JPM、BAC（美）/ 國泰金、富邦金（台）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "能源業 Energy",
+                    "color": "amber",
+                    "text": "大宗商品連動、資本支出高、週期性強",
+                    "items": [
+                        "關鍵指標：油價、產量、儲量、現金流",
+                        "驅動因素：供需平衡、地緣政治、能源轉型",
+                        "風險：油價波動、環保法規、能源替代",
+                        "代表：XOM、CVX（美）/ 台塑、台化（台）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "消費業 Consumer",
+                    "color": "rose",
+                    "text": "品牌價值、消費週期、人口結構影響",
+                    "items": [
+                        "必需消費：需求穩定，防禦性強（KO、PG、統一）",
+                        "非必需消費：景氣敏感，彈性大（AMZN、TSLA、遠百）",
+                        "關鍵指標：同店營收、毛利率、庫存週轉",
+                        "驅動因素：消費信心、人口結構、品牌忠誠度"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "醫療保健 Healthcare",
+                    "color": "cyan",
+                    "text": "剛性需求、研發週期長、監管影響大",
+                    "items": [
+                        "關鍵指標：藥品管線、專利到期、研發進度",
+                        "驅動因素：人口老化、新藥批准、醫療支出",
+                        "風險：臨床試驗失敗、專利懸崖、政策風險",
+                        "代表：JNJ、UNH（美）/ 大江、中裕（台）"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "投資金融股時，最需要關注的指標是？",
+                    "options": [
+                        { "id": "a", "text": "營收成長率", "isCorrect": false },
+                        { "id": "b", "text": "淨利差與逾放比", "isCorrect": true },
+                        { "id": "c", "text": "研發費用", "isCorrect": false },
+                        { "id": "d", "text": "庫存週轉率", "isCorrect": false }
+                    ],
+                    "explanation": "金融業的核心獲利來自利差收入，淨利差反映放款與存款的利率差距。逾放比則反映資產品質，過高代表呆帳風險增加。這兩個指標是評估銀行股的關鍵。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "產業 ETF 投資",
+            "description": "透過 ETF 進行產業配置",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**產業 ETF**讓投資人可以輕鬆投資特定產業，實現產業輪動策略，而不必挑選個股。",
+                    "highlights": [{ "text": "產業 ETF", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇺🇸 美股熱門產業 ETF",
+                    "color": "purple",
+                    "items": [
+                        "XLK：科技（AAPL、MSFT、NVDA）",
+                        "XLF：金融（JPM、BAC、BRK.B）",
+                        "XLE：能源（XOM、CVX）",
+                        "XLV：醫療保健（UNH、JNJ）",
+                        "XLP：必需消費（PG、KO、WMT）",
+                        "XLY：非必需消費（AMZN、TSLA）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "🇹🇼 台股產業 ETF",
+                    "color": "indigo",
+                    "items": [
+                        "0052：富邦科技（台積電、聯發科）",
+                        "0055：元大 MSCI 金融（國泰金、富邦金）",
+                        "00881：國泰台灣 5G+（5G 概念股）",
+                        "00891：中信關鍵半導體（半導體設備）",
+                        "00892：富邦台灣半導體（半導體族群）"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["產業", "美股 ETF", "台股 ETF", "適合時機"],
+                    "rows": [
+                        ["科技", "XLK、QQQ", "0052、00891", "復甦期、成長期"],
+                        ["金融", "XLF", "0055", "升息環境、復甦期"],
+                        ["能源", "XLE", "—", "通膨上升、擴張期"],
+                        ["醫療", "XLV", "—", "衰退期、防禦"],
+                        ["半導體", "SMH、SOXX", "00891、00892", "AI 趨勢、科技循環"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "產業 ETF 投資策略",
+                    "color": "emerald",
+                    "items": [
+                        "核心持有：大盤 ETF（VOO、0050）",
+                        "衛星配置：產業 ETF 做戰術調整",
+                        "搭配景氣判斷進行輪動",
+                        "避免過度集中單一產業",
+                        "定期審視產業趨勢"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "在利率上升週期，應該增加哪個產業 ETF 的配置？",
+                    "options": [
+                        { "id": "a", "text": "科技 ETF（XLK）", "isCorrect": false },
+                        { "id": "b", "text": "金融 ETF（XLF）", "isCorrect": true },
+                        { "id": "c", "text": "公用事業 ETF（XLU）", "isCorrect": false },
+                        { "id": "d", "text": "不動產 ETF（XLRE）", "isCorrect": false }
+                    ],
+                    "explanation": "升息環境對金融業有利，因為銀行的淨利差會擴大。相反，高成長股（科技）、高負債產業（不動產）和債券型資產（公用事業）通常在升息時承壓。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "產業鏈分析方法",
+            "description": "上中下游與供應鏈分析",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**產業鏈分析**幫助投資人了解一個產業從原料到終端產品的完整生態，找出具投資價值的環節。",
+                    "highlights": [{ "text": "產業鏈分析", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "產業鏈結構",
+                    "color": "indigo",
+                    "items": [
+                        "上游：原料供應、設備製造",
+                        "中游：零組件、代工製造",
+                        "下游：品牌、通路、終端銷售",
+                        "利潤分配：微笑曲線（上下游利潤高，中游低）"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "半導體產業鏈範例",
+                    "color": "emerald",
+                    "text": "🇹🇼 台灣半導體產業完整布局",
+                    "items": [
+                        "上游（設備）：ASML、應材、東京威力",
+                        "上游（IP/設計）：ARM、Cadence、聯發科",
+                        "中游（晶圓代工）：台積電、聯電",
+                        "中游（封測）：日月光、矽品",
+                        "下游（品牌）：Apple、NVIDIA、AMD"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "電動車產業鏈範例",
+                    "color": "amber",
+                    "text": "🌐 全球電動車供應鏈",
+                    "items": [
+                        "上游：鋰礦（ALB）、電池材料",
+                        "中游：電池芯（CATL、Panasonic）",
+                        "中游：馬達、電控系統",
+                        "下游：整車製造（TSLA、BYD、鴻海）",
+                        "下游：充電樁、售後服務"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["位置", "特性", "投資考量"],
+                    "rows": [
+                        ["上游", "資本密集、進入門檻高", "關注產能擴張、供需缺口"],
+                        ["中游", "競爭激烈、毛利較低", "規模經濟、成本控制"],
+                        ["下游", "品牌價值、消費者接觸", "市佔率、品牌忠誠度"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "產業鏈投資策略",
+                    "color": "zinc",
+                    "items": [
+                        "找瓶頸環節：供不應求的關鍵零組件",
+                        "找護城河：技術領先或規模優勢的公司",
+                        "追蹤大客戶動態：Apple、NVIDIA 供應鏈",
+                        "注意庫存週期：庫存去化後的補庫存行情",
+                        "關注新技術：可能顛覆現有產業鏈"
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "根據「微笑曲線」理論，產業鏈中哪個環節通常利潤最高？",
+                    "options": [
+                        { "id": "a", "text": "中游製造", "isCorrect": false },
+                        { "id": "b", "text": "上游研發與下游品牌", "isCorrect": true },
+                        { "id": "c", "text": "物流運輸", "isCorrect": false },
+                        { "id": "d", "text": "各環節利潤相同", "isCorrect": false }
+                    ],
+                    "explanation": "微笑曲線顯示產業鏈的附加價值分布像微笑嘴型：上游的研發設計和下游的品牌行銷利潤最高，中游的代工製造利潤最低。這解釋了為何台積電（技術領先）和 Apple（品牌價值）獲利豐厚。"
+                }
+            ]
+        }
+    ]
+}

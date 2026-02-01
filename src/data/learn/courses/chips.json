@@ -1,0 +1,514 @@
+{
+    "id": "chips",
+    "title": "籌碼分析",
+    "description": "學習解讀法人與主力動向",
+    "icon": "Users",
+    "color": "purple",
+    "lessons": [
+        {
+            "id": "1",
+            "title": "籌碼分析概論",
+            "description": "了解什麼是籌碼分析",
+            "duration": "8分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**籌碼分析**是透過觀察股票持有者的結構變化，來判斷股價未來走勢的分析方法。簡單來說，就是看「誰在買、誰在賣」。",
+                    "highlights": [{ "text": "籌碼分析", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "為何籌碼分析重要？",
+                    "color": "indigo",
+                    "items": [
+                        "法人、主力資金龐大，進出會影響股價",
+                        "籌碼集中有利於股價上漲",
+                        "籌碼分散則股價容易下跌",
+                        "結合技術面可提高判斷準確度"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "籌碼集中",
+                            "description": "大戶、法人持續買進，籌碼往少數人手中集中",
+                            "color": "emerald",
+                            "subtext": "有利股價上漲"
+                        },
+                        {
+                            "title": "籌碼分散",
+                            "description": "大戶賣出、散戶承接，籌碼分散到多數人手中",
+                            "color": "rose",
+                            "subtext": "股價容易下跌"
+                        }
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "text": "台股的籌碼資料相當透明，每天都會公布三大法人買賣超、融資融券變化、主力進出等資訊，是全球少數籌碼資訊如此公開的市場。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "「籌碼集中」對股價的影響通常是？",
+                    "options": [
+                        { "id": "a", "text": "容易下跌", "isCorrect": false },
+                        { "id": "b", "text": "有利上漲", "isCorrect": true },
+                        { "id": "c", "text": "沒有影響", "isCorrect": false },
+                        { "id": "d", "text": "會盤整很久", "isCorrect": false }
+                    ],
+                    "explanation": "當籌碼集中在大戶或法人手中時，賣壓較小，只要有買盤進入就容易推升股價。反之，籌碼分散在散戶手中時，容易出現追高殺低的情況。"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "三大法人解析",
+            "description": "認識外資、投信、自營商",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**三大法人**是指外資、投信、自營商，他們是台股最重要的機構投資人，每日買賣超數據是籌碼分析的核心。",
+                    "highlights": [{ "text": "三大法人", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["法人類型", "資金來源", "投資特性", "影響力"],
+                    "rows": [
+                        ["外資", "國際資金", "偏好大型權值股、長線布局", "最大"],
+                        ["投信", "國內基金", "追求績效、波段操作", "中等"],
+                        ["自營商", "券商自有資金", "短線操作、避險交易", "較小"]
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "外資（Foreign Investors）",
+                    "color": "indigo",
+                    "items": [
+                        "資金規模最大，佔台股成交比重約 30%",
+                        "偏好市值大、流動性高的權值股（台積電、鴻海）",
+                        "操作週期較長，連續買超具參考價值",
+                        "受國際市場、匯率影響大"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "投信（Investment Trust）",
+                    "color": "emerald",
+                    "items": [
+                        "國內基金公司，規模次於外資",
+                        "有績效壓力，會積極操作",
+                        "常布局中小型成長股",
+                        "季底、年底可能有作帳行情"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "自營商（Dealers）",
+                    "color": "amber",
+                    "items": [
+                        "券商用自有資金操作",
+                        "操作靈活、週期短",
+                        "部分是避險交易，參考價值較低",
+                        "單一券商大量買超可能是主力進場"
+                    ]
+                },
+                {
+                    "type": "indicator-example",
+                    "title": "三大法人買賣超範例",
+                    "indicator": "法人買賣超",
+                    "values": [
+                        { "label": "外資", "value": "+5,230張", "signal": "bullish" },
+                        { "label": "投信", "value": "+1,850張", "signal": "bullish" },
+                        { "label": "自營商", "value": "-320張", "signal": "bearish" }
+                    ],
+                    "interpretation": "外資和投信同步買超，自營商小幅賣超。整體籌碼偏多，三大法人淨買超 6,760 張。若連續多日呈現此狀態，代表法人看好此股。"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "主力進出判讀",
+            "description": "解讀主力買賣超與券商分點",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "除了三大法人，**主力**的進出也是重要的籌碼指標。主力通常指的是資金實力雄厚的大戶或特定券商分點的集中買盤。",
+                    "highlights": [{ "text": "主力", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "如何判斷主力進場？",
+                    "color": "indigo",
+                    "items": [
+                        "單一券商分點大量買超（佔當日成交 5% 以上）",
+                        "連續多日出現在買超名單",
+                        "買進均價高於市價（追價買進）",
+                        "搭配股價突破或放量上漲"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "主力買進特徵",
+                            "description": "分點集中買超、追價、連續多日",
+                            "color": "emerald",
+                            "subtext": "籌碼往特定分點集中"
+                        },
+                        {
+                            "title": "主力出貨特徵",
+                            "description": "分點集中賣超、壓低出貨、量大",
+                            "color": "rose",
+                            "subtext": "籌碼從特定分點流出"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["券商分點", "買進", "賣出", "淨買賣"],
+                    "rows": [
+                        ["元大-台北", "2,500張", "300張", "+2,200張"],
+                        ["凱基-台北", "1,800張", "200張", "+1,600張"],
+                        ["富邦-敦南", "500張", "1,500張", "-1,000張"],
+                        ["永豐金-復興", "300張", "800張", "-500張"]
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "text": "上表顯示元大-台北和凱基-台北是主要買方，可能是主力進場。而富邦-敦南和永豐金-復興則是賣方，注意這些分點後續動向。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下何者最可能代表「主力進場」？",
+                    "options": [
+                        { "id": "a", "text": "多家券商小量分散買進", "isCorrect": false },
+                        { "id": "b", "text": "單一券商分點連續多日大量買超", "isCorrect": true },
+                        { "id": "c", "text": "外資大量賣超", "isCorrect": false },
+                        { "id": "d", "text": "成交量萎縮", "isCorrect": false }
+                    ],
+                    "explanation": "主力進場的特徵是籌碼集中，通常會從特定券商分點持續買進。分散買進較可能是散戶行為。"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "籌碼選股方法",
+            "description": "運用籌碼面篩選潛力股",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "籌碼分析可以幫助我們找到法人認同、主力布局的標的，提高投資勝率。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "籌碼選股條件",
+                    "color": "emerald",
+                    "items": [
+                        "外資連續買超 5 日以上",
+                        "投信連續買超 3 日以上",
+                        "三大法人同步買超",
+                        "主力券商分點籌碼集中度提高",
+                        "融資減少、融券增加（軋空題材）"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "法人認養股",
+                            "description": "外資、投信持續買超，長線看好",
+                            "color": "indigo",
+                            "subtext": "適合波段操作"
+                        },
+                        {
+                            "title": "主力介入股",
+                            "description": "特定分點大量布局，短線題材",
+                            "color": "amber",
+                            "subtext": "適合短線操作"
+                        }
+                    ]
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "籌碼面警訊",
+                    "items": [
+                        { "key": "外資連續賣超", "value": "外資可能看壞後市，宜謹慎", "keyColor": "rose" },
+                        { "key": "融資大增", "value": "散戶追價買進，可能是高點", "keyColor": "amber" },
+                        { "key": "主力分點出貨", "value": "原本買超的分點轉賣超", "keyColor": "rose" },
+                        { "key": "籌碼分散", "value": "從集中轉分散，賣壓將增", "keyColor": "amber" }
+                    ]
+                },
+                {
+                    "type": "indicator-example",
+                    "title": "理想的籌碼結構",
+                    "indicator": "籌碼指標",
+                    "values": [
+                        { "label": "外資買超天數", "value": "8天", "signal": "bullish" },
+                        { "label": "投信買超天數", "value": "5天", "signal": "bullish" },
+                        { "label": "融資增減", "value": "-2.3%", "signal": "bullish" },
+                        { "label": "主力集中度", "value": "+15%", "signal": "bullish" }
+                    ],
+                    "interpretation": "法人連續買超、融資減少（散戶離場）、主力集中度提高，這是理想的籌碼結構，代表股票落入有實力的人手中。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種籌碼狀況最不利於股價上漲？",
+                    "options": [
+                        { "id": "a", "text": "外資連續買超", "isCorrect": false },
+                        { "id": "b", "text": "融資大幅增加", "isCorrect": true },
+                        { "id": "c", "text": "投信連續買超", "isCorrect": false },
+                        { "id": "d", "text": "主力分點集中買進", "isCorrect": false }
+                    ],
+                    "explanation": "融資大增代表散戶使用槓桿追價，通常出現在股價高點。一旦股價回檔，融資戶容易被斷頭，形成額外賣壓。"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "籌碼與技術面結合",
+            "description": "綜合運用提高勝率",
+            "duration": "10分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "單獨使用籌碼分析可能不夠準確，**結合技術面**可以大幅提高判斷的準確度。",
+                    "highlights": [{ "text": "結合技術面", "color": "white" }]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "籌碼 + 技術面買進信號",
+                    "color": "emerald",
+                    "items": [
+                        "法人買超 + 股價突破均線或壓力",
+                        "主力進場 + 成交量放大",
+                        "籌碼集中 + RSI 由超賣區回升",
+                        "外資連買 + MACD 黃金交叉"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "籌碼 + 技術面賣出信號",
+                    "color": "rose",
+                    "items": [
+                        "法人賣超 + 股價跌破均線或支撐",
+                        "主力出貨 + 成交量異常放大",
+                        "籌碼分散 + RSI 進入超買區",
+                        "融資暴增 + 股價創新高（警戒）"
+                    ]
+                },
+                {
+                    "type": "trade-example",
+                    "title": "籌碼技術面結合案例",
+                    "scenario": {
+                        "action": "buy",
+                        "entryPrice": 85,
+                        "exitPrice": 102,
+                        "quantity": 1000,
+                        "stopLoss": 80,
+                        "fees": 260,
+                        "result": {
+                            "profit": 16740,
+                            "percentage": 19.7
+                        }
+                    },
+                    "explanation": "發現外資連續買超 7 天，同時股價站上 20 日均線且 MACD 黃金交叉。在 $85 進場，停損設在均線下方 $80。法人持續加碼下股價上漲至 $102 獲利了結。"
+                },
+                {
+                    "type": "key-value-list",
+                    "title": "綜合分析檢查清單",
+                    "items": [
+                        { "key": "籌碼面", "value": "法人買賣超方向？主力動向？融資變化？", "keyColor": "purple" },
+                        { "key": "技術面", "value": "均線方向？突破/跌破？RSI/MACD 信號？", "keyColor": "cyan" },
+                        { "key": "基本面", "value": "營收成長？獲利展望？產業趨勢？", "keyColor": "amber" },
+                        { "key": "消息面", "value": "有無重大消息？法說會？除權息？", "keyColor": "zinc" }
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "以下哪種組合最具買進參考價值？",
+                    "options": [
+                        { "id": "a", "text": "外資賣超 + 股價創新高", "isCorrect": false },
+                        { "id": "b", "text": "融資大增 + MACD 黃金交叉", "isCorrect": false },
+                        { "id": "c", "text": "法人買超 + 股價突破壓力 + 量增", "isCorrect": true },
+                        { "id": "d", "text": "主力出貨 + RSI 超賣", "isCorrect": false }
+                    ],
+                    "explanation": "法人買超代表籌碼流向有利，股價突破壓力代表技術面轉強，成交量放大確認突破有效。三者結合是強烈的買進信號。"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "融資融券籌碼",
+            "description": "解讀信用交易數據",
+            "duration": "12分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "**融資融券**數據反映散戶和市場投機者的動向，是重要的反向指標。",
+                    "highlights": [{ "text": "融資融券", "color": "white" }]
+                },
+                {
+                    "type": "comparison-grid",
+                    "items": [
+                        {
+                            "title": "融資",
+                            "description": "借錢買股票，看漲",
+                            "color": "emerald",
+                            "subtext": "散戶主要使用"
+                        },
+                        {
+                            "title": "融券",
+                            "description": "借股票賣出，看跌",
+                            "color": "rose",
+                            "subtext": "放空使用"
+                        }
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "融資的反向指標意義",
+                    "color": "indigo",
+                    "items": [
+                        "融資大增 + 股價創高 = 警訊（散戶追高）",
+                        "融資大減 + 股價創低 = 機會（散戶割肉出場）",
+                        "融資使用率過高 = 籌碼不穩定",
+                        "融資斷頭潮 = 可能是底部"
+                    ]
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "融券的軋空題材",
+                    "color": "amber",
+                    "items": [
+                        "融券餘額高 = 有軋空潛力",
+                        "券資比 > 30% = 軋空機率高",
+                        "融券回補 = 被迫買回，推升股價",
+                        "軋空行情漲幅驚人但風險也高"
+                    ]
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "融資與股價關係圖解",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 80, "label": "" },
+                            { "x": 1, "y": 90, "label": "" },
+                            { "x": 2, "y": 105, "label": "" },
+                            { "x": 3, "y": 115, "label": "" },
+                            { "x": 4, "y": 108, "label": "" },
+                            { "x": 5, "y": 95, "label": "" },
+                            { "x": 6, "y": 82, "label": "" },
+                            { "x": 7, "y": 75, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 115, "type": "info", "label": "融資暴增！" },
+                            { "x": 7, "y": 75, "type": "info", "label": "融資斷頭" }
+                        ],
+                        "lines": [],
+                        "zones": [
+                            { "type": "loss", "yStart": 70, "yEnd": 115, "label": "散戶追高被套" }
+                        ]
+                    },
+                    "description": "股價從$80漲至$115時，融資餘額暴增（散戶追高）。隨後股價下跌，融資戶被迫斷頭，形成更大賣壓。融資暴增往往是頭部訊號。"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "融資餘額大幅增加通常代表什麼？",
+                    "options": [
+                        { "id": "a", "text": "股價將上漲", "isCorrect": false },
+                        { "id": "b", "text": "散戶追高，籌碼不穩定", "isCorrect": true },
+                        { "id": "c", "text": "法人看好", "isCorrect": false },
+                        { "id": "d", "text": "可以安心買進", "isCorrect": false }
+                    ],
+                    "explanation": "融資大增代表散戶使用槓桿追價，籌碼流向「弱勢持股者」。一旦股價下跌，融資戶被迫停損或斷頭，會形成額外賣壓，是籌碼不穩定的訊號。"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "籌碼分析綜合練習",
+            "description": "實戰判讀籌碼數據",
+            "duration": "15分鐘",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "透過綜合練習來強化**籌碼判讀**能力，學習在不同籌碼狀況下做出正確決策。",
+                    "highlights": [{ "text": "籌碼判讀", "color": "white" }]
+                },
+                {
+                    "type": "table",
+                    "headers": ["指標", "A股票", "B股票"],
+                    "rows": [
+                        ["外資買賣超", "+8,500張（連10天）", "-3,200張（連5天）"],
+                        ["投信買賣超", "+2,100張（連7天）", "+500張"],
+                        ["融資變化", "-5.2%", "+12.8%"],
+                        ["主力分點", "集中買超", "分散賣超"],
+                        ["股價位置", "突破年線", "跌破季線"]
+                    ]
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "根據上表，哪支股票的籌碼面較佳？",
+                    "options": [
+                        { "id": "a", "text": "A股票", "isCorrect": true },
+                        { "id": "b", "text": "B股票", "isCorrect": false },
+                        { "id": "c", "text": "兩者差不多", "isCorrect": false },
+                        { "id": "d", "text": "無法判斷", "isCorrect": false }
+                    ],
+                    "explanation": "A股票：外資投信同步買超、融資減少（散戶離場）、主力集中買進、股價突破 — 籌碼結構非常理想。B股票：外資賣超、融資暴增、主力分散賣出、股價破線 — 籌碼面極差。"
+                },
+                {
+                    "type": "line-chart-example",
+                    "title": "【練習】籌碼轉折判斷",
+                    "data": {
+                        "points": [
+                            { "x": 0, "y": 95, "label": "" },
+                            { "x": 1, "y": 100, "label": "" },
+                            { "x": 2, "y": 105, "label": "" },
+                            { "x": 3, "y": 108, "label": "" },
+                            { "x": 4, "y": 105, "label": "" },
+                            { "x": 5, "y": 100, "label": "" },
+                            { "x": 6, "y": 95, "label": "" }
+                        ],
+                        "markers": [
+                            { "x": 3, "y": 108, "type": "info", "label": "外資轉賣超" },
+                            { "x": 4, "y": 105, "type": "info", "label": "主力出貨" }
+                        ],
+                        "lines": [
+                            { "type": "ma", "points": [{"x": 0, "y": 93}, {"x": 3, "y": 100}, {"x": 6, "y": 103}], "label": "20MA", "color": "#60a5fa" }
+                        ],
+                        "zones": []
+                    },
+                    "description": "股價上漲至$108時，原本連續買超的外資轉為賣超，主力分點也開始出貨。這代表什麼？應該怎麼做？"
+                },
+                {
+                    "type": "quiz-example",
+                    "question": "【練習答案】外資和主力轉為賣超，應該？",
+                    "options": [
+                        { "id": "a", "text": "加碼買進，逢低承接", "isCorrect": false },
+                        { "id": "b", "text": "減碼或出場，籌碼轉弱是警訊", "isCorrect": true },
+                        { "id": "c", "text": "不理會，繼續持有", "isCorrect": false },
+                        { "id": "d", "text": "融資加碼", "isCorrect": false }
+                    ],
+                    "explanation": "原本看好的法人轉為賣超，代表他們改變看法了。籌碼從集中轉為分散，股價壓力增加。此時應該減碼或出場，而非逆勢加碼。"
+                },
+                {
+                    "type": "highlight-box",
+                    "title": "籌碼分析總結",
+                    "color": "emerald",
+                    "items": [
+                        "籌碼集中有利上漲，分散容易下跌",
+                        "法人連續買超是正面訊號",
+                        "融資暴增是反向指標（散戶追高）",
+                        "籌碼面要配合技術面一起看",
+                        "籌碼轉折是趨勢轉變的領先指標"
+                    ]
+                }
+            ]
+        }
+    ]
+}
