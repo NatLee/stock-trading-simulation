@@ -13,7 +13,6 @@ import {
     Play, 
     CheckCircle, 
     ArrowLeft, 
-    Activity,
     FileText,
     Shield,
     Zap,
@@ -32,6 +31,7 @@ import {
 } from 'lucide-react';
 import { COURSES_DATA, CourseData, LessonData, SubLessonData } from '@/data/learn';
 import { ContentRenderer } from './ContentRenderer';
+import { Navbar } from '@/components/ui/Navbar';
 
 // Icon 映射
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -275,88 +275,63 @@ export function LearningCenter() {
     const currentContent = activeSubLesson?.content || activeLesson?.content;
     const currentTitle = activeSubLesson?.title || activeLesson?.title;
 
+    // Breadcrumb for navbar leftContent
+    const breadcrumb = selectedCourseId ? (
+        <nav className="flex items-center text-sm">
+            <button
+                onClick={navigateToHome}
+                className="flex items-center gap-1 px-2 py-1 rounded hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-zinc-300"
+            >
+                <Home size={14} />
+                <span>首頁</span>
+            </button>
+            
+            {activeCourse && (
+                <>
+                    <ChevronRight size={14} className="text-zinc-600 mx-1" />
+                    <button
+                        onClick={() => navigateToCourse(activeCourse.id)}
+                        className={`px-2 py-1 rounded hover:bg-zinc-800 transition-colors ${
+                            !selectedLessonId ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+                        }`}
+                    >
+                        {activeCourse.title}
+                    </button>
+                </>
+            )}
+            
+            {activeLesson && (
+                <>
+                    <ChevronRight size={14} className="text-zinc-600 mx-1" />
+                    <button
+                        onClick={() => navigateToLesson(activeLesson.id)}
+                        className={`px-2 py-1 rounded hover:bg-zinc-800 transition-colors truncate max-w-[150px] ${
+                            !selectedSubLessonId ? 'text-indigo-400' : 'text-zinc-500 hover:text-zinc-300'
+                        }`}
+                    >
+                        {activeLesson.title}
+                    </button>
+                </>
+            )}
+            
+            {activeSubLesson && (
+                <>
+                    <ChevronRight size={14} className="text-zinc-600 mx-1" />
+                    <span className="text-indigo-400 truncate max-w-[150px]">
+                        {activeSubLesson.title}
+                    </span>
+                </>
+            )}
+        </nav>
+    ) : null;
+
     return (
         <div className="min-h-screen bg-zinc-950 text-zinc-300">
-            {/* Header */}
-            <header className="border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-4 py-3">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                                <BookOpen className="text-indigo-500" size={22} />
-                                <h1 className="text-lg font-bold text-white">學習中心</h1>
-                            </div>
-                            
-                            {/* Breadcrumb */}
-                            <nav className="hidden md:flex items-center text-sm">
-                                <button
-                                    onClick={navigateToHome}
-                                    className={`flex items-center gap-1 px-2 py-1 rounded hover:bg-zinc-800 transition-colors ${
-                                        !selectedCourseId ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-                                    }`}
-                                >
-                                    <Home size={14} />
-                                    <span>首頁</span>
-                                </button>
-                                
-                                {activeCourse && (
-                                    <>
-                                        <ChevronRight size={14} className="text-zinc-600 mx-1" />
-                                        <button
-                                            onClick={() => navigateToCourse(activeCourse.id)}
-                                            className={`px-2 py-1 rounded hover:bg-zinc-800 transition-colors ${
-                                                !selectedLessonId ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-                                            }`}
-                                        >
-                                            {activeCourse.title}
-                                        </button>
-                                    </>
-                                )}
-                                
-                                {activeLesson && (
-                                    <>
-                                        <ChevronRight size={14} className="text-zinc-600 mx-1" />
-                                        <button
-                                            onClick={() => navigateToLesson(activeLesson.id)}
-                                            className={`px-2 py-1 rounded hover:bg-zinc-800 transition-colors truncate max-w-[150px] ${
-                                                !selectedSubLessonId ? 'text-indigo-400' : 'text-zinc-500 hover:text-zinc-300'
-                                            }`}
-                                        >
-                                            {activeLesson.title}
-                                        </button>
-                                    </>
-                                )}
-                                
-                                {activeSubLesson && (
-                                    <>
-                                        <ChevronRight size={14} className="text-zinc-600 mx-1" />
-                                        <span className="text-indigo-400 truncate max-w-[150px]">
-                                            {activeSubLesson.title}
-                                        </span>
-                                    </>
-                                )}
-                            </nav>
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                            <Link
-                                href="/practice"
-                                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-500/50 hover:bg-amber-500/30 text-sm font-medium transition-all text-amber-400"
-                            >
-                                <Zap size={14} />
-                                <span className="hidden sm:inline">實戰練習</span>
-                            </Link>
-                            <Link
-                                href="/"
-                                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-500/20 border border-indigo-500/50 hover:bg-indigo-500/30 text-sm font-medium transition-all text-indigo-400"
-                            >
-                                <Activity size={14} />
-                                <span className="hidden sm:inline">模擬交易</span>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            {/* Unified Navbar */}
+            <Navbar 
+                currentPage="learn"
+                leftContent={breadcrumb}
+            />
 
             {/* Mobile Breadcrumb */}
             {selectedCourseId && (

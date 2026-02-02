@@ -3,10 +3,10 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
     Activity, Eye, EyeOff, Layers, Zap,
-    BookOpen, Palette, Settings, TrendingUp, TrendingDown, Minus,
+    Palette, Settings, TrendingUp, TrendingDown, Minus,
     X, MinusCircle, PlusCircle, Info
 } from 'lucide-react';
-import Link from 'next/link';
+import { Navbar } from '@/components/ui/Navbar';
 import { Language, TRANSLATIONS, CONFIG } from '@/constants';
 import { useMarketSimulator } from '@/hooks/useMarketSimulator';
 import { MarketScenario, HoldingLot } from '@/lib/matching';
@@ -701,74 +701,68 @@ export function TradingPanelV2() {
         })),
     };
 
-    return (
-        <div className="w-full max-w-7xl mx-auto p-4 bg-zinc-950 font-sans text-zinc-300 select-none">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-zinc-800 pb-3 gap-3 sm:gap-0">
-                <div className="flex items-center gap-2 sm:gap-3">
-                    <Activity className="text-indigo-500" size={18} />
-                    <span className="text-base sm:text-lg font-bold text-white tracking-wide font-mono">{t.title}</span>
-                    <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                        V2 撮合引擎
-                    </span>
-                </div>
-                <div className="flex items-center gap-3 sm:gap-6 w-full sm:w-auto justify-between sm:justify-end">
-                    <div className="flex gap-2 sm:gap-4 text-[10px] sm:text-xs font-mono">
-                        <div className="flex flex-col items-end">
-                            <span className="text-zinc-500 hidden sm:inline">{t.equity}</span>
-                            <span className="text-white font-bold">${totalEquity.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                        </div>
-                        <div className="flex flex-col items-end">
-                            <span className="text-zinc-500 hidden sm:inline">未實現</span>
-                            <span className={`${getTextColor(unrealizedPnl >= 0)} font-bold`}>
-                                {unrealizedPnl >= 0 ? '+' : ''}{unrealizedPnl.toFixed(2)}
-                            </span>
-                        </div>
-                        <div className="flex flex-col items-end">
-                            <span className="text-zinc-500 hidden sm:inline">{t.pnl}</span>
-                            <span className={`${getTextColor(realizedPnl >= 0)} font-bold`}>
-                                {realizedPnl >= 0 ? '+' : ''}{realizedPnl.toFixed(2)}
-                            </span>
-                        </div>
-                    </div>
-                    <div className="h-6 w-px bg-zinc-800 hidden sm:block"></div>
-                    <div className="flex items-center gap-2">
-                        {/* Bot visibility toggle */}
+    // Trading controls for navbar rightContent
+    const tradingControls = (
+        <div className="flex items-center gap-2">
+            {/* Scenario selector */}
+            <button
+                onClick={() => setShowSettings(!showSettings)}
+                className={`p-2 rounded-full border transition-all ${showSettings
+                    ? 'bg-indigo-500/20 border-indigo-500/50 text-indigo-400'
+                    : 'bg-zinc-900 border-zinc-700 text-zinc-500'
+                    }`}
+                title="設定"
+            >
+                <Settings size={14} />
+            </button>
+            {/* Color Theme Toggle */}
+            <button
+                onClick={() => setIsAsianTheme(!isAsianTheme)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${isAsianTheme
+                    ? 'bg-rose-500/20 border-rose-500/50 text-rose-400'
+                    : 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400'
+                    }`}
+                title={isAsianTheme ? '漲紅跌綠 (台股)' : '漲綠跌紅 (美股)'}
+            >
+                <Palette size={14} />
+                <span className="text-xs font-bold hidden sm:inline">{isAsianTheme ? '台股配色' : '美股配色'}</span>
+            </button>
+        </div>
+    );
 
-                        {/* Scenario selector */}
-                        <button
-                            onClick={() => setShowSettings(!showSettings)}
-                            className={`p-2 rounded-full border transition-all ${showSettings
-                                ? 'bg-indigo-500/20 border-indigo-500/50 text-indigo-400'
-                                : 'bg-zinc-900 border-zinc-700 text-zinc-500'
-                                }`}
-                            title="設定"
-                        >
-                            <Settings size={14} />
-                        </button>
-                        {/* Color Theme Toggle */}
-                        <button
-                            onClick={() => setIsAsianTheme(!isAsianTheme)}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${isAsianTheme
-                                ? 'bg-rose-500/20 border-rose-500/50 text-rose-400'
-                                : 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400'
-                                }`}
-                            title={isAsianTheme ? '漲紅跌綠 (台股)' : '漲綠跌紅 (美股)'}
-                        >
-                            <Palette size={14} />
-                            <span className="text-xs font-bold">{isAsianTheme ? '台股配色' : '美股配色'}</span>
-                        </button>
-                        {/* Learning Center Link */}
-                        <Link
-                            href="/learn"
-                            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/50 hover:bg-indigo-500/30 text-xs font-bold transition-all text-indigo-400"
-                        >
-                            <BookOpen size={14} />
-                            <span className="hidden sm:inline">學習</span>
-                        </Link>
-                    </div>
-                </div>
+    // Portfolio stats for navbar leftContent
+    const portfolioStats = (
+        <div className="flex items-center gap-2 sm:gap-4 text-[10px] sm:text-xs font-mono">
+            <div className="flex items-center gap-1.5">
+                <span className="text-zinc-500">{t.equity}</span>
+                <span className="text-white font-bold">${totalEquity.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
+            <div className="flex items-center gap-1.5">
+                <span className="text-zinc-500">未實現</span>
+                <span className={`${getTextColor(unrealizedPnl >= 0)} font-bold`}>
+                    {unrealizedPnl >= 0 ? '+' : ''}{unrealizedPnl.toFixed(2)}
+                </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+                <span className="text-zinc-500">{t.pnl}</span>
+                <span className={`${getTextColor(realizedPnl >= 0)} font-bold`}>
+                    {realizedPnl >= 0 ? '+' : ''}{realizedPnl.toFixed(2)}
+                </span>
+            </div>
+        </div>
+    );
+
+    return (
+        <div className="min-h-screen bg-zinc-950 font-sans text-zinc-300 select-none">
+            {/* Unified Navbar */}
+            <Navbar 
+                currentPage="trading"
+                leftContent={portfolioStats}
+                rightContent={tradingControls}
+            />
+
+            {/* Main Content */}
+            <div className="w-full max-w-7xl mx-auto p-4">
 
             {/* Settings Panel (collapsible) */}
             {showSettings && (
@@ -1245,6 +1239,7 @@ export function TradingPanelV2() {
                     </div>
                 </div>
             </div>
-        </div >
+            </div>
+        </div>
     );
 }

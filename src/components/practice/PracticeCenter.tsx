@@ -4,8 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { 
     Zap, 
-    BookOpen, 
-    Activity, 
     ChevronRight,
     Home,
     List,
@@ -16,6 +14,7 @@ import {
     Menu,
     Settings2
 } from 'lucide-react';
+import { Navbar } from '@/components/ui/Navbar';
 import { usePracticeEngine } from '@/hooks/usePracticeEngine';
 import { ModeSelector } from './ModeSelector';
 import { PatternSelector } from './PatternSelector';
@@ -110,65 +109,33 @@ export function PracticeCenter() {
 
     const modeInfo = MODE_LABELS[state.mode];
     const ModeIcon = modeInfo.icon;
+
+    // Breadcrumb for navbar leftContent
+    const breadcrumb = (
+        <nav className="flex items-center text-sm">
+            <span className="flex items-center gap-1 px-2 py-1 text-amber-400">
+                <ModeIcon size={14} />
+                {modeInfo.label}
+            </span>
+            
+            {selectedPatternType && state.mode !== 'recognition' && (
+                <>
+                    <ChevronRight size={14} className="text-zinc-600 mx-1" />
+                    <span className="text-zinc-300 truncate max-w-[150px]">
+                        {PATTERN_INFO[selectedPatternType]?.name}
+                    </span>
+                </>
+            )}
+        </nav>
+    );
     
     return (
         <div className="min-h-screen bg-zinc-950 text-zinc-300">
-            {/* Header - 與學習中心一致的樣式 */}
-            <header className="border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-4 py-3">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                                <Zap className="text-amber-500" size={22} />
-                                <h1 className="text-lg font-bold text-white">實戰練習</h1>
-                            </div>
-                            
-                            {/* Breadcrumb */}
-                            <nav className="hidden md:flex items-center text-sm">
-                                <Link
-                                    href="/"
-                                    className="flex items-center gap-1 px-2 py-1 rounded hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-zinc-300"
-                                >
-                                    <Home size={14} />
-                                    <span>首頁</span>
-                                </Link>
-                                
-                                <ChevronRight size={14} className="text-zinc-600 mx-1" />
-                                <span className="flex items-center gap-1 px-2 py-1 text-amber-400">
-                                    <ModeIcon size={14} />
-                                    {modeInfo.label}
-                                </span>
-                                
-                                {selectedPatternType && state.mode !== 'recognition' && (
-                                    <>
-                                        <ChevronRight size={14} className="text-zinc-600 mx-1" />
-                                        <span className="text-zinc-300 truncate max-w-[150px]">
-                                            {PATTERN_INFO[selectedPatternType]?.name}
-                                        </span>
-                                    </>
-                                )}
-                            </nav>
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                            <Link
-                                href="/learn"
-                                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-500/20 border border-indigo-500/50 hover:bg-indigo-500/30 text-sm font-medium transition-all text-indigo-400"
-                            >
-                                <BookOpen size={14} />
-                                <span className="hidden sm:inline">學習中心</span>
-                            </Link>
-                            <Link
-                                href="/"
-                                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/20 border border-emerald-500/50 hover:bg-emerald-500/30 text-sm font-medium transition-all text-emerald-400"
-                            >
-                                <Activity size={14} />
-                                <span className="hidden sm:inline">模擬交易</span>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            {/* Unified Navbar */}
+            <Navbar 
+                currentPage="practice"
+                leftContent={breadcrumb}
+            />
 
             {/* Mobile Breadcrumb with Menu Button */}
             <div className="lg:hidden border-b border-zinc-800 bg-zinc-900/50 px-4 py-2">
