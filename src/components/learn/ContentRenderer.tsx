@@ -448,14 +448,15 @@ function CandlestickExample({
     };
 
     return (
-        <div className="p-4 bg-zinc-800/50 border border-zinc-700 rounded-lg">
-            <h4 className="text-white font-bold mb-3 flex items-center gap-2">
+        <div className="p-3 sm:p-4 bg-zinc-800/50 border border-zinc-700 rounded-lg">
+            <h4 className="text-white font-bold mb-3 flex items-center gap-2 text-sm sm:text-base">
                 <span className="text-amber-400">📊</span> {title}
             </h4>
             
-            {/* K線圖 */}
-            <div className="relative bg-zinc-900 rounded-lg p-4 mb-3">
-                <svg width="100%" height={chartHeight + 40} viewBox={`0 0 ${candles.length * 60 + 20} ${chartHeight + 40}`}>
+            {/* K線圖 - 手機版可橫向滾動 */}
+            <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0 pb-2 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+                <div className="relative bg-zinc-900 rounded-lg p-3 sm:p-4 mb-3 min-w-fit">
+                    <svg width={candles.length * 60 + 20} height={chartHeight + 40} viewBox={`0 0 ${candles.length * 60 + 20} ${chartHeight + 40}`}>
                     {candles.map((candle, i) => {
                         const x = i * 60 + 30;
                         const isUp = candle.close >= candle.open;
@@ -528,26 +529,29 @@ function CandlestickExample({
                             </text>
                         );
                     })}
-                </svg>
+                    </svg>
+                </div>
             </div>
 
-            {/* OHLC 數據 */}
-            <div className="grid grid-cols-4 gap-2 text-xs mb-3">
-                {candles.map((candle, i) => (
-                    <div key={i} className="bg-zinc-900 p-2 rounded text-center">
-                        <div className="text-zinc-500 mb-1">{candle.label || `#${i + 1}`}</div>
-                        <div className="space-y-0.5">
-                            <div>開盤: <span className="text-zinc-300">{candle.open}</span></div>
-                            <div>最高: <span className="text-emerald-400">{candle.high}</span></div>
-                            <div>最低: <span className="text-rose-400">{candle.low}</span></div>
-                            <div>收盤: <span className={candle.close >= candle.open ? 'text-emerald-400' : 'text-rose-400'}>{candle.close}</span></div>
+            {/* OHLC 數據 - 手機版可橫向滾動 */}
+            <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0 pb-2 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent mb-3">
+                <div className="flex sm:grid sm:grid-cols-4 gap-2 text-[10px] sm:text-xs min-w-fit">
+                    {candles.map((candle, i) => (
+                        <div key={i} className="bg-zinc-900 p-2 rounded text-center min-w-[70px] flex-shrink-0">
+                            <div className="text-zinc-500 mb-1">{candle.label || `#${i + 1}`}</div>
+                            <div className="space-y-0.5">
+                                <div>開: <span className="text-zinc-300">{candle.open}</span></div>
+                                <div>高: <span className="text-emerald-400">{candle.high}</span></div>
+                                <div>低: <span className="text-rose-400">{candle.low}</span></div>
+                                <div>收: <span className={candle.close >= candle.open ? 'text-emerald-400' : 'text-rose-400'}>{candle.close}</span></div>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
 
             {description && (
-                <p className="text-sm text-zinc-400 border-t border-zinc-700 pt-3">{description}</p>
+                <p className="text-xs sm:text-sm text-zinc-400 border-t border-zinc-700 pt-3">{description}</p>
             )}
         </div>
     );
@@ -1152,46 +1156,46 @@ function ComboChartExample({
     }, []);
     
     return (
-        <div className="p-4 bg-gradient-to-b from-zinc-800/60 to-zinc-900/60 border border-zinc-700/50 rounded-xl shadow-lg">
-            {/* 標題與視圖切換 */}
-            <div className="flex items-center justify-between mb-4">
-                <h4 className="text-white font-bold flex items-center gap-2">
-                    <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500/20 to-indigo-500/20 flex items-center justify-center">
-                        <span className="text-amber-400">📊</span>
+        <div className="p-3 sm:p-4 bg-gradient-to-b from-zinc-800/60 to-zinc-900/60 border border-zinc-700/50 rounded-xl shadow-lg">
+            {/* 標題與視圖切換 - 手機版堆疊，桌面版並排 */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <h4 className="text-white font-bold flex items-center gap-2 text-sm sm:text-base">
+                    <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-amber-500/20 to-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                        <span className="text-amber-400 text-sm sm:text-base">📊</span>
                     </span>
-                    <span>{title}</span>
+                    <span className="line-clamp-2">{title}</span>
                 </h4>
                 
-                {/* 視圖切換按鈕 */}
-                <div className="flex bg-zinc-900 rounded-lg p-0.5 border border-zinc-700/50">
+                {/* 視圖切換按鈕 - 手機版更大的點擊區域 */}
+                <div className="flex bg-zinc-900 rounded-lg p-0.5 border border-zinc-700/50 self-start sm:self-auto flex-shrink-0">
                     <button
                         onClick={() => setViewMode('candle')}
-                        className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                        className={`px-3 sm:px-3 py-2 sm:py-1.5 text-xs font-medium rounded-md transition-all ${
                             viewMode === 'candle' 
                                 ? 'bg-amber-500/20 text-amber-400' 
-                                : 'text-zinc-500 hover:text-zinc-300'
+                                : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
                         }`}
                     >
-                        K線圖
+                        K線
                     </button>
                     {lineData && (
                         <>
                             <button
                                 onClick={() => setViewMode('line')}
-                                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                                className={`px-3 sm:px-3 py-2 sm:py-1.5 text-xs font-medium rounded-md transition-all ${
                                     viewMode === 'line' 
                                         ? 'bg-indigo-500/20 text-indigo-400' 
-                                        : 'text-zinc-500 hover:text-zinc-300'
+                                        : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
                                 }`}
                             >
                                 線圖
                             </button>
                             <button
                                 onClick={() => setViewMode('both')}
-                                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                                className={`px-3 sm:px-3 py-2 sm:py-1.5 text-xs font-medium rounded-md transition-all ${
                                     viewMode === 'both' 
                                         ? 'bg-purple-500/20 text-purple-400' 
-                                        : 'text-zinc-500 hover:text-zinc-300'
+                                        : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
                                 }`}
                             >
                                 雙視圖
@@ -1201,30 +1205,30 @@ function ComboChartExample({
                 </div>
             </div>
             
-            {/* 同步 hover 資訊面板（雙視圖時固定顯示區域，避免高度跳動） */}
+            {/* 同步 hover 資訊面板 - 手機版可換行，桌面版單行 */}
             {viewMode === 'both' && (
-                <div className="mb-3 px-3 py-2 bg-zinc-900/80 rounded-lg border border-zinc-700/50 h-[34px] flex items-center">
+                <div className="mb-3 px-2 sm:px-3 py-2 bg-zinc-900/80 rounded-lg border border-zinc-700/50 min-h-[34px] flex items-center">
                     {syncHoverIndex !== null && syncHoverIndex >= 0 && syncHoverIndex < candles.length ? (
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-mono">
+                        <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-1 text-[10px] sm:text-xs font-mono">
                             {/* K 線數據 */}
                             <span className="text-amber-400 font-semibold flex items-center gap-1">
                                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                                 {candles[syncHoverIndex].label || `#${syncHoverIndex + 1}`}
                             </span>
-                            <span className="text-zinc-500">開<span className="text-zinc-300 ml-1">{candles[syncHoverIndex].open}</span></span>
-                            <span className="text-zinc-500">高<span className="text-emerald-400 ml-1">{candles[syncHoverIndex].high}</span></span>
-                            <span className="text-zinc-500">低<span className="text-rose-400 ml-1">{candles[syncHoverIndex].low}</span></span>
-                            <span className="text-zinc-500">收<span className={`ml-1 font-semibold ${candles[syncHoverIndex].close >= candles[syncHoverIndex].open ? 'text-emerald-400' : 'text-rose-400'}`}>{candles[syncHoverIndex].close}</span></span>
+                            <span className="text-zinc-500">開<span className="text-zinc-300 ml-0.5 sm:ml-1">{candles[syncHoverIndex].open}</span></span>
+                            <span className="text-zinc-500">高<span className="text-emerald-400 ml-0.5 sm:ml-1">{candles[syncHoverIndex].high}</span></span>
+                            <span className="text-zinc-500">低<span className="text-rose-400 ml-0.5 sm:ml-1">{candles[syncHoverIndex].low}</span></span>
+                            <span className="text-zinc-500">收<span className={`ml-0.5 sm:ml-1 font-semibold ${candles[syncHoverIndex].close >= candles[syncHoverIndex].open ? 'text-emerald-400' : 'text-rose-400'}`}>{candles[syncHoverIndex].close}</span></span>
                             {/* 線圖數據 */}
                             {lineData && lineData.points[syncHoverIndex] && (
-                                <span className="text-indigo-400 flex items-center gap-1 border-l border-zinc-700 pl-4">
+                                <span className="text-indigo-400 flex items-center gap-1 border-l border-zinc-700 pl-2 sm:pl-4">
                                     <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
                                     趨勢 ${lineData.points[syncHoverIndex].y}
                                 </span>
                             )}
                         </div>
                     ) : (
-                        <span className="text-xs text-zinc-600">滑鼠移至圖表查看詳細資訊</span>
+                        <span className="text-[10px] sm:text-xs text-zinc-600">👆 點擊或滑動圖表查看詳細資訊</span>
                     )}
                 </div>
             )}
@@ -1235,22 +1239,27 @@ function ComboChartExample({
                 {(viewMode === 'candle' || viewMode === 'both') && (
                     <div>
                         {viewMode === 'both' && (
-                            <div className="text-xs font-medium text-amber-400 mb-2 flex items-center gap-1.5">
-                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                                K線視角
+                            <div className="text-xs font-medium text-amber-400 mb-2 flex items-center justify-between">
+                                <span className="flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                                    K線視角
+                                </span>
+                                <span className="text-[10px] text-zinc-600 sm:hidden">← 左右滑動 →</span>
                             </div>
                         )}
-                        <TVCandlestickChart 
-                            candles={candles} 
-                            annotations={annotations}
-                            height={viewMode === 'both' ? 240 : 280}
-                            showOHLCCards={viewMode !== 'both'}
-                            showOHLCInfo={viewMode !== 'both'}
-                            showWrapper={false}
-                            fixedWidth={viewMode === 'both' ? sharedWidth : undefined}
-                            syncHoverIndex={viewMode === 'both' ? syncHoverIndex : undefined}
-                            onHoverIndexChange={viewMode === 'both' ? handleHoverIndexChange : undefined}
-                        />
+                        <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0 pb-2 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+                            <TVCandlestickChart 
+                                candles={candles} 
+                                annotations={annotations}
+                                height={viewMode === 'both' ? 200 : 240}
+                                showOHLCCards={viewMode !== 'both'}
+                                showOHLCInfo={viewMode !== 'both'}
+                                showWrapper={false}
+                                fixedWidth={viewMode === 'both' ? sharedWidth : undefined}
+                                syncHoverIndex={viewMode === 'both' ? syncHoverIndex : undefined}
+                                onHoverIndexChange={viewMode === 'both' ? handleHoverIndexChange : undefined}
+                            />
+                        </div>
                     </div>
                 )}
                 
@@ -1258,65 +1267,76 @@ function ComboChartExample({
                 {lineData && (viewMode === 'line' || viewMode === 'both') && (
                     <div>
                         {viewMode === 'both' && (
-                            <div className="text-xs font-medium text-indigo-400 mb-2 flex items-center gap-1.5">
-                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
-                                趨勢視角
+                            <div className="text-xs font-medium text-indigo-400 mb-2 flex items-center justify-between">
+                                <span className="flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                                    趨勢視角
+                                </span>
+                                <span className="text-[10px] text-zinc-600 sm:hidden">← 左右滑動 →</span>
                             </div>
                         )}
-                        <TVLineChart 
-                            points={lineData.points}
-                            markers={lineData.markers}
-                            lines={lineData.lines}
-                            zones={lineData.zones}
-                            height={viewMode === 'both' ? 240 : 280}
-                            showWrapper={false}
-                            fixedWidth={viewMode === 'both' ? sharedWidth : undefined}
-                            syncHoverIndex={viewMode === 'both' ? syncHoverIndex : undefined}
-                            onHoverIndexChange={viewMode === 'both' ? handleHoverIndexChange : undefined}
-                        />
+                        <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0 pb-2 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+                            <TVLineChart 
+                                points={lineData.points}
+                                markers={lineData.markers}
+                                lines={lineData.lines}
+                                zones={lineData.zones}
+                                height={viewMode === 'both' ? 200 : 240}
+                                showWrapper={false}
+                                fixedWidth={viewMode === 'both' ? sharedWidth : undefined}
+                                syncHoverIndex={viewMode === 'both' ? syncHoverIndex : undefined}
+                                onHoverIndexChange={viewMode === 'both' ? handleHoverIndexChange : undefined}
+                            />
+                        </div>
                     </div>
                 )}
             </div>
             
             {/* OHLC 數據卡片 - 單一視圖時由 K 線圖內部顯示，雙視圖時在這裡統一顯示 */}
             {viewMode === 'both' && (
-                <div className="overflow-x-auto mt-4 pt-3 border-t border-zinc-700/30">
-                    <div className="text-xs font-medium text-zinc-500 mb-2">OHLC 數據</div>
-                    <div className="flex justify-center gap-2 min-w-fit">
-                        {candles.map((candle, i) => {
-                            const isUp = candle.close >= candle.open;
-                            const isHovered = syncHoverIndex === i;
-                            return (
-                                <div 
-                                    key={i} 
-                                    className={`px-3 py-2 rounded-lg text-center min-w-[70px] flex-shrink-0 transition-all ${
-                                        isHovered 
-                                            ? 'bg-zinc-700/80 border border-amber-500/50 ring-1 ring-amber-500/30' 
-                                            : 'bg-zinc-900/60 border border-zinc-800/50'
-                                    }`}
-                                >
-                                    <div className={`text-[10px] font-medium mb-1.5 pb-1 border-b ${isHovered ? 'text-white border-zinc-600' : 'text-zinc-400 border-zinc-700/30'}`}>
-                                        {candle.label || `#${i + 1}`}
+                <div className="mt-4 pt-3 border-t border-zinc-700/30">
+                    <div className="text-xs font-medium text-zinc-500 mb-2 flex items-center justify-between">
+                        <span>OHLC 數據</span>
+                        <span className="text-[10px] text-zinc-600 sm:hidden">← 左右滑動 →</span>
+                    </div>
+                    <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0 pb-2 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+                        <div className="flex gap-1.5 sm:gap-2 min-w-fit sm:justify-center">
+                            {candles.map((candle, i) => {
+                                const isUp = candle.close >= candle.open;
+                                const isHovered = syncHoverIndex === i;
+                                return (
+                                    <div 
+                                        key={i} 
+                                        className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-center min-w-[60px] sm:min-w-[70px] flex-shrink-0 transition-all ${
+                                            isHovered 
+                                                ? 'bg-zinc-700/80 border border-amber-500/50 ring-1 ring-amber-500/30' 
+                                                : 'bg-zinc-900/60 border border-zinc-800/50'
+                                        }`}
+                                        onClick={() => setSyncHoverIndex(i)}
+                                    >
+                                        <div className={`text-[9px] sm:text-[10px] font-medium mb-1 sm:mb-1.5 pb-1 border-b ${isHovered ? 'text-white border-zinc-600' : 'text-zinc-400 border-zinc-700/30'}`}>
+                                            {candle.label || `#${i + 1}`}
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-x-1 sm:gap-x-1.5 gap-y-0.5 text-[9px] sm:text-[10px]">
+                                            <span className="text-zinc-500 text-right">O</span>
+                                            <span className="text-zinc-300 font-mono text-left">{candle.open}</span>
+                                            <span className="text-zinc-500 text-right">H</span>
+                                            <span className="text-emerald-400 font-mono text-left">{candle.high}</span>
+                                            <span className="text-zinc-500 text-right">L</span>
+                                            <span className="text-rose-400 font-mono text-left">{candle.low}</span>
+                                            <span className="text-zinc-500 text-right">C</span>
+                                            <span className={`font-mono font-semibold text-left ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}>{candle.close}</span>
+                                        </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-x-1.5 gap-y-0.5 text-[10px]">
-                                        <span className="text-zinc-500 text-right">O</span>
-                                        <span className="text-zinc-300 font-mono text-left">{candle.open}</span>
-                                        <span className="text-zinc-500 text-right">H</span>
-                                        <span className="text-emerald-400 font-mono text-left">{candle.high}</span>
-                                        <span className="text-zinc-500 text-right">L</span>
-                                        <span className="text-rose-400 font-mono text-left">{candle.low}</span>
-                                        <span className="text-zinc-500 text-right">C</span>
-                                        <span className={`font-mono font-semibold text-left ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}>{candle.close}</span>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             )}
 
             {description && (
-                <p className="text-sm text-zinc-400 border-t border-zinc-700/50 pt-3 mt-3 leading-relaxed">{description}</p>
+                <p className="text-xs sm:text-sm text-zinc-400 border-t border-zinc-700/50 pt-3 mt-3 leading-relaxed">{description}</p>
             )}
         </div>
     );

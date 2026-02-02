@@ -11,7 +11,10 @@ import {
     List,
     Target,
     TrendingUp,
-    Clock
+    Clock,
+    X,
+    Menu,
+    Settings2
 } from 'lucide-react';
 import { usePracticeEngine } from '@/hooks/usePracticeEngine';
 import { ModeSelector } from './ModeSelector';
@@ -32,6 +35,7 @@ const MODE_LABELS: Record<PracticeMode, { label: string; icon: typeof Target }> 
 export function PracticeCenter() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [selectedPatternType, setSelectedPatternType] = useState<PatternType | null>(null);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     
     const {
         state,
@@ -74,6 +78,8 @@ export function PracticeCenter() {
             const randomIndex = Math.floor(Math.random() * scenarios.length);
             loadScenario(scenarios[randomIndex]);
         }
+        // Close mobile menu after selection
+        setMobileMenuOpen(false);
     };
     
     // Handle mode change
@@ -81,6 +87,7 @@ export function PracticeCenter() {
         setMode(mode);
         if (mode === 'recognition') {
             startRecognitionSession();
+            setMobileMenuOpen(false);
         } else if (selectedPatternType) {
             handlePatternSelect(selectedPatternType);
         }
@@ -163,27 +170,79 @@ export function PracticeCenter() {
                 </div>
             </header>
 
-            {/* Mobile Breadcrumb */}
-            <div className="md:hidden border-b border-zinc-800 bg-zinc-900/50 px-4 py-2">
-                <div className="flex items-center gap-2 text-xs overflow-x-auto">
-                    <Link href="/" className="text-zinc-500 hover:text-white shrink-0">
-                        <Home size={12} />
-                    </Link>
-                    <ChevronRight size={12} className="text-zinc-600 shrink-0" />
-                    <span className="flex items-center gap-1 text-amber-400 shrink-0">
-                        <ModeIcon size={12} />
-                        {modeInfo.label}
-                    </span>
-                    {selectedPatternType && state.mode !== 'recognition' && (
-                        <>
-                            <ChevronRight size={12} className="text-zinc-600 shrink-0" />
-                            <span className="text-zinc-300 truncate">
-                                {PATTERN_INFO[selectedPatternType]?.name}
-                            </span>
-                        </>
-                    )}
+            {/* Mobile Breadcrumb with Menu Button */}
+            <div className="lg:hidden border-b border-zinc-800 bg-zinc-900/50 px-4 py-2">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs overflow-x-auto flex-1 min-w-0">
+                        <Link href="/" className="text-zinc-500 hover:text-white shrink-0">
+                            <Home size={12} />
+                        </Link>
+                        <ChevronRight size={12} className="text-zinc-600 shrink-0" />
+                        <span className="flex items-center gap-1 text-amber-400 shrink-0">
+                            <ModeIcon size={12} />
+                            {modeInfo.label}
+                        </span>
+                        {selectedPatternType && state.mode !== 'recognition' && (
+                            <>
+                                <ChevronRight size={12} className="text-zinc-600 shrink-0" />
+                                <span className="text-zinc-300 truncate">
+                                    {PATTERN_INFO[selectedPatternType]?.name}
+                                </span>
+                            </>
+                        )}
+                    </div>
+                    <button
+                        onClick={() => setMobileMenuOpen(true)}
+                        className="ml-2 p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors shrink-0"
+                    >
+                        <Settings2 size={16} />
+                    </button>
                 </div>
             </div>
+
+            {/* Mobile Bottom Sheet */}
+            {mobileMenuOpen && (
+                <div className="lg:hidden fixed inset-0 z-50">
+                    {/* Backdrop */}
+                    <div 
+                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        onClick={() => setMobileMenuOpen(false)}
+                    />
+                    {/* Sheet */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 rounded-t-2xl max-h-[80vh] overflow-hidden animate-in slide-in-from-bottom duration-300">
+                        {/* Handle */}
+                        <div className="flex justify-center py-2">
+                            <div className="w-10 h-1 rounded-full bg-zinc-700" />
+                        </div>
+                        {/* Header */}
+                        <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800">
+                            <h2 className="text-lg font-semibold text-white">練習設定</h2>
+                            <button
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+                        {/* Content */}
+                        <div className="p-4 space-y-6 overflow-y-auto max-h-[calc(80vh-80px)]">
+                            {/* Mode Selector */}
+                            <ModeSelector
+                                currentMode={state.mode}
+                                onModeChange={handleModeChange}
+                            />
+                            
+                            {/* Pattern Selector (not shown in recognition mode) */}
+                            {state.mode !== 'recognition' && (
+                                <PatternSelector
+                                    selectedPattern={selectedPatternType}
+                                    onPatternSelect={handlePatternSelect}
+                                />
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
             
             {/* Main Content */}
             <main className="max-w-7xl mx-auto">

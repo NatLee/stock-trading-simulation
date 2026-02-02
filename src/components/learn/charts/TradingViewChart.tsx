@@ -217,6 +217,65 @@ export function TVCandlestickChart({
         onHoverIndexChange?.(null);
     }, [onHoverIndexChange]);
 
+    // 觸控事件處理（手機版）
+    const handleTouchStart = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+        const canvas = canvasRef.current;
+        if (!canvas || candles.length === 0) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        // 計算觸控的 K 線索引
+        const candleWidthCalc = chartWidth / candles.length;
+        const index = Math.floor((x - padding.left) / candleWidthCalc);
+        const clampedIndex = Math.max(0, Math.min(candles.length - 1, index));
+        
+        // 計算價格
+        const price = scale.maxY - ((y - padding.top) / chartHeight) * scale.yRange;
+
+        setCrosshair({
+            x,
+            y,
+            visible: true,
+            dataIndex: clampedIndex,
+            price,
+        });
+
+        // 通知父組件 hover 索引變化
+        onHoverIndexChange?.(clampedIndex);
+
+        if (clampedIndex >= 0 && clampedIndex < candles.length) {
+            const candle = candles[clampedIndex];
+            const change = candle.close - candle.open;
+            const changePercent = (change / candle.open) * 100;
+
+            setTooltip({
+                visible: true,
+                x,
+                y,
+                content: {
+                    label: candle.label || '',
+                    open: candle.open,
+                    high: candle.high,
+                    low: candle.low,
+                    close: candle.close,
+                    change,
+                    changePercent,
+                },
+            });
+        }
+    }, [candles, chartWidth, chartHeight, scale, padding, onHoverIndexChange]);
+
+    const handleTouchMove = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+        handleTouchStart(e);
+    }, [handleTouchStart]);
+
+    const handleTouchEnd = useCallback(() => {
+        // 保持最後選中的狀態，不清除（方便手機用戶查看）
+    }, []);
+
     // 當 syncHoverIndex 變化時，更新 crosshair（用於同步顯示）
     useEffect(() => {
         if (syncHoverIndex !== undefined && syncHoverIndex !== null && syncHoverIndex >= 0 && syncHoverIndex < candles.length) {
@@ -245,24 +304,24 @@ export function TVCandlestickChart({
         <>
             {/* 標題與即時資訊面板 */}
             {(title || (showOHLCInfo && selectedCandle)) && (
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-2 sm:gap-3 mb-3">
                     {title && (
                         <h4 className="text-white font-bold flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 text-sm">📊</span>
-                            <span className="text-sm">{title}</span>
+                            <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 text-xs sm:text-sm flex-shrink-0">📊</span>
+                            <span className="text-xs sm:text-sm line-clamp-2">{title}</span>
                         </h4>
                     )}
                     
                     {/* 固定位置的 OHLC 即時資訊（可選擇隱藏） */}
                     {showOHLCInfo && selectedCandle && (
-                        <div className="flex items-center gap-3 text-xs font-mono bg-zinc-900/60 px-3 py-1.5 rounded-lg border border-zinc-700/30">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono bg-zinc-900/60 px-2 sm:px-3 py-1.5 rounded-lg border border-zinc-700/30">
                             {selectedCandle.label && (
                                 <span className="text-zinc-400 font-semibold">{selectedCandle.label}</span>
                             )}
-                            <span className="text-zinc-500">開<span className="text-zinc-300 ml-1">{selectedCandle.open}</span></span>
-                            <span className="text-zinc-500">高<span className="text-emerald-400 ml-1">{selectedCandle.high}</span></span>
-                            <span className="text-zinc-500">低<span className="text-rose-400 ml-1">{selectedCandle.low}</span></span>
-                            <span className="text-zinc-500">收<span className={`ml-1 font-semibold ${selectedCandle.close >= selectedCandle.open ? 'text-emerald-400' : 'text-rose-400'}`}>{selectedCandle.close}</span></span>
+                            <span className="text-zinc-500">開<span className="text-zinc-300 ml-0.5 sm:ml-1">{selectedCandle.open}</span></span>
+                            <span className="text-zinc-500">高<span className="text-emerald-400 ml-0.5 sm:ml-1">{selectedCandle.high}</span></span>
+                            <span className="text-zinc-500">低<span className="text-rose-400 ml-0.5 sm:ml-1">{selectedCandle.low}</span></span>
+                            <span className="text-zinc-500">收<span className={`ml-0.5 sm:ml-1 font-semibold ${selectedCandle.close >= selectedCandle.open ? 'text-emerald-400' : 'text-rose-400'}`}>{selectedCandle.close}</span></span>
                             <span className={`font-semibold ${selectedCandle.close >= selectedCandle.open ? 'text-emerald-400' : 'text-rose-400'}`}>
                                 {selectedCandle.close >= selectedCandle.open ? '▲' : '▼'}
                                 {Math.abs(((selectedCandle.close - selectedCandle.open) / selectedCandle.open) * 100).toFixed(1)}%
@@ -273,14 +332,17 @@ export function TVCandlestickChart({
             )}
             
             {/* 圖表容器 - 可橫向滾動，確保內容完整顯示 */}
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
                 <div className="flex justify-center min-w-fit">
                     <div ref={containerRef} className="relative bg-zinc-900/80 rounded-lg overflow-hidden border border-zinc-800">
                         <canvas
                             ref={canvasRef}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
-                            className="cursor-crosshair"
+                            onTouchStart={handleTouchStart}
+                            onTouchMove={handleTouchMove}
+                            onTouchEnd={handleTouchEnd}
+                            className="cursor-crosshair touch-none"
                         />
                     </div>
                 </div>
@@ -288,42 +350,56 @@ export function TVCandlestickChart({
 
             {/* OHLC 數據卡片 - 緊湊的橫向布局（可選擇隱藏） */}
             {showOHLCCards && (
-                <div className="overflow-x-auto mt-3">
-                    <div className="flex justify-center gap-2 min-w-fit">
-                        {candles.map((candle, i) => {
-                            const isUp = candle.close >= candle.open;
-                            const isSelected = crosshair.dataIndex === i;
-                            return (
-                                <div 
-                                    key={i} 
-                                    className={`px-3 py-2 rounded-lg text-center min-w-[70px] flex-shrink-0 transition-all ${
-                                        isSelected 
-                                            ? 'bg-zinc-700/80 border border-zinc-500' 
-                                            : 'bg-zinc-900/60 border border-zinc-800/50'
-                                    }`}
-                                >
-                                    <div className={`text-[10px] font-medium mb-1.5 pb-1 border-b ${isSelected ? 'text-white border-zinc-600' : 'text-zinc-400 border-zinc-700/30'}`}>
-                                        {candle.label || `#${i + 1}`}
+                <div className="mt-3">
+                    <div className="text-[10px] text-zinc-600 mb-1.5 flex items-center justify-between sm:hidden">
+                        <span>OHLC 數據</span>
+                        <span>← 左右滑動 →</span>
+                    </div>
+                    <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent pb-1">
+                        <div className="flex gap-1.5 sm:gap-2 min-w-fit sm:justify-center">
+                            {candles.map((candle, i) => {
+                                const isUp = candle.close >= candle.open;
+                                const isSelected = crosshair.dataIndex === i;
+                                return (
+                                    <div 
+                                        key={i} 
+                                        className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-center min-w-[60px] sm:min-w-[70px] flex-shrink-0 transition-all cursor-pointer ${
+                                            isSelected 
+                                                ? 'bg-zinc-700/80 border border-zinc-500' 
+                                                : 'bg-zinc-900/60 border border-zinc-800/50'
+                                        }`}
+                                        onClick={() => {
+                                            setCrosshair(prev => ({
+                                                ...prev,
+                                                visible: true,
+                                                dataIndex: i,
+                                            }));
+                                            onHoverIndexChange?.(i);
+                                        }}
+                                    >
+                                        <div className={`text-[9px] sm:text-[10px] font-medium mb-1 sm:mb-1.5 pb-1 border-b ${isSelected ? 'text-white border-zinc-600' : 'text-zinc-400 border-zinc-700/30'}`}>
+                                            {candle.label || `#${i + 1}`}
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-x-1 sm:gap-x-1.5 gap-y-0.5 text-[9px] sm:text-[10px]">
+                                            <span className="text-zinc-500 text-right">O</span>
+                                            <span className="text-zinc-300 font-mono text-left">{candle.open}</span>
+                                            <span className="text-zinc-500 text-right">H</span>
+                                            <span className="text-emerald-400 font-mono text-left">{candle.high}</span>
+                                            <span className="text-zinc-500 text-right">L</span>
+                                            <span className="text-rose-400 font-mono text-left">{candle.low}</span>
+                                            <span className="text-zinc-500 text-right">C</span>
+                                            <span className={`font-mono font-semibold text-left ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}>{candle.close}</span>
+                                        </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-x-1.5 gap-y-0.5 text-[10px]">
-                                        <span className="text-zinc-500 text-right">O</span>
-                                        <span className="text-zinc-300 font-mono text-left">{candle.open}</span>
-                                        <span className="text-zinc-500 text-right">H</span>
-                                        <span className="text-emerald-400 font-mono text-left">{candle.high}</span>
-                                        <span className="text-zinc-500 text-right">L</span>
-                                        <span className="text-rose-400 font-mono text-left">{candle.low}</span>
-                                        <span className="text-zinc-500 text-right">C</span>
-                                        <span className={`font-mono font-semibold text-left ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}>{candle.close}</span>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             )}
 
             {description && (
-                <p className="text-sm text-zinc-400 border-t border-zinc-700/50 pt-3 mt-3 leading-relaxed">{description}</p>
+                <p className="text-xs sm:text-sm text-zinc-400 border-t border-zinc-700/50 pt-3 mt-3 leading-relaxed">{description}</p>
             )}
         </>
     );
@@ -334,7 +410,7 @@ export function TVCandlestickChart({
     }
 
     return (
-        <div className="p-4 bg-gradient-to-b from-zinc-800/60 to-zinc-900/60 border border-zinc-700/50 rounded-xl shadow-lg">
+        <div className="p-3 sm:p-4 bg-gradient-to-b from-zinc-800/60 to-zinc-900/60 border border-zinc-700/50 rounded-xl shadow-lg">
             {chartContent}
         </div>
     );
@@ -548,6 +624,56 @@ export function TVLineChart({
         onHoverIndexChange?.(null);
     }, [onHoverIndexChange]);
 
+    // 觸控事件處理（手機版）
+    const handleTouchStart = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+        const canvas = canvasRef.current;
+        if (!canvas || points.length === 0) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        // 計算最近的數據點
+        const dataIndex = Math.round(((x - padding.left) / chartWidth) * scale.xRange);
+        const clampedIndex = Math.max(0, Math.min(points.length - 1, dataIndex));
+        
+        // 計算價格
+        const price = scale.maxY - ((y - padding.top) / chartHeight) * scale.yRange;
+
+        setCrosshair({
+            x,
+            y,
+            visible: true,
+            dataIndex: clampedIndex,
+            price,
+        });
+
+        // 通知父組件 hover 索引變化
+        onHoverIndexChange?.(clampedIndex);
+
+        if (clampedIndex >= 0 && clampedIndex < points.length) {
+            const point = points[clampedIndex];
+            setTooltip({
+                visible: true,
+                x,
+                y,
+                content: {
+                    label: point.label || '',
+                    price: point.y,
+                },
+            });
+        }
+    }, [points, chartWidth, chartHeight, scale, padding, onHoverIndexChange]);
+
+    const handleTouchMove = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+        handleTouchStart(e);
+    }, [handleTouchStart]);
+
+    const handleTouchEnd = useCallback(() => {
+        // 保持最後選中的狀態，不清除（方便手機用戶查看）
+    }, []);
+
     // 當 syncHoverIndex 變化時，更新 crosshair（用於同步顯示）
     useEffect(() => {
         if (syncHoverIndex !== undefined && syncHoverIndex !== null && syncHoverIndex >= 0 && syncHoverIndex < points.length) {
@@ -575,79 +701,84 @@ export function TVLineChart({
     const chartContent = (
         <>
             {title && (
-                <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400">📈</span>
-                    <span>{title}</span>
+                <h4 className="text-white font-bold mb-3 sm:mb-4 flex items-center gap-2">
+                    <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-xs sm:text-base flex-shrink-0">📈</span>
+                    <span className="text-xs sm:text-base line-clamp-2">{title}</span>
                 </h4>
             )}
             
-            {/* 圖表容器 - 置中 */}
-            <div className="flex justify-center">
-                <div className="relative bg-zinc-900/80 rounded-lg overflow-hidden border border-zinc-800">
-                    <canvas
-                        ref={canvasRef}
-                        onMouseMove={handleMouseMove}
-                        onMouseLeave={handleMouseLeave}
-                        className="cursor-crosshair"
-                    />
+            {/* 圖表容器 - 可橫向滾動 */}
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+                <div className="flex justify-center min-w-fit">
+                    <div className="relative bg-zinc-900/80 rounded-lg overflow-hidden border border-zinc-800">
+                        <canvas
+                            ref={canvasRef}
+                            onMouseMove={handleMouseMove}
+                            onMouseLeave={handleMouseLeave}
+                            onTouchStart={handleTouchStart}
+                            onTouchMove={handleTouchMove}
+                            onTouchEnd={handleTouchEnd}
+                            className="cursor-crosshair touch-none"
+                        />
 
-                    {/* 工具提示 */}
-                    {config.showTooltip && tooltip && tooltip.visible && (
-                        <div
-                            className="absolute pointer-events-none bg-zinc-900/98 border border-zinc-600 rounded-lg px-3 py-2 text-xs font-mono z-10 shadow-xl backdrop-blur-sm"
-                            style={{
-                                left: tooltip.x > width - 140 ? tooltip.x - 130 : tooltip.x + 15,
-                                top: tooltip.y > height - 80 ? tooltip.y - 70 : tooltip.y + 15,
-                            }}
-                        >
-                            {tooltip.content.marker ? (
-                                <div>
-                                    <div className="flex items-center gap-2 mb-1 pb-1 border-b border-zinc-700">
-                                        <span 
-                                            className="w-3 h-3 rounded-full" 
-                                            style={{ backgroundColor: MARKER_STYLES[tooltip.content.marker.type].color }}
-                                        />
-                                        <span className="font-bold" style={{ color: MARKER_STYLES[tooltip.content.marker.type].color }}>
-                                            {MARKER_STYLES[tooltip.content.marker.type].label}
-                                        </span>
+                        {/* 工具提示 */}
+                        {config.showTooltip && tooltip && tooltip.visible && (
+                            <div
+                                className="absolute pointer-events-none bg-zinc-900/98 border border-zinc-600 rounded-lg px-3 py-2 text-xs font-mono z-10 shadow-xl backdrop-blur-sm"
+                                style={{
+                                    left: tooltip.x > width - 140 ? tooltip.x - 130 : tooltip.x + 15,
+                                    top: tooltip.y > height - 80 ? tooltip.y - 70 : tooltip.y + 15,
+                                }}
+                            >
+                                {tooltip.content.marker ? (
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-1 pb-1 border-b border-zinc-700">
+                                            <span 
+                                                className="w-3 h-3 rounded-full" 
+                                                style={{ backgroundColor: MARKER_STYLES[tooltip.content.marker.type].color }}
+                                            />
+                                            <span className="font-bold" style={{ color: MARKER_STYLES[tooltip.content.marker.type].color }}>
+                                                {MARKER_STYLES[tooltip.content.marker.type].label}
+                                            </span>
+                                        </div>
+                                        <div className="text-zinc-300 my-1">{tooltip.content.marker.label}</div>
+                                        <div className="text-zinc-400">價格: <span className="text-white">${tooltip.content.price?.toFixed(2)}</span></div>
                                     </div>
-                                    <div className="text-zinc-300 my-1">{tooltip.content.marker.label}</div>
-                                    <div className="text-zinc-400">價格: <span className="text-white">${tooltip.content.price?.toFixed(2)}</span></div>
-                                </div>
-                            ) : (
-                                <div>
-                                    {tooltip.content.label && (
-                                        <div className="text-zinc-400 mb-1">{tooltip.content.label}</div>
-                                    )}
-                                    <div className="text-white font-bold">價格: ${tooltip.content.price?.toFixed(2)}</div>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                                ) : (
+                                    <div>
+                                        {tooltip.content.label && (
+                                            <div className="text-zinc-400 mb-1">{tooltip.content.label}</div>
+                                        )}
+                                        <div className="text-white font-bold">價格: ${tooltip.content.price?.toFixed(2)}</div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
             {/* 圖例 */}
             {(uniqueMarkerTypes.length > 0 || hasSupport || hasResistance) && (
-                <div className="flex flex-wrap justify-center gap-4 mt-4 text-xs">
+                <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mt-3 sm:mt-4 text-[10px] sm:text-xs">
                     {uniqueMarkerTypes.map(type => (
-                        <div key={type} className="flex items-center gap-1.5 bg-zinc-900/50 px-2 py-1 rounded-md">
+                        <div key={type} className="flex items-center gap-1 sm:gap-1.5 bg-zinc-900/50 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md">
                             <span 
-                                className="w-2.5 h-2.5 rounded-full" 
+                                className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full" 
                                 style={{ backgroundColor: MARKER_STYLES[type].color }}
                             />
                             <span className="text-zinc-400">{MARKER_STYLES[type].label}</span>
                         </div>
                     ))}
                     {hasSupport && (
-                        <div className="flex items-center gap-1.5 bg-zinc-900/50 px-2 py-1 rounded-md">
-                            <span className="w-4 h-0.5 bg-emerald-500 rounded" />
+                        <div className="flex items-center gap-1 sm:gap-1.5 bg-zinc-900/50 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md">
+                            <span className="w-3 sm:w-4 h-0.5 bg-emerald-500 rounded" />
                             <span className="text-zinc-400">支撐線</span>
                         </div>
                     )}
                     {hasResistance && (
-                        <div className="flex items-center gap-1.5 bg-zinc-900/50 px-2 py-1 rounded-md">
-                            <span className="w-4 h-0.5 bg-rose-500 rounded" />
+                        <div className="flex items-center gap-1 sm:gap-1.5 bg-zinc-900/50 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md">
+                            <span className="w-3 sm:w-4 h-0.5 bg-rose-500 rounded" />
                             <span className="text-zinc-400">壓力線</span>
                         </div>
                     )}
@@ -655,7 +786,7 @@ export function TVLineChart({
             )}
 
             {description && (
-                <p className="text-sm text-zinc-400 border-t border-zinc-700/50 pt-3 mt-4 leading-relaxed">{description}</p>
+                <p className="text-xs sm:text-sm text-zinc-400 border-t border-zinc-700/50 pt-3 mt-3 sm:mt-4 leading-relaxed">{description}</p>
             )}
         </>
     );
@@ -666,7 +797,7 @@ export function TVLineChart({
     }
 
     return (
-        <div className="p-4 bg-gradient-to-b from-zinc-800/60 to-zinc-900/60 border border-zinc-700/50 rounded-xl shadow-lg">
+        <div className="p-3 sm:p-4 bg-gradient-to-b from-zinc-800/60 to-zinc-900/60 border border-zinc-700/50 rounded-xl shadow-lg">
             {chartContent}
         </div>
     );
