@@ -1,0 +1,164 @@
+[
+    {
+        "id": "bf-001",
+        "patternType": "bull-flag",
+        "name": "上升旗形練習 1",
+        "description": "急漲後整理形成旗形，觀察突破買入時機",
+        "candles": [
+            { "open": 50, "high": 68, "low": 49, "close": 67, "volume": 90000, "label": "旗竿" },
+            { "open": 67, "high": 69, "low": 62, "close": 64, "volume": 45000, "label": "整理1" },
+            { "open": 64, "high": 66, "low": 60, "close": 62, "volume": 40000, "label": "整理2" },
+            { "open": 62, "high": 64, "low": 58, "close": 60, "volume": 38000, "label": "整理3" },
+            { "open": 60, "high": 78, "low": 59, "close": 76, "volume": 100000, "label": "突破!" },
+            { "open": 76, "high": 88, "low": 75, "close": 85, "volume": 85000, "label": "大漲" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "buy", "price": 65, "description": "突破旗身上緣時買入" },
+        "optimalExit": { "candleIndex": 5, "action": "sell", "price": 85, "description": "達到目標價賣出" },
+        "stopLoss": 56,
+        "takeProfit": 85,
+        "expectedDirection": "up",
+        "difficulty": "medium"
+    },
+    {
+        "id": "brf-001",
+        "patternType": "bear-flag",
+        "name": "下降旗形練習 1",
+        "description": "急跌後反彈整理形成旗形，觀察跌破做空時機",
+        "candles": [
+            { "open": 100, "high": 102, "low": 82, "close": 84, "volume": 95000, "label": "旗竿" },
+            { "open": 84, "high": 90, "low": 83, "close": 88, "volume": 45000, "label": "反彈1" },
+            { "open": 88, "high": 94, "low": 87, "close": 92, "volume": 40000, "label": "反彈2" },
+            { "open": 92, "high": 96, "low": 90, "close": 94, "volume": 38000, "label": "反彈3" },
+            { "open": 94, "high": 95, "low": 75, "close": 78, "volume": 100000, "label": "跌破!" },
+            { "open": 78, "high": 80, "low": 65, "close": 68, "volume": 85000, "label": "續跌" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "sell", "price": 88, "description": "跌破旗身下緣時做空" },
+        "optimalExit": { "candleIndex": 5, "action": "buy", "price": 68, "description": "達到目標價回補" },
+        "stopLoss": 98,
+        "takeProfit": 65,
+        "expectedDirection": "down",
+        "difficulty": "medium"
+    },
+    {
+        "id": "bp-001",
+        "patternType": "bull-pennant",
+        "name": "上升三角旗練習 1",
+        "description": "急漲後形成對稱收斂整理，觀察突破時機",
+        "candles": [
+            { "open": 50, "high": 72, "low": 49, "close": 70, "volume": 95000, "label": "旗竿" },
+            { "open": 70, "high": 73, "low": 64, "close": 66, "volume": 50000, "label": "整理" },
+            { "open": 66, "high": 70, "low": 65, "close": 68, "volume": 45000 },
+            { "open": 68, "high": 69, "low": 66, "close": 67, "volume": 40000, "label": "收斂" },
+            { "open": 67, "high": 85, "low": 66, "close": 83, "volume": 110000, "label": "突破!" },
+            { "open": 83, "high": 95, "low": 81, "close": 92, "volume": 90000, "label": "續漲" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "buy", "price": 72, "description": "突破三角旗上緣時買入" },
+        "optimalExit": { "candleIndex": 5, "action": "sell", "price": 92, "description": "達到目標價賣出" },
+        "stopLoss": 62,
+        "takeProfit": 90,
+        "expectedDirection": "up",
+        "difficulty": "medium"
+    },
+    {
+        "id": "brp-001",
+        "patternType": "bear-pennant",
+        "name": "下降三角旗練習 1",
+        "description": "急跌後形成對稱收斂整理，觀察跌破時機",
+        "candles": [
+            { "open": 100, "high": 102, "low": 78, "close": 80, "volume": 95000, "label": "旗竿" },
+            { "open": 80, "high": 88, "low": 79, "close": 86, "volume": 50000, "label": "整理" },
+            { "open": 86, "high": 87, "low": 82, "close": 84, "volume": 45000 },
+            { "open": 84, "high": 86, "low": 83, "close": 85, "volume": 40000, "label": "收斂" },
+            { "open": 85, "high": 86, "low": 68, "close": 70, "volume": 110000, "label": "跌破!" },
+            { "open": 70, "high": 72, "low": 58, "close": 60, "volume": 90000, "label": "續跌" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "sell", "price": 80, "description": "跌破三角旗下緣時做空" },
+        "optimalExit": { "candleIndex": 5, "action": "buy", "price": 60, "description": "達到目標價回補" },
+        "stopLoss": 90,
+        "takeProfit": 58,
+        "expectedDirection": "down",
+        "difficulty": "medium"
+    },
+    {
+        "id": "bf-002",
+        "patternType": "bull-flag",
+        "name": "上升旗形練習 2",
+        "description": "強勢旗竿後的緊湊旗形整理",
+        "candles": [
+            { "open": 40, "high": 48, "low": 38, "close": 46, "volume": 60000 },
+            { "open": 46, "high": 70, "low": 45, "close": 68, "volume": 120000, "label": "大旗竿" },
+            { "open": 68, "high": 70, "low": 63, "close": 65, "volume": 48000, "label": "整理1" },
+            { "open": 65, "high": 66, "low": 62, "close": 64, "volume": 42000, "label": "整理2" },
+            { "open": 64, "high": 82, "low": 63, "close": 80, "volume": 115000, "label": "突破!" },
+            { "open": 80, "high": 95, "low": 78, "close": 92, "volume": 105000, "label": "大漲" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "buy", "price": 70, "description": "突破旗身時買入" },
+        "optimalExit": { "candleIndex": 5, "action": "sell", "price": 92, "description": "達到目標價賣出" },
+        "stopLoss": 60,
+        "takeProfit": 90,
+        "expectedDirection": "up",
+        "difficulty": "hard"
+    },
+    {
+        "id": "brf-002",
+        "patternType": "bear-flag",
+        "name": "下降旗形練習 2",
+        "description": "強勢下跌後的旗形反彈整理",
+        "candles": [
+            { "open": 110, "high": 112, "low": 102, "close": 104, "volume": 62000 },
+            { "open": 104, "high": 106, "low": 78, "close": 80, "volume": 125000, "label": "大旗竿" },
+            { "open": 80, "high": 88, "low": 79, "close": 86, "volume": 50000, "label": "反彈1" },
+            { "open": 86, "high": 90, "low": 84, "close": 88, "volume": 45000, "label": "反彈2" },
+            { "open": 88, "high": 89, "low": 65, "close": 68, "volume": 118000, "label": "跌破!" },
+            { "open": 68, "high": 70, "low": 52, "close": 55, "volume": 108000, "label": "大跌" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "sell", "price": 78, "description": "跌破旗身時做空" },
+        "optimalExit": { "candleIndex": 5, "action": "buy", "price": 55, "description": "達到目標價回補" },
+        "stopLoss": 92,
+        "takeProfit": 52,
+        "expectedDirection": "down",
+        "difficulty": "hard"
+    },
+    {
+        "id": "bp-002",
+        "patternType": "bull-pennant",
+        "name": "上升三角旗練習 2",
+        "description": "跳空急漲後的緊密收斂整理",
+        "candles": [
+            { "open": 55, "high": 58, "low": 54, "close": 56, "volume": 45000 },
+            { "open": 62, "high": 82, "low": 60, "close": 80, "volume": 110000, "label": "跳空旗竿" },
+            { "open": 80, "high": 82, "low": 74, "close": 76, "volume": 52000, "label": "整理1" },
+            { "open": 76, "high": 80, "low": 75, "close": 78, "volume": 48000, "label": "整理2" },
+            { "open": 78, "high": 79, "low": 76, "close": 77, "volume": 42000, "label": "收斂" },
+            { "open": 77, "high": 98, "low": 76, "close": 96, "volume": 125000, "label": "突破!" },
+            { "open": 96, "high": 110, "low": 94, "close": 108, "volume": 115000, "label": "大漲" }
+        ],
+        "optimalEntry": { "candleIndex": 5, "action": "buy", "price": 85, "description": "突破時買入" },
+        "optimalExit": { "candleIndex": 6, "action": "sell", "price": 108, "description": "達到目標價賣出" },
+        "stopLoss": 73,
+        "takeProfit": 105,
+        "expectedDirection": "up",
+        "difficulty": "hard"
+    },
+    {
+        "id": "brp-002",
+        "patternType": "bear-pennant",
+        "name": "下降三角旗練習 2",
+        "description": "跳空急跌後的緊密收斂整理",
+        "candles": [
+            { "open": 105, "high": 108, "low": 103, "close": 106, "volume": 48000 },
+            { "open": 98, "high": 100, "low": 76, "close": 78, "volume": 115000, "label": "跳空旗竿" },
+            { "open": 78, "high": 86, "low": 77, "close": 84, "volume": 55000, "label": "整理1" },
+            { "open": 84, "high": 86, "low": 80, "close": 82, "volume": 50000, "label": "整理2" },
+            { "open": 82, "high": 84, "low": 81, "close": 83, "volume": 45000, "label": "收斂" },
+            { "open": 83, "high": 84, "low": 60, "close": 62, "volume": 128000, "label": "跌破!" },
+            { "open": 62, "high": 64, "low": 48, "close": 50, "volume": 118000, "label": "大跌" }
+        ],
+        "optimalEntry": { "candleIndex": 5, "action": "sell", "price": 72, "description": "跌破時做空" },
+        "optimalExit": { "candleIndex": 6, "action": "buy", "price": 50, "description": "達到目標價回補" },
+        "stopLoss": 88,
+        "takeProfit": 48,
+        "expectedDirection": "down",
+        "difficulty": "hard"
+    }
+]

@@ -62,7 +62,9 @@ export function ReplayMode({
                 const containerWidth = chartContainerRef.current.clientWidth;
                 const isMobile = window.innerWidth < 768;
                 const padding = isMobile ? 24 : 32;
-                setChartWidth(Math.max(containerWidth - padding, 280));
+                // Use container width - lower minimum to prevent overflow
+                const calculatedWidth = containerWidth - padding;
+                setChartWidth(Math.max(calculatedWidth, 200));
                 setChartHeight(isMobile ? 260 : 350);
             }
         };
@@ -166,7 +168,7 @@ export function ReplayMode({
                     {/* Chart */}
                     <div 
                         ref={chartContainerRef}
-                        className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 md:p-4"
+                        className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 md:p-4 overflow-hidden min-w-0"
                     >
                         {/* 固定高度的標籤區域，避免佈局偏移 */}
                         <div className="h-6 md:h-8 flex items-center justify-center mb-2">

@@ -1,0 +1,42 @@
+[
+    {
+        "id": "be-001",
+        "patternType": "bullish-engulfing",
+        "name": "看漲吞噬練習 1",
+        "description": "陽線完全包覆前一根陰線，強烈買入信號",
+        "candles": [
+            { "open": 90, "high": 92, "low": 80, "close": 82, "volume": 55000, "label": "下跌" },
+            { "open": 82, "high": 84, "low": 72, "close": 74, "volume": 60000, "label": "續跌" },
+            { "open": 74, "high": 76, "low": 68, "close": 70, "volume": 65000, "label": "陰線" },
+            { "open": 68, "high": 85, "low": 66, "close": 82, "volume": 100000, "label": "吞噬陽線" },
+            { "open": 82, "high": 95, "low": 80, "close": 92, "volume": 80000, "label": "續漲" },
+            { "open": 92, "high": 105, "low": 90, "close": 102, "volume": 75000, "label": "上漲" }
+        ],
+        "optimalEntry": { "candleIndex": 3, "action": "buy", "price": 76, "description": "看漲吞噬確認後買入" },
+        "optimalExit": { "candleIndex": 5, "action": "sell", "price": 102, "description": "達到目標價賣出" },
+        "stopLoss": 64,
+        "takeProfit": 100,
+        "expectedDirection": "up",
+        "difficulty": "easy"
+    },
+    {
+        "id": "bre-001",
+        "patternType": "bearish-engulfing",
+        "name": "看跌吞噬練習 1",
+        "description": "陰線完全包覆前一根陽線，強烈賣出信號",
+        "candles": [
+            { "open": 70, "high": 82, "low": 68, "close": 80, "volume": 55000, "label": "上漲" },
+            { "open": 80, "high": 92, "low": 78, "close": 90, "volume": 60000, "label": "續漲" },
+            { "open": 90, "high": 98, "low": 88, "close": 96, "volume": 65000, "label": "陽線" },
+            { "open": 98, "high": 100, "low": 82, "close": 85, "volume": 100000, "label": "吞噬陰線" },
+            { "open": 85, "high": 88, "low": 72, "close": 75, "volume": 80000, "label": "續跌" },
+            { "open": 75, "high": 78, "low": 62, "close": 65, "volume": 75000, "label": "下跌" }
+        ],
+        "optimalEntry": { "candleIndex": 3, "action": "sell", "price": 92, "description": "看跌吞噬確認後做空" },
+        "optimalExit": { "candleIndex": 5, "action": "buy", "price": 65, "description": "達到目標價回補" },
+        "stopLoss": 102,
+        "takeProfit": 62,
+        "expectedDirection": "down",
+        "difficulty": "easy"
+    }
+]

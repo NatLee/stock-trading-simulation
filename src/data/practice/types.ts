@@ -22,13 +22,26 @@ export type PatternType =
     | 'falling-wedge'
     | 'v-bottom'
     | 'v-top'
-    // K線型態 - Candlestick Patterns
+    // K線型態 - Candlestick Patterns (單根/雙根)
     | 'morning-star'
     | 'evening-star'
     | 'bullish-engulfing'
     | 'bearish-engulfing'
     | 'hammer'
     | 'shooting-star'
+    | 'hanging-man'           // 吊人線
+    | 'inverted-hammer'       // 倒錘子
+    | 'doji'                  // 十字線
+    | 'dragonfly-doji'        // 蜻蜓十字
+    | 'gravestone-doji'       // 墓碑十字
+    | 'bullish-harami'        // 多頭母子線
+    | 'bearish-harami'        // 空頭母子線
+    | 'piercing-line'         // 貫穿線
+    | 'dark-cloud-cover'      // 烏雲蓋頂
+    | 'tweezer-top'           // 鑷子頂
+    | 'tweezer-bottom'        // 鑷子底
+    | 'three-white-soldiers'  // 紅三兵
+    | 'three-black-crows'     // 黑三兵
     // 持續型態 - Continuation Patterns
     | 'ascending-triangle'
     | 'descending-triangle'
@@ -38,6 +51,8 @@ export type PatternType =
     | 'bull-pennant'
     | 'bear-pennant'
     | 'cup-and-handle'
+    | 'rising-three-methods'  // 上升三法
+    | 'falling-three-methods' // 下降三法
     // 整理型態 - Consolidation Patterns
     | 'rectangle';
 

@@ -1,0 +1,42 @@
+[
+    {
+        "id": "tt-001",
+        "patternType": "tweezer-top",
+        "name": "鑷子頂練習 1",
+        "description": "上漲趨勢末端的鑷子頂，兩根K線高點相同",
+        "candles": [
+            { "open": 70, "high": 78, "low": 68, "close": 76, "volume": 52000 },
+            { "open": 76, "high": 86, "low": 74, "close": 84, "volume": 58000, "label": "上漲" },
+            { "open": 84, "high": 98, "low": 82, "close": 96, "volume": 72000, "label": "鑷子1" },
+            { "open": 96, "high": 98, "low": 88, "close": 90, "volume": 78000, "label": "鑷子2(同高)" },
+            { "open": 90, "high": 92, "low": 78, "close": 80, "volume": 82000, "label": "下跌" },
+            { "open": 80, "high": 82, "low": 68, "close": 70, "volume": 75000, "label": "續跌" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "sell", "price": 85, "description": "鑷子頂確認後做空" },
+        "optimalExit": { "candleIndex": 5, "action": "buy", "price": 70, "description": "達到目標價回補" },
+        "stopLoss": 100,
+        "takeProfit": 68,
+        "expectedDirection": "down",
+        "difficulty": "medium"
+    },
+    {
+        "id": "tb-001",
+        "patternType": "tweezer-bottom",
+        "name": "鑷子底練習 1",
+        "description": "下跌趨勢末端的鑷子底，兩根K線低點相同",
+        "candles": [
+            { "open": 90, "high": 92, "low": 82, "close": 84, "volume": 52000 },
+            { "open": 84, "high": 86, "low": 74, "close": 76, "volume": 58000, "label": "下跌" },
+            { "open": 76, "high": 78, "low": 62, "close": 64, "volume": 75000, "label": "鑷子1" },
+            { "open": 64, "high": 76, "low": 62, "close": 74, "volume": 82000, "label": "鑷子2(同低)" },
+            { "open": 74, "high": 88, "low": 72, "close": 86, "volume": 78000, "label": "反彈" },
+            { "open": 86, "high": 100, "low": 84, "close": 98, "volume": 72000, "label": "上漲" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "buy", "price": 80, "description": "鑷子底確認後買入" },
+        "optimalExit": { "candleIndex": 5, "action": "sell", "price": 98, "description": "達到目標價賣出" },
+        "stopLoss": 60,
+        "takeProfit": 95,
+        "expectedDirection": "up",
+        "difficulty": "medium"
+    }
+]

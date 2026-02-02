@@ -9,3 +9,4 @@ export { PracticeResults } from './PracticeResults';
 export { PatternRecognition } from './PatternRecognition';
 export { TradingPractice } from './TradingPractice';
 export { ReplayMode } from './ReplayMode';
+export { WelcomePage } from './WelcomePage';

@@ -1,0 +1,82 @@
+[
+    {
+        "id": "tws-001",
+        "patternType": "three-white-soldiers",
+        "name": "紅三兵練習 1",
+        "description": "下跌趨勢末端的紅三兵，強烈看漲信號",
+        "candles": [
+            { "open": 88, "high": 90, "low": 80, "close": 82, "volume": 55000 },
+            { "open": 82, "high": 84, "low": 74, "close": 76, "volume": 60000, "label": "下跌" },
+            { "open": 76, "high": 85, "low": 74, "close": 83, "volume": 72000, "label": "紅1" },
+            { "open": 83, "high": 92, "low": 81, "close": 90, "volume": 78000, "label": "紅2" },
+            { "open": 90, "high": 100, "low": 88, "close": 98, "volume": 85000, "label": "紅3" },
+            { "open": 98, "high": 112, "low": 96, "close": 110, "volume": 80000, "label": "續漲" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "buy", "price": 94, "description": "紅三兵確認後買入" },
+        "optimalExit": { "candleIndex": 5, "action": "sell", "price": 110, "description": "達到目標價賣出" },
+        "stopLoss": 72,
+        "takeProfit": 108,
+        "expectedDirection": "up",
+        "difficulty": "easy"
+    },
+    {
+        "id": "tws-002",
+        "patternType": "three-white-soldiers",
+        "name": "紅三兵練習 2",
+        "description": "整理區間突破的紅三兵",
+        "candles": [
+            { "open": 65, "high": 72, "low": 63, "close": 70, "volume": 50000 },
+            { "open": 70, "high": 73, "low": 66, "close": 68, "volume": 48000, "label": "整理" },
+            { "open": 68, "high": 78, "low": 67, "close": 76, "volume": 65000, "label": "紅1" },
+            { "open": 76, "high": 86, "low": 74, "close": 84, "volume": 72000, "label": "紅2" },
+            { "open": 84, "high": 95, "low": 82, "close": 93, "volume": 82000, "label": "紅3" },
+            { "open": 93, "high": 105, "low": 91, "close": 102, "volume": 78000, "label": "突破" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "buy", "price": 88, "description": "突破整理區後買入" },
+        "optimalExit": { "candleIndex": 5, "action": "sell", "price": 102, "description": "達到目標價賣出" },
+        "stopLoss": 74,
+        "takeProfit": 100,
+        "expectedDirection": "up",
+        "difficulty": "medium"
+    },
+    {
+        "id": "tbc-001",
+        "patternType": "three-black-crows",
+        "name": "黑三兵練習 1",
+        "description": "上漲趨勢末端的黑三兵，強烈看跌信號",
+        "candles": [
+            { "open": 72, "high": 82, "low": 70, "close": 80, "volume": 55000 },
+            { "open": 80, "high": 92, "low": 78, "close": 90, "volume": 60000, "label": "上漲" },
+            { "open": 90, "high": 92, "low": 82, "close": 84, "volume": 75000, "label": "黑1" },
+            { "open": 84, "high": 86, "low": 75, "close": 77, "volume": 80000, "label": "黑2" },
+            { "open": 77, "high": 79, "low": 68, "close": 70, "volume": 88000, "label": "黑3" },
+            { "open": 70, "high": 72, "low": 58, "close": 60, "volume": 82000, "label": "續跌" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "sell", "price": 74, "description": "黑三兵確認後做空" },
+        "optimalExit": { "candleIndex": 5, "action": "buy", "price": 60, "description": "達到目標價回補" },
+        "stopLoss": 94,
+        "takeProfit": 58,
+        "expectedDirection": "down",
+        "difficulty": "easy"
+    },
+    {
+        "id": "tbc-002",
+        "patternType": "three-black-crows",
+        "name": "黑三兵練習 2",
+        "description": "整理區間跌破的黑三兵",
+        "candles": [
+            { "open": 95, "high": 100, "low": 92, "close": 98, "volume": 52000 },
+            { "open": 98, "high": 102, "low": 94, "close": 96, "volume": 50000, "label": "整理" },
+            { "open": 96, "high": 98, "low": 88, "close": 90, "volume": 68000, "label": "黑1" },
+            { "open": 90, "high": 92, "low": 82, "close": 84, "volume": 75000, "label": "黑2" },
+            { "open": 84, "high": 86, "low": 75, "close": 77, "volume": 85000, "label": "黑3" },
+            { "open": 77, "high": 79, "low": 65, "close": 68, "volume": 80000, "label": "跌破" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "sell", "price": 80, "description": "跌破整理區後做空" },
+        "optimalExit": { "candleIndex": 5, "action": "buy", "price": 68, "description": "達到目標價回補" },
+        "stopLoss": 100,
+        "takeProfit": 66,
+        "expectedDirection": "down",
+        "difficulty": "medium"
+    }
+]

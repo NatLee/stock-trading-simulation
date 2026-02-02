@@ -1,0 +1,48 @@
+[
+    {
+        "id": "rb-001",
+        "patternType": "rounding-bottom",
+        "name": "圓弧底型態練習 1",
+        "description": "長期底部反轉型態，觀察買入時機",
+        "candles": [
+            { "open": 80, "high": 82, "low": 72, "close": 74, "volume": 50000, "label": "下跌" },
+            { "open": 74, "high": 76, "low": 68, "close": 70, "volume": 48000 },
+            { "open": 70, "high": 72, "low": 65, "close": 67, "volume": 42000, "label": "底部左側" },
+            { "open": 67, "high": 69, "low": 64, "close": 66, "volume": 38000, "label": "圓弧底部" },
+            { "open": 66, "high": 70, "low": 65, "close": 68, "volume": 40000 },
+            { "open": 68, "high": 74, "low": 67, "close": 72, "volume": 45000, "label": "底部右側" },
+            { "open": 72, "high": 80, "low": 71, "close": 78, "volume": 55000, "label": "開始上漲" },
+            { "open": 78, "high": 92, "low": 77, "close": 90, "volume": 85000, "label": "突破!" },
+            { "open": 90, "high": 102, "low": 88, "close": 100, "volume": 80000, "label": "續漲" }
+        ],
+        "optimalEntry": { "candleIndex": 7, "action": "buy", "price": 85, "description": "突破頸線時買入" },
+        "optimalExit": { "candleIndex": 8, "action": "sell", "price": 100, "description": "達到目標價賣出" },
+        "stopLoss": 70,
+        "takeProfit": 98,
+        "expectedDirection": "up",
+        "difficulty": "hard"
+    },
+    {
+        "id": "rt-001",
+        "patternType": "rounding-top",
+        "name": "圓弧頂型態練習 1",
+        "description": "長期頂部反轉型態，觀察做空時機",
+        "candles": [
+            { "open": 70, "high": 78, "low": 68, "close": 76, "volume": 50000, "label": "上漲" },
+            { "open": 76, "high": 82, "low": 74, "close": 80, "volume": 48000 },
+            { "open": 80, "high": 86, "low": 78, "close": 84, "volume": 42000, "label": "頂部左側" },
+            { "open": 84, "high": 88, "low": 82, "close": 86, "volume": 38000, "label": "圓弧頂部" },
+            { "open": 86, "high": 88, "low": 82, "close": 84, "volume": 40000 },
+            { "open": 84, "high": 86, "low": 78, "close": 80, "volume": 45000, "label": "頂部右側" },
+            { "open": 80, "high": 82, "low": 72, "close": 74, "volume": 55000, "label": "開始下跌" },
+            { "open": 74, "high": 76, "low": 62, "close": 65, "volume": 85000, "label": "跌破!" },
+            { "open": 65, "high": 68, "low": 55, "close": 58, "volume": 80000, "label": "續跌" }
+        ],
+        "optimalEntry": { "candleIndex": 7, "action": "sell", "price": 70, "description": "跌破頸線時做空" },
+        "optimalExit": { "candleIndex": 8, "action": "buy", "price": 58, "description": "達到目標價回補" },
+        "stopLoss": 82,
+        "takeProfit": 55,
+        "expectedDirection": "down",
+        "difficulty": "hard"
+    }
+]

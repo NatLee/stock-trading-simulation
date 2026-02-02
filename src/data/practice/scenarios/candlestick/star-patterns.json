@@ -1,0 +1,80 @@
+[
+    {
+        "id": "ms-001",
+        "patternType": "morning-star",
+        "name": "晨星練習 1",
+        "description": "三根K線組成的底部反轉型態",
+        "candles": [
+            { "open": 90, "high": 92, "low": 78, "close": 80, "volume": 55000, "label": "下跌" },
+            { "open": 80, "high": 82, "low": 68, "close": 70, "volume": 65000, "label": "長黑K" },
+            { "open": 70, "high": 74, "low": 65, "close": 72, "volume": 45000, "label": "十字星" },
+            { "open": 72, "high": 88, "low": 71, "close": 86, "volume": 80000, "label": "長紅K" },
+            { "open": 86, "high": 98, "low": 84, "close": 95, "volume": 75000, "label": "續漲" },
+            { "open": 95, "high": 108, "low": 93, "close": 105, "volume": 70000, "label": "上漲" }
+        ],
+        "optimalEntry": { "candleIndex": 3, "action": "buy", "price": 80, "description": "晨星確認後買入" },
+        "optimalExit": { "candleIndex": 5, "action": "sell", "price": 105, "description": "達到目標價賣出" },
+        "stopLoss": 64,
+        "takeProfit": 102,
+        "expectedDirection": "up",
+        "difficulty": "easy"
+    },
+    {
+        "id": "ms-002",
+        "patternType": "morning-star",
+        "name": "晨星練習 2",
+        "description": "帶有跳空的完美晨星型態",
+        "candles": [
+            { "open": 85, "high": 86, "low": 72, "close": 74, "volume": 50000 },
+            { "open": 74, "high": 75, "low": 60, "close": 62, "volume": 70000, "label": "長黑K" },
+            { "open": 58, "high": 62, "low": 55, "close": 60, "volume": 40000, "label": "跳空十字星" },
+            { "open": 64, "high": 82, "low": 63, "close": 80, "volume": 85000, "label": "跳空長紅K" },
+            { "open": 80, "high": 95, "low": 78, "close": 92, "volume": 75000, "label": "續漲" }
+        ],
+        "optimalEntry": { "candleIndex": 3, "action": "buy", "price": 72, "description": "晨星確認後買入" },
+        "optimalExit": { "candleIndex": 4, "action": "sell", "price": 92, "description": "達到目標價賣出" },
+        "stopLoss": 54,
+        "takeProfit": 90,
+        "expectedDirection": "up",
+        "difficulty": "medium"
+    },
+    {
+        "id": "es-001",
+        "patternType": "evening-star",
+        "name": "夜星練習 1",
+        "description": "三根K線組成的頂部反轉型態",
+        "candles": [
+            { "open": 80, "high": 92, "low": 78, "close": 90, "volume": 55000, "label": "上漲" },
+            { "open": 90, "high": 105, "low": 88, "close": 102, "volume": 65000, "label": "長紅K" },
+            { "open": 102, "high": 108, "low": 100, "close": 104, "volume": 45000, "label": "十字星" },
+            { "open": 104, "high": 105, "low": 88, "close": 90, "volume": 80000, "label": "長黑K" },
+            { "open": 90, "high": 92, "low": 78, "close": 80, "volume": 75000, "label": "續跌" },
+            { "open": 80, "high": 82, "low": 68, "close": 70, "volume": 70000, "label": "下跌" }
+        ],
+        "optimalEntry": { "candleIndex": 3, "action": "sell", "price": 96, "description": "夜星確認後做空" },
+        "optimalExit": { "candleIndex": 5, "action": "buy", "price": 70, "description": "達到目標價回補" },
+        "stopLoss": 110,
+        "takeProfit": 68,
+        "expectedDirection": "down",
+        "difficulty": "easy"
+    },
+    {
+        "id": "es-002",
+        "patternType": "evening-star",
+        "name": "夜星練習 2",
+        "description": "帶有跳空的完美夜星型態",
+        "candles": [
+            { "open": 75, "high": 88, "low": 74, "close": 86, "volume": 50000 },
+            { "open": 86, "high": 102, "low": 85, "close": 100, "volume": 70000, "label": "長紅K" },
+            { "open": 105, "high": 110, "low": 102, "close": 106, "volume": 40000, "label": "跳空十字星" },
+            { "open": 102, "high": 103, "low": 85, "close": 88, "volume": 85000, "label": "跳空長黑K" },
+            { "open": 88, "high": 90, "low": 72, "close": 75, "volume": 75000, "label": "續跌" }
+        ],
+        "optimalEntry": { "candleIndex": 3, "action": "sell", "price": 95, "description": "夜星確認後做空" },
+        "optimalExit": { "candleIndex": 4, "action": "buy", "price": 75, "description": "達到目標價回補" },
+        "stopLoss": 112,
+        "takeProfit": 72,
+        "expectedDirection": "down",
+        "difficulty": "medium"
+    }
+]

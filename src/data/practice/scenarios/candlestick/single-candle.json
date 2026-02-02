@@ -1,0 +1,42 @@
+[
+    {
+        "id": "hm-001",
+        "patternType": "hammer",
+        "name": "錘子線練習 1",
+        "description": "下跌趨勢中出現長下影線，預示反轉",
+        "candles": [
+            { "open": 95, "high": 96, "low": 85, "close": 87, "volume": 50000, "label": "下跌" },
+            { "open": 87, "high": 88, "low": 78, "close": 80, "volume": 55000, "label": "續跌" },
+            { "open": 80, "high": 82, "low": 72, "close": 74, "volume": 60000, "label": "下跌" },
+            { "open": 74, "high": 78, "low": 58, "close": 76, "volume": 90000, "label": "錘子線" },
+            { "open": 76, "high": 90, "low": 75, "close": 88, "volume": 80000, "label": "反彈" },
+            { "open": 88, "high": 100, "low": 86, "close": 98, "volume": 75000, "label": "上漲" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "buy", "price": 82, "description": "錘子線確認後買入" },
+        "optimalExit": { "candleIndex": 5, "action": "sell", "price": 98, "description": "達到目標價賣出" },
+        "stopLoss": 56,
+        "takeProfit": 95,
+        "expectedDirection": "up",
+        "difficulty": "easy"
+    },
+    {
+        "id": "ss-001",
+        "patternType": "shooting-star",
+        "name": "流星線練習 1",
+        "description": "上漲趨勢中出現長上影線，預示反轉",
+        "candles": [
+            { "open": 70, "high": 82, "low": 68, "close": 80, "volume": 50000, "label": "上漲" },
+            { "open": 80, "high": 90, "low": 78, "close": 88, "volume": 55000, "label": "續漲" },
+            { "open": 88, "high": 98, "low": 86, "close": 96, "volume": 60000, "label": "上漲" },
+            { "open": 96, "high": 115, "low": 94, "close": 98, "volume": 90000, "label": "流星線" },
+            { "open": 98, "high": 100, "low": 85, "close": 88, "volume": 80000, "label": "下跌" },
+            { "open": 88, "high": 90, "low": 75, "close": 78, "volume": 75000, "label": "續跌" }
+        ],
+        "optimalEntry": { "candleIndex": 4, "action": "sell", "price": 94, "description": "流星線確認後做空" },
+        "optimalExit": { "candleIndex": 5, "action": "buy", "price": 78, "description": "達到目標價回補" },
+        "stopLoss": 117,
+        "takeProfit": 75,
+        "expectedDirection": "down",
+        "difficulty": "easy"
+    }
+]

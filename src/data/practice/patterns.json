@@ -1,0 +1,354 @@
+{
+    "head-and-shoulders-top": {
+        "id": "head-and-shoulders-top",
+        "name": "頭肩頂",
+        "nameEn": "Head and Shoulders Top",
+        "description": "典型的反轉型態，出現在上升趨勢末端，預示價格可能反轉向下",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "head-and-shoulders-bottom": {
+        "id": "head-and-shoulders-bottom",
+        "name": "頭肩底",
+        "nameEn": "Head and Shoulders Bottom",
+        "description": "底部反轉型態，出現在下跌趨勢末端，預示價格可能反轉向上",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "double-bottom": {
+        "id": "double-bottom",
+        "name": "W底（雙重底）",
+        "nameEn": "Double Bottom",
+        "description": "兩個相近的低點，中間有反彈高點，預示趨勢反轉向上",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "double-top": {
+        "id": "double-top",
+        "name": "M頭（雙重頂）",
+        "nameEn": "Double Top",
+        "description": "兩個相近的高點，中間有回檔低點，預示趨勢反轉向下",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "triple-top": {
+        "id": "triple-top",
+        "name": "三重頂",
+        "nameEn": "Triple Top",
+        "description": "三個相近的高點，代表買方力道完全耗盡，強烈的賣出信號",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "triple-bottom": {
+        "id": "triple-bottom",
+        "name": "三重底",
+        "nameEn": "Triple Bottom",
+        "description": "三個相近的低點，代表賣方力道完全耗盡，強烈的買入信號",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "rounding-bottom": {
+        "id": "rounding-bottom",
+        "name": "圓弧底",
+        "nameEn": "Rounding Bottom",
+        "description": "長期底部反轉型態，價格走勢呈現圓弧形",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "rounding-top": {
+        "id": "rounding-top",
+        "name": "圓弧頂",
+        "nameEn": "Rounding Top",
+        "description": "長期頂部反轉型態，價格走勢呈現倒圓弧形",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "island-reversal-top": {
+        "id": "island-reversal-top",
+        "name": "島狀反轉（頂）",
+        "nameEn": "Island Reversal Top",
+        "description": "頂部反轉訊號，由向上跳空後再向下跳空組成",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "island-reversal-bottom": {
+        "id": "island-reversal-bottom",
+        "name": "島狀反轉（底）",
+        "nameEn": "Island Reversal Bottom",
+        "description": "底部反轉訊號，由向下跳空後再向上跳空組成",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "rising-wedge": {
+        "id": "rising-wedge",
+        "name": "上升楔形",
+        "nameEn": "Rising Wedge",
+        "description": "價格在收斂的上升通道中運行，通常預示下跌反轉",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "falling-wedge": {
+        "id": "falling-wedge",
+        "name": "下降楔形",
+        "nameEn": "Falling Wedge",
+        "description": "價格在收斂的下降通道中運行，通常預示上漲反轉",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "v-bottom": {
+        "id": "v-bottom",
+        "name": "V型底",
+        "nameEn": "V-Bottom",
+        "description": "急速下跌後快速反彈形成V字形，代表強烈的底部反轉",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "v-top": {
+        "id": "v-top",
+        "name": "倒V型頂",
+        "nameEn": "V-Top",
+        "description": "急速上漲後快速下跌形成倒V字形，代表強烈的頂部反轉",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "morning-star": {
+        "id": "morning-star",
+        "name": "晨星",
+        "nameEn": "Morning Star",
+        "description": "三根K線組成的底部反轉型態，預示下跌趨勢即將結束",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "evening-star": {
+        "id": "evening-star",
+        "name": "夜星",
+        "nameEn": "Evening Star",
+        "description": "三根K線組成的頂部反轉型態，預示上漲趨勢即將結束",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "bullish-engulfing": {
+        "id": "bullish-engulfing",
+        "name": "看漲吞噬",
+        "nameEn": "Bullish Engulfing",
+        "description": "陽線實體完全包覆前一根陰線，預示反轉向上",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "bearish-engulfing": {
+        "id": "bearish-engulfing",
+        "name": "看跌吞噬",
+        "nameEn": "Bearish Engulfing",
+        "description": "陰線實體完全包覆前一根陽線，預示反轉向下",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "hammer": {
+        "id": "hammer",
+        "name": "錘子線",
+        "nameEn": "Hammer",
+        "description": "下跌趨勢中出現的反轉信號，下影線長、實體小",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "shooting-star": {
+        "id": "shooting-star",
+        "name": "流星線",
+        "nameEn": "Shooting Star",
+        "description": "上漲趨勢中出現的反轉信號，上影線長、實體小",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "hanging-man": {
+        "id": "hanging-man",
+        "name": "吊人線",
+        "nameEn": "Hanging Man",
+        "description": "上漲趨勢中出現的反轉信號，與錘子線外形相同但出現位置不同",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "inverted-hammer": {
+        "id": "inverted-hammer",
+        "name": "倒錘子",
+        "nameEn": "Inverted Hammer",
+        "description": "下跌趨勢中出現的反轉信號，上影線長、實體小、下影線短",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "doji": {
+        "id": "doji",
+        "name": "十字線",
+        "nameEn": "Doji",
+        "description": "開盤價與收盤價相近，表示市場猶豫不決，可能預示趨勢反轉",
+        "category": "reversal",
+        "signal": "neutral"
+    },
+    "dragonfly-doji": {
+        "id": "dragonfly-doji",
+        "name": "蜻蜓十字",
+        "nameEn": "Dragonfly Doji",
+        "description": "T字形十字線，下影線長，表示下跌後買方力量介入",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "gravestone-doji": {
+        "id": "gravestone-doji",
+        "name": "墓碑十字",
+        "nameEn": "Gravestone Doji",
+        "description": "倒T字形十字線，上影線長，表示上漲後賣方力量介入",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "bullish-harami": {
+        "id": "bullish-harami",
+        "name": "多頭母子線",
+        "nameEn": "Bullish Harami",
+        "description": "大陰線後出現小陽線，小陽線完全包含在大陰線實體內",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "bearish-harami": {
+        "id": "bearish-harami",
+        "name": "空頭母子線",
+        "nameEn": "Bearish Harami",
+        "description": "大陽線後出現小陰線，小陰線完全包含在大陽線實體內",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "piercing-line": {
+        "id": "piercing-line",
+        "name": "貫穿線",
+        "nameEn": "Piercing Line",
+        "description": "下跌趨勢中，陽線收盤穿越前一根陰線實體中線以上",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "dark-cloud-cover": {
+        "id": "dark-cloud-cover",
+        "name": "烏雲蓋頂",
+        "nameEn": "Dark Cloud Cover",
+        "description": "上漲趨勢中，陰線收盤穿越前一根陽線實體中線以下",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "tweezer-top": {
+        "id": "tweezer-top",
+        "name": "鑷子頂",
+        "nameEn": "Tweezer Top",
+        "description": "兩根K線高點相同，出現在上漲趨勢末端，預示反轉",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "tweezer-bottom": {
+        "id": "tweezer-bottom",
+        "name": "鑷子底",
+        "nameEn": "Tweezer Bottom",
+        "description": "兩根K線低點相同，出現在下跌趨勢末端，預示反轉",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "three-white-soldiers": {
+        "id": "three-white-soldiers",
+        "name": "紅三兵",
+        "nameEn": "Three White Soldiers",
+        "description": "連續三根陽線，每根收盤價都高於前一根，強烈看漲信號",
+        "category": "reversal",
+        "signal": "bullish"
+    },
+    "three-black-crows": {
+        "id": "three-black-crows",
+        "name": "黑三兵",
+        "nameEn": "Three Black Crows",
+        "description": "連續三根陰線，每根收盤價都低於前一根，強烈看跌信號",
+        "category": "reversal",
+        "signal": "bearish"
+    },
+    "ascending-triangle": {
+        "id": "ascending-triangle",
+        "name": "上升三角形",
+        "nameEn": "Ascending Triangle",
+        "description": "高點持平、低點上移，通常為看漲持續型態",
+        "category": "continuation",
+        "signal": "bullish"
+    },
+    "descending-triangle": {
+        "id": "descending-triangle",
+        "name": "下降三角形",
+        "nameEn": "Descending Triangle",
+        "description": "低點持平、高點下移，通常為看跌持續型態",
+        "category": "continuation",
+        "signal": "bearish"
+    },
+    "symmetric-triangle": {
+        "id": "symmetric-triangle",
+        "name": "對稱三角形",
+        "nameEn": "Symmetric Triangle",
+        "description": "高點下移、低點上移，方向需等待突破確認",
+        "category": "consolidation",
+        "signal": "neutral"
+    },
+    "bull-flag": {
+        "id": "bull-flag",
+        "name": "上升旗形",
+        "nameEn": "Bull Flag",
+        "description": "急漲後向下傾斜整理，突破後繼續上漲",
+        "category": "continuation",
+        "signal": "bullish"
+    },
+    "bear-flag": {
+        "id": "bear-flag",
+        "name": "下降旗形",
+        "nameEn": "Bear Flag",
+        "description": "急跌後向上傾斜整理，跌破後繼續下跌",
+        "category": "continuation",
+        "signal": "bearish"
+    },
+    "bull-pennant": {
+        "id": "bull-pennant",
+        "name": "上升三角旗",
+        "nameEn": "Bull Pennant",
+        "description": "急漲後形成對稱收斂整理，突破後繼續上漲",
+        "category": "continuation",
+        "signal": "bullish"
+    },
+    "bear-pennant": {
+        "id": "bear-pennant",
+        "name": "下降三角旗",
+        "nameEn": "Bear Pennant",
+        "description": "急跌後形成對稱收斂整理，跌破後繼續下跌",
+        "category": "continuation",
+        "signal": "bearish"
+    },
+    "cup-and-handle": {
+        "id": "cup-and-handle",
+        "name": "杯柄型態",
+        "nameEn": "Cup and Handle",
+        "description": "圓弧底加上杯柄整理，突破後預示大幅上漲",
+        "category": "continuation",
+        "signal": "bullish"
+    },
+    "rising-three-methods": {
+        "id": "rising-three-methods",
+        "name": "上升三法",
+        "nameEn": "Rising Three Methods",
+        "description": "大陽線後接三根小陰線回調，再接大陽線突破，上漲持續信號",
+        "category": "continuation",
+        "signal": "bullish"
+    },
+    "falling-three-methods": {
+        "id": "falling-three-methods",
+        "name": "下降三法",
+        "nameEn": "Falling Three Methods",
+        "description": "大陰線後接三根小陽線反彈，再接大陰線突破，下跌持續信號",
+        "category": "continuation",
+        "signal": "bearish"
+    },
+    "rectangle": {
+        "id": "rectangle",
+        "name": "矩形整理",
+        "nameEn": "Rectangle",
+        "description": "價格在水平區間內來回震盪，等待方向突破",
+        "category": "consolidation",
+        "signal": "neutral"
+    }
+}

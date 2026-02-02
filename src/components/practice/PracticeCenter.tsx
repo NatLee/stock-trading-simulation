@@ -22,8 +22,9 @@ import { PatternRecognition } from './PatternRecognition';
 import { TradingPractice } from './TradingPractice';
 import { ReplayMode } from './ReplayMode';
 import { PracticeResults } from './PracticeResults';
+import { WelcomePage } from './WelcomePage';
 import { PatternType, PracticeMode } from '@/data/practice/types';
-import { getScenariosByPattern, PATTERN_SCENARIOS, PATTERN_INFO } from '@/data/practice/patternScenarios';
+import { getScenariosByPattern, getRandomScenario, PATTERN_SCENARIOS, PATTERN_INFO } from '@/data/practice/patternScenarios';
 
 const MODE_LABELS: Record<PracticeMode, { label: string; icon: typeof Target }> = {
     recognition: { label: '型態辨識', icon: Target },
@@ -35,6 +36,7 @@ export function PracticeCenter() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [selectedPatternType, setSelectedPatternType] = useState<PatternType | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [showWelcome, setShowWelcome] = useState(true); // Track if welcome page should be shown
     
     const {
         state,
@@ -71,6 +73,7 @@ export function PracticeCenter() {
     // Handle pattern selection
     const handlePatternSelect = (patternType: PatternType) => {
         setSelectedPatternType(patternType);
+        setShowWelcome(false); // Hide welcome page
         const scenarios = getScenariosByPattern(patternType);
         if (scenarios.length > 0) {
             // Pick a random scenario of this pattern type
@@ -85,6 +88,7 @@ export function PracticeCenter() {
     const handleModeChange = (mode: PracticeMode) => {
         setMode(mode);
         if (mode === 'recognition') {
+            setShowWelcome(false); // Hide welcome page
             startRecognitionSession();
             setMobileMenuOpen(false);
         } else if (selectedPatternType) {
@@ -106,6 +110,17 @@ export function PracticeCenter() {
         setSelectedPatternType(null);
         loadRandomScenario();
     };
+    
+    // Handle random start from welcome page
+    const handleRandomStart = () => {
+        setShowWelcome(false);
+        const randomScenario = getRandomScenario();
+        setSelectedPatternType(randomScenario.patternType);
+        loadScenario(randomScenario);
+    };
+    
+    // Check if we should show welcome page
+    const shouldShowWelcome = showWelcome && !state.currentScenario && state.mode !== 'recognition';
 
     const modeInfo = MODE_LABELS[state.mode];
     const ModeIcon = modeInfo.icon;
@@ -251,8 +266,15 @@ export function PracticeCenter() {
                     {/* Main Area */}
                     <div className="flex-1 min-w-0">
                         <div className="p-4 lg:p-6">
-                            {/* Show Results if complete */}
-                            {state.isComplete && state.result ? (
+                            {/* Show Welcome Page */}
+                            {shouldShowWelcome ? (
+                                <WelcomePage
+                                    onModeSelect={handleModeChange}
+                                    onPatternSelect={handlePatternSelect}
+                                    onRandomStart={handleRandomStart}
+                                />
+                            ) : state.isComplete && state.result ? (
+                                /* Show Results if complete */
                                 <PracticeResults
                                     result={state.result}
                                     scoreBreakdown={scoreBreakdown}

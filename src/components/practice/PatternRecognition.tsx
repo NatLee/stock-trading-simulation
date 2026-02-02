@@ -43,8 +43,10 @@ export function PatternRecognition({
                 const isMobile = window.innerWidth < 768;
                 // Account for padding (p-4 on mobile, p-6 on desktop)
                 const padding = isMobile ? 32 : 48;
-                const width = Math.min(containerWidth - padding, 900);
-                setChartWidth(Math.max(width, 280));
+                // Use container width - lower minimum to prevent overflow
+                const calculatedWidth = containerWidth - padding;
+                const width = Math.min(calculatedWidth, 900);
+                setChartWidth(Math.max(width, 200));
                 setChartHeight(isMobile ? 220 : 350);
             }
         };
@@ -128,7 +130,7 @@ export function PatternRecognition({
             {/* Chart - 置中且響應式 */}
             <div 
                 ref={chartContainerRef}
-                className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6"
+                className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 overflow-hidden min-w-0"
             >
                 <div className="text-center text-zinc-400 mb-3 md:mb-4 text-sm md:text-lg">
                     請辨識以下 K 線圖形是什麼型態？
