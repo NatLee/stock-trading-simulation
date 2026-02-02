@@ -45,6 +45,23 @@ Three types of bots simulate realistic market activity:
 
 Features interactive quizzes, visual charts, and progress tracking.
 
+### Practice Center
+
+A comprehensive environment for mastering chart patterns and trading execution:
+
+- **Pattern Recognition**: Interactive quiz mode to identify chart patterns (Head & Shoulders, Wedges, Triangles, etc.) from real market scenarios.
+- **Trading Practice**: Risk-free simulation to trade specific patterns or random scenarios.
+- **Rewind & Replay**: Review historical price action and replay scenarios to analyze decision-making.
+
+### Market Analysis
+
+Real-time market:
+
+- **Trend Analysis**: Detects market direction (Bullish/Bearish) and strength.
+- **Order Book Scanning**: Analyzes bid/ask pressure to gauge market sentiment.
+- **Momentum Indicators**: Tracks RSI and volume velocity.
+- **Pattern Detection**: Automatically identifies forming chart patterns with confidence scores.
+
 ### Additional Features
 
 - **Taiwan Stock Exchange tick rules** for realistic price steps
@@ -166,10 +183,6 @@ The `BotManager` coordinates all bots on each tick (default 100ms):
 
 Order quantities scale with configurable `unitSize` and `intensity` parameters.
 
-## License
+## Contributors
 
-MIT License
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+- [NatLee](https://github.com/NatLee)
