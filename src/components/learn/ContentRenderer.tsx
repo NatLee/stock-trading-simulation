@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { ContentBlock, CandleData, CandleAnnotation, TradeScenario, IndicatorValue, QuizOption, CalculationStep, LineChartData, LineChartPoint, LineChartMarker, LineChartLine, LineChartZone } from '@/data/learn/types';
 import { TrendingUp, TrendingDown, AlertCircle, CheckCircle, XCircle, CircleDot, Target, ShieldAlert, Info } from 'lucide-react';
-import { TVCandlestickChart, TVLineChart, CandleDataExtended, DataPoint, ChartMarker, ChartLine, ChartZone } from './charts';
+import { TVCandlestickChart, TVLineChart, CandleDataExtended, DataPoint, ChartMarker, ChartLine, ChartZone, ColorTheme } from './charts';
 
 interface ContentRendererProps {
     content: ContentBlock[];
@@ -1133,6 +1133,11 @@ function ComboChartExample({
 }) {
     const [viewMode, setViewMode] = useState<'candle' | 'line' | 'both'>('both');
     const [syncHoverIndex, setSyncHoverIndex] = useState<number | null>(null);
+    const [colorTheme, setColorTheme] = useState<ColorTheme>('taiwan');
+    
+    // 根據主題獲取漲跌顏色 class
+    const getBullishColorClass = () => colorTheme === 'taiwan' ? 'text-rose-500' : 'text-emerald-400';
+    const getBearishColorClass = () => colorTheme === 'taiwan' ? 'text-emerald-400' : 'text-rose-500';
     
     // 計算統一的圖表寬度（與 TradingViewChart.tsx 保持一致的計算方式）
     const candlePadding = { left: 20, right: 60 };
@@ -1157,7 +1162,7 @@ function ComboChartExample({
     
     return (
         <div className="p-3 sm:p-4 bg-gradient-to-b from-zinc-800/60 to-zinc-900/60 border border-zinc-700/50 rounded-xl shadow-lg">
-            {/* 標題與視圖切換 - 手機版堆疊，桌面版並排 */}
+            {/* 標題與切換按鈕 - 手機版堆疊，桌面版並排 */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                 <h4 className="text-white font-bold flex items-center gap-2 text-sm sm:text-base">
                     <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-amber-500/20 to-indigo-500/20 flex items-center justify-center flex-shrink-0">
@@ -1166,42 +1171,71 @@ function ComboChartExample({
                     <span className="line-clamp-2">{title}</span>
                 </h4>
                 
-                {/* 視圖切換按鈕 - 手機版更大的點擊區域 */}
-                <div className="flex bg-zinc-900 rounded-lg p-0.5 border border-zinc-700/50 self-start sm:self-auto flex-shrink-0">
-                    <button
-                        onClick={() => setViewMode('candle')}
-                        className={`px-3 sm:px-3 py-2 sm:py-1.5 text-xs font-medium rounded-md transition-all ${
-                            viewMode === 'candle' 
-                                ? 'bg-amber-500/20 text-amber-400' 
-                                : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
-                        }`}
-                    >
-                        K線
-                    </button>
-                    {lineData && (
-                        <>
-                            <button
-                                onClick={() => setViewMode('line')}
-                                className={`px-3 sm:px-3 py-2 sm:py-1.5 text-xs font-medium rounded-md transition-all ${
-                                    viewMode === 'line' 
-                                        ? 'bg-indigo-500/20 text-indigo-400' 
-                                        : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
-                                }`}
-                            >
-                                線圖
-                            </button>
-                            <button
-                                onClick={() => setViewMode('both')}
-                                className={`px-3 sm:px-3 py-2 sm:py-1.5 text-xs font-medium rounded-md transition-all ${
-                                    viewMode === 'both' 
-                                        ? 'bg-purple-500/20 text-purple-400' 
-                                        : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
-                                }`}
-                            >
-                                雙視圖
-                            </button>
-                        </>
-                    )}
+                {/* 控制按鈕組 */}
+                <div className="flex items-center gap-2 self-start sm:self-auto flex-shrink-0">
+                    {/* 顏色主題切換按鈕 */}
+                    <div className="flex bg-zinc-900 rounded-lg p-0.5 border border-zinc-700/50">
+                        <button
+                            onClick={() => setColorTheme('taiwan')}
+                            className={`px-2 sm:px-2.5 py-1.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md transition-all ${
+                                colorTheme === 'taiwan' 
+                                    ? 'bg-rose-500/20 text-rose-400' 
+                                    : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
+                            }`}
+                            title="台股配色（紅漲綠跌）"
+                        >
+                            台股
+                        </button>
+                        <button
+                            onClick={() => setColorTheme('us')}
+                            className={`px-2 sm:px-2.5 py-1.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md transition-all ${
+                                colorTheme === 'us' 
+                                    ? 'bg-emerald-500/20 text-emerald-400' 
+                                    : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
+                            }`}
+                            title="美股配色（綠漲紅跌）"
+                        >
+                            美股
+                        </button>
+                    </div>
+                    
+                    {/* 視圖切換按鈕 */}
+                    <div className="flex bg-zinc-900 rounded-lg p-0.5 border border-zinc-700/50">
+                        <button
+                            onClick={() => setViewMode('candle')}
+                            className={`px-2.5 sm:px-3 py-1.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md transition-all ${
+                                viewMode === 'candle' 
+                                    ? 'bg-amber-500/20 text-amber-400' 
+                                    : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
+                            }`}
+                        >
+                            K線
+                        </button>
+                        {lineData && (
+                            <>
+                                <button
+                                    onClick={() => setViewMode('line')}
+                                    className={`px-2.5 sm:px-3 py-1.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md transition-all ${
+                                        viewMode === 'line' 
+                                            ? 'bg-indigo-500/20 text-indigo-400' 
+                                            : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
+                                    }`}
+                                >
+                                    線圖
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('both')}
+                                    className={`px-2.5 sm:px-3 py-1.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md transition-all ${
+                                        viewMode === 'both' 
+                                            ? 'bg-purple-500/20 text-purple-400' 
+                                            : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
+                                    }`}
+                                >
+                                    雙視圖
+                                </button>
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
             
@@ -1216,9 +1250,9 @@ function ComboChartExample({
                                 {candles[syncHoverIndex].label || `#${syncHoverIndex + 1}`}
                             </span>
                             <span className="text-zinc-500">開<span className="text-zinc-300 ml-0.5 sm:ml-1">{candles[syncHoverIndex].open}</span></span>
-                            <span className="text-zinc-500">高<span className="text-emerald-400 ml-0.5 sm:ml-1">{candles[syncHoverIndex].high}</span></span>
-                            <span className="text-zinc-500">低<span className="text-rose-400 ml-0.5 sm:ml-1">{candles[syncHoverIndex].low}</span></span>
-                            <span className="text-zinc-500">收<span className={`ml-0.5 sm:ml-1 font-semibold ${candles[syncHoverIndex].close >= candles[syncHoverIndex].open ? 'text-emerald-400' : 'text-rose-400'}`}>{candles[syncHoverIndex].close}</span></span>
+                            <span className="text-zinc-500">高<span className={`ml-0.5 sm:ml-1 ${getBullishColorClass()}`}>{candles[syncHoverIndex].high}</span></span>
+                            <span className="text-zinc-500">低<span className={`ml-0.5 sm:ml-1 ${getBearishColorClass()}`}>{candles[syncHoverIndex].low}</span></span>
+                            <span className="text-zinc-500">收<span className={`ml-0.5 sm:ml-1 font-semibold ${candles[syncHoverIndex].close >= candles[syncHoverIndex].open ? getBullishColorClass() : getBearishColorClass()}`}>{candles[syncHoverIndex].close}</span></span>
                             {/* 線圖數據 */}
                             {lineData && lineData.points[syncHoverIndex] && (
                                 <span className="text-indigo-400 flex items-center gap-1 border-l border-zinc-700 pl-2 sm:pl-4">
@@ -1258,6 +1292,8 @@ function ComboChartExample({
                                 fixedWidth={viewMode === 'both' ? sharedWidth : undefined}
                                 syncHoverIndex={viewMode === 'both' ? syncHoverIndex : undefined}
                                 onHoverIndexChange={viewMode === 'both' ? handleHoverIndexChange : undefined}
+                                colorTheme={colorTheme}
+                                showColorToggle={false}
                             />
                         </div>
                     </div>
@@ -1321,11 +1357,11 @@ function ComboChartExample({
                                             <span className="text-zinc-500 text-right">O</span>
                                             <span className="text-zinc-300 font-mono text-left">{candle.open}</span>
                                             <span className="text-zinc-500 text-right">H</span>
-                                            <span className="text-emerald-400 font-mono text-left">{candle.high}</span>
+                                            <span className={`${getBullishColorClass()} font-mono text-left`}>{candle.high}</span>
                                             <span className="text-zinc-500 text-right">L</span>
-                                            <span className="text-rose-400 font-mono text-left">{candle.low}</span>
+                                            <span className={`${getBearishColorClass()} font-mono text-left`}>{candle.low}</span>
                                             <span className="text-zinc-500 text-right">C</span>
-                                            <span className={`font-mono font-semibold text-left ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}>{candle.close}</span>
+                                            <span className={`font-mono font-semibold text-left ${isUp ? getBullishColorClass() : getBearishColorClass()}`}>{candle.close}</span>
                                         </div>
                                     </div>
                                 );

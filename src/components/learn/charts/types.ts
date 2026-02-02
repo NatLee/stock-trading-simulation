@@ -153,21 +153,48 @@ export interface LineChartProps {
     className?: string;
 }
 
-// 預設配色
-export const DEFAULT_COLORS: ChartColors = {
+// 顏色主題類型
+export type ColorTheme = 'taiwan' | 'us';
+
+// 基礎配色（不含漲跌色）
+const BASE_COLORS = {
     background: '#18181b',
     grid: '#27272a',
     text: '#a1a1aa',
     textMuted: '#52525b',
-    bullish: '#10b981',
-    bearish: '#ef4444',
     line: '#6366f1',
     crosshair: '#71717a',
+    neutralZone: 'rgba(113, 113, 122, 0.15)',
+};
+
+// 台股配色（紅漲綠跌）
+export const TAIWAN_COLORS: ChartColors = {
+    ...BASE_COLORS,
+    bullish: '#ef4444',      // 紅色 = 上漲
+    bearish: '#10b981',      // 綠色 = 下跌
+    support: '#ef4444',
+    resistance: '#10b981',
+    profitZone: 'rgba(239, 68, 68, 0.15)',
+    lossZone: 'rgba(16, 185, 129, 0.15)',
+};
+
+// 美股配色（綠漲紅跌）
+export const US_COLORS: ChartColors = {
+    ...BASE_COLORS,
+    bullish: '#10b981',      // 綠色 = 上漲
+    bearish: '#ef4444',      // 紅色 = 下跌
     support: '#10b981',
     resistance: '#ef4444',
     profitZone: 'rgba(16, 185, 129, 0.15)',
     lossZone: 'rgba(239, 68, 68, 0.15)',
-    neutralZone: 'rgba(113, 113, 122, 0.15)',
+};
+
+// 預設配色（使用台股配色）
+export const DEFAULT_COLORS: ChartColors = TAIWAN_COLORS;
+
+// 根據主題獲取配色
+export const getThemeColors = (theme: ColorTheme): ChartColors => {
+    return theme === 'taiwan' ? TAIWAN_COLORS : US_COLORS;
 };
 
 // 預設配置

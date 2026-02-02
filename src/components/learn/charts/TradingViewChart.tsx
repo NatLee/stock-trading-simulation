@@ -16,6 +16,8 @@ import {
     DEFAULT_COLORS,
     DEFAULT_CONFIG,
     MARKER_STYLES,
+    ColorTheme,
+    getThemeColors,
 } from './types';
 
 // 固定 K 棒寬度 - 更寬的 K 棒讓標籤更清晰
@@ -38,6 +40,9 @@ interface TVCandlestickChartProps {
     syncHoverIndex?: number | null; // 同步 hover 索引（用於組合圖同步）
     onHoverIndexChange?: (index: number | null) => void; // hover 索引變化回調
     fixedWidth?: number; // 固定寬度（用於組合圖對齊）
+    colorTheme?: ColorTheme; // 顏色主題（台股/美股）
+    onColorThemeChange?: (theme: ColorTheme) => void; // 顏色主題變化回調
+    showColorToggle?: boolean; // 是否顯示顏色切換按鈕
 }
 
 export function TVCandlestickChart({
@@ -53,6 +58,9 @@ export function TVCandlestickChart({
     syncHoverIndex,
     onHoverIndexChange,
     fixedWidth,
+    colorTheme: externalColorTheme,
+    onColorThemeChange,
+    showColorToggle = true,
 }: TVCandlestickChartProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -64,9 +72,23 @@ export function TVCandlestickChart({
         price: null,
     });
     const [tooltip, setTooltip] = useState<TooltipData | null>(null);
+    
+    // 顏色主題狀態（內部或外部控制）
+    const [internalColorTheme, setInternalColorTheme] = useState<ColorTheme>('taiwan');
+    const colorTheme = externalColorTheme ?? internalColorTheme;
+    
+    const handleColorThemeChange = useCallback((theme: ColorTheme) => {
+        if (onColorThemeChange) {
+            onColorThemeChange(theme);
+        } else {
+            setInternalColorTheme(theme);
+        }
+    }, [onColorThemeChange]);
 
     const config = { ...DEFAULT_CONFIG, ...userConfig };
-    const colors = DEFAULT_COLORS;
+    
+    // 根據主題獲取配色
+    const colors = useMemo(() => getThemeColors(colorTheme), [colorTheme]);
 
     // 根據 K 棒數量和標籤需求動態計算寬度
     // 確保每根 K 棒有足夠空間顯示標籤
@@ -299,18 +321,52 @@ export function TVCandlestickChart({
         ? candles[crosshair.dataIndex] 
         : null;
 
+    // 根據主題獲取漲跌顏色 class
+    const getBullishColorClass = () => colorTheme === 'taiwan' ? 'text-rose-500' : 'text-emerald-400';
+    const getBearishColorClass = () => colorTheme === 'taiwan' ? 'text-emerald-400' : 'text-rose-500';
+
     // 圖表內容（不含外框）
     const chartContent = (
         <>
-            {/* 標題與即時資訊面板 */}
-            {(title || (showOHLCInfo && selectedCandle)) && (
+            {/* 標題、顏色切換與即時資訊面板 */}
+            {(title || showColorToggle || (showOHLCInfo && selectedCandle)) && (
                 <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-2 sm:gap-3 mb-3">
-                    {title && (
-                        <h4 className="text-white font-bold flex items-center gap-2">
-                            <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 text-xs sm:text-sm flex-shrink-0">📊</span>
-                            <span className="text-xs sm:text-sm line-clamp-2">{title}</span>
-                        </h4>
-                    )}
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        {title && (
+                            <h4 className="text-white font-bold flex items-center gap-2">
+                                <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 text-xs sm:text-sm flex-shrink-0">📊</span>
+                                <span className="text-xs sm:text-sm line-clamp-2">{title}</span>
+                            </h4>
+                        )}
+                        
+                        {/* 顏色主題切換按鈕 */}
+                        {showColorToggle && (
+                            <div className="flex bg-zinc-900 rounded-lg p-0.5 border border-zinc-700/50 flex-shrink-0">
+                                <button
+                                    onClick={() => handleColorThemeChange('taiwan')}
+                                    className={`px-2 sm:px-2.5 py-1 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md transition-all ${
+                                        colorTheme === 'taiwan' 
+                                            ? 'bg-rose-500/20 text-rose-400' 
+                                            : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
+                                    }`}
+                                    title="台股配色（紅漲綠跌）"
+                                >
+                                    台股
+                                </button>
+                                <button
+                                    onClick={() => handleColorThemeChange('us')}
+                                    className={`px-2 sm:px-2.5 py-1 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md transition-all ${
+                                        colorTheme === 'us' 
+                                            ? 'bg-emerald-500/20 text-emerald-400' 
+                                            : 'text-zinc-500 hover:text-zinc-300 active:text-zinc-200'
+                                    }`}
+                                    title="美股配色（綠漲紅跌）"
+                                >
+                                    美股
+                                </button>
+                            </div>
+                        )}
+                    </div>
                     
                     {/* 固定位置的 OHLC 即時資訊（可選擇隱藏） */}
                     {showOHLCInfo && selectedCandle && (
@@ -319,10 +375,10 @@ export function TVCandlestickChart({
                                 <span className="text-zinc-400 font-semibold">{selectedCandle.label}</span>
                             )}
                             <span className="text-zinc-500">開<span className="text-zinc-300 ml-0.5 sm:ml-1">{selectedCandle.open}</span></span>
-                            <span className="text-zinc-500">高<span className="text-emerald-400 ml-0.5 sm:ml-1">{selectedCandle.high}</span></span>
-                            <span className="text-zinc-500">低<span className="text-rose-400 ml-0.5 sm:ml-1">{selectedCandle.low}</span></span>
-                            <span className="text-zinc-500">收<span className={`ml-0.5 sm:ml-1 font-semibold ${selectedCandle.close >= selectedCandle.open ? 'text-emerald-400' : 'text-rose-400'}`}>{selectedCandle.close}</span></span>
-                            <span className={`font-semibold ${selectedCandle.close >= selectedCandle.open ? 'text-emerald-400' : 'text-rose-400'}`}>
+                            <span className="text-zinc-500">高<span className={`ml-0.5 sm:ml-1 ${getBullishColorClass()}`}>{selectedCandle.high}</span></span>
+                            <span className="text-zinc-500">低<span className={`ml-0.5 sm:ml-1 ${getBearishColorClass()}`}>{selectedCandle.low}</span></span>
+                            <span className="text-zinc-500">收<span className={`ml-0.5 sm:ml-1 font-semibold ${selectedCandle.close >= selectedCandle.open ? getBullishColorClass() : getBearishColorClass()}`}>{selectedCandle.close}</span></span>
+                            <span className={`font-semibold ${selectedCandle.close >= selectedCandle.open ? getBullishColorClass() : getBearishColorClass()}`}>
                                 {selectedCandle.close >= selectedCandle.open ? '▲' : '▼'}
                                 {Math.abs(((selectedCandle.close - selectedCandle.open) / selectedCandle.open) * 100).toFixed(1)}%
                             </span>
@@ -384,11 +440,11 @@ export function TVCandlestickChart({
                                             <span className="text-zinc-500 text-right">O</span>
                                             <span className="text-zinc-300 font-mono text-left">{candle.open}</span>
                                             <span className="text-zinc-500 text-right">H</span>
-                                            <span className="text-emerald-400 font-mono text-left">{candle.high}</span>
+                                            <span className={`${getBullishColorClass()} font-mono text-left`}>{candle.high}</span>
                                             <span className="text-zinc-500 text-right">L</span>
-                                            <span className="text-rose-400 font-mono text-left">{candle.low}</span>
+                                            <span className={`${getBearishColorClass()} font-mono text-left`}>{candle.low}</span>
                                             <span className="text-zinc-500 text-right">C</span>
-                                            <span className={`font-mono font-semibold text-left ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}>{candle.close}</span>
+                                            <span className={`font-mono font-semibold text-left ${isUp ? getBullishColorClass() : getBearishColorClass()}`}>{candle.close}</span>
                                         </div>
                                     </div>
                                 );
