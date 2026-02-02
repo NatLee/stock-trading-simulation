@@ -31,6 +31,7 @@ interface UsePracticeEngineReturn {
     setMode: (mode: PracticeMode) => void;
     loadScenario: (scenario: PatternScenario) => void;
     loadRandomScenario: () => void;
+    clearScenario: () => void;
     
     // Playback controls
     play: () => void;
@@ -282,6 +283,42 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
             loadScenario(state.currentScenario);
         }
     }, [state.currentScenario, loadScenario]);
+    
+    // Clear scenario and return to initial state
+    const clearScenario = useCallback(() => {
+        // Stop any running timers
+        if (playbackTimerRef.current) {
+            clearInterval(playbackTimerRef.current);
+            playbackTimerRef.current = null;
+        }
+        if (countdownTimerRef.current) {
+            clearInterval(countdownTimerRef.current);
+            countdownTimerRef.current = null;
+        }
+        
+        setState({
+            mode: 'trading',
+            currentScenario: null,
+            playback: {
+                isPlaying: false,
+                speed: 1,
+                currentIndex: 0,
+                totalCandles: 0,
+            },
+            position: null,
+            trades: [],
+            balance: INITIAL_BALANCE,
+            score: 0,
+            isComplete: false,
+            result: null,
+        });
+        
+        setQuestions([]);
+        setQuestionIndex(0);
+        setCorrectAnswers(0);
+        setRemainingTime(30);
+        setScoreBreakdown(null);
+    }, []);
     
     // Trading actions - BUY (買入/空頭回補)
     const buy = useCallback((quantity: number) => {
@@ -656,6 +693,7 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
         setMode,
         loadScenario,
         loadRandomScenario,
+        clearScenario,
         
         play,
         pause,

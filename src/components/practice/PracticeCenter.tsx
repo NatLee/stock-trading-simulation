@@ -50,6 +50,7 @@ export function PracticeCenter() {
         setMode,
         loadScenario,
         loadRandomScenario,
+        clearScenario,
         
         play,
         pause,
@@ -87,13 +88,20 @@ export function PracticeCenter() {
     // Handle mode change
     const handleModeChange = (mode: PracticeMode) => {
         setMode(mode);
+        setShowWelcome(false); // Always hide welcome page when mode is selected
+        
         if (mode === 'recognition') {
-            setShowWelcome(false); // Hide welcome page
             startRecognitionSession();
-            setMobileMenuOpen(false);
         } else if (selectedPatternType) {
+            // If a pattern is already selected, load it
             handlePatternSelect(selectedPatternType);
+        } else {
+            // If no pattern selected, load a random scenario for trading/replay modes
+            const randomScenario = getRandomScenario();
+            setSelectedPatternType(randomScenario.patternType);
+            loadScenario(randomScenario);
         }
+        setMobileMenuOpen(false);
     };
     
     // Handle restart
@@ -117,6 +125,14 @@ export function PracticeCenter() {
         const randomScenario = getRandomScenario();
         setSelectedPatternType(randomScenario.patternType);
         loadScenario(randomScenario);
+    };
+    
+    // Handle back to welcome page
+    const handleBackToWelcome = () => {
+        setShowWelcome(true);
+        setSelectedPatternType(null);
+        clearScenario();
+        setMobileMenuOpen(false);
     };
     
     // Check if we should show welcome page
@@ -207,7 +223,16 @@ export function PracticeCenter() {
                             </button>
                         </div>
                         {/* Content */}
-                        <div className="p-4 space-y-6 overflow-y-auto max-h-[calc(80vh-80px)]">
+                        <div className="p-4 space-y-4 overflow-y-auto max-h-[calc(80vh-80px)]">
+                            {/* Back to Welcome Button */}
+                            <button
+                                onClick={handleBackToWelcome}
+                                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition-colors text-zinc-300 hover:text-white"
+                            >
+                                <Home size={18} />
+                                <span className="font-medium">回練習首頁</span>
+                            </button>
+                            
                             {/* Mode Selector */}
                             <ModeSelector
                                 currentMode={state.mode}
@@ -238,27 +263,51 @@ export function PracticeCenter() {
                                 <button
                                     onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
                                     className="w-full p-2 rounded-lg hover:bg-zinc-800 transition-colors flex items-center justify-center"
+                                    title="收合/展開"
                                 >
                                     <List size={18} className="text-zinc-500" />
                                 </button>
                             </div>
                             
-                            {!sidebarCollapsed && (
-                                <div className="px-3 pb-4 space-y-6">
-                                    {/* Mode Selector */}
-                                    <ModeSelector
-                                        currentMode={state.mode}
-                                        onModeChange={handleModeChange}
-                                    />
+                            {sidebarCollapsed ? (
+                                /* Collapsed state - show icons only */
+                                <nav className="px-3 pb-4 space-y-2">
+                                    <button
+                                        onClick={handleBackToWelcome}
+                                        className="w-full p-2 rounded-lg hover:bg-zinc-800 transition-colors flex items-center justify-center"
+                                        title="回練習首頁"
+                                    >
+                                        <Home size={18} className="text-zinc-400 hover:text-white" />
+                                    </button>
+                                </nav>
+                            ) : (
+                                /* Expanded state */
+                                <nav className="px-3 pb-4">
+                                    {/* Back to Welcome Button */}
+                                    <button
+                                        onClick={handleBackToWelcome}
+                                        className="w-full flex items-center gap-2 px-2 py-2 mb-4 rounded-lg hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white"
+                                    >
+                                        <Home size={16} />
+                                        <span className="text-sm">回練習首頁</span>
+                                    </button>
                                     
-                                    {/* Pattern Selector (not shown in recognition mode) */}
-                                    {state.mode !== 'recognition' && (
-                                        <PatternSelector
-                                            selectedPattern={selectedPatternType}
-                                            onPatternSelect={handlePatternSelect}
+                                    <div className="space-y-4">
+                                        {/* Mode Selector */}
+                                        <ModeSelector
+                                            currentMode={state.mode}
+                                            onModeChange={handleModeChange}
                                         />
-                                    )}
-                                </div>
+                                        
+                                        {/* Pattern Selector (not shown in recognition mode) */}
+                                        {state.mode !== 'recognition' && (
+                                            <PatternSelector
+                                                selectedPattern={selectedPatternType}
+                                                onPatternSelect={handlePatternSelect}
+                                            />
+                                        )}
+                                    </div>
+                                </nav>
                             )}
                         </div>
                     </aside>
