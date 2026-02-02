@@ -2,6 +2,9 @@
 
 # Stock Trading Simulator
 
+![Trading Simulation](./docs/simulation.png)
+*Main trading interface with real-time order book, candlestick chart, and trading panel*
+
 A comprehensive stock trading simulator built with Next.js, featuring a real-time matching engine, bot-driven market simulation, and an integrated learning center for trading education.
 
 ## Features
@@ -16,6 +19,9 @@ A comprehensive stock trading simulator built with Next.js, featuring a real-tim
 - **24h Statistics**: High, low, volume, and price change tracking
 - **Holdings Management**: Lot-based position tracking with P&L calculation
 - **Trade History**: Complete record of executed trades
+
+![Simulation Settings](./docs/simulation-settings.png)
+*Market scenario configuration and bot settings*
 
 ### Bot-Driven Market Simulation
 
@@ -45,6 +51,12 @@ Three types of bots simulate realistic market activity:
 
 Features interactive quizzes, visual charts, and progress tracking.
 
+![Learning Center](./docs/learn-center.png)
+*Interactive learning center with 19 courses across 4 categories*
+
+![Learning Sub Page](./docs/learn-sub-page.png)
+*Detailed course content with visual charts and interactive quizzes*
+
 ### Practice Center
 
 A comprehensive environment for mastering chart patterns and trading execution:
@@ -52,6 +64,12 @@ A comprehensive environment for mastering chart patterns and trading execution:
 - **Pattern Recognition**: Interactive quiz mode to identify chart patterns (Head & Shoulders, Wedges, Triangles, etc.) from real market scenarios.
 - **Trading Practice**: Risk-free simulation to trade specific patterns or random scenarios.
 - **Rewind & Replay**: Review historical price action and replay scenarios to analyze decision-making.
+
+![K-Chart Practice](./docs/k-chart-practice.png)
+*Pattern recognition practice with candlestick charts*
+
+![Guess Practice](./docs/guess-practice.png)
+*Interactive quiz mode for identifying chart patterns*
 
 ### Market Analysis
 
