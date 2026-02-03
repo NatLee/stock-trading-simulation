@@ -64,6 +64,7 @@ export function TVCandlestickChart({
 }: TVCandlestickChartProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const touchStartRef = useRef<{ x: number; y: number } | null>(null);
     const [crosshair, setCrosshair] = useState<CrosshairData>({
         x: 0,
         y: 0,
@@ -239,15 +240,22 @@ export function TVCandlestickChart({
         onHoverIndexChange?.(null);
     }, [onHoverIndexChange]);
 
-    // 觸控事件處理（手機版）
+    // 觸控事件處理（手機版）- 加入手勢判定
     const handleTouchStart = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;
         if (!canvas || candles.length === 0) return;
 
         const rect = canvas.getBoundingClientRect();
         const touch = e.touches[0];
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
+        const startX = touch.clientX;
+        const startY = touch.clientY;
+        
+        // 記錄觸控起始位置（相對於視窗）
+        touchStartRef.current = { x: startX, y: startY };
+
+        // 計算相對於 canvas 的位置
+        const x = startX - rect.left;
+        const y = startY - rect.top;
 
         // 計算觸控的 K 線索引
         const candleWidthCalc = chartWidth / candles.length;
@@ -291,10 +299,75 @@ export function TVCandlestickChart({
     }, [candles, chartWidth, chartHeight, scale, padding, onHoverIndexChange]);
 
     const handleTouchMove = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
-        handleTouchStart(e);
-    }, [handleTouchStart]);
+        const canvas = canvasRef.current;
+        if (!canvas || candles.length === 0 || !touchStartRef.current) return;
+
+        const touch = e.touches[0];
+        const currentX = touch.clientX;
+        const currentY = touch.clientY;
+        
+        // 計算移動距離
+        const deltaX = Math.abs(currentX - touchStartRef.current.x);
+        const deltaY = Math.abs(currentY - touchStartRef.current.y);
+        
+        // 手勢判定：如果水平移動明顯大於垂直移動且超過門檻（10px），視為捲動意圖
+        const SCROLL_THRESHOLD = 10;
+        const isHorizontalScroll = deltaX > deltaY && deltaX > SCROLL_THRESHOLD;
+        
+        if (isHorizontalScroll) {
+            // 使用者想捲動，不更新 crosshair/tooltip，讓瀏覽器處理捲動
+            return;
+        }
+        
+        // 否則視為查看資料意圖，更新 crosshair/tooltip
+        const rect = canvas.getBoundingClientRect();
+        const x = currentX - rect.left;
+        const y = currentY - rect.top;
+
+        // 計算觸控的 K 線索引
+        const candleWidthCalc = chartWidth / candles.length;
+        const index = Math.floor((x - padding.left) / candleWidthCalc);
+        const clampedIndex = Math.max(0, Math.min(candles.length - 1, index));
+        
+        // 計算價格
+        const price = scale.maxY - ((y - padding.top) / chartHeight) * scale.yRange;
+
+        setCrosshair({
+            x,
+            y,
+            visible: true,
+            dataIndex: clampedIndex,
+            price,
+        });
+
+        // 通知父組件 hover 索引變化
+        onHoverIndexChange?.(clampedIndex);
+
+        if (clampedIndex >= 0 && clampedIndex < candles.length) {
+            const candle = candles[clampedIndex];
+            const change = candle.close - candle.open;
+            const changePercent = (change / candle.open) * 100;
+
+            setTooltip({
+                visible: true,
+                x,
+                y,
+                content: {
+                    label: candle.label || '',
+                    open: candle.open,
+                    high: candle.high,
+                    low: candle.low,
+                    close: candle.close,
+                    change,
+                    changePercent,
+                },
+            });
+        }
+    }, [candles, chartWidth, chartHeight, scale, padding, onHoverIndexChange]);
 
     const handleTouchEnd = useCallback(() => {
+        // 清除觸控起始位置記錄
+        touchStartRef.current = null;
         // 保持最後選中的狀態，不清除（方便手機用戶查看）
     }, []);
 
@@ -398,7 +471,7 @@ export function TVCandlestickChart({
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
                             onTouchEnd={handleTouchEnd}
-                            className="cursor-crosshair touch-none"
+                            className="cursor-crosshair touch-pan-x"
                         />
                     </div>
                 </div>
@@ -506,6 +579,7 @@ export function TVLineChart({
     fixedWidth,
 }: TVLineChartProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const touchStartRef = useRef<{ x: number; y: number } | null>(null);
     const [crosshair, setCrosshair] = useState<CrosshairData>({
         x: 0,
         y: 0,
@@ -680,15 +754,22 @@ export function TVLineChart({
         onHoverIndexChange?.(null);
     }, [onHoverIndexChange]);
 
-    // 觸控事件處理（手機版）
+    // 觸控事件處理（手機版）- 加入手勢判定
     const handleTouchStart = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;
         if (!canvas || points.length === 0) return;
 
         const rect = canvas.getBoundingClientRect();
         const touch = e.touches[0];
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
+        const startX = touch.clientX;
+        const startY = touch.clientY;
+        
+        // 記錄觸控起始位置（相對於視窗）
+        touchStartRef.current = { x: startX, y: startY };
+
+        // 計算相對於 canvas 的位置
+        const x = startX - rect.left;
+        const y = startY - rect.top;
 
         // 計算最近的數據點
         const dataIndex = Math.round(((x - padding.left) / chartWidth) * scale.xRange);
@@ -708,7 +789,30 @@ export function TVLineChart({
         // 通知父組件 hover 索引變化
         onHoverIndexChange?.(clampedIndex);
 
-        if (clampedIndex >= 0 && clampedIndex < points.length) {
+        // 檢查是否懸停在標記上
+        let foundMarker: ChartMarker | null = null;
+        for (const marker of markers) {
+            const mx = getX(marker.x);
+            const my = getY(marker.y);
+            const distance = Math.sqrt((x - mx) ** 2 + (y - my) ** 2);
+            if (distance < 15) {
+                foundMarker = marker;
+                break;
+            }
+        }
+        setHoveredMarker(foundMarker);
+
+        if (foundMarker) {
+            setTooltip({
+                visible: true,
+                x,
+                y,
+                content: {
+                    marker: foundMarker,
+                    price: foundMarker.y,
+                },
+            });
+        } else if (clampedIndex >= 0 && clampedIndex < points.length) {
             const point = points[clampedIndex];
             setTooltip({
                 visible: true,
@@ -720,13 +824,92 @@ export function TVLineChart({
                 },
             });
         }
-    }, [points, chartWidth, chartHeight, scale, padding, onHoverIndexChange]);
+    }, [points, markers, chartWidth, chartHeight, scale, padding, getX, getY, onHoverIndexChange]);
 
     const handleTouchMove = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
-        handleTouchStart(e);
-    }, [handleTouchStart]);
+        const canvas = canvasRef.current;
+        if (!canvas || points.length === 0 || !touchStartRef.current) return;
+
+        const touch = e.touches[0];
+        const currentX = touch.clientX;
+        const currentY = touch.clientY;
+        
+        // 計算移動距離
+        const deltaX = Math.abs(currentX - touchStartRef.current.x);
+        const deltaY = Math.abs(currentY - touchStartRef.current.y);
+        
+        // 手勢判定：如果水平移動明顯大於垂直移動且超過門檻（10px），視為捲動意圖
+        const SCROLL_THRESHOLD = 10;
+        const isHorizontalScroll = deltaX > deltaY && deltaX > SCROLL_THRESHOLD;
+        
+        if (isHorizontalScroll) {
+            // 使用者想捲動，不更新 crosshair/tooltip，讓瀏覽器處理捲動
+            return;
+        }
+        
+        // 否則視為查看資料意圖，更新 crosshair/tooltip
+        const rect = canvas.getBoundingClientRect();
+        const x = currentX - rect.left;
+        const y = currentY - rect.top;
+
+        // 計算最近的數據點
+        const dataIndex = Math.round(((x - padding.left) / chartWidth) * scale.xRange);
+        const clampedIndex = Math.max(0, Math.min(points.length - 1, dataIndex));
+        
+        // 計算價格
+        const price = scale.maxY - ((y - padding.top) / chartHeight) * scale.yRange;
+
+        setCrosshair({
+            x,
+            y,
+            visible: true,
+            dataIndex: clampedIndex,
+            price,
+        });
+
+        // 通知父組件 hover 索引變化
+        onHoverIndexChange?.(clampedIndex);
+
+        // 檢查是否懸停在標記上
+        let foundMarker: ChartMarker | null = null;
+        for (const marker of markers) {
+            const mx = getX(marker.x);
+            const my = getY(marker.y);
+            const distance = Math.sqrt((x - mx) ** 2 + (y - my) ** 2);
+            if (distance < 15) {
+                foundMarker = marker;
+                break;
+            }
+        }
+        setHoveredMarker(foundMarker);
+
+        if (foundMarker) {
+            setTooltip({
+                visible: true,
+                x,
+                y,
+                content: {
+                    marker: foundMarker,
+                    price: foundMarker.y,
+                },
+            });
+        } else if (clampedIndex >= 0 && clampedIndex < points.length) {
+            const point = points[clampedIndex];
+            setTooltip({
+                visible: true,
+                x,
+                y,
+                content: {
+                    label: point.label || '',
+                    price: point.y,
+                },
+            });
+        }
+    }, [points, markers, chartWidth, chartHeight, scale, padding, getX, getY, onHoverIndexChange]);
 
     const handleTouchEnd = useCallback(() => {
+        // 清除觸控起始位置記錄
+        touchStartRef.current = null;
         // 保持最後選中的狀態，不清除（方便手機用戶查看）
     }, []);
 
@@ -774,7 +957,7 @@ export function TVLineChart({
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
                             onTouchEnd={handleTouchEnd}
-                            className="cursor-crosshair touch-none"
+                            className="cursor-crosshair touch-pan-x"
                         />
 
                         {/* 工具提示 */}

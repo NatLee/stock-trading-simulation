@@ -306,13 +306,19 @@ function ContentBlockRenderer({ block }: { block: ContentBlock }) {
                 position: (a.position === 'below' ? 'bottom' : a.position === 'above' ? 'top' : a.position) as 'top' | 'bottom',
             }));
             return (
-                <TVCandlestickChart 
-                    candles={tvCandles} 
-                    annotations={tvAnnotations} 
-                    title={block.title} 
-                    description={block.description}
-                    height={220}
-                />
+                <div>
+                    {/* 手機版提示 */}
+                    <div className="text-[10px] text-zinc-600 mb-2 sm:hidden text-center">
+                        ← 左右滑動查看完整圖表 →
+                    </div>
+                    <TVCandlestickChart 
+                        candles={tvCandles} 
+                        annotations={tvAnnotations} 
+                        title={block.title} 
+                        description={block.description}
+                        height={220}
+                    />
+                </div>
             );
 
         case 'trade-example':
@@ -354,14 +360,20 @@ function ContentBlockRenderer({ block }: { block: ContentBlock }) {
                 label: z.label || '',
             }));
             return (
-                <TVLineChart 
-                    points={tvPoints}
-                    markers={tvMarkers}
-                    lines={tvLines}
-                    zones={tvZones}
-                    title={block.title} 
-                    description={block.description}
-                />
+                <div>
+                    {/* 手機版提示 */}
+                    <div className="text-[10px] text-zinc-600 mb-2 sm:hidden text-center">
+                        ← 左右滑動查看完整圖表 →
+                    </div>
+                    <TVLineChart 
+                        points={tvPoints}
+                        markers={tvMarkers}
+                        lines={tvLines}
+                        zones={tvZones}
+                        title={block.title} 
+                        description={block.description}
+                    />
+                </div>
             );
 
         case 'combo-chart-example':
