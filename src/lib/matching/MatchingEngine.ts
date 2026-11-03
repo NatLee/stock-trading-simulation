@@ -2,6 +2,7 @@ import { OrderBook } from './OrderBook';
 import {
     OrderEntry,
     OrderSide,
+    PriceLevel,
     MatchingOrderType,
     OrderSource,
     OrderCondition,
@@ -14,6 +15,26 @@ import {
     COMMISSION_RATE,
 } from './types';
 import { PriceStep } from './PriceStep';
+import { SimEnv, realEnv } from '../sim/env';
+
+/** Would an order on `side` with this limit accept `price`? */
+function withinLimit(side: OrderSide, price: number, limit: number): boolean {
+    return side === 'buy' ? price <= limit : price >= limit;
+}
+
+/** What an FOK order that cannot be filled completely returns */
+function cancelledResult(orderId: string): MatchResult {
+    return {
+        orderId,
+        status: 'cancelled',
+        filledQuantity: 0,
+        remainingQuantity: 0,
+        averagePrice: 0,
+        totalCost: 0,
+        commission: 0,
+        trades: [],
+    };
+}
 
 /**
  * Matching Engine - implements price-time priority order matching
@@ -30,9 +51,11 @@ export class MatchingEngine {
 
     private maxTradesHistory: number = 1000;
     private commissionRate: number = COMMISSION_RATE;
+    private env: SimEnv;
 
-    constructor(initialPrice: number = 150) {
-        this.orderBook = new OrderBook(initialPrice);
+    constructor(initialPrice: number = 150, env: SimEnv = realEnv) {
+        this.env = env;
+        this.orderBook = new OrderBook(initialPrice, env);
     }
 
     /**
@@ -57,6 +80,25 @@ export class MatchingEngine {
     }
 
     /**
+     * Total number of trades since the engine was created.
+     * Counts trades that already fell out of the kept history too, so it works
+     * as a cursor: remember it, and later ask for everything after it.
+     */
+    getTradeCount(): number {
+        return this.tradeSequence;
+    }
+
+    /**
+     * Trades made after the engine had `count` trades, oldest first.
+     * If more trades happened than the kept history holds, you get what is kept.
+     */
+    getTradesSince(count: number): Trade[] {
+        const missing = Math.min(this.tradeSequence - count, this.trades.length);
+        if (missing <= 0) return [];
+        return this.trades.slice(this.trades.length - missing);
+    }
+
+    /**
      * Get last traded price
      */
     getLastPrice(): number {
@@ -74,7 +116,7 @@ export class MatchingEngine {
         source: OrderSource = 'user',
         condition: OrderCondition = 'GTC'
     ): MatchResult {
-        const orderId = generateOrderId(source === 'user' ? 'USR' : 'BOT');
+        const orderId = generateOrderId(source === 'user' ? 'USR' : 'BOT', this.env);
 
         // Normalize price to prevent Order Book fragmentation due to floating point issues
         let finalPrice = price;
@@ -93,7 +135,7 @@ export class MatchingEngine {
         // Create order entry
         const order: OrderEntry = {
             orderId,
-            timestamp: Date.now(),
+            timestamp: this.env.now(),
             side,
             price: finalPrice ?? this.getEstimatedMarketPrice(side),
             quantity,
@@ -123,41 +165,38 @@ export class MatchingEngine {
         }
     }
 
-    /**
-     * Execute a market order - match against available liquidity
-     */
-    private executeMarketOrder(order: OrderEntry): MatchResult {
-        const trades: Trade[] = [];
-        let totalFilled = 0;
-        let totalCost = 0;
-
-        const matchingLevels = order.side === 'buy'
+    /** Price levels on the other side of the book, best price first */
+    private opposingLevels(side: OrderSide): PriceLevel[] {
+        return side === 'buy'
             ? this.orderBook.getSortedAsks()  // Buy: match against asks (lowest first)
             : this.orderBook.getSortedBids(); // Sell: match against bids (highest first)
+    }
 
-        // FOK: Check if we can fill the ENTIRE quantity immediately
-        if (order.condition === 'FOK') {
-            let available = 0;
-            for (const level of matchingLevels) {
-                available += level.totalQuantity;
-                if (available >= order.quantity) break;
-            }
-            if (available < order.quantity) {
-                return {
-                    orderId: order.orderId,
-                    status: 'cancelled',
-                    filledQuantity: 0,
-                    remainingQuantity: 0,
-                    averagePrice: 0,
-                    totalCost: 0,
-                    commission: 0,
-                    trades: [],
-                };
-            }
+    /** FOK check: is there enough on the other side, within `limit` (null = any price)? */
+    private canFillCompletely(order: OrderEntry, limit: number | null): boolean {
+        let available = 0;
+        for (const level of this.opposingLevels(order.side)) {
+            if (limit !== null && !withinLimit(order.side, level.price, limit)) break;
+            available += level.totalQuantity;
+            if (available >= order.quantity) return true;
         }
+        return false;
+    }
 
-        for (const level of matchingLevels) {
+    /**
+     * Fill `order` against the other side of the book: best price first, and
+     * oldest order first within a price (price-time priority). Every fill trades
+     * at the resting (maker) order's price and becomes the new last price.
+     * `limit` stops at prices the order would not accept (null = market order).
+     */
+    private fillAgainstBook(order: OrderEntry, limit: number | null): { trades: Trade[]; filled: number; cost: number } {
+        const trades: Trade[] = [];
+        let filled = 0;
+        let cost = 0;
+
+        for (const level of this.opposingLevels(order.side)) {
             if (order.remainingQuantity <= 0) break;
+            if (limit !== null && !withinLimit(order.side, level.price, limit)) break; // No more matches possible
 
             // Match against each order in the level (FIFO)
             for (const makerOrder of [...level.orders]) {
@@ -166,12 +205,10 @@ export class MatchingEngine {
 
                 const fillQuantity = Math.min(order.remainingQuantity, makerOrder.remainingQuantity);
                 const fillPrice = makerOrder.price; // Trade at maker's price
-                const fillTotal = fillQuantity * fillPrice;
 
-                // Create trade record with sequence suffix for uniqueness
                 const trade: Trade = {
-                    tradeId: generateTradeId(this.tradeSequence++),
-                    timestamp: Date.now(),
+                    tradeId: generateTradeId(this.tradeSequence++, this.env),
+                    timestamp: this.env.now(),
                     price: fillPrice,
                     quantity: fillQuantity,
                     buyOrderId: order.side === 'buy' ? order.orderId : makerOrder.orderId,
@@ -184,17 +221,28 @@ export class MatchingEngine {
                 trades.push(trade);
                 this.addTrade(trade);
 
-                // Update quantities
                 order.remainingQuantity -= fillQuantity;
                 this.orderBook.updateOrderQuantity(makerOrder.orderId, fillQuantity);
 
-                totalFilled += fillQuantity;
-                totalCost += fillTotal;
-
-                // Update last price
+                filled += fillQuantity;
+                cost += fillQuantity * fillPrice;
                 this.orderBook.lastPrice = fillPrice;
             }
         }
+
+        return { trades, filled, cost };
+    }
+
+    /**
+     * Execute a market order - match against available liquidity
+     */
+    private executeMarketOrder(order: OrderEntry): MatchResult {
+        // FOK: Check if we can fill the ENTIRE quantity immediately
+        if (order.condition === 'FOK' && !this.canFillCompletely(order, null)) {
+            return cancelledResult(order.orderId);
+        }
+
+        const { trades, filled: totalFilled, cost } = this.fillAgainstBook(order, null);
 
         // Determine status
         let status: MatchingOrderStatus;
@@ -203,11 +251,11 @@ export class MatchingEngine {
         } else if (totalFilled > 0) {
             status = 'partial';
             // For GTC, add remaining to order book. For IOC/FOK, do not.
-            if (order.remainingQuantity > 0 && order.condition === 'GTC' && this.orderBook.lastPrice > 0) {
+            if (order.condition === 'GTC' && this.orderBook.lastPrice > 0) {
                 order.price = this.orderBook.lastPrice;
                 order.type = 'limit';
                 this.orderBook.addOrder(order);
-            } else if (order.remainingQuantity > 0) {
+            } else {
                 // IOC/FOK remnant is cancelled
                 status = 'cancelled';
             }
@@ -216,7 +264,7 @@ export class MatchingEngine {
         }
 
         // Round total cost to integer
-        totalCost = Math.round(totalCost);
+        const totalCost = Math.round(cost);
         const averagePrice = totalFilled > 0 ? totalCost / totalFilled : 0;
         const commission = calculateTradeCommission(totalCost, this.commissionRate);
 
@@ -236,118 +284,13 @@ export class MatchingEngine {
      * Execute a limit order - match if price crosses, else add to book
      */
     private executeLimitOrder(order: OrderEntry): MatchResult {
-        const trades: Trade[] = [];
-        let totalFilled = 0;
-        let totalCost = 0;
-
         // FOK: Check if we can fill the ENTIRE quantity immediately within price limit
-        if (order.condition === 'FOK') {
-            let available = 0;
-            const matchingLevels = order.side === 'buy'
-                ? this.orderBook.getSortedAsks()
-                : this.orderBook.getSortedBids();
-
-            for (const level of matchingLevels) {
-                if (order.side === 'buy' && level.price > order.price) break;
-                if (order.side === 'sell' && level.price < order.price) break;
-                available += level.totalQuantity;
-                if (available >= order.quantity) break;
-            }
-
-            if (available < order.quantity) {
-                return {
-                    orderId: order.orderId,
-                    status: 'cancelled',
-                    filledQuantity: 0,
-                    remainingQuantity: 0,
-                    averagePrice: 0,
-                    totalCost: 0,
-                    commission: 0,
-                    trades: [],
-                };
-            }
+        if (order.condition === 'FOK' && !this.canFillCompletely(order, order.price)) {
+            return cancelledResult(order.orderId);
         }
 
-        // Check for matching orders
-        if (order.side === 'buy') {
-            // Buy limit: match against asks at or below limit price
-            const asks = this.orderBook.getSortedAsks();
-
-            for (const level of asks) {
-                if (order.remainingQuantity <= 0) break;
-                if (level.price > order.price) break; // No more matches possible
-
-                for (const makerOrder of [...level.orders]) {
-                    if (order.remainingQuantity <= 0) break;
-                    if (makerOrder.remainingQuantity <= 0) continue;
-
-                    const fillQuantity = Math.min(order.remainingQuantity, makerOrder.remainingQuantity);
-                    const fillPrice = makerOrder.price; // Trade at maker's price
-                    const fillTotal = fillQuantity * fillPrice;
-
-                    const trade: Trade = {
-                        tradeId: generateTradeId(this.tradeSequence++),
-                        timestamp: Date.now(),
-                        price: fillPrice,
-                        quantity: fillQuantity,
-                        buyOrderId: order.orderId,
-                        sellOrderId: makerOrder.orderId,
-                        takerSide: 'buy',
-                        makerSource: makerOrder.source,
-                        takerSource: order.source,
-                    };
-
-                    trades.push(trade);
-                    this.addTrade(trade);
-
-                    order.remainingQuantity -= fillQuantity;
-                    this.orderBook.updateOrderQuantity(makerOrder.orderId, fillQuantity);
-
-                    totalFilled += fillQuantity;
-                    totalCost += fillTotal;
-                    this.orderBook.lastPrice = fillPrice;
-                }
-            }
-        } else {
-            // Sell limit: match against bids at or above limit price
-            const bids = this.orderBook.getSortedBids();
-
-            for (const level of bids) {
-                if (order.remainingQuantity <= 0) break;
-                if (level.price < order.price) break; // No more matches possible
-
-                for (const makerOrder of [...level.orders]) {
-                    if (order.remainingQuantity <= 0) break;
-                    if (makerOrder.remainingQuantity <= 0) continue;
-
-                    const fillQuantity = Math.min(order.remainingQuantity, makerOrder.remainingQuantity);
-                    const fillPrice = makerOrder.price;
-                    const fillTotal = fillQuantity * fillPrice;
-
-                    const trade: Trade = {
-                        tradeId: generateTradeId(this.tradeSequence++),
-                        timestamp: Date.now(),
-                        price: fillPrice,
-                        quantity: fillQuantity,
-                        buyOrderId: makerOrder.orderId,
-                        sellOrderId: order.orderId,
-                        takerSide: 'sell',
-                        makerSource: makerOrder.source,
-                        takerSource: order.source,
-                    };
-
-                    trades.push(trade);
-                    this.addTrade(trade);
-
-                    order.remainingQuantity -= fillQuantity;
-                    this.orderBook.updateOrderQuantity(makerOrder.orderId, fillQuantity);
-
-                    totalFilled += fillQuantity;
-                    totalCost += fillTotal;
-                    this.orderBook.lastPrice = fillPrice;
-                }
-            }
-        }
+        // Buy limit: match asks at or below the limit; sell limit: bids at or above it
+        const { trades, filled: totalFilled, cost: totalCost } = this.fillAgainstBook(order, order.price);
 
         // Determine status and handle remaining quantity
         let status: MatchingOrderStatus;
@@ -388,8 +331,9 @@ export class MatchingEngine {
     private addTrade(trade: Trade): void {
         this.trades.push(trade);
 
-        // Trim history if needed
-        if (this.trades.length > this.maxTradesHistory) {
+        // Trim history once it is twice the limit (not on every trade:
+        // that copied 1000 trades for each new one)
+        if (this.trades.length > this.maxTradesHistory * 2) {
             this.trades = this.trades.slice(-this.maxTradesHistory);
         }
     }
@@ -432,7 +376,7 @@ export class MatchingEngine {
         tradeCount24h: number;
         averageTradeSize: number;
     } {
-        const now = Date.now();
+        const now = this.env.now();
         const dayAgo = now - 24 * 60 * 60 * 1000;
 
         const recentTrades = this.trades.filter(t => t.timestamp >= dayAgo);

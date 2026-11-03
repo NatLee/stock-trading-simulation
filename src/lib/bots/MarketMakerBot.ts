@@ -1,6 +1,7 @@
 import { MarketMakerBotConfig, BotOrder } from './types';
 import { OrderSide } from '../matching/types';
 import { PriceStep } from '../matching/PriceStep';
+import { SimEnv, realEnv } from '../sim/env';
 
 /**
  * MarketMakerBot - provides liquidity by placing orders on both sides
@@ -14,9 +15,11 @@ export class MarketMakerBot {
     private config: MarketMakerBotConfig;
     private inventory: number = 0; // Positive = long, negative = short
     private lastQuoteTime: number = 0;
+    private env: SimEnv;
 
-    constructor(config: MarketMakerBotConfig) {
+    constructor(config: MarketMakerBotConfig, env: SimEnv = realEnv) {
         this.config = { ...config };
+        this.env = env;
     }
 
     /**
@@ -51,7 +54,7 @@ export class MarketMakerBot {
     ): BotOrder[] {
         if (!this.config.enabled) return [];
 
-        const now = Date.now();
+        const now = this.env.now();
         const orders: BotOrder[] = [];
 
         // Calculate spread with volatility adjustment
@@ -78,7 +81,7 @@ export class MarketMakerBot {
 
             // Increase size for deeper levels (scale 1.0 to ~3.0)
             const depthScale = 1 + (i / dynamicDepth) * 2.0;
-            const size = Math.floor((minSize + Math.random() * (maxSize - minSize)) * sizeMultiplier * depthScale);
+            const size = Math.floor((minSize + this.env.random() * (maxSize - minSize)) * sizeMultiplier * depthScale);
 
             if (price > 0) {
                 orders.push({
@@ -100,7 +103,7 @@ export class MarketMakerBot {
 
             // Increase size for deeper levels
             const depthScale = 1 + (i / dynamicDepth) * 2.0;
-            const size = Math.floor((minSize + Math.random() * (maxSize - minSize)) * sizeMultiplier * depthScale);
+            const size = Math.floor((minSize + this.env.random() * (maxSize - minSize)) * sizeMultiplier * depthScale);
 
             orders.push({
                 side: 'sell',
@@ -122,7 +125,7 @@ export class MarketMakerBot {
         if (!this.config.enabled) return false;
         const intensity = this.config.intensity || 1.0;
         const effectiveInterval = this.config.refreshInterval / intensity;
-        return Date.now() - this.lastQuoteTime >= effectiveInterval;
+        return this.env.now() - this.lastQuoteTime >= effectiveInterval;
     }
 
     /**
@@ -154,7 +157,7 @@ export class MarketMakerBot {
      * Get time until next refresh
      */
     getTimeUntilRefresh(): number {
-        const elapsed = Date.now() - this.lastQuoteTime;
+        const elapsed = this.env.now() - this.lastQuoteTime;
         return Math.max(0, this.config.refreshInterval - elapsed);
     }
 }

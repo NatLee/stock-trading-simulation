@@ -1,8 +1,9 @@
 'use client';
 
 import { useRef, useEffect, useCallback, useState } from 'react';
-import { MatchingEngine, CandleAggregator, MarketScenario, Trade, OrderBookSnapshot } from '../lib/matching';
-import { BotManager, BotManagerConfig } from '../lib/bots';
+import { MarketScenario, Trade, OrderBookSnapshot } from '../lib/matching';
+import { BotManagerConfig } from '../lib/bots';
+import { MarketSimulation } from '../lib/sim/MarketSimulation';
 import { CandleData as ChartCandleData, OrderCondition } from '@/types';
 
 /**
@@ -62,137 +63,131 @@ export interface MarketSimulatorCallbacks {
     onTrade?: (trade: Trade) => void;
 }
 
-/**
- * useMarketSimulator - main hook for the trading simulation
- * 
- * Integrates:
- * - MatchingEngine for order matching
- * - BotManager for automated trading
- * - CandleAggregator for K-line generation
- */
-export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, callbacks: MarketSimulatorCallbacks = {}) {
-    const fullConfig = { ...DEFAULT_CONFIG, ...config };
+/** Today's 09:00 (local), or yesterday's if it is not 09:00 yet: where the synthetic history starts */
+function historyStartTime(now: number): number {
+    const nineAm = new Date(now);
+    nineAm.setHours(9, 0, 0, 0);
+    const start = nineAm.getTime();
+    return now < start ? start - 24 * 60 * 60 * 1000 : start;
+}
 
-    // Core components (refs to avoid re-creation)
-    const engineRef = useRef<MatchingEngine | null>(null);
-    const botManagerRef = useRef<BotManager | null>(null);
-    const candleAggregatorRef = useRef<CandleAggregator | null>(null);
-    const tickerRef = useRef<NodeJS.Timeout | null>(null);
-    const lastTickRef = useRef<number>(0);
-    const previousPriceRef = useRef<number>(fullConfig.initialPrice); // Track previous tick price
-    const lastProcessedTradeIdRef = useRef<string | null>(null);
-    const processedTradeIdsRef = useRef<Set<string>>(new Set());
-    const processedUserTradeIdsRef = useRef<Set<string>>(new Set());
-
-    const showBotOrdersRef = useRef<boolean>(true); // Default to true (visible)
-    const isInitializedRef = useRef<boolean>(false);
-
-    // State
-    const [state, setState] = useState<MarketState>({
+function emptyState(config: MarketSimulatorConfig): MarketState {
+    return {
         orderBook: {
             asks: [],
             bids: [],
             spread: 0,
             bestAsk: null,
             bestBid: null,
-            lastPrice: fullConfig.initialPrice,
-            timestamp: Date.now(),
+            lastPrice: config.initialPrice,
+            timestamp: 0,
         },
         candles: [],
         currentCandle: null,
-        currentPrice: fullConfig.initialPrice,
+        currentPrice: config.initialPrice,
         recentTrades: [],
         volume24h: 0,
-        high24h: fullConfig.initialPrice,
-        low24h: fullConfig.initialPrice,
+        high24h: config.initialPrice,
+        low24h: config.initialPrice,
         change24h: 0,
         changePercent24h: 0,
         tickChange: 0,
         tickChangePercent: 0,
-        scenario: fullConfig.scenario,
+        scenario: config.scenario,
         isRunning: false,
         showBotOrders: true,
-        intensity: fullConfig.intensity,
+        intensity: config.intensity,
+    };
+}
+
+/**
+ * useMarketSimulator - main hook for the trading simulation
+ *
+ * A thin React wrapper around MarketSimulation (matching engine + bots +
+ * candles): it runs `step()` on a timer, publishes a snapshot as state and
+ * forwards the user's own fills to `callbacks.onTrade`.
+ */
+export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, callbacks: MarketSimulatorCallbacks = {}) {
+    const fullConfig = { ...DEFAULT_CONFIG, ...config };
+
+    // Core components (refs to avoid re-creation)
+    const simRef = useRef<MarketSimulation | null>(null);
+    const tickerRef = useRef<NodeJS.Timeout | null>(null);
+    const lastTickRef = useRef<number>(0);
+    const callbacksRef = useRef<MarketSimulatorCallbacks>(callbacks);
+
+    const showBotOrdersRef = useRef<boolean>(true); // Default to true (visible)
+    const isInitializedRef = useRef<boolean>(false);
+
+    // State
+    const [state, setState] = useState<MarketState>(() => emptyState(fullConfig));
+
+    // Always call the latest callbacks from the timer
+    useEffect(() => {
+        callbacksRef.current = callbacks;
     });
 
     /**
      * Initialize components
      */
     const initializeComponents = useCallback(() => {
-        // 1. Create candle aggregator first (to generate history)
-        candleAggregatorRef.current = new CandleAggregator(
-            fullConfig.candlePeriod,
-            100,
-            fullConfig.initialPrice
-        );
-
-        // Generate history starting from 09:00 AM
-        const now = new Date();
-        now.setHours(9, 0, 0, 0);
-        let startTime = now.getTime();
-
-        // If currently before 09:00, use yesterday's 09:00
-        if (Date.now() < startTime) {
-            startTime -= 24 * 60 * 60 * 1000;
-        }
-
-        candleAggregatorRef.current.generateHistory(startTime, fullConfig.initialPrice);
-
-        // 2. Get the last price from history to start the engine
-        // This ensures continuity between history and new simulation
-        const startPrice = candleAggregatorRef.current.getLastPrice();
-
-        // 3. Create matching engine with startPrice
-        engineRef.current = new MatchingEngine(startPrice);
-
-        // 4. Create bot manager
-        botManagerRef.current = new BotManager(engineRef.current, {
-            scenario: fullConfig.scenario,
-            volatility: fullConfig.volatility,
-            liquidity: fullConfig.liquidity,
-            unitSize: fullConfig.unitSize,
-            isOddLot: fullConfig.isOddLot,
-            intensity: fullConfig.intensity,
+        // History from 09:00 up to now, then the engine starts at its last price
+        const sim = new MarketSimulation({
+            initialPrice: fullConfig.initialPrice,
+            candlePeriod: fullConfig.candlePeriod,
+            historyStart: historyStartTime(Date.now()),
+            bots: {
+                scenario: fullConfig.scenario,
+                volatility: fullConfig.volatility,
+                liquidity: fullConfig.liquidity,
+                unitSize: fullConfig.unitSize,
+                isOddLot: fullConfig.isOddLot,
+                intensity: fullConfig.intensity,
+            },
         });
+        simRef.current = sim;
 
         // Update state to reflect initialized data immediately
+        const snapshot = sim.snapshot();
         setState(prev => ({
             ...prev,
-            currentPrice: startPrice,
+            currentPrice: snapshot.currentPrice,
             orderBook: {
                 asks: [],
                 bids: [],
                 spread: 0,
                 bestAsk: null,
                 bestBid: null,
-                lastPrice: startPrice,
+                lastPrice: snapshot.currentPrice,
                 timestamp: Date.now(),
             },
-            candles: candleAggregatorRef.current?.getAllCandles() as ChartCandleData[] || [],
-            currentCandle: candleAggregatorRef.current?.getCurrentCandle() as ChartCandleData | null,
+            candles: snapshot.candles,
+            currentCandle: snapshot.currentCandle,
             // Reset 24h stats based on history
-            ...candleAggregatorRef.current?.getStats(),
+            ...snapshot.stats,
         }));
 
         isInitializedRef.current = true;
-    }, [fullConfig.initialPrice, fullConfig.scenario, fullConfig.volatility, fullConfig.liquidity, fullConfig.candlePeriod]);
+    }, [fullConfig.initialPrice, fullConfig.scenario, fullConfig.volatility, fullConfig.liquidity, fullConfig.candlePeriod, fullConfig.unitSize, fullConfig.isOddLot, fullConfig.intensity]);
 
     /**
      * Re-initialize ONLY the aggregator when timeframe changes
      * Preserves current simulation state (order book, price)
      */
     const reinitializeAggregator = useCallback(() => {
-        if (!candleAggregatorRef.current) return;
+        const sim = simRef.current;
+        if (!sim) return;
 
         // Just update the display period, aggregator handles resampling from base candles
-        candleAggregatorRef.current.setPeriod(fullConfig.candlePeriod);
+        sim.candles.setPeriod(fullConfig.candlePeriod);
+        const candles = sim.candles.getCandles();
 
         // Update state immediately with re-aggregated candles
         setState(prev => ({
             ...prev,
-            candles: candleAggregatorRef.current?.getAllCandles() as ChartCandleData[] || [],
-            currentCandle: candleAggregatorRef.current?.getCurrentCandle() as ChartCandleData | null,
-            ...candleAggregatorRef.current?.getStats(),
+            candles,
+            currentCandle: candles.length > 0 ? candles[candles.length - 1] : null,
+            ...sim.candles.getStats(),
         }));
     }, [fullConfig.candlePeriod]);
 
@@ -200,9 +195,8 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
      * Main tick function - runs the simulation
      */
     const tick = useCallback(() => {
-        if (!engineRef.current || !botManagerRef.current || !candleAggregatorRef.current) {
-            return;
-        }
+        const sim = simRef.current;
+        if (!sim) return;
 
         const now = Date.now();
         if (now - lastTickRef.current < fullConfig.tickInterval) {
@@ -210,76 +204,37 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
         }
         lastTickRef.current = now;
 
-        // Run bot tick (generates and submits orders)
-        botManagerRef.current.tick();
+        // Bots trade, every new trade goes into the candles
+        const trades = sim.step();
 
-        // Get current state from engine
-        const currentPrice = engineRef.current.getLastPrice();
-
-        // Calculate Tick Change (relative to Previous Candle Close)
-        const prevClose = candleAggregatorRef.current.getPrevClose();
-        const tickChange = currentPrice - prevClose;
-        const tickChangePercent = prevClose > 0 ? (tickChange / prevClose) * 100 : 0;
-
-        // Update previous price for next tick (still needed for other logic?)
-        previousPriceRef.current = currentPrice;
-
-        const excludeSource = !showBotOrdersRef.current ? 'bot' : undefined;
-        const orderBook = engineRef.current.getOrderBookSnapshot(15, excludeSource as any); // Cast because flexible types
-        const recentTrades = engineRef.current.getRecentTrades(20);
-
-        // Update candle aggregator with recent trades
-        for (const trade of recentTrades) {
-            // 1. Process for Candles
-            if (!processedTradeIdsRef.current.has(trade.tradeId)) {
-                candleAggregatorRef.current.processTrade(trade);
-                processedTradeIdsRef.current.add(trade.tradeId);
-                lastProcessedTradeIdRef.current = trade.tradeId;
-            }
-
-            // 2. Notify User Trades (Async Fills)
-            // Check if user is involved (maker or taker)
-            if (callbacks.onTrade && (trade.makerSource === 'user' || trade.takerSource === 'user')) {
-                if (!processedUserTradeIdsRef.current.has(trade.tradeId)) {
-                    callbacks.onTrade(trade);
-                    processedUserTradeIdsRef.current.add(trade.tradeId);
+        // Tell the page about the user's own fills (async fills of resting orders too).
+        // step() returns every trade since the last tick, so none can be missed.
+        const onTrade = callbacksRef.current.onTrade;
+        if (onTrade) {
+            for (const trade of trades) {
+                if (trade.makerSource === 'user' || trade.takerSource === 'user') {
+                    onTrade(trade);
                 }
             }
         }
 
-        // Cleanup processed IDs to prevent memory leak (keep last 500)
-        if (processedTradeIdsRef.current.size > 1000) {
-            const keepIds = Array.from(processedTradeIdsRef.current).slice(-500);
-            processedTradeIdsRef.current = new Set(keepIds);
-        }
-        if (processedUserTradeIdsRef.current.size > 1000) {
-            const keepIds = Array.from(processedUserTradeIdsRef.current).slice(-500);
-            processedUserTradeIdsRef.current = new Set(keepIds);
-        }
-
-        // Also tick the candle aggregator with current price
-        candleAggregatorRef.current.tick(currentPrice);
-
-        // Get candle data
-        const candles = candleAggregatorRef.current.getAllCandles();
-        const currentCandle = candleAggregatorRef.current.getCurrentCandle();
-        const stats = candleAggregatorRef.current.getStats();
+        const snapshot = sim.snapshot(showBotOrdersRef.current);
 
         // Update state
         setState(prev => ({
             ...prev,
-            orderBook,
-            candles: candles as ChartCandleData[],
-            currentCandle: currentCandle as ChartCandleData | null,
-            currentPrice,
-            recentTrades,
-            volume24h: stats.volume24h,
-            high24h: stats.high24h,
-            low24h: stats.low24h,
-            change24h: stats.change24h,
-            changePercent24h: stats.changePercent24h,
-            tickChange,
-            tickChangePercent,
+            orderBook: snapshot.orderBook,
+            candles: snapshot.candles,
+            currentCandle: snapshot.currentCandle,
+            currentPrice: snapshot.currentPrice,
+            recentTrades: snapshot.recentTrades,
+            volume24h: snapshot.stats.volume24h,
+            high24h: snapshot.stats.high24h,
+            low24h: snapshot.stats.low24h,
+            change24h: snapshot.stats.change24h,
+            changePercent24h: snapshot.stats.changePercent24h,
+            tickChange: snapshot.tickChange,
+            tickChangePercent: snapshot.tickChangePercent,
             isRunning: true,
         }));
     }, [fullConfig.tickInterval]);
@@ -288,7 +243,7 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
      * Start the simulation
      */
     const start = useCallback(() => {
-        if (!engineRef.current) {
+        if (!simRef.current) {
             initializeComponents();
         }
 
@@ -326,26 +281,24 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
         price: number | null,
         condition: OrderCondition = 'GTC'
     ) => {
-        if (!engineRef.current) return null;
+        if (!simRef.current) return null;
 
-        return engineRef.current.submitOrder(side, type, quantity, price, 'user', condition);
+        return simRef.current.engine.submitOrder(side, type, quantity, price, 'user', condition);
     }, []);
 
     /**
      * Cancel a user order
      */
     const cancelOrder = useCallback((orderId: string) => {
-        if (!engineRef.current) return false;
-        return engineRef.current.cancelOrder(orderId);
+        if (!simRef.current) return false;
+        return simRef.current.engine.cancelOrder(orderId);
     }, []);
 
     /**
      * Set market scenario
      */
     const setScenario = useCallback((scenario: MarketScenario) => {
-        if (botManagerRef.current) {
-            botManagerRef.current.setScenario(scenario);
-        }
+        simRef.current?.bots.setScenario(scenario);
         setState(prev => ({ ...prev, scenario }));
     }, []);
 
@@ -361,15 +314,13 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
      * Update bot configuration
      */
     const updateBotConfig = useCallback((config: Partial<BotManagerConfig>) => {
-        if (botManagerRef.current) {
-            botManagerRef.current.updateConfig(config);
-        }
+        simRef.current?.bots.updateConfig(config);
     }, []);
 
     /**
      * Get matching engine (for direct access if needed)
      */
-    const getEngine = useCallback(() => engineRef.current, []);
+    const getEngine = useCallback(() => simRef.current?.engine ?? null, []);
 
     // Initialize on mount
     useEffect(() => {
@@ -396,8 +347,8 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
 
     // Update bot config when props change (scenario, settings)
     useEffect(() => {
-        if (botManagerRef.current) {
-            botManagerRef.current.updateConfig({
+        if (simRef.current) {
+            simRef.current.bots.updateConfig({
                 scenario: fullConfig.scenario,
                 volatility: fullConfig.volatility,
                 liquidity: fullConfig.liquidity,
@@ -410,9 +361,7 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
 
     // Update commission rate
     useEffect(() => {
-        if (engineRef.current) {
-            engineRef.current.setCommissionRate(fullConfig.commissionRate);
-        }
+        simRef.current?.engine.setCommissionRate(fullConfig.commissionRate);
     }, [fullConfig.commissionRate]);
 
     // Return interface

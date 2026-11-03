@@ -303,3 +303,14 @@ export const SCENARIO_MODIFIERS: Record<MarketScenario, Partial<BotManagerConfig
         noise: { ...DEFAULT_NOISE_BOT_CONFIG, tradeInterval: 8000 },
     },
 };
+
+/**
+ * Short-lived scenarios: after `duration` ms the trading page switches to `next` by itself
+ * (pump & dump -> crash -> dead cat bounce, squeeze -> breakout -> bull).
+ */
+export const SCENARIO_LIFECYCLE: Partial<Record<MarketScenario, { duration: number; next: MarketScenario; label: string }>> = {
+    pump_dump: { duration: 15000, next: 'crash', label: '拉高結束 -> 殺盤開始' },
+    crash: { duration: 20000, next: 'dead_cat', label: '恐慌結束 -> 死貓反彈' },
+    breakout: { duration: 25000, next: 'bull', label: '突破確立 -> 轉為多頭' },
+    squeeze: { duration: 30000, next: 'breakout', label: '盤整結束 -> 向上突破' },
+};

@@ -10,7 +10,7 @@ import { Navbar } from '@/components/ui/Navbar';
 import { Language, TRANSLATIONS, CONFIG } from '@/constants';
 import { useMarketSimulator } from '@/hooks/useMarketSimulator';
 import { MarketScenario, HoldingLot } from '@/lib/matching';
-import { SCENARIO_MODIFIERS } from '@/lib/bots/types';
+import { SCENARIO_MODIFIERS, SCENARIO_LIFECYCLE } from '@/lib/bots/types';
 import { CandleData, OrderType, OrderCondition, Holding, OrderRecord, LogEntry, AIState, AIRecommendation, PendingOrder } from '@/types';
 import { Trade } from '@/lib/matching';
 import { CandlestickChart } from '@/components/chart';
@@ -20,7 +20,8 @@ import { OrderHistoryPanel, MarketTradesPanel } from './records';
 import { HoldingsPanel } from './holdings';
 import { PendingOrdersPanel } from './orders';
 import { AITerminal, AIAnalysisPanel } from '@/components/ai';
-import { generateId, getTimeString, calculateCommission, calculateTransactionTax, performAIAnalysis } from '@/lib';
+import { generateId, getTimeString, performAIAnalysis } from '@/lib';
+import { applyUserFill, userOrderIdOf } from '@/lib/portfolio';
 import { AIDetailedAnalysis } from '@/types';
 
 // Speed options removed as requested
@@ -82,16 +83,6 @@ const SCENARIO_DETAILS: Record<MarketScenario, { desc: string; vol: number; liq:
 };
 
 /**
- * Scenario Lifecycle Config (Transient Scenarios)
- */
-const SCENARIO_LIFECYCLE: Partial<Record<MarketScenario, { duration: number; next: MarketScenario; label: string }>> = {
-    pump_dump: { duration: 15000, next: 'crash', label: '拉高結束 -> 殺盤開始' },
-    crash: { duration: 20000, next: 'dead_cat', label: '恐慌結束 -> 死貓反彈' },
-    breakout: { duration: 25000, next: 'bull', label: '突破確立 -> 轉為多頭' },
-    squeeze: { duration: 30000, next: 'breakout', label: '盤整結束 -> 向上突破' },
-};
-
-/**
  * TradingPanel V2 - Uses new matching engine
  * This integrates the full order matching engine with bot-driven market simulation
  */
@@ -147,15 +138,10 @@ export function TradingPanelV2() {
         setScenario,
     } = useMarketSimulator(simConfig, { onTrade: (t) => onTradeRef.current(t) });
 
-
-
-
-
-    // Local trading state (balance, holdings, orders)
-    // const [balance, setBalance] = useState<number>(CONFIG.INITIAL_BALANCE); // Moved
-    // const [holding, setHolding] = useState<Holding | null>(null); // Moved
-    // const [lots, setLots] = useState<HoldingLot[]>([]); // Moved
-    const lotIdRef = useRef<string | null>(null);
+    // Latest lots, updated synchronously by every fill (state lags until the next render)
+    const lotsRef = useRef<HoldingLot[]>([]);
+    // "Close this lot" orders: order ID -> lot ID, so every fill of that order closes that lot
+    const closeTargetsRef = useRef<Map<string, string>>(new Map());
 
     const [orderHistory, setOrderHistory] = useState<OrderRecord[]>([]);
     const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([]);
@@ -204,7 +190,7 @@ export function TradingPanelV2() {
     const [aiState, setAiState] = useState<AIState>('idle');
     const [aiRecommendation, setAiRecommendation] = useState<AIRecommendation>(null);
     const [aiAnalysis, setAiAnalysis] = useState<AIDetailedAnalysis | null>(null);
-    const [logs, setLogs] = useState<LogEntry[]>([
+    const [logs, setLogs] = useState<LogEntry[]>(() => [
         { id: generateId(), text: t.logReady, type: 'info', time: getTimeString(), timestamp: Date.now() }
     ]);
 
@@ -252,180 +238,36 @@ export function TradingPanelV2() {
         };
     }, [marketState.scenario, setScenario, addLog]);
 
-    // Handle order submission
-    // Centralized Trade Handler (Async & Sync)
+    // Centralized Trade Handler: every fill of the user's orders comes through here,
+    // one call per trade (the simulator may deliver several in a row in one tick).
     const handleUserTrade = useCallback((trade: Trade) => {
-        const isUserTaker = trade.takerSource === 'user';
-        const userSide = isUserTaker ? trade.takerSide : (trade.takerSide === 'buy' ? 'sell' : 'buy');
+        const myOrderId = userOrderIdOf(trade);
+        const targetLotId = closeTargetsRef.current.get(myOrderId) ?? null;
 
-        const price = trade.price;
-        const totalQty = trade.quantity;
-        const total = price * totalQty;
+        // Work on the latest lots, not the ones from the last render: several fills
+        // of one order arrive before React re-renders.
+        const fill = applyUserFill(lotsRef.current, trade, {
+            commissionRate: commissionRatePercent / 100,
+            minCommission: minCommissionFee,
+            taxRate: taxRatePercent / 100,
+            dayTradeTaxRate: dayTradeTaxRatePercent / 100,
+        }, {
+            targetLotId,
+            newLotId: () => 'LOT-' + generateId(),
+        });
 
-        // --- FEE CALCULATION ---
-        // 1. Commission (Both Buy and Sell): 0.1425%, Min 20
-        // Note: Discount logic can be added here (e.g., * 0.6) if we add a setting for it.
-        // For now, assuming standard full fee as per request base rule, or maybe hardcode a discount?
-        // User example: "Buy 1000 shares @ 100... 142.5 * 0.6 = 85.5".
-        // Let's stick to the base rate passed in `commissionRatePercent` but ensure Min $20 check.
-        const rawCommission = calculateCommission(total, commissionRatePercent / 100, minCommissionFee);
-        const commission = rawCommission;
-
-        // 2. Transaction Tax (Sell Only): 0.3% (Normal) or 0.15% (Day Trade)
-        let tax = 0;
-        let isDayTrade = false;
-
-        // Identify which order ID was mine
-        const myOrderId = userSide === 'buy' ? trade.buyOrderId : trade.sellOrderId;
-
-        // --- CORE LOGIC ---
-        const nextLots = [...lots];
-
-        // Determine Close Side
-        const closeSide = userSide === 'buy' ? 'sell' : 'buy';
-        let remainingQty = totalQty;
-        let realizedPnlDelta = 0;
-        let tradePnl: number | undefined = undefined; // For single trade reporting
-
-        // Track Collateral Improvements
-        let closedShortValue = 0; // Collateral returned from closing shorts
-        let openedShortValue = 0; // Collateral locked for opening shorts
-
-        // 1. Close Existing Positions (FIFO)
-        for (let i = 0; i < nextLots.length; i++) {
-            if (remainingQty <= 0) break;
-            const lot = nextLots[i];
-
-            if (lot.quantity > 0 && lot.side === closeSide) {
-                // Targeted close?
-                if (lotIdRef.current && lot.id !== lotIdRef.current) continue;
-
-                // Day Trade Detection: Check if lot was opened on the same day (Locale Date String match)
-                const lotDate = new Date(lot.timestamp).toDateString();
-                const tradeDate = new Date(trade.timestamp).toDateString();
-                if (lotDate === tradeDate) {
-                    isDayTrade = true;
-                }
-
-                const closeQty = Math.min(lot.quantity, remainingQty);
-
-                // PnL Calc
-                const grossPnl = lot.side === 'buy'
-                    ? (price - lot.price) * closeQty
-                    : (lot.price - price) * closeQty;
-
-                // Commission breakdown (Pro-rated entry commission)
-                const entryComm = (closeQty / lot.originalQuantity) * lot.commission;
-                // Exit Commission (Pro-rated for this portion of the trade)
-                const exitComm = (closeQty / totalQty) * commission;
-
-                // Tax (Pro-rated) - Only calculated if User is SELLING (Closing Buy) or BUYING (Closing Sell... wait, Tax is only on SELL actions)
-                // Tax Rule: "Transaction Tax (Allocated on Sell)"
-                // If userSide == 'sell' (Closing Buy), we pay tax.
-                // If userSide == 'buy'  (Closing Sell), we DO NOT pay tax.
-
-                // Wait! "Day trade tax halved" applies when you SELL.
-                // If I am SELLING (closing a Long), I pay tax.
-                // If I am BUYING (closing a Short), I do NOT pay tax.
-
-                // BUT, wait... 
-                // "Day Trading deduction": If I buy then sell same day -> Sell has lower tax.
-                // If I Sell (Short) then Buy (Cover) same day -> Sell had tax. Does the Short Sell get lower tax retroactively?
-                // Usually Day Trade Tax Reduction is applied on the SELL side.
-                // If Short Selling: You Sell First. You pay tax. If you cover same day, do you get a refund? 
-                // Taiwan rule: "Day Trading Tax" applies to the Sell leg.
-                // If you Sell (Short) and match a Buy (Cover) later same day -> The original Sell should have been 0.15%.
-                // But we already paid 0.3% when we opened the Short?
-                // For simplicity in simulation:
-                // - If Closing Long (User Sell): Check if Day Trade. If yes, 0.15%, else 0.3%.
-                // - If Opening Short (User Sell): Always 0.3% initially? Or speculate? 
-                //   Real broker: Charges 0.3% first, refunds diff next month or end of day.
-                //   Sim: Let's simpler. If Opening Short, charge 0.3%. 
-
-                // Let's handle Tax calculation outside loop for the whole trade first, then allocate PnL?
-                // No, we need to know if it's a Day Trade to calculate the Tax rate for the whole Sell order?
-                // Actually, an order can partially close old positions (0.3% or 0.15%) and partially open new shorts.
-                // This is complex. 
-                // Simplified approach: 
-                // If User Sells:
-                //   Calculate Tax based on "Is this a Day Trade?".
-                //   It is a Day Trade if we are closing a position opened today.
-                //   If we are closing multiple lots, some might be today, some yesterday.
-                //   So Tax should be calculated per-lot closed?
-
-                let portionTax = 0;
-                if (userSide === 'sell') {
-                    // We are selling. (Closing Long)
-                    const isLotDayTrade = new Date(lot.timestamp).toDateString() === new Date(trade.timestamp).toDateString();
-                    // Use configurable tax rates
-                    const taxRate = isLotDayTrade ? (dayTradeTaxRatePercent / 100) : (taxRatePercent / 100);
-                    portionTax = Math.floor(price * closeQty * taxRate);
-                }
-
-                // Accumulate Tax to total tax for this trade
-                tax += portionTax;
-
-                realizedPnlDelta += (grossPnl - entryComm - exitComm - portionTax);
-
-                // Short Collateral Logic
-                if (lot.side === 'sell') {
-                    // Closing a Short.
-                    // We are BUYING. No Tax on Buy.
-                    closedShortValue += lot.price * closeQty;
-                }
-
-                lot.quantity -= closeQty;
-                remainingQty -= closeQty;
-            }
+        // The "close this lot" order is done once its lot is gone
+        if (targetLotId && !fill.lots.some(l => l.id === targetLotId)) {
+            closeTargetsRef.current.delete(myOrderId);
         }
 
-        lotIdRef.current = null; // Reset target
+        const { side: userSide, price, quantity: totalQty, total, commission, tax } = fill;
+        const tradePnl = fill.realizedPnl;
 
-        // 2. Open New Positions (if remaining)
-        if (remainingQty > 0) {
-            // We are opening a new position (Long or Short).
-            // If User Sell (Short Open): Tax applies.
-            // Since it's a new position, it's not a "Day Trade Close". But it IS the start of a potential day trade?
-            // No, Tax is on Sell. If Shorting, you pay 0.3% (or 0.15% if you qualify as Day Trading dealer?).
-            // Standard: Pay 0.3% (or user configured standard tax).
-            if (userSide === 'sell') {
-                const portionTax = Math.floor(price * remainingQty * (taxRatePercent / 100));
-                tax += portionTax;
-            }
-
-            const newLot: HoldingLot = {
-                id: 'LOT-' + generateId(),
-                tradeId: trade.tradeId,
-                timestamp: trade.timestamp,
-                side: userSide,
-                price: price,
-                quantity: remainingQty,
-                originalQuantity: remainingQty,
-                commission: (remainingQty / totalQty) * commission
-            };
-            nextLots.push(newLot);
-
-            if (userSide === 'sell') {
-                openedShortValue += price * remainingQty;
-            }
-        }
-
-        tradePnl = realizedPnlDelta;
-
-        // 3. Balance Update
-        // Base Flow: Sell = Inflow, Buy = Outflow
-        let balanceDelta = userSide === 'sell' ? total : -total;
-
-        // Deduct Fee & Tax
-        balanceDelta -= commission;
-        balanceDelta -= tax;
-
-        // Apply Collateral
-        const finalBalanceChange = balanceDelta + closedShortValue - openedShortValue;
-
-        setBalance(prev => prev + finalBalanceChange);
-        setRealizedPnl(p => p + realizedPnlDelta);
-        setLots(nextLots.filter(l => l.quantity > 0));
+        lotsRef.current = fill.lots;
+        setBalance(prev => prev + fill.balanceChange);
+        setRealizedPnl(p => p + fill.realizedPnl);
+        setLots(fill.lots);
 
         // 4. Update Pending Orders
         setPendingOrders(prev => {
@@ -469,7 +311,7 @@ export function TradingPanelV2() {
             pnl: tradePnl // Net Realized One-Time PnL
         }, ...prev].slice(0, 50));
 
-    }, [commissionRatePercent, minCommissionFee, taxRatePercent, dayTradeTaxRatePercent, addLog, lots]);
+    }, [commissionRatePercent, minCommissionFee, taxRatePercent, dayTradeTaxRatePercent, addLog]);
 
     // Link Ref to the Callback
     useEffect(() => {
@@ -486,7 +328,7 @@ export function TradingPanelV2() {
     ) => {
         if (quantity <= 0) {
             addLog('數量必須大於0', 'error');
-            return;
+            return null;
         }
 
         const result = submitMarketOrder(
@@ -499,7 +341,7 @@ export function TradingPanelV2() {
 
         if (!result) {
             addLog('下單失敗：引擎未就緒', 'error');
-            return;
+            return null;
         }
 
         if (result.status === 'filled') {
@@ -539,6 +381,7 @@ export function TradingPanelV2() {
         }
 
         setOrderQuantity(0);
+        return result;
     }, [submitMarketOrder, addLog, setOrderQuantity, setPendingOrders]);
 
     // Cancel pending order
@@ -554,14 +397,16 @@ export function TradingPanelV2() {
         const lot = lots.find(l => l.id === lotId);
         if (!lot) return;
 
-        // Set target
-        lotIdRef.current = lotId;
-
         // Determine action: Buy closes Sell (Short), Sell closes Buy (Long)
         const closeAction = lot.side === 'buy' ? 'sell' : 'buy';
 
-        // Execute Close Order (Market Order)
-        handleSubmitOrder(closeAction, lot.quantity, marketState.currentPrice, 1, 'market', 'GTC');
+        // Execute Close Order (Market Order); its fills arrive on the next tick
+        const result = handleSubmitOrder(closeAction, lot.quantity, marketState.currentPrice, 1, 'market', 'GTC');
+
+        // Remember which lot this order closes, for every one of its fills
+        if (result && result.filledQuantity > 0) {
+            closeTargetsRef.current.set(result.orderId, lotId);
+        }
     }, [lots, marketState.currentPrice, handleSubmitOrder]);
 
     // Handle reset

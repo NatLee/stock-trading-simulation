@@ -175,6 +175,179 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
         }
     }, [state.playback.isPlaying, state.playback.speed, state.currentScenario]);
     
+    // Complete session and calculate results
+    const completeSession = useCallback(() => {
+        const endTime = Date.now();
+        
+        // Calculate trading P&L
+        let totalPnL = state.balance - INITIAL_BALANCE;
+        if (state.position && state.position.quantity > 0) {
+            const currentPrice = getCurrentPrice();
+            const positionShares = state.position.quantity * SHARES_PER_LOT;
+            if (state.position.isShort) {
+                // 空頭部位未實現損益
+                totalPnL += (state.position.averageCost - currentPrice) * positionShares;
+            } else {
+                // 多頭部位未實現損益
+                totalPnL += (currentPrice - state.position.averageCost) * positionShares;
+            }
+        }
+        const totalPnLPercent = (totalPnL / INITIAL_BALANCE) * 100;
+        
+        // Calculate score breakdown
+        let entryAccuracy = 0;
+        let exitAccuracy = 0;
+        
+        if (state.mode === 'trading' && state.currentScenario) {
+            const scenario = state.currentScenario;
+            
+            // Check entry accuracy - 根據情境方向判斷進場
+            if (scenario.optimalEntry) {
+                const relevantTrades = scenario.expectedDirection === 'up'
+                    ? state.trades.filter(t => t.action === 'buy')
+                    : state.trades.filter(t => t.action === 'sell');
+                    
+                if (relevantTrades.length > 0) {
+                    const firstTrade = relevantTrades[0];
+                    const entryDiff = Math.abs(firstTrade.price - scenario.optimalEntry.price);
+                    const entryTolerance = scenario.optimalEntry.price * 0.03; // 3% tolerance
+                    if (entryDiff <= entryTolerance) {
+                        entryAccuracy = 20;
+                    }
+                }
+            }
+            
+            // Check exit accuracy - 根據情境方向判斷出場
+            if (scenario.optimalExit) {
+                const relevantTrades = scenario.expectedDirection === 'up'
+                    ? state.trades.filter(t => t.action === 'sell')
+                    : state.trades.filter(t => t.action === 'buy');
+                    
+                if (relevantTrades.length > 0) {
+                    const lastTrade = relevantTrades[relevantTrades.length - 1];
+                    const exitDiff = Math.abs(lastTrade.price - scenario.optimalExit.price);
+                    const exitTolerance = scenario.optimalExit.price * 0.03;
+                    if (exitDiff <= exitTolerance) {
+                        exitAccuracy = 20;
+                    }
+                }
+            }
+        }
+        
+        // Calculate time bonus
+        const sessionDuration = (endTime - sessionStartTimeRef.current) / 1000;
+        const timeBonus = state.mode === 'recognition' ? 0 : Math.max(0, Math.floor((300 - sessionDuration) * 0.1));
+        
+        // Trading PnL score
+        const tradingScore = totalPnL > 0 ? Math.floor(totalPnL / 1000) : Math.floor(totalPnL / 2000);
+        
+        const breakdown: ScoreBreakdown = {
+            tradingPnL: tradingScore,
+            entryAccuracy,
+            exitAccuracy,
+            timeBonus,
+            total: state.score + tradingScore + entryAccuracy + exitAccuracy + timeBonus,
+        };
+        
+        setScoreBreakdown(breakdown);
+        
+        const result: PracticeResult = {
+            mode: state.mode,
+            patternType: state.currentScenario?.patternType,
+            startTime: sessionStartTimeRef.current,
+            endTime,
+            score: breakdown.total,
+            trades: state.trades,
+            totalPnL,
+            totalPnLPercent,
+            correctIdentifications: state.mode === 'recognition' ? correctAnswers : undefined,
+            totalQuestions: state.mode === 'recognition' ? questions.length : undefined,
+        };
+        
+        setState(prev => ({
+            ...prev,
+            score: breakdown.total,
+            isComplete: true,
+            result,
+        }));
+    }, [state, getCurrentPrice, correctAnswers, questions.length]);
+    
+    const nextQuestion = useCallback(() => {
+        if (questionIndex < questions.length - 1) {
+            const nextIdx = questionIndex + 1;
+            setQuestionIndex(nextIdx);
+            setRemainingTime(30);
+            
+            // Load next question's scenario
+            const nextScenario = PATTERN_SCENARIOS.find(s => s.id === questions[nextIdx].scenarioId);
+            if (nextScenario) {
+                setState(prev => ({
+                    ...prev,
+                    currentScenario: nextScenario,
+                    playback: {
+                        isPlaying: false,
+                        speed: 1,
+                        currentIndex: nextScenario.candles.length - 1,
+                        totalCandles: nextScenario.candles.length,
+                    },
+                }));
+            }
+        } else {
+            // Complete recognition session
+            completeSession();
+        }
+    }, [questionIndex, questions, completeSession]);
+    
+    // Recognition mode functions
+    const startRecognitionSession = useCallback(() => {
+        const newQuestions = generateRecognitionQuestions(5);
+        setQuestions(newQuestions);
+        setQuestionIndex(0);
+        setCorrectAnswers(0);
+        setRemainingTime(30);
+        sessionStartTimeRef.current = Date.now();
+        
+        // Load the first question's scenario
+        if (newQuestions.length > 0) {
+            const firstScenario = PATTERN_SCENARIOS.find(s => s.id === newQuestions[0].scenarioId);
+            if (firstScenario) {
+                setState(prev => ({
+                    ...prev,
+                    currentScenario: firstScenario,
+                    playback: {
+                        isPlaying: false,
+                        speed: 1,
+                        currentIndex: firstScenario.candles.length - 1, // Show all candles
+                        totalCandles: firstScenario.candles.length,
+                    },
+                }));
+            }
+        }
+    }, []);
+    
+    const submitAnswer = useCallback((answer: string): boolean => {
+        if (!currentQuestion) return false;
+        
+        const isCorrect = answer === currentQuestion.correctAnswer;
+        
+        if (isCorrect) {
+            setCorrectAnswers(prev => prev + 1);
+            // Score: base + time bonus
+            const timeBonus = Math.floor(remainingTime * 0.5);
+            setState(prev => ({
+                ...prev,
+                score: prev.score + 10 + timeBonus,
+            }));
+        } else {
+            setState(prev => ({
+                ...prev,
+                score: Math.max(0, prev.score - 5),
+            }));
+        }
+        
+        return isCorrect;
+    }, [currentQuestion, remainingTime]);
+    
     // Recognition countdown timer
     useEffect(() => {
         if (state.mode === 'recognition' && currentQuestion && remainingTime > 0) {
@@ -508,178 +681,6 @@ export function usePracticeEngine(): UsePracticeEngineReturn {
         }
     }, [state.position, buy, sell]);
     
-    // Recognition mode functions
-    const startRecognitionSession = useCallback(() => {
-        const newQuestions = generateRecognitionQuestions(5);
-        setQuestions(newQuestions);
-        setQuestionIndex(0);
-        setCorrectAnswers(0);
-        setRemainingTime(30);
-        sessionStartTimeRef.current = Date.now();
-        
-        // Load the first question's scenario
-        if (newQuestions.length > 0) {
-            const firstScenario = PATTERN_SCENARIOS.find(s => s.id === newQuestions[0].scenarioId);
-            if (firstScenario) {
-                setState(prev => ({
-                    ...prev,
-                    currentScenario: firstScenario,
-                    playback: {
-                        isPlaying: false,
-                        speed: 1,
-                        currentIndex: firstScenario.candles.length - 1, // Show all candles
-                        totalCandles: firstScenario.candles.length,
-                    },
-                }));
-            }
-        }
-    }, []);
-    
-    const submitAnswer = useCallback((answer: string): boolean => {
-        if (!currentQuestion) return false;
-        
-        const isCorrect = answer === currentQuestion.correctAnswer;
-        
-        if (isCorrect) {
-            setCorrectAnswers(prev => prev + 1);
-            // Score: base + time bonus
-            const timeBonus = Math.floor(remainingTime * 0.5);
-            setState(prev => ({
-                ...prev,
-                score: prev.score + 10 + timeBonus,
-            }));
-        } else {
-            setState(prev => ({
-                ...prev,
-                score: Math.max(0, prev.score - 5),
-            }));
-        }
-        
-        return isCorrect;
-    }, [currentQuestion, remainingTime]);
-    
-    const nextQuestion = useCallback(() => {
-        if (questionIndex < questions.length - 1) {
-            const nextIdx = questionIndex + 1;
-            setQuestionIndex(nextIdx);
-            setRemainingTime(30);
-            
-            // Load next question's scenario
-            const nextScenario = PATTERN_SCENARIOS.find(s => s.id === questions[nextIdx].scenarioId);
-            if (nextScenario) {
-                setState(prev => ({
-                    ...prev,
-                    currentScenario: nextScenario,
-                    playback: {
-                        isPlaying: false,
-                        speed: 1,
-                        currentIndex: nextScenario.candles.length - 1,
-                        totalCandles: nextScenario.candles.length,
-                    },
-                }));
-            }
-        } else {
-            // Complete recognition session
-            completeSession();
-        }
-    }, [questionIndex, questions]);
-    
-    // Complete session and calculate results
-    const completeSession = useCallback(() => {
-        const endTime = Date.now();
-        
-        // Calculate trading P&L
-        let totalPnL = state.balance - INITIAL_BALANCE;
-        if (state.position && state.position.quantity > 0) {
-            const currentPrice = getCurrentPrice();
-            const positionShares = state.position.quantity * SHARES_PER_LOT;
-            if (state.position.isShort) {
-                // 空頭部位未實現損益
-                totalPnL += (state.position.averageCost - currentPrice) * positionShares;
-            } else {
-                // 多頭部位未實現損益
-                totalPnL += (currentPrice - state.position.averageCost) * positionShares;
-            }
-        }
-        const totalPnLPercent = (totalPnL / INITIAL_BALANCE) * 100;
-        
-        // Calculate score breakdown
-        let entryAccuracy = 0;
-        let exitAccuracy = 0;
-        
-        if (state.mode === 'trading' && state.currentScenario) {
-            const scenario = state.currentScenario;
-            
-            // Check entry accuracy - 根據情境方向判斷進場
-            if (scenario.optimalEntry) {
-                const relevantTrades = scenario.expectedDirection === 'up'
-                    ? state.trades.filter(t => t.action === 'buy')
-                    : state.trades.filter(t => t.action === 'sell');
-                    
-                if (relevantTrades.length > 0) {
-                    const firstTrade = relevantTrades[0];
-                    const entryDiff = Math.abs(firstTrade.price - scenario.optimalEntry.price);
-                    const entryTolerance = scenario.optimalEntry.price * 0.03; // 3% tolerance
-                    if (entryDiff <= entryTolerance) {
-                        entryAccuracy = 20;
-                    }
-                }
-            }
-            
-            // Check exit accuracy - 根據情境方向判斷出場
-            if (scenario.optimalExit) {
-                const relevantTrades = scenario.expectedDirection === 'up'
-                    ? state.trades.filter(t => t.action === 'sell')
-                    : state.trades.filter(t => t.action === 'buy');
-                    
-                if (relevantTrades.length > 0) {
-                    const lastTrade = relevantTrades[relevantTrades.length - 1];
-                    const exitDiff = Math.abs(lastTrade.price - scenario.optimalExit.price);
-                    const exitTolerance = scenario.optimalExit.price * 0.03;
-                    if (exitDiff <= exitTolerance) {
-                        exitAccuracy = 20;
-                    }
-                }
-            }
-        }
-        
-        // Calculate time bonus
-        const sessionDuration = (endTime - sessionStartTimeRef.current) / 1000;
-        const timeBonus = state.mode === 'recognition' ? 0 : Math.max(0, Math.floor((300 - sessionDuration) * 0.1));
-        
-        // Trading PnL score
-        const tradingScore = totalPnL > 0 ? Math.floor(totalPnL / 1000) : Math.floor(totalPnL / 2000);
-        
-        const breakdown: ScoreBreakdown = {
-            tradingPnL: tradingScore,
-            entryAccuracy,
-            exitAccuracy,
-            timeBonus,
-            total: state.score + tradingScore + entryAccuracy + exitAccuracy + timeBonus,
-        };
-        
-        setScoreBreakdown(breakdown);
-        
-        const result: PracticeResult = {
-            mode: state.mode,
-            patternType: state.currentScenario?.patternType,
-            startTime: sessionStartTimeRef.current,
-            endTime,
-            score: breakdown.total,
-            trades: state.trades,
-            totalPnL,
-            totalPnLPercent,
-            correctIdentifications: state.mode === 'recognition' ? correctAnswers : undefined,
-            totalQuestions: state.mode === 'recognition' ? questions.length : undefined,
-        };
-        
-        setState(prev => ({
-            ...prev,
-            score: breakdown.total,
-            isComplete: true,
-            result,
-        }));
-    }, [state, getCurrentPrice, correctAnswers, questions.length]);
     
     return {
         state,

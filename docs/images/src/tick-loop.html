@@ -1,0 +1,154 @@
+<!doctype html>
+<!--
+  "One tick of the market" diagram for README.md and docs/bots.md.
+  Rendered by scripts/docs/render.mjs (?theme=dark for the dark version, ?lang=zh for Chinese).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>One tick</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff; --bg2: #f6f8fa; --ink: #1f2328; --muted: #59636e; --line: #d1d9e0; --card: #ffffff;
+    --blue: #0969da; --green: #1a7f37; --red: #cf222e; --amber: #9a6700; --violet: #8250df;
+    --shadow: 0 1px 2px rgba(31,35,40,.06), 0 6px 18px rgba(31,35,40,.06);
+    --tint1: rgba(9,105,218,.09); --tint2: rgba(130,80,223,.07); --wire: #afb8c1;
+  }
+  .dark {
+    --bg: #0d1117; --bg2: #151b23; --ink: #f0f6fc; --muted: #9198a1; --line: #3d444d; --card: #151b23;
+    --blue: #4493f8; --green: #3fb950; --red: #f85149; --amber: #d29922; --violet: #ab7df8;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    --tint1: rgba(68,147,248,.14); --tint2: rgba(171,125,248,.10); --wire: #656c76;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: transparent; }
+  body { width: 960px; font-family: Inter, "Segoe UI", "Microsoft JhengHei", "Noto Sans TC", sans-serif; color: var(--ink); }
+  .frame { position: relative; width: 960px; height: 610px; border-radius: 22px; overflow: hidden; border: 1px solid var(--line);
+           background: radial-gradient(520px 300px at 95% 0%, var(--tint1), transparent 70%),
+                       radial-gradient(420px 260px at 0% 100%, var(--tint2), transparent 70%), var(--bg); }
+  .dots { position: absolute; inset: 0; opacity: .5; background-image: radial-gradient(var(--line) 1px, transparent 1.2px); background-size: 22px 22px;
+          -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 60%, #000 100%); }
+  header { position: absolute; left: 32px; top: 26px; right: 32px; }
+  h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
+  .tag { margin: 6px 0 0; font-size: 14px; color: var(--muted); max-width: 820px; line-height: 1.45; }
+  .tag b { color: var(--ink); font-weight: 600; }
+  .node { position: absolute; background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 12px 14px; }
+  .label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .label i { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex: none; }
+  .title { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin-top: 6px; }
+  .sub { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.42; }
+  code, .mono { font-family: "JetBrains Mono", Consolas, monospace; font-size: 11.5px; }
+  .sub code { color: var(--ink); }
+  .bot { display: grid; grid-template-columns: 10px 1fr; gap: 0 10px; padding: 9px 0; border-top: 1px dashed var(--line); }
+  .bot:first-of-type { border-top: 0; }
+  .bot .dot { width: 10px; height: 10px; border-radius: 3px; margin-top: 4px; }
+  .bot b { font-size: 13.5px; }
+  .bot p { margin: 2px 0 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  #timer { left: 32px; top: 120px; width: 172px; height: 92px; }
+  #timer .label i { background: var(--amber); }
+  #scenario { left: 224px; top: 120px; width: 336px; height: 92px; }
+  #scenario .label i { background: var(--violet); }
+  #bots { left: 32px; top: 246px; width: 440px; }
+  #you { left: 580px; top: 120px; width: 348px; height: 92px; }
+  #you .label i { background: var(--ink); }
+  #engine { left: 520px; top: 246px; width: 210px; }
+  #engine .label i { background: var(--red); }
+  #price { position: absolute; left: 530px; top: 430px; width: 190px; text-align: center; border-radius: 999px; padding: 9px 12px;
+           background: var(--blue); color: #fff; font-weight: 700; font-size: 13.5px; box-shadow: var(--shadow); }
+  #candles { left: 764px; top: 246px; width: 164px; }
+  #candles .label i { background: var(--green); }
+  #screen { left: 764px; top: 446px; width: 164px; }
+  #screen .label i { background: var(--muted); }
+  svg.wires { position: absolute; inset: 0; }
+  .wire { fill: none; stroke: var(--wire); stroke-width: 2; stroke-dasharray: 5 6; }
+  .wire.solid { stroke-dasharray: none; }
+  .head { fill: var(--wire); }
+  .wl { font-size: 11.5px; fill: var(--muted); font-family: Inter, "Segoe UI", "Microsoft JhengHei", sans-serif; }
+</style>
+</head>
+<body>
+<script>
+const flags = location.hash.slice(1).split(',');
+if (flags.includes('dark')) document.documentElement.className = 'dark';
+if (flags.includes('zh')) document.addEventListener('DOMContentLoaded', () => {
+  document.documentElement.lang = 'zh-Hant';
+  for (const el of document.querySelectorAll('[data-zh]')) el.innerHTML = el.getAttribute('data-zh');
+});
+</script>
+<div class="frame">
+  <div class="dots"></div>
+  <header>
+    <h1 data-zh="市場的一個 tick">One tick of the market</h1>
+    <p class="tag" data-zh="沒有價格公式，<b>價格就是最後一筆成交價</b>。每 100 毫秒，三個機器人看著現價下單，撮合引擎成交，成交價就成了新的現價。劇本只是換掉機器人的參數。">There is no price formula: <b>the price is simply the last trade</b>. Every 100 ms three bots look at it and send orders, the matching engine fills what crosses, and the last fill becomes the new price. A scenario only swaps the bots' settings.</p>
+  </header>
+
+  <svg class="wires" width="960" height="610">
+    <!-- timer -> bots -->
+    <path class="wire" d="M118 214 V238"/><path class="head" d="M118 244 l-5 -9 h10 z"/>
+    <!-- scenario -> bots -->
+    <path class="wire" d="M392 214 V238"/><path class="head" d="M392 244 l-5 -9 h10 z"/>
+    <!-- you -> engine -->
+    <path class="wire" d="M625 214 V238"/><path class="head" d="M625 244 l-5 -9 h10 z"/>
+    <!-- bots -> engine -->
+    <path class="wire solid" d="M474 330 H512"/><path class="head" d="M518 330 l-9 -5 v10 z"/>
+    <text class="wl" x="496" y="320" text-anchor="middle" data-zh="委託">orders</text>
+    <!-- engine -> candles -->
+    <path class="wire solid" d="M732 300 H756"/><path class="head" d="M762 300 l-9 -5 v10 z"/>
+    <text class="wl" x="746" y="290" text-anchor="middle" data-zh="成交">trades</text>
+    <!-- engine -> price -->
+    <path class="wire solid" d="M625 404 V422"/><path class="head" d="M625 428 l-5 -9 h10 z"/>
+    <!-- candles -> screen -->
+    <path class="wire" d="M846 420 V438"/><path class="head" d="M846 444 l-5 -9 h10 z"/>
+    <!-- loop back: price -> next tick -->
+    <path class="wire" d="M625 468 V578 H16 V166 H24"/><path class="head" d="M30 166 l-9 -5 v10 z"/>
+    <text class="wl" x="320" y="570" text-anchor="middle" data-zh="100 毫秒後：機器人看到新現價 P′，再來一輪">100 ms later: the bots see the new price P′ and go again</text>
+  </svg>
+
+  <div class="node" id="timer">
+    <div class="label"><i></i><span data-zh="計時器">Timer</span></div>
+    <div class="title" data-zh="每 100 毫秒">Every 100 ms</div>
+    <div class="sub"><code>MarketSimulation.step()</code></div>
+  </div>
+
+  <div class="node" id="scenario">
+    <div class="label"><i></i><span data-zh="劇本（12 種）">Scenario (12 presets)</span></div>
+    <div class="sub" data-zh="波動率 → 價差寬度　流動性 → 掛單量<br>熱絡度 → 下單頻率與數量　＋各機器人參數">volatility → spread · liquidity → order size<br>intensity → pace and size · + per-bot settings</div>
+  </div>
+
+  <div class="node" id="bots">
+    <div class="label"><i></i><span data-zh="1 · 機器人決定下單">1 · Bots decide</span></div>
+    <div class="sub" style="margin-bottom:4px" data-zh="<code>BotManager.tick()</code> 讀現價 P，依序讓三個機器人出手">
+      <code>BotManager.tick()</code> reads the last price P and lets each bot act</div>
+    <div class="bot"><span class="dot" style="background:var(--blue)"></span><div><b data-zh="造市機器人">Market maker</b>
+      <p data-zh="每 500 毫秒 ÷ 熱絡度：撤掉所有機器人掛單，在 P 上下各掛 12 層，離 P 0.2% × 波動率">every 500 ms ÷ intensity: cancels all bot orders, quotes 12 levels a side, 0.2% × volatility away from P</p></div></div>
+    <div class="bot"><span class="dot" style="background:var(--violet)"></span><div><b data-zh="趨勢機器人">Trend bot</b>
+      <p data-zh="最近 1 秒的動能 ＋ 劇本偏向：訊號夠強就順勢下單；很強時直接吃過價差">last second's momentum + the scenario's lean: when strong enough it joins the move, when very strong it crosses the spread</p></div></div>
+    <div class="bot"><span class="dot" style="background:var(--amber)"></span><div><b data-zh="雜訊機器人">Noise bot</b>
+      <p data-zh="每 2 秒 ÷ 熱絡度：隨機買或賣 1～2 張，30% 市價單，其餘是 ±0.5% 內的限價單">every 2 s ÷ intensity: buys or sells 1–2 lots at random, 30% market orders, the rest limits within ±0.5%</p></div></div>
+  </div>
+
+  <div class="node" id="you">
+    <div class="label"><i></i><span data-zh="你">You</span></div>
+    <div class="sub" data-zh="你的單在兩個 tick 之間送進來；剛掛的單，機器人 1 秒內不會去吃">your orders go in between ticks; bots leave a fresh one alone for 1 s</div>
+  </div>
+
+  <div class="node" id="engine">
+    <div class="label"><i></i><span data-zh="2 · 撮合引擎">2 · Matching engine</span></div>
+    <div class="sub" data-zh="價格優先，同價先到先成交<br>以掛單方的價格成交<br>市價單一路往下一檔吃<br>升降單位照台股">best price first, then oldest order<br>fills at the resting order's price<br>market orders walk the book<br>TWSE tick sizes</div>
+  </div>
+
+  <div id="price" data-zh="最後一筆成交 ＝ 新現價 P′">last fill = new price P′</div>
+
+  <div class="node" id="candles">
+    <div class="label"><i></i><span data-zh="3 · 每筆新成交">3 · Every new trade</span></div>
+    <div class="sub" data-zh="進 15 秒 K 棒，再合成 15 秒／1 分／5 分／30 分<br>你的成交 → 持股、現金、手續費與稅">into 15 s candles, merged to 15 s / 1 m / 5 m / 30 m<br>your fills → holdings, cash, fees, tax</div>
+  </div>
+
+  <div class="node" id="screen">
+    <div class="label"><i></i><span data-zh="4 · 畫面">4 · Screen</span></div>
+    <div class="sub" data-zh="委託簿 15 檔、K 線、24 小時統計，一次更新">order book (15 levels), chart and 24 h stats, all at once</div>
+  </div>
+</div>
+</body>
+</html>

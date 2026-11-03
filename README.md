@@ -1,44 +1,73 @@
 [繁體中文](README_zh-tw.md)
 
-# Stock Trading Simulator
+# Stonk! Stock Trading Simulator
+
+<p>
+  <a href="https://github.com/NatLee/stock-trading-simulation/actions/workflows/ci.yml"><img src="https://github.com/NatLee/stock-trading-simulation/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/NatLee/stock-trading-simulation/actions/workflows/deploy.yml"><img src="https://github.com/NatLee/stock-trading-simulation/actions/workflows/deploy.yml/badge.svg" alt="Deploy to GitHub Pages"></a>
+  <a href="https://natlee.github.io/stock-trading-simulation/"><img src="https://img.shields.io/badge/demo-live-2a78d6" alt="Live demo"></a>
+</p>
 
 ![Trading Simulation](./docs/simulation.png)
 *Main trading interface with real-time order book, candlestick chart, and trading panel*
 
-A comprehensive stock trading simulator built with Next.js, featuring a real-time matching engine, bot-driven market simulation, and an integrated learning center for trading education.
+A stock trading simulator that runs entirely in your browser. A real order-matching engine sits in the
+middle, and three bots (a market maker, a trend follower and a noisy crowd) trade against each other
+and against you every 100 ms, so the price, the order book and the candles all come out of actual
+trades. Twelve market scenarios retune the bots, from a calm, empty market to a pump and dump. Around
+it there is a learning center with 19 courses and a practice center for chart patterns.
+
+**Try it:** <https://natlee.github.io/stock-trading-simulation/>
+
+## How the market works
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/tick-loop-dark.png">
+  <img src="docs/images/tick-loop-light.png" alt="One tick: a 100 ms timer runs the bots, the matching engine fills their orders and the last fill becomes the new price; trades go into the candles and your account, then the screen redraws.">
+</picture>
+
+There is no price formula: the price is the last trade. The market maker quotes a ladder around it,
+the noise bot and the trend bot take those quotes, and every fill moves the price one step.
+Scenarios only change the bots' settings (spread, activity, how eagerly the trend bot joins a move).
+
+**[How the bots move the price](docs/bots.md)** explains every bot with its formulas, what each of the
+twelve scenarios changes, charts of each scenario from seeded runs, and a few places where the app does
+not do what the scenario presets say.
 
 ## Features
 
-### Trading Simulation
+### Trading simulation
 
-- **Matching Engine**: Price-time priority order matching
-- **Order Types**: Market orders and limit orders
-- **Order Conditions**: GTC (Good Till Cancel), IOC (Immediate Or Cancel), FOK (Fill Or Kill)
-- **Order Book**: Real-time bid/ask visualization with depth display
-- **Candlestick Charts**: Multiple timeframes (15s, 1m, 5m, 30m) with moving averages and volume overlay
-- **24h Statistics**: High, low, volume, and price change tracking
-- **Holdings Management**: Lot-based position tracking with P&L calculation
-- **Trade History**: Complete record of executed trades
+- **Matching engine**: price-time priority, fills at the resting order's price, partial fills
+- **Order types**: market and limit orders
+- **Order conditions**: GTC (Good Till Cancel), IOC (Immediate Or Cancel), FOK (Fill Or Kill)
+- **Order book**: live bid/ask depth, with bot orders shown or hidden
+- **Candlestick charts**: 15 s, 1 m, 5 m and 30 m, with moving averages and volume
+- **24 h statistics**: high, low, volume and change
+- **Holdings**: lot-by-lot positions (long and short) with P&L, commission and Taiwan's transaction tax
+  (day-trade rate included)
+- **Trade history**: every fill of your orders
 
 ![Simulation Settings](./docs/simulation-settings.png)
 *Market scenario configuration and bot settings*
 
-### Bot-Driven Market Simulation
+### Bot-driven market
 
-Three types of bots simulate realistic market activity:
+- **Market maker**: re-quotes a ladder of 12 levels on each side around the last price
+- **Trend bot**: follows the last second's momentum, nudged by the scenario
+- **Noise bot**: random 1–2 lot orders, market or limit, like a crowd of small traders
 
-- **MarketMakerBot**: Provides liquidity by quoting both bid and ask sides
-- **TrendBot**: Follows market trends and adds directional pressure
-- **NoiseBot**: Simulates retail trading with random orders
+**Twelve scenarios**: 強勢多頭 Bull, 弱勢空頭 Bear, 盤整 Sideways, 劇烈震盪 Volatile, 冷清 Calm,
+盤整突破 Breakout, 恐慌崩盤 Crash, 主力吸籌 Accumulation, 主力出貨 Distribution, 拉高出貨 Pump & dump,
+死貓反彈 Dead cat bounce and 盤整待變 Squeeze. Four of them hand over to the next one by themselves
+(pump & dump → crash → dead cat bounce, squeeze → breakout → bull).
 
-**Market Scenarios**:
-- Bull Market - Higher volatility with upward bias
-- Bear Market - Higher volatility with downward bias
-- Sideways - Low volatility, high liquidity
-- Volatile - Extreme price swings
-- Calm - Minimal movement, very high liquidity
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/scenarios-dark.png">
+  <img src="docs/images/scenarios-light.png" alt="Twelve small charts, one per scenario, 3 minutes each on one ±15% scale: calm is almost flat, volatile, crash and pump & dump swing hardest.">
+</picture>
 
-### Learning Center
+### Learning center
 
 19 courses across 4 categories:
 
@@ -49,7 +78,7 @@ Three types of bots simulate realistic market activity:
 | **Advanced** | Day Trading, Market Microstructure, Trading Scenarios, Stock Picking, Options, Sector Analysis |
 | **Investment** | ETF Investing, Dividend Investing, Portfolio Management, US Stocks, Taiwan vs US Markets |
 
-Features interactive quizzes, visual charts, and progress tracking.
+Interactive quizzes, visual charts and progress tracking.
 
 ![Learning Center](./docs/learn-center.png)
 *Interactive learning center with 19 courses across 4 categories*
@@ -57,13 +86,14 @@ Features interactive quizzes, visual charts, and progress tracking.
 ![Learning Sub Page](./docs/learn-sub-page.png)
 *Detailed course content with visual charts and interactive quizzes*
 
-### Practice Center
+### Practice center
 
-A comprehensive environment for mastering chart patterns and trading execution:
+- **Pattern recognition**: a quiz on chart patterns (head & shoulders, wedges, triangles, …)
+- **Trading practice**: trade a specific pattern or a random one, risk-free
+- **Rewind & replay**: step through the candles again and review your decisions
 
-- **Pattern Recognition**: Interactive quiz mode to identify chart patterns (Head & Shoulders, Wedges, Triangles, etc.) from real market scenarios.
-- **Trading Practice**: Risk-free simulation to trade specific patterns or random scenarios.
-- **Rewind & Replay**: Review historical price action and replay scenarios to analyze decision-making.
+The practice charts are hand-made candle sequences (`src/data/practice/scenarios/*.json`), not the bot
+market.
 
 ![K-Chart Practice](./docs/k-chart-practice.png)
 *Pattern recognition practice with candlestick charts*
@@ -71,135 +101,85 @@ A comprehensive environment for mastering chart patterns and trading execution:
 ![Guess Practice](./docs/guess-practice.png)
 *Interactive quiz mode for identifying chart patterns*
 
-### Market Analysis
+### Market analysis
 
-Real-time market:
+A rule-based "AI" panel reads the live market: trend direction and strength, order book pressure,
+RSI-style momentum and candle patterns, each with a confidence score.
 
-- **Trend Analysis**: Detects market direction (Bullish/Bearish) and strength.
-- **Order Book Scanning**: Analyzes bid/ask pressure to gauge market sentiment.
-- **Momentum Indicators**: Tracks RSI and volume velocity.
-- **Pattern Detection**: Automatically identifies forming chart patterns with confidence scores.
+### Also
 
-### Additional Features
+- Taiwan Stock Exchange tick sizes
+- Color theme toggle: Asian (red = up) or Western (green = up)
+- Whole-lot and odd-lot modes
+- Configurable commission, minimum fee and tax rates
+- Market intensity slider
 
-- **Taiwan Stock Exchange tick rules** for realistic price steps
-- **Color theme toggle**: Asian (red=up) vs Western (green=up)
-- **Standard/Odd lot trading modes**
-- **Configurable commission rates**
-- **Market intensity control**
+## Getting started
 
-## Tech Stack
-
-- **Framework**: [Next.js](https://nextjs.org/) 16.1.6 (App Router)
-- **UI Library**: [React](https://react.dev/) 19.2.3
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) 4
-- **Icons**: [Lucide React](https://lucide.dev/)
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18.x or later
-
-### Installation
+You need [Node.js](https://nodejs.org/) 22 or newer.
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/stock-trading-simulation.git
-
-# Navigate to project directory
+git clone https://github.com/NatLee/stock-trading-simulation.git
 cd stock-trading-simulation
-
-# Install dependencies
 npm install
+npm run dev
 ```
 
-### Development
+Open <http://localhost:3000>. To use another port: `npm run dev -- -p 8080`.
+
+### Scripts
 
 ```bash
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
-
-# Run linting
-npm run lint
+npm run dev          # development server
+npm run build        # static site in out/ (what GitHub Pages serves)
+npx serve out        # preview the built site (npm start does not work with a static export)
+npm test             # unit tests (Vitest)
+npm run lint         # ESLint
+npm run typecheck    # TypeScript
+npm run sim -- --scenario crash --seed 7   # run a scenario headless, see docs/bots.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the trading simulator.
+`npm run sim` prints a price sparkline and a summary for one seeded run:
 
-## Project Structure
+```text
+pump_dump (app, seed 2, 180 s)  0s pump_dump -> 15s crash -> 35s dead_cat
+  50.00 ▁▁▂▃▃▂▄▄▅▆▆▅▅▆▆▆▆▅▆▆▆▆▆▇▆▆▆▅▆▆▆▆▆▆▆▆▆▅▅▆▆▇▇▇▇█▇▇▇▇▆▆▆▇▆▆▅▅▅▅▅ 55.90
+  change +11.80%  high +20.20%  low +0.00%  1 s move 0.81%  spread 1.13%  74 trades/min
+```
+
+## Project structure
 
 ```
 src/
-├── app/                    # Next.js App Router pages
-│   ├── page.tsx           # Main trading interface
-│   └── learn/             # Learning center
+├── app/                      # Next.js pages: trading (/), learn, practice
 ├── components/
-│   ├── trading/           # Trading UI components
-│   │   ├── order/         # Order form components
-│   │   ├── orderbook/     # Order book display
-│   │   ├── holdings/      # Position management
-│   │   └── records/       # Trade history
-│   ├── chart/             # Candlestick chart
-│   ├── learn/             # Learning center components
-│   └── ui/                # Reusable UI components
+│   ├── trading/              # Trading page: order form, order book, holdings, records
+│   ├── chart/                # Canvas candlestick chart
+│   ├── learn/, practice/, ai/, ui/
 ├── hooks/
-│   ├── useMarketSimulator.ts  # Main simulation orchestrator
-│   ├── usePriceEngine.ts      # Price generation
-│   └── useTradingEngine.ts    # Trading state management
+│   ├── useMarketSimulator.ts # Runs MarketSimulation on a 100 ms timer for React
+│   └── usePracticeEngine.ts  # Practice center
 ├── lib/
-│   ├── matching/          # Core matching engine
-│   │   ├── MatchingEngine.ts  # Order matching logic
-│   │   ├── OrderBook.ts       # Price-time priority book
-│   │   └── CandleAggregator.ts # K-line generation
-│   └── bots/              # Trading bots
-│       ├── BotManager.ts      # Bot coordinator
-│       ├── MarketMakerBot.ts  # Liquidity provider
-│       ├── TrendBot.ts        # Trend follower
-│       └── NoiseBot.ts        # Random trader
-├── data/learn/            # Course content (JSON)
-├── constants/             # Configuration
-└── types/                 # TypeScript definitions
+│   ├── sim/                  # MarketSimulation (one tick), seeded random + clock
+│   ├── matching/             # MatchingEngine, OrderBook, CandleAggregator, tick sizes
+│   ├── bots/                 # BotManager, MarketMakerBot, TrendBot, NoiseBot, scenario presets
+│   ├── portfolio.ts          # What a fill does to lots, cash, fees and tax
+│   └── aiAnalysis.ts         # Rule-based market analysis
+├── data/                     # Course and practice content (JSON)
+scripts/
+├── simulate.ts               # npm run sim
+└── docs/                     # Builds the figures in docs/images from seeded runs
+docs/
+├── bots.md                   # How the bots move the price
+└── images/                   # Figures (src/ holds their HTML sources)
 ```
 
-## Architecture
+## Tech stack
 
-### Order Flow
-
-```
-User/Bot Order → MatchingEngine → OrderBook
-                      ↓
-              Price-Time Matching
-                      ↓
-              Trade Execution
-                      ↓
-              CandleAggregator → Chart Update
-                      ↓
-              State Update → UI Render
-```
-
-### Matching Engine
-
-- Implements price-time priority matching
-- Supports partial fills
-- Handles market orders by consuming multiple price levels
-- Applies Taiwan Stock Exchange tick size rules
-
-### Bot System
-
-The `BotManager` coordinates all bots on each tick (default 100ms):
-
-1. **MarketMakerBot** refreshes quotes at multiple price levels
-2. **TrendBot** analyzes price history and places directional orders
-3. **NoiseBot** randomly submits market/limit orders
-
-Order quantities scale with configurable `unitSize` and `intensity` parameters.
+[Next.js](https://nextjs.org/) 16 (App Router, static export), [React](https://react.dev/) 19,
+TypeScript, [Tailwind CSS](https://tailwindcss.com/) 4, [Lucide](https://lucide.dev/) icons and
+[Vitest](https://vitest.dev/) for tests. CI runs lint, type-check, tests and the build on Node 22 and 24;
+every push to `main` deploys to GitHub Pages.
 
 ## Contributors
 

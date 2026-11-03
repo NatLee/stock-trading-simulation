@@ -1,7 +1,7 @@
 import { TrendBotConfig, BotOrder } from './types';
-import { OrderSide } from '../matching/types';
+import { OrderSide, MarketScenario } from '../matching/types';
 import { PriceStep } from '../matching/PriceStep';
-import { MarketScenario } from '../matching/types';
+import { SimEnv, realEnv } from '../sim/env';
 
 /**
  * TrendBot - follows market trends and adds directional pressure
@@ -16,9 +16,11 @@ export class TrendBot {
     private lastTradeTime: number = 0;
     private priceHistory: number[] = [];
     private maxHistoryLength: number = 20;
+    private env: SimEnv;
 
-    constructor(config: TrendBotConfig) {
+    constructor(config: TrendBotConfig, env: SimEnv = realEnv) {
         this.config = { ...config };
+        this.env = env;
     }
 
     /**
@@ -82,7 +84,7 @@ export class TrendBot {
     ): BotOrder[] {
         if (!this.config.enabled) return [];
 
-        const now = Date.now();
+        const now = this.env.now();
         const intensity = this.config.intensity || 1.0;
         const effectiveInterval = this.config.tradeInterval / intensity;
 
@@ -134,7 +136,7 @@ export class TrendBot {
                     : PriceStep.ceilToTick(rawPrice);
             } else {
                 // Passive: Standard logic (existing)
-                const deviation = 0.001 + Math.random() * 0.002;
+                const deviation = 0.001 + this.env.random() * 0.002;
                 const rawPrice = side === 'buy'
                     ? currentPrice * (1 - deviation)
                     : currentPrice * (1 + deviation);
@@ -144,7 +146,7 @@ export class TrendBot {
                     : PriceStep.ceilToTick(rawPrice);
             }
 
-            if (Math.random() < (isAggressive ? 0.9 : 0.7)) {
+            if (this.env.random() < (isAggressive ? 0.9 : 0.7)) {
                 orders.push({
                     side,
                     type: 'limit',
@@ -169,21 +171,8 @@ export class TrendBot {
         switch (scenario) {
             case 'bull': return 0.3;
             case 'bear': return -0.3;
-            case 'volatile': return (Math.random() - 0.5) * 0.4;
+            case 'volatile': return (this.env.random() - 0.5) * 0.4;
             default: return 0;
-        }
-    }
-
-    /**
-     * Calculate limit price based on trend
-     */
-    private getLimitPrice(currentPrice: number, side: OrderSide, trend: number): number {
-        const offset = 0.001 + Math.abs(trend) * 0.002;
-
-        if (side === 'buy') {
-            return Math.round(currentPrice * (1 - offset) * 100) / 100;
-        } else {
-            return Math.round(currentPrice * (1 + offset) * 100) / 100;
         }
     }
 
@@ -194,7 +183,7 @@ export class TrendBot {
         if (!this.config.enabled) return false;
         const intensity = this.config.intensity || 1.0;
         const effectiveInterval = this.config.tradeInterval / intensity;
-        return Date.now() - this.lastTradeTime >= effectiveInterval;
+        return this.env.now() - this.lastTradeTime >= effectiveInterval;
     }
 
     /**
