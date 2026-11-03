@@ -1,3 +1,10 @@
+/**
+ * Prices like 49.9 / 0.05 come out as 997.9999999999999 in floating point.
+ * Without a little slack, floor() would drop a price that is already on a
+ * tick by one whole tick (49.9 -> 49.85), and ceil() would raise one.
+ */
+const EPSILON = 1e-9;
+
 export class PriceStep {
     /**
      * Get the minimum price tick (step) for a given price according to TWSE rules
@@ -33,7 +40,7 @@ export class PriceStep {
      */
     static floorToTick(price: number): number {
         const tick = this.getTickSize(price);
-        const result = Math.floor(price / tick) * tick;
+        const result = Math.floor(price / tick + EPSILON) * tick;
         return Math.round(result * 100) / 100;
     }
 
@@ -42,7 +49,7 @@ export class PriceStep {
      */
     static ceilToTick(price: number): number {
         const tick = this.getTickSize(price);
-        const result = Math.ceil(price / tick) * tick;
+        const result = Math.ceil(price / tick - EPSILON) * tick;
         return Math.round(result * 100) / 100;
     }
 }

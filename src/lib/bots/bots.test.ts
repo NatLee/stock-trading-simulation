@@ -38,7 +38,7 @@ describe('MarketMakerBot', () => {
         asks.forEach((q, i) => {
             expect(q.price).toBe(PriceStep.ceilToTick(50 * (1 + (0.002 + 0.0005 * i))));
         });
-        expect(bids[0].price).toBe(49.85); // 50 × 0.998 = 49.9, floored one tick too far
+        expect(bids[0].price).toBe(49.9);
         expect(asks[0].price).toBe(50.1);
     });
 

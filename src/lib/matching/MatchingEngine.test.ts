@@ -26,6 +26,13 @@ describe('PriceStep (TWSE tick sizes)', () => {
         expect(PriceStep.ceilToTick(50.01)).toBe(50.1);
         expect(PriceStep.roundToTick(0.1 + 0.2)).toBe(0.3);
     });
+
+    it('keeps prices that already sit on a tick (regression: 49.9 floored to 49.85)', () => {
+        for (const price of [49.9, 0.29, 50.3, 10.15, 99.5, 1005]) {
+            expect(PriceStep.floorToTick(price)).toBe(price);
+            expect(PriceStep.ceilToTick(price)).toBe(price);
+        }
+    });
 });
 
 describe('MatchingEngine', () => {
