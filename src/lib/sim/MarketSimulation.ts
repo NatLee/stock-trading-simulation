@@ -1,8 +1,8 @@
 import { MatchingEngine } from '../matching/MatchingEngine';
 import { CandleAggregator, CandleData, CandleStats, prevCloseOf } from '../matching/CandleAggregator';
-import { OrderBookSnapshot, Trade } from '../matching/types';
+import { OrderBookSnapshot, Trade, MarketScenario } from '../matching/types';
 import { BotManager } from '../bots/BotManager';
-import { BotManagerConfig } from '../bots/types';
+import { BotSettings } from '../bots/types';
 import { SimEnv, realEnv } from './env';
 
 export interface MarketSimulationOptions {
@@ -12,8 +12,8 @@ export interface MarketSimulationOptions {
     candlePeriod: number;
     /** Start of the synthetic history (ms). Leave out to start with an empty chart. */
     historyStart?: number;
-    /** Bot manager settings (scenario, intensity, lot size, ...) */
-    bots?: Partial<BotManagerConfig>;
+    /** Starting scenario and the page's bot settings (lot size, odd lots, intensity) */
+    bots?: Partial<BotSettings> & { scenario?: MarketScenario };
 }
 
 export interface MarketSnapshot {

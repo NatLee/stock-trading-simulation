@@ -7,7 +7,7 @@
 
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { runScenario, statsOf, ALL_SCENARIOS, RunMode } from '../lib/scenarioRun';
+import { runScenario, statsOf, ALL_SCENARIOS } from '../lib/scenarioRun';
 import { MatchingEngine } from '../../src/lib/matching/MatchingEngine';
 import { MarketMakerBot } from '../../src/lib/bots/MarketMakerBot';
 import { DEFAULT_MARKET_MAKER_CONFIG } from '../../src/lib/bots/types';
@@ -122,7 +122,7 @@ function scenariosFigure(): string {
     const pad = { l: 34, r: 52, t: 30, b: 22 };
 
     const panels = ALL_SCENARIOS.map((scenario, idx) => {
-        const run = runScenario({ scenario, seed: SEED, seconds: SECONDS, mode: 'app' });
+        const run = runScenario({ scenario, seed: SEED, seconds: SECONDS });
         const p0 = run.prices[0];
         const col = idx % cols;
         const row = Math.floor(idx / cols);
@@ -164,79 +164,6 @@ function scenariosFigure(): string {
         '由 scripts/docs/figures.ts 用固定種子跑 MarketSimulation 產生。換種子路徑會不同，20 個種子的平均值見 docs/bots_zh-tw.md。', 'class="foot"')}
 </div>`;
     return page('Scenarios', 960, body, 'Twelve scenarios, app behaviour today, seed 1.');
-}
-
-// ---------------------------------------------------------------- figure: preset vs app (20 seeds)
-
-function presetsFigure(): string {
-    const SECONDS = 180;
-    const SEEDS = Array.from({ length: 20 }, (_, i) => i + 1);
-    const rows: { scenario: MarketScenario; min: number; max: number; ticks: number[] }[] = [
-        { scenario: 'bull', min: -12, max: 12, ticks: [-10, 0, 10] },
-        { scenario: 'bear', min: -12, max: 12, ticks: [-10, 0, 10] },
-        { scenario: 'crash', min: -75, max: 150, ticks: [-50, 0, 50, 100] },
-    ];
-    const modes: { mode: RunMode; color: string; en: string; zh: string }[] = [
-        { mode: 'app', color: 'var(--s1)', en: 'App today (setting snaps back)', zh: '目前的 App（設定被蓋回）' },
-        { mode: 'preset', color: 'var(--s2)', en: 'Preset as written', zh: '照預設參數' },
-    ];
-    const W = 960 - 56;
-    const labelW = 120;
-    const gap = 14;
-    const pw = (W - labelW - gap) / 2;
-    const ph = 150;
-    const pad = { l: 34, r: 46, t: 12, b: 20 };
-
-    let body = '';
-    rows.forEach((row, r) => {
-        const y0 = r * (ph + gap);
-        const name = SCENARIO_NAMES[row.scenario];
-        body += `<g transform="translate(0,${y0})">
-          <text x="0" y="${ph / 2 - 4}" font-size="15" font-weight="700" fill="var(--ink)">${t(name.en, name.zh)}</text>
-          <text x="0" y="${ph / 2 + 14}" font-size="11" fill="var(--muted)" class="mono">${row.scenario}</text>`;
-        modes.forEach((m, c) => {
-            const x0 = labelW + c * (pw + gap);
-            const iw = pw - pad.l - pad.r;
-            const ih = ph - pad.t - pad.b;
-            const X = (s: number) => pad.l + (s / SECONDS) * iw;
-            const Y = (pct: number) => pad.t + ih - ((Math.max(row.min, Math.min(row.max, pct)) - row.min) / (row.max - row.min)) * ih;
-            const runs = SEEDS.map(seed => runScenario({ scenario: row.scenario, seed, seconds: SECONDS, mode: m.mode }));
-            const series = runs.map(run => run.prices.map(p => (p / run.prices[0] - 1) * 100));
-            const median = series[0].map((_, s) => {
-                const v = series.map(xs => xs[s]).sort((a, b) => a - b);
-                return (v[9] + v[10]) / 2;
-            });
-            const ends = series.map(xs => xs[xs.length - 1]);
-            const up = ends.filter(v => v > 0).length;
-            const grid = row.ticks.map(v => `<line x1="${pad.l}" x2="${pad.l + iw}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--${v === 0 ? 'line' : 'grid'})" ${v === 0 ? '' : 'stroke-dasharray="3 4"'}/>`).join('');
-            const yl = row.ticks.map(v => `<text x="${pad.l - 6}" y="${Y(v) + 3.5}" font-size="10" fill="var(--muted)" text-anchor="end">${v > 0 ? '+' : ''}${v}%</text>`).join('');
-            const xl = r === rows.length - 1 ? [0, 60, 120, 180].map(s => `<text x="${X(s)}" y="${ph - 4}" font-size="10" fill="var(--muted)" text-anchor="middle">${s}s</text>`).join('') : '';
-            const lines = series.map(xs => `<path d="${path(xs.map((v, s) => [X(s), Y(v)]))}" fill="none" stroke="${m.color}" stroke-opacity="0.28" stroke-width="1"/>`).join('');
-            const med = median.map((v, s) => [X(s), Y(v)] as [number, number]);
-            const last = med[med.length - 1];
-            body += `<g transform="translate(${x0},0)">
-              <rect x="0.5" y="0.5" width="${pw - 1}" height="${ph - 1}" rx="12" fill="var(--bg2)" stroke="var(--line)"/>
-              ${grid}${yl}${xl}${lines}
-              <path d="${path(med)}" fill="none" stroke="${m.color}" stroke-width="2.4" stroke-linejoin="round"/>
-              <text x="${last[0] + 5}" y="${last[1] + 4}" font-size="10.5" font-weight="700" fill="var(--ink)">${fmtPct(median[median.length - 1])}</text>
-              <text x="${pw - 10}" y="${pad.t + 12}" font-size="10.5" fill="var(--muted)" text-anchor="end">${t(`${up}/20 end up`, `${up}/20 收高`)}</text>
-            </g>`;
-        });
-        body += `</g>`;
-    });
-
-    const svgH = rows.length * ph + (rows.length - 1) * gap + 22 + 8;
-    const header = modes.map((m, c) => `<text x="${labelW + c * (pw + gap) + 4}" y="-6" font-size="12.5" font-weight="600" fill="var(--ink)">${t(m.en, m.zh)}</text>`).join('');
-    const html = `<div class="frame">
-  ${h('h1', 'Scenario presets vs. what the app does with them', '劇本預設值 vs. App 實際的行為')}
-  ${h('p', 'Twenty seeds per panel (thin lines), median in bold. When the preset sticks, bull and bear lean their way and crash swings wildly in both directions. In the app today the trading page resets the scenario to sideways a moment after you pick it, and the lean disappears.',
-        '每格 20 個亂數種子（細線），粗線是中位數。預設值有生效時，多頭偏漲、空頭偏跌，崩盤則上下大幅亂甩。目前的 App 在你選完劇本後，馬上又把劇本蓋回盤整，方向性就不見了。', 'class="sub"')}
-  <div class="legend">${modes.map(m => `<span><i style="background:${m.color}"></i>${h('span', m.en, m.zh)}</span>`).join('')}</div>
-  <svg width="${W}" height="${svgH}" viewBox="0 -22 ${W} ${svgH}" style="margin-top:14px;display:block">${header}<g transform="translate(0,6)">${body}</g></svg>
-  ${h('div', 'Generated with scripts/docs/figures.ts: seeds 1–20, 3 minutes, scenario picked at t = 0 from a freshly loaded page.',
-        '由 scripts/docs/figures.ts 產生：種子 1～20，3 分鐘，在剛載入的頁面上於 t = 0 選擇劇本。', 'class="foot"')}
-</div>`;
-    return page('Presets vs app', 960, html, 'Bull / bear / crash: preset as written vs app today, 20 seeds.');
 }
 
 // ---------------------------------------------------------------- figure: the ladder
@@ -347,8 +274,8 @@ function ladderFigure(): string {
 export function statsTable(seeds = 20, seconds = 180): string {
     const lines = ['| Scenario | Mode | Avg change | Ended up | Avg high–low range | Typical 1 s move | Avg spread | Trades/min |', '|---|---|---:|---:|---:|---:|---:|---:|'];
     for (const scenario of ALL_SCENARIOS) {
-        for (const mode of ['app', 'preset'] as RunMode[]) {
-            const st = Array.from({ length: seeds }, (_, i) => statsOf(runScenario({ scenario, seed: i + 1, seconds, mode })));
+        for (const mode of ['app']) {
+            const st = Array.from({ length: seeds }, (_, i) => statsOf(runScenario({ scenario, seed: i + 1, seconds })));
             const avg = (f: (s: (typeof st)[0]) => number) => st.reduce((a, s) => a + f(s), 0) / st.length;
             lines.push(`| ${mode === 'app' ? `${SCENARIO_NAMES[scenario].en} \`${scenario}\`` : ''} | ${mode} | ${fmtPct(avg(s => s.change))} | ${st.filter(s => s.change > 0).length}/${seeds} | ${avg(s => s.high - s.low).toFixed(1)}% | ${avg(s => s.move1s).toFixed(2)}% | ${avg(s => s.spread).toFixed(2)}% | ${avg(s => s.tradesPerMinute).toFixed(0)} |`);
         }
@@ -360,7 +287,6 @@ export function statsTable(seeds = 20, seconds = 180): string {
     mkdirSync(OUT, { recursive: true });
     writeFileSync(OUT + 'ladder.html', ladderFigure());
     writeFileSync(OUT + 'scenarios.html', scenariosFigure());
-    writeFileSync(OUT + 'presets-vs-app.html', presetsFigure());
-    console.log('wrote ladder.html, scenarios.html, presets-vs-app.html to', OUT);
+    console.log('wrote ladder.html, scenarios.html to', OUT);
     if (process.argv.includes('--table')) console.log('\n' + statsTable());
 }

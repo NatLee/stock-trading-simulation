@@ -1,14 +1,12 @@
-// Run one market scenario in the terminal, with a seed.
+// Run market scenarios in the terminal, with seeds.
 //
-//   npm run sim -- --scenario crash --seed 7 --minutes 3
-//   npm run sim -- --scenario bull --mode preset
-//   npm run sim -- --all
+//   npm run sim -- --scenario crash --seed 7 --minutes 3   one run: sparkline + summary
+//   npm run sim -- --all                                   every scenario, seed 1
+//   npm run sim -- --all --seeds 20                        averages over seeds 1–20 (how the presets are tuned)
 //
-// --mode app     what the app does today when you click the scenario (default)
-// --mode preset  the preset exactly as written in SCENARIO_MODIFIERS
-// --no-lifecycle stay in the chosen scenario (no automatic pump -> crash -> ... switch)
+// --no-lifecycle stays in the chosen scenario (no automatic pump -> crash -> ... switch)
 
-import { runScenario, statsOf, ALL_SCENARIOS, RunMode } from './lib/scenarioRun';
+import { runScenario, statsOf, summarize, ALL_SCENARIOS } from './lib/scenarioRun';
 import { MarketScenario } from '../src/lib/matching/types';
 
 function arg(name: string, fallback: string): string {
@@ -27,14 +25,9 @@ function sparkline(values: number[], width = 60): string {
 
 const pct = (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`;
 const seed = Number(arg('seed', '1'));
+const seeds = Number(arg('seeds', '0'));
 const seconds = Math.round(Number(arg('minutes', '3')) * 60);
-const mode = arg('mode', 'app') as RunMode;
 const followLifecycle = !process.argv.includes('--no-lifecycle');
-
-if (mode !== 'app' && mode !== 'preset') {
-    console.error('--mode must be app or preset');
-    process.exit(1);
-}
 
 const scenarios: MarketScenario[] = process.argv.includes('--all')
     ? ALL_SCENARIOS
@@ -45,10 +38,16 @@ for (const scenario of scenarios) {
         console.error(`Unknown scenario "${scenario}". Pick one of: ${ALL_SCENARIOS.join(', ')}`);
         process.exit(1);
     }
-    const run = runScenario({ scenario, seed, seconds, mode, followLifecycle });
+    if (seeds > 0) {
+        const s = summarize(scenario, seeds, seconds, followLifecycle);
+        const first = s.firstPhase === null ? '' : `  first phase ${pct(s.firstPhase)} (${s.firstPhaseDown}/${seeds} down)`;
+        console.log(`${scenario.padEnd(13)} avg ${pct(s.change).padStart(7)}  up ${String(s.endedUp).padStart(2)}/${seeds}  range ${s.range.toFixed(1)}%  1 s move ${s.move1s.toFixed(2)}%${first}`);
+        continue;
+    }
+    const run = runScenario({ scenario, seed, seconds, followLifecycle });
     const s = statsOf(run);
     const phases = run.phases.map(([t, sc]) => `${t}s ${sc}`).join(' -> ');
-    console.log(`${scenario} (${mode}, seed ${seed}, ${seconds} s)  ${phases}`);
+    console.log(`${scenario} (seed ${seed}, ${seconds} s)  ${phases}`);
     console.log(`  ${run.prices[0].toFixed(2)} ${sparkline(run.prices)} ${run.prices[run.prices.length - 1].toFixed(2)}`);
     console.log(`  change ${pct(s.change)}  high ${pct(s.high)}  low ${pct(s.low)}  1 s move ${s.move1s.toFixed(2)}%  spread ${s.spread.toFixed(2)}%  ${s.tradesPerMinute.toFixed(0)} trades/min`);
 }

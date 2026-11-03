@@ -4,26 +4,29 @@ import { NoiseBot } from './NoiseBot';
 import {
     BotManagerConfig,
     BotOrder,
+    BotSettings,
     DEFAULT_BOT_MANAGER_CONFIG,
-    SCENARIO_MODIFIERS,
+    resolveBotConfig,
     SHARES_PER_LOT,
     ODD_LOT_SHARES,
     ODD_LOT_JITTER,
     effectiveInterval,
     intensityOf,
 } from './types';
-import { MatchingEngine, MarketScenario, Trade, PriceLevel } from '../matching';
+import { MatchingEngine, MarketScenario, PriceLevel } from '../matching';
 import { SimEnv, realEnv, SIM_TICK_MS } from '../sim/env';
 
 /**
  * BotManager - coordinates all trading bots
- * 
- * Features:
- * - Manages market maker, trend, and noise bots
- * - Handles order submission to matching engine
- * - Updates bot states based on market events
+ *
+ * - Holds the scenario and the page's own settings, and always derives the
+ *   bots' configuration from them (resolveBotConfig): defaults, then the
+ *   scenario preset, then the page's settings.
+ * - Runs the bots every tick and submits their orders.
  */
 export class BotManager {
+    private scenario: MarketScenario;
+    private settings: Partial<BotSettings>;
     private config: BotManagerConfig;
     private marketMaker: MarketMakerBot;
     private trendBot: TrendBot;
@@ -32,76 +35,48 @@ export class BotManager {
     private lastCleanupTime: number = 0;
     private env: SimEnv;
 
-    constructor(engine: MatchingEngine, config: Partial<BotManagerConfig> = {}, env: SimEnv = realEnv) {
-        this.config = { ...DEFAULT_BOT_MANAGER_CONFIG, ...config };
+    constructor(
+        engine: MatchingEngine,
+        options: Partial<BotSettings> & { scenario?: MarketScenario } = {},
+        env: SimEnv = realEnv,
+    ) {
+        const { scenario = DEFAULT_BOT_MANAGER_CONFIG.scenario, ...settings } = options;
         this.engine = engine;
         this.env = env;
+        this.scenario = scenario;
+        this.settings = settings;
+        this.config = resolveBotConfig(scenario, settings);
 
-        // Apply scenario modifiers
-        this.applyScenario(this.config.scenario);
-
-        // Initialize bots
         this.marketMaker = new MarketMakerBot(this.config.marketMaker, env);
         this.trendBot = new TrendBot(this.config.trend, env);
         this.noiseBot = new NoiseBot(this.config.noise, env);
     }
 
     /**
-     * Apply scenario modifiers to configuration
+     * Switch scenario. The bots start over from the defaults plus this
+     * scenario's preset, and the pace goes back to the scenario's own
+     * intensity (the page moves its slider there too).
      */
-    applyScenario(scenario: MarketScenario): void {
-        const modifier = SCENARIO_MODIFIERS[scenario];
-        if (modifier) {
-            this.config = {
-                ...this.config,
-                ...modifier,
-                scenario,
-                marketMaker: { ...this.config.marketMaker, ...modifier.marketMaker, intensity: modifier.intensity || this.config.intensity },
-                trend: { ...this.config.trend, ...modifier.trend, intensity: modifier.intensity || this.config.intensity },
-                noise: { ...this.config.noise, ...modifier.noise, intensity: modifier.intensity || this.config.intensity },
-            };
-        }
+    setScenario(scenario: MarketScenario): void {
+        this.scenario = scenario;
+        delete this.settings.intensity;
+        this.applyConfig();
     }
 
     /**
-     * Update configuration
+     * Change the page's own settings (lot size, odd lots, intensity slider).
+     * The scenario stays as it is.
      */
-    updateConfig(config: Partial<BotManagerConfig>): void {
-        const oldScenario = this.config.scenario;
+    updateSettings(settings: Partial<BotSettings>): void {
+        this.settings = { ...this.settings, ...settings };
+        this.applyConfig();
+    }
 
-        // Update main config
-        this.config = { ...this.config, ...config };
-
-        if (config.marketMaker) {
-            this.marketMaker.updateConfig(config.marketMaker);
-        }
-        if (config.trend) {
-            this.trendBot.updateConfig(config.trend);
-        }
-        if (config.noise) {
-            this.noiseBot.updateConfig(config.noise);
-        }
-
-        // Only apply scenario presets if scenario actually changed
-        // This prevents overwriting manual intensity changes when other props update
-        if (config.scenario && config.scenario !== oldScenario) {
-            this.applyScenario(config.scenario);
-        }
-
-        // CRITICAL: If intensity was explicitly passed in this update, 
-        // it must override any scenario defaults we just applied.
-        if (config.intensity !== undefined) {
-            this.config.intensity = config.intensity;
-        }
-
-        // Ensure all sub-bots get the latest intensity
-        // We update them if intensity was passed OR if scenario changed (which might change default intensity)
-        if (config.intensity !== undefined || (config.scenario && config.scenario !== oldScenario)) {
-            const newIntensity = this.config.intensity;
-            this.marketMaker.updateConfig({ intensity: newIntensity });
-            this.trendBot.updateConfig({ intensity: newIntensity });
-            this.noiseBot.updateConfig({ intensity: newIntensity });
-        }
+    private applyConfig(): void {
+        this.config = resolveBotConfig(this.scenario, this.settings);
+        this.marketMaker.updateConfig(this.config.marketMaker);
+        this.trendBot.updateConfig(this.config.trend);
+        this.noiseBot.updateConfig(this.config.noise);
     }
 
     /**
@@ -109,6 +84,11 @@ export class BotManager {
      */
     getConfig(): BotManagerConfig {
         return { ...this.config };
+    }
+
+    /** One bot lot in shares, in the current mode */
+    private lotShares(): number {
+        return this.config.isOddLot ? ODD_LOT_SHARES : (this.config.unitSize || SHARES_PER_LOT);
     }
 
     /**
@@ -166,7 +146,7 @@ export class BotManager {
         // Trend bot, then noise bot
         const trend = this.turnsThisTick(this.trendBot.getTradeInterval(), () => this.trendBot.isReady());
         for (let i = 0; i < trend.count; i++) {
-            const orders = this.trendBot.generateOrders(currentPrice, this.config.scenario, trend.force);
+            const orders = this.trendBot.generateOrders(currentPrice, trend.force);
             this.processOrders(orders, protect);
             allOrders.push(...orders);
         }
@@ -189,7 +169,7 @@ export class BotManager {
         const { isOddLot } = this.config;
         // One bot "lot" is a board lot of unitSize shares, or ODD_LOT_SHARES in odd-lot mode;
         // sizes grow with √intensity so busy markets also trade a bit bigger
-        const lotShares = isOddLot ? ODD_LOT_SHARES : (this.config.unitSize || SHARES_PER_LOT);
+        const lotShares = this.lotShares();
         const volumeMultiplier = Math.sqrt(intensityOf(this.config));
 
         for (const order of orders) {
@@ -217,15 +197,6 @@ export class BotManager {
         }
     }
 
-    onTrade(trade: Trade): void {
-        // Update market maker inventory if it was involved
-        if (trade.makerSource === 'bot') {
-            // Market maker was the maker
-            const side = trade.buyOrderId.startsWith('BOT') ? 'buy' : 'sell';
-            this.marketMaker.updateInventory(side, trade.quantity);
-        }
-    }
-
     /**
      * Reset all bots
      */
@@ -234,15 +205,5 @@ export class BotManager {
         this.trendBot.reset();
         this.noiseBot.reset();
         this.engine.cancelOrdersBySource('bot');
-    }
-
-    /**
-     * Set scenario preset
-     */
-    setScenario(scenario: MarketScenario): void {
-        this.applyScenario(scenario);
-        this.marketMaker.updateConfig(this.config.marketMaker);
-        this.trendBot.updateConfig(this.config.trend);
-        this.noiseBot.updateConfig(this.config.noise);
     }
 }
