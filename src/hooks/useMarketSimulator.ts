@@ -2,7 +2,8 @@
 
 import { useRef, useEffect, useCallback, useState } from 'react';
 import { MarketScenario, Trade, OrderBookSnapshot } from '../lib/matching';
-import { BotManagerConfig } from '../lib/bots';
+import { BASE_CANDLE_MS } from '../lib/matching/CandleAggregator';
+import { DEFAULT_BOT_MANAGER_CONFIG } from '../lib/bots';
 import { MarketSimulation } from '../lib/sim/MarketSimulation';
 import { SIM_TICK_MS } from '../lib/sim/env';
 import { CONFIG } from '@/constants';
@@ -37,9 +38,8 @@ export interface MarketSimulatorConfig {
     initialPrice: number;
     tickInterval: number;
     candlePeriod: number;
+    /** Scenario at start; change it with setScenario() */
     scenario: MarketScenario;
-    volatility: number;
-    liquidity: number;
     unitSize: number;
     isOddLot: boolean;
     commissionRate: number;
@@ -48,17 +48,15 @@ export interface MarketSimulatorConfig {
 }
 
 const DEFAULT_CONFIG: MarketSimulatorConfig = {
-    initialPrice: 50,
+    initialPrice: CONFIG.BASE_PRICE,
     tickInterval: SIM_TICK_MS,
-    candlePeriod: 15000,
-    scenario: 'sideways',
-    volatility: 1.0,
-    liquidity: 1.0,
-    unitSize: 1000,
-    isOddLot: false,
+    candlePeriod: BASE_CANDLE_MS,
+    scenario: DEFAULT_BOT_MANAGER_CONFIG.scenario,
+    unitSize: DEFAULT_BOT_MANAGER_CONFIG.unitSize,
+    isOddLot: DEFAULT_BOT_MANAGER_CONFIG.isOddLot,
     commissionRate: 0.001425,
     enabled: true,
-    intensity: 1.0,
+    intensity: DEFAULT_BOT_MANAGER_CONFIG.intensity,
 };
 
 export interface MarketSimulatorCallbacks {
@@ -140,8 +138,6 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
             historyStart: historyStartTime(Date.now()),
             bots: {
                 scenario: fullConfig.scenario,
-                volatility: fullConfig.volatility,
-                liquidity: fullConfig.liquidity,
                 unitSize: fullConfig.unitSize,
                 isOddLot: fullConfig.isOddLot,
                 intensity: fullConfig.intensity,
@@ -170,7 +166,7 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
         }));
 
         isInitializedRef.current = true;
-    }, [fullConfig.initialPrice, fullConfig.scenario, fullConfig.volatility, fullConfig.liquidity, fullConfig.candlePeriod, fullConfig.unitSize, fullConfig.isOddLot, fullConfig.intensity]);
+    }, [fullConfig.initialPrice, fullConfig.scenario, fullConfig.candlePeriod, fullConfig.unitSize, fullConfig.isOddLot, fullConfig.intensity]);
 
     /**
      * Re-initialize ONLY the aggregator when timeframe changes
@@ -313,13 +309,6 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
     }, []);
 
     /**
-     * Update bot configuration
-     */
-    const updateBotConfig = useCallback((config: Partial<BotManagerConfig>) => {
-        simRef.current?.bots.updateConfig(config);
-    }, []);
-
-    /**
      * Get matching engine (for direct access if needed)
      */
     const getEngine = useCallback(() => simRef.current?.engine ?? null, []);
@@ -347,19 +336,15 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
         }
     }, [fullConfig.tickInterval]);
 
-    // Update bot config when props change (scenario, settings)
+    // Pass on the settings the page owns. The scenario is not one of them: it
+    // only changes through setScenario(), so these updates can never undo it.
     useEffect(() => {
-        if (simRef.current) {
-            simRef.current.bots.updateConfig({
-                scenario: fullConfig.scenario,
-                volatility: fullConfig.volatility,
-                liquidity: fullConfig.liquidity,
-                unitSize: fullConfig.unitSize,
-                isOddLot: fullConfig.isOddLot,
-                intensity: fullConfig.intensity,
-            });
-        }
-    }, [fullConfig.scenario, fullConfig.volatility, fullConfig.liquidity, fullConfig.unitSize, fullConfig.isOddLot, fullConfig.intensity]);
+        simRef.current?.bots.updateSettings({
+            unitSize: fullConfig.unitSize,
+            isOddLot: fullConfig.isOddLot,
+            intensity: fullConfig.intensity,
+        });
+    }, [fullConfig.unitSize, fullConfig.isOddLot, fullConfig.intensity]);
 
     // Update commission rate
     useEffect(() => {
@@ -376,7 +361,6 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
         cancelOrder,
         setScenario,
         toggleBotOrderVisibility,
-        updateBotConfig,
         getEngine,
     };
 }

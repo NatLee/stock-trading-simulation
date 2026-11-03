@@ -1,35 +1,52 @@
-// Builds the data-driven figures of docs/bots.md from real, seeded runs of the engine.
+// Builds the figures and tables of docs/bots.md (and the Chinese version) from
+// the bot config and from seeded runs of the real engine.
 //
-//   npx tsx scripts/docs/figures.ts        -> writes docs/images/src/{ladder,scenarios,presets-vs-app}.html
-//   node scripts/docs/render.mjs           -> screenshots them (light/dark, en/zh) into docs/images/
+//   npx tsx scripts/docs/figures.ts   -> docs/images/src/*.html + figures.json, and the
+//                                        generated tables inside docs/bots*.md
+//   node scripts/docs/render.mjs      -> screenshots the pages (light/dark, en/zh) into docs/images/
 //
-// Every number in the pictures comes out of the same code the app runs.
+// Nothing here is typed in by hand: change a preset or a default, run both, and
+// the docs follow.
 
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { runScenario, statsOf, ALL_SCENARIOS, RunMode } from '../lib/scenarioRun';
+import { runScenario, summarize, peakInventory, withMarketMakerDefaults, formatRun, ALL_SCENARIOS, ScenarioSummary } from '../lib/scenarioRun';
 import { MatchingEngine } from '../../src/lib/matching/MatchingEngine';
+import { PriceStep } from '../../src/lib/matching/PriceStep';
+import { BASE_CANDLE_MS } from '../../src/lib/matching/CandleAggregator';
 import { MarketMakerBot } from '../../src/lib/bots/MarketMakerBot';
-import { DEFAULT_MARKET_MAKER_CONFIG } from '../../src/lib/bots/types';
+import {
+    DEFAULT_BOT_MANAGER_CONFIG, DEFAULT_MARKET_MAKER_CONFIG, DEFAULT_NOISE_BOT_CONFIG,
+    SCENARIO_LABELS, SCENARIO_LIFECYCLE, SHARES_PER_LOT, resolveBotConfig, effectiveInterval,
+} from '../../src/lib/bots/types';
 import { OrderBookSnapshot, MarketScenario } from '../../src/lib/matching/types';
-import { deterministicEnv } from '../../src/lib/sim/env';
+import { deterministicEnv, SIM_TICK_MS } from '../../src/lib/sim/env';
+import { CONFIG } from '../../src/constants/config';
 
-const OUT = fileURLToPath(new URL('../../docs/images/src/', import.meta.url));
+const ROOT = fileURLToPath(new URL('../../', import.meta.url));
+const OUT = ROOT + 'docs/images/src/';
+const DOCS = { en: ROOT + 'docs/bots.md', zh: ROOT + 'docs/bots_zh-tw.md' };
+const READMES = [ROOT + 'README.md', ROOT + 'README_zh-tw.md'];
+/** The `npm run sim` example shown in the docs and the READMEs */
+const SIM_EXAMPLE = { scenario: 'pump_dump' as MarketScenario, seed: 2 };
 
-export const SCENARIO_NAMES: Record<MarketScenario, { zh: string; en: string }> = {
-    bull: { zh: '強勢多頭', en: 'Bull' },
-    bear: { zh: '弱勢空頭', en: 'Bear' },
-    sideways: { zh: '盤整', en: 'Sideways' },
-    volatile: { zh: '劇烈震盪', en: 'Volatile' },
-    calm: { zh: '冷清', en: 'Calm' },
-    breakout: { zh: '盤整突破', en: 'Breakout' },
-    crash: { zh: '恐慌崩盤', en: 'Crash' },
-    accumulation: { zh: '主力吸籌', en: 'Accumulation' },
-    distribution: { zh: '主力出貨', en: 'Distribution' },
-    pump_dump: { zh: '拉高出貨', en: 'Pump & dump' },
-    dead_cat: { zh: '死貓反彈', en: 'Dead cat bounce' },
-    squeeze: { zh: '盤整待變', en: 'Squeeze' },
-};
+/** Every figure is laid out for this page width (CSS px); render.mjs reads it from figures.json */
+const PAGE_WIDTH = 960;
+/** What the docs runs look like: seeds 1 … SEEDS, SECONDS each, automatic switches on */
+const SEEDS = 20;
+const SECONDS = 180;
+/** Fewer seeds for the inventory what-if (it runs everything twice) */
+const INVENTORY_SEEDS = 10;
+
+const mm = DEFAULT_MARKET_MAKER_CONFIG;
+const noise = DEFAULT_NOISE_BOT_CONFIG;
+/** The market maker's levels a side at intensity 1 */
+const MM_LEVELS = mm.depth + Math.floor(1 * mm.depthPerIntensity);
+const pctOf = (fraction: number) => +(fraction * 100).toFixed(3);
+/** Bot sizes are floor(min + U × (max − min)), so the top of the range never comes up */
+const sizeSpan = ([min, max]: [number, number], dash: string) => (max - 1 > min ? `${min}${dash}${max - 1}` : `${min}`);
+/** A bot acts on the first tick after its interval: round the pace up to whole ticks */
+const paceMs = (interval: number) => Math.ceil(interval / SIM_TICK_MS) * SIM_TICK_MS;
 
 // ---------------------------------------------------------------- page shell
 
@@ -38,12 +55,10 @@ const BASE_CSS = `
 :root {
   --bg: #ffffff; --bg2: #f6f8fa; --ink: #1f2328; --muted: #59636e; --line: #d1d9e0; --grid: #eaeef2;
   --s1: #2a78d6; --s2: #eb6834; --up: #1a7f37; --down: #cf222e;
-  --shadow: 0 1px 2px rgba(31,35,40,.06), 0 6px 18px rgba(31,35,40,.06);
 }
 .dark {
   --bg: #0d1117; --bg2: #151b23; --ink: #f0f6fc; --muted: #9198a1; --line: #3d444d; --grid: #21262d;
   --s1: #3987e5; --s2: #d95926; --up: #3fb950; --down: #f85149;
-  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: transparent; }
@@ -59,7 +74,7 @@ svg text { font-family: Inter, "Segoe UI", "Microsoft JhengHei", sans-serif; }
 .foot { margin-top: 12px; font-size: 11.5px; color: var(--muted); }
 `;
 
-/** `#dark` picks the dark tokens; `#zh` swaps every [data-zh] text */
+/** `#dark` picks the dark tokens; `#zh` swaps every [data-zh] text (once the page has loaded) */
 const SWITCH_JS = `
 const flags = location.hash.slice(1).split(',');
 if (flags.includes('dark')) document.documentElement.className = 'dark';
@@ -68,11 +83,11 @@ if (flags.includes('zh')) document.addEventListener('DOMContentLoaded', () => {
   for (const el of document.querySelectorAll('[data-zh]')) el.textContent = el.getAttribute('data-zh');
 });`;
 
-function page(title: string, width: number, body: string, comment: string): string {
+function page(title: string, body: string, comment: string): string {
     return `<!doctype html>
 <!--
   ${comment}
-  Generated by scripts/docs/figures.ts from seeded runs of the real engine; do not edit by hand.
+  Generated by scripts/docs/figures.ts from the bot config and seeded runs of the real engine; do not edit by hand.
   Rendered by scripts/docs/render.mjs (headless Edge/Chrome, #dark, #zh or #dark,zh).
 -->
 <html lang="en">
@@ -81,7 +96,7 @@ function page(title: string, width: number, body: string, comment: string): stri
 <title>${title}</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=block" rel="stylesheet">
 <style>${BASE_CSS}
-body { width: ${width}px; }
+body { width: ${PAGE_WIDTH}px; }
 </style>
 </head>
 <body>
@@ -92,7 +107,7 @@ ${body}
 `;
 }
 
-/** Text with an English default and a Chinese alternative */
+/** SVG text with an English default and a Chinese alternative */
 function t(en: string, zh: string, attrs = ''): string {
     return `<tspan ${attrs} data-zh="${esc(zh)}">${esc(en)}</tspan>`;
 }
@@ -102,163 +117,120 @@ function h(tag: string, en: string, zh: string, attrs = ''): string {
 function esc(s: string): string {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-const fmtPct = (v: number) => `${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(1)}%`;
+const fmtPct = (v: number, digits = 1) => `${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(digits)}%`;
 
 function path(points: [number, number][]): string {
     return points.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join('');
 }
 
-// ---------------------------------------------------------------- figure: twelve scenarios
+// ---------------------------------------------------------------- figure: one tick (template + config)
+
+function tickLoopPage(): string {
+    const values: Record<string, string | number> = {
+        tickMs: SIM_TICK_MS,
+        mmRefreshMs: mm.refreshInterval,
+        mmLevels: MM_LEVELS,
+        mmSpreadPct: pctOf(mm.spreadPercent),
+        noiseEveryS: noise.tradeInterval / 1000,
+        noiseLots: sizeSpan(noise.sizeRange, '–'),
+        noiseLotsZh: sizeSpan(noise.sizeRange, '～'),
+        noiseMarketPct: pctOf(noise.marketOrderProbability),
+        noiseBandPct: pctOf(noise.limitBand),
+        reactionS: DEFAULT_BOT_MANAGER_CONFIG.reactionDelay / 1000,
+        baseCandleS: BASE_CANDLE_MS / 1000,
+        bookLevels: CONFIG.ORDER_BOOK_DEPTH,
+    };
+    const template = readFileSync(ROOT + 'scripts/docs/templates/tick-loop.html', 'utf8');
+    return template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => {
+        if (!(key in values)) throw new Error(`tick-loop template: no value for {{${key}}}`);
+        return String(values[key]);
+    });
+}
+
+// ---------------------------------------------------------------- figure: twelve scenarios, twenty seeds
 
 function scenariosFigure(): string {
-    const SECONDS = 180;
-    const SEED = 1;
-    const RANGE = 15; // ±15 %, one scale for every panel
+    const RANGE = 25; // ±25 %, one scale for every panel
     const cols = 4;
-    const W = 960 - 56;
+    const W = PAGE_WIDTH - 56;
     const gap = 14;
     const pw = (W - gap * (cols - 1)) / cols;
-    const ph = 142;
-    const pad = { l: 34, r: 52, t: 30, b: 22 };
+    const ph = 150;
+    const pad = { l: 34, r: 50, t: 30, b: 22 };
+    const rows = Math.ceil(ALL_SCENARIOS.length / cols);
 
     const panels = ALL_SCENARIOS.map((scenario, idx) => {
-        const run = runScenario({ scenario, seed: SEED, seconds: SECONDS, mode: 'app' });
-        const p0 = run.prices[0];
+        const runs = Array.from({ length: SEEDS }, (_, i) => runScenario({ scenario, seed: i + 1, seconds: SECONDS }));
+        const series = runs.map(run => run.prices.map(p => (p / run.prices[0] - 1) * 100));
+        const median = series[0].map((_, s) => {
+            const v = series.map(xs => xs[s]).sort((a, b) => a - b);
+            return (v[Math.floor((v.length - 1) / 2)] + v[Math.ceil((v.length - 1) / 2)]) / 2;
+        });
+        const up = series.filter(xs => xs[xs.length - 1] > 0).length;
         const col = idx % cols;
         const row = Math.floor(idx / cols);
-        const x0 = col * (pw + gap);
-        const y0 = row * (ph + gap);
         const iw = pw - pad.l - pad.r;
         const ih = ph - pad.t - pad.b;
         const X = (s: number) => pad.l + (s / SECONDS) * iw;
         const Y = (pct: number) => pad.t + ih / 2 - (Math.max(-RANGE, Math.min(RANGE, pct)) / RANGE) * (ih / 2);
-        const pts = run.prices.map((p, s) => [X(s), Y((p / p0 - 1) * 100)] as [number, number]);
-        const end = (run.prices[run.prices.length - 1] / p0 - 1) * 100;
-        const name = SCENARIO_NAMES[scenario];
+        const name = SCENARIO_LABELS[scenario];
+        const ticks = [-20, -10, 0, 10, 20];
 
-        const grid = [-10, 0, 10].map(v => `<line x1="${pad.l}" x2="${pad.l + iw}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--${v === 0 ? 'line' : 'grid'})" stroke-width="1" ${v === 0 ? '' : 'stroke-dasharray="3 4"'}/>`).join('');
-        const yLabels = col === 0 ? [-10, 0, 10].map(v => `<text x="${pad.l - 6}" y="${Y(v) + 3.5}" font-size="10" fill="var(--muted)" text-anchor="end">${v > 0 ? '+' : ''}${v}%</text>`).join('') : '';
-        const xLabels = row === 2 ? [0, 60, 120, 180].map(s => `<text x="${X(s)}" y="${ph - 6}" font-size="10" fill="var(--muted)" text-anchor="middle">${s}s</text>`).join('') : '';
-        const switches = run.phases.slice(1).map(([s, sc], k) => `
+        const grid = ticks.map(v => `<line x1="${pad.l}" x2="${pad.l + iw}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--${v === 0 ? 'line' : 'grid'})" ${v === 0 ? '' : 'stroke-dasharray="3 4"'}/>`).join('');
+        const yLabels = col === 0 ? [-20, 0, 20].map(v => `<text x="${pad.l - 6}" y="${Y(v) + 3.5}" font-size="10" fill="var(--muted)" text-anchor="end">${v > 0 ? '+' : ''}${v}%</text>`).join('') : '';
+        const xLabels = row === rows - 1 ? [0, 60, 120, 180].map(s => `<text x="${X(s)}" y="${ph - 6}" font-size="10" fill="var(--muted)" text-anchor="middle">${s}s</text>`).join('') : '';
+        const switches = runs[0].phases.slice(1).map(([s, sc], k) => `
           <line x1="${X(s)}" x2="${X(s)}" y1="${pad.t - 2}" y2="${pad.t + ih}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 3"/>
-          <text x="${X(s) + 3}" y="${pad.t + ih - 4 - k * 12}" font-size="9.5" fill="var(--muted)">${t('→ ' + SCENARIO_NAMES[sc].en, '→ ' + SCENARIO_NAMES[sc].zh)}</text>`).join('');
+          <text x="${X(s) + 3}" y="${pad.t + 9 + k * 11}" font-size="9.5" fill="var(--muted)">${t('→ ' + SCENARIO_LABELS[sc].en, '→ ' + SCENARIO_LABELS[sc].zh)}</text>`).join('');
+        const lines = series.map(xs => `<path d="${path(xs.map((v, s) => [X(s), Y(v)]))}" fill="none" stroke="var(--s1)" stroke-opacity="0.22" stroke-width="1"/>`).join('');
+        const med = median.map((v, s) => [X(s), Y(v)] as [number, number]);
+        const last = med[med.length - 1];
 
-        return `<g transform="translate(${x0},${y0})">
+        return `<g transform="translate(${col * (pw + gap)},${row * (ph + gap)})">
           <rect x="0.5" y="0.5" width="${pw - 1}" height="${ph - 1}" rx="12" fill="var(--bg2)" stroke="var(--line)"/>
           <text x="12" y="19" font-size="13" font-weight="700" fill="var(--ink)">${t(name.en, name.zh)}</text>
-          <text x="${pw - 12}" y="19" font-size="10.5" fill="var(--muted)" text-anchor="end" class="mono">${scenario}</text>
-          ${grid}${yLabels}${xLabels}${switches}
-          <path d="${path(pts)}" fill="none" stroke="var(--s1)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
-          <circle cx="${pts[pts.length - 1][0]}" cy="${pts[pts.length - 1][1]}" r="2.6" fill="var(--s1)"/>
-          <text x="${pts[pts.length - 1][0] + 6}" y="${pts[pts.length - 1][1] + 3.5}" font-size="10.5" font-weight="600" fill="var(--ink)">${fmtPct(end)}</text>
+          <text x="${pw - 12}" y="19" font-size="10.5" fill="var(--muted)" text-anchor="end">${t(`${up}/${SEEDS} up`, `${up}/${SEEDS} 收高`)}</text>
+          ${grid}${yLabels}${xLabels}${switches}${lines}
+          <path d="${path(med)}" fill="none" stroke="var(--s1)" stroke-width="2.2" stroke-linejoin="round"/>
+          <text x="${last[0] + 5}" y="${last[1] + 3.5}" font-size="10.5" font-weight="700" fill="var(--ink)">${fmtPct(median[median.length - 1])}</text>
         </g>`;
     }).join('');
 
-    const svgH = 3 * ph + 2 * gap;
+    const svgH = rows * ph + (rows - 1) * gap;
     const body = `<div class="frame">
-  ${h('h1', 'The twelve scenarios, as the app runs them today', '12 種劇本在 App 裡實際跑起來的樣子')}
-  ${h('p', `Last price vs. the start, 3 minutes each, one 100 ms tick at a time. Same seed (${SEED}) and the same ±${RANGE}% scale in every panel, so the shapes compare directly. Dotted lines: the page switching to the next scenario by itself.`,
-        `相對起點的漲跌，每種跑 3 分鐘、每 100 毫秒一個 tick。每張小圖用同一個亂數種子（${SEED}）和同一個 ±${RANGE}% 刻度，可以直接比大小。虛線：頁面自動切到下一個劇本。`, 'class="sub"')}
+  ${h('h1', 'The twelve scenarios, twenty seeds each', '12 種劇本，各跑 20 個亂數種子')}
+  ${h('p', `Last price vs. the start over ${SECONDS / 60} minutes, one ${SIM_TICK_MS} ms tick at a time. Thin lines: seeds 1–${SEEDS}; bold: the median. One ±${RANGE}% scale for every panel, so the sizes compare directly. Dotted lines: the page switching to the next scenario by itself.`,
+        `相對起點的漲跌，每次跑 ${SECONDS / 60} 分鐘、每 ${SIM_TICK_MS} 毫秒一個 tick。細線是種子 1～${SEEDS}，粗線是中位數。每張小圖都用同一個 ±${RANGE}% 刻度，可以直接比大小。虛線：頁面自動切到下一個劇本。`, 'class="sub"')}
   <svg width="${W}" height="${svgH}" viewBox="0 0 ${W} ${svgH}" style="margin-top:16px;display:block">${panels}</svg>
-  ${h('div', 'Generated with scripts/docs/figures.ts (MarketSimulation, seeded). Other seeds give other paths; the averages over 20 seeds are in docs/bots.md.',
-        '由 scripts/docs/figures.ts 用固定種子跑 MarketSimulation 產生。換種子路徑會不同，20 個種子的平均值見 docs/bots_zh-tw.md。', 'class="foot"')}
+  ${h('div', 'Generated with scripts/docs/figures.ts from seeded runs of MarketSimulation (the same code the app runs).',
+        '由 scripts/docs/figures.ts 用固定種子跑 MarketSimulation 產生（和 App 跑的是同一套程式）。', 'class="foot"')}
 </div>`;
-    return page('Scenarios', 960, body, 'Twelve scenarios, app behaviour today, seed 1.');
-}
-
-// ---------------------------------------------------------------- figure: preset vs app (20 seeds)
-
-function presetsFigure(): string {
-    const SECONDS = 180;
-    const SEEDS = Array.from({ length: 20 }, (_, i) => i + 1);
-    const rows: { scenario: MarketScenario; min: number; max: number; ticks: number[] }[] = [
-        { scenario: 'bull', min: -12, max: 12, ticks: [-10, 0, 10] },
-        { scenario: 'bear', min: -12, max: 12, ticks: [-10, 0, 10] },
-        { scenario: 'crash', min: -75, max: 150, ticks: [-50, 0, 50, 100] },
-    ];
-    const modes: { mode: RunMode; color: string; en: string; zh: string }[] = [
-        { mode: 'app', color: 'var(--s1)', en: 'App today (setting snaps back)', zh: '目前的 App（設定被蓋回）' },
-        { mode: 'preset', color: 'var(--s2)', en: 'Preset as written', zh: '照預設參數' },
-    ];
-    const W = 960 - 56;
-    const labelW = 120;
-    const gap = 14;
-    const pw = (W - labelW - gap) / 2;
-    const ph = 150;
-    const pad = { l: 34, r: 46, t: 12, b: 20 };
-
-    let body = '';
-    rows.forEach((row, r) => {
-        const y0 = r * (ph + gap);
-        const name = SCENARIO_NAMES[row.scenario];
-        body += `<g transform="translate(0,${y0})">
-          <text x="0" y="${ph / 2 - 4}" font-size="15" font-weight="700" fill="var(--ink)">${t(name.en, name.zh)}</text>
-          <text x="0" y="${ph / 2 + 14}" font-size="11" fill="var(--muted)" class="mono">${row.scenario}</text>`;
-        modes.forEach((m, c) => {
-            const x0 = labelW + c * (pw + gap);
-            const iw = pw - pad.l - pad.r;
-            const ih = ph - pad.t - pad.b;
-            const X = (s: number) => pad.l + (s / SECONDS) * iw;
-            const Y = (pct: number) => pad.t + ih - ((Math.max(row.min, Math.min(row.max, pct)) - row.min) / (row.max - row.min)) * ih;
-            const runs = SEEDS.map(seed => runScenario({ scenario: row.scenario, seed, seconds: SECONDS, mode: m.mode }));
-            const series = runs.map(run => run.prices.map(p => (p / run.prices[0] - 1) * 100));
-            const median = series[0].map((_, s) => {
-                const v = series.map(xs => xs[s]).sort((a, b) => a - b);
-                return (v[9] + v[10]) / 2;
-            });
-            const ends = series.map(xs => xs[xs.length - 1]);
-            const up = ends.filter(v => v > 0).length;
-            const grid = row.ticks.map(v => `<line x1="${pad.l}" x2="${pad.l + iw}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--${v === 0 ? 'line' : 'grid'})" ${v === 0 ? '' : 'stroke-dasharray="3 4"'}/>`).join('');
-            const yl = row.ticks.map(v => `<text x="${pad.l - 6}" y="${Y(v) + 3.5}" font-size="10" fill="var(--muted)" text-anchor="end">${v > 0 ? '+' : ''}${v}%</text>`).join('');
-            const xl = r === rows.length - 1 ? [0, 60, 120, 180].map(s => `<text x="${X(s)}" y="${ph - 4}" font-size="10" fill="var(--muted)" text-anchor="middle">${s}s</text>`).join('') : '';
-            const lines = series.map(xs => `<path d="${path(xs.map((v, s) => [X(s), Y(v)]))}" fill="none" stroke="${m.color}" stroke-opacity="0.28" stroke-width="1"/>`).join('');
-            const med = median.map((v, s) => [X(s), Y(v)] as [number, number]);
-            const last = med[med.length - 1];
-            body += `<g transform="translate(${x0},0)">
-              <rect x="0.5" y="0.5" width="${pw - 1}" height="${ph - 1}" rx="12" fill="var(--bg2)" stroke="var(--line)"/>
-              ${grid}${yl}${xl}${lines}
-              <path d="${path(med)}" fill="none" stroke="${m.color}" stroke-width="2.4" stroke-linejoin="round"/>
-              <text x="${last[0] + 5}" y="${last[1] + 4}" font-size="10.5" font-weight="700" fill="var(--ink)">${fmtPct(median[median.length - 1])}</text>
-              <text x="${pw - 10}" y="${pad.t + 12}" font-size="10.5" fill="var(--muted)" text-anchor="end">${t(`${up}/20 end up`, `${up}/20 收高`)}</text>
-            </g>`;
-        });
-        body += `</g>`;
-    });
-
-    const svgH = rows.length * ph + (rows.length - 1) * gap + 22 + 8;
-    const header = modes.map((m, c) => `<text x="${labelW + c * (pw + gap) + 4}" y="-6" font-size="12.5" font-weight="600" fill="var(--ink)">${t(m.en, m.zh)}</text>`).join('');
-    const html = `<div class="frame">
-  ${h('h1', 'Scenario presets vs. what the app does with them', '劇本預設值 vs. App 實際的行為')}
-  ${h('p', 'Twenty seeds per panel (thin lines), median in bold. When the preset sticks, bull and bear lean their way and crash swings wildly in both directions. In the app today the trading page resets the scenario to sideways a moment after you pick it, and the lean disappears.',
-        '每格 20 個亂數種子（細線），粗線是中位數。預設值有生效時，多頭偏漲、空頭偏跌，崩盤則上下大幅亂甩。目前的 App 在你選完劇本後，馬上又把劇本蓋回盤整，方向性就不見了。', 'class="sub"')}
-  <div class="legend">${modes.map(m => `<span><i style="background:${m.color}"></i>${h('span', m.en, m.zh)}</span>`).join('')}</div>
-  <svg width="${W}" height="${svgH}" viewBox="0 -22 ${W} ${svgH}" style="margin-top:14px;display:block">${header}<g transform="translate(0,6)">${body}</g></svg>
-  ${h('div', 'Generated with scripts/docs/figures.ts: seeds 1–20, 3 minutes, scenario picked at t = 0 from a freshly loaded page.',
-        '由 scripts/docs/figures.ts 產生：種子 1～20，3 分鐘，在剛載入的頁面上於 t = 0 選擇劇本。', 'class="foot"')}
-</div>`;
-    return page('Presets vs app', 960, html, 'Bull / bear / crash: preset as written vs app today, 20 seeds.');
+    return page('Scenarios', body, `Twelve scenarios, ${SEEDS} seeds each.`);
 }
 
 // ---------------------------------------------------------------- figure: the ladder
+
+/** The noise bot's market buy in the ladder figure, in lots */
+const LADDER_BUY_LOTS = 2;
 
 interface LadderStep { book: OrderBookSnapshot; last: number; taken?: number }
 
 function ladderData(): LadderStep[] {
     const env = deterministicEnv(4, Date.UTC(2026, 10, 3, 1, 0, 0));
-    const engine = new MatchingEngine(50, env);
-    const mm = new MarketMakerBot({ ...DEFAULT_MARKET_MAKER_CONFIG, intensity: 1 }, env);
+    const engine = new MatchingEngine(CONFIG.BASE_PRICE, env);
+    const maker = new MarketMakerBot({ ...mm, intensity: 1 }, env);
     const quote = (price: number) => {
         engine.cancelOrdersBySource('bot');
-        for (const q of mm.generateQuotes(price, 1, 1)) {
-            // BotManager.processOrders: lots × 1000 shares, rounded to whole lots
-            engine.submitOrder(q.side, 'limit', Math.max(1000, Math.round(q.quantity) * 1000), q.price, 'bot');
+        for (const q of maker.generateQuotes(price, 1, 1)) {
+            // BotManager.processOrders at intensity 1: lots × SHARES_PER_LOT shares
+            engine.submitOrder(q.side, 'limit', Math.max(1, Math.round(q.quantity)) * SHARES_PER_LOT, q.price, 'bot');
         }
     };
     const steps: LadderStep[] = [];
-    quote(50);
+    quote(CONFIG.BASE_PRICE);
     steps.push({ book: engine.getOrderBookSnapshot(5), last: engine.getLastPrice() });
     const bestAsk = engine.getOrderBookSnapshot(1).bestAsk!;
-    engine.submitOrder('buy', 'market', 2000, null, 'bot', 'IOC'); // a noise bot's market buy
+    engine.submitOrder('buy', 'market', LADDER_BUY_LOTS * SHARES_PER_LOT, null, 'bot', 'IOC'); // a noise bot's market buy
     steps.push({ book: engine.getOrderBookSnapshot(5), last: engine.getLastPrice(), taken: bestAsk });
     quote(engine.getLastPrice());
     steps.push({ book: engine.getOrderBookSnapshot(5), last: engine.getLastPrice() });
@@ -267,30 +239,32 @@ function ladderData(): LadderStep[] {
 
 function ladderFigure(): string {
     const steps = ladderData();
-    const W = 960 - 56;
+    const W = PAGE_WIDTH - 56;
     const gap = 16;
     const cw = (W - 2 * gap) / 3;
     const rowH = 21;
     const top = 86;
     const maxQty = Math.max(...steps.flatMap(s => [...s.book.asks, ...s.book.bids].map(l => l.quantity)));
+    const spread = pctOf(mm.spreadPercent);
+    const step = pctOf(mm.levelStepPercent);
+    const refreshS = mm.refreshInterval / 1000;
     const titles = [
-        { en: '1 · Quotes around the last price', zh: '1 · 圍著現價掛出報價', en2: '12 levels a side: 0.2% away, then 0.05% apart', zh2: '每邊 12 層：離現價 0.2%，之後每層再隔 0.05%' },
-        { en: '2 · Someone takes the best ask', zh: '2 · 有人吃掉最低賣價', en2: 'A noise bot market-buys 2 lots: it fills at the ask', zh2: '雜訊機器人市價買 2 張：以賣一價成交' },
-        { en: '3 · Next re-quote follows', zh: '3 · 下一次重掛跟著走', en2: 'Within 0.5 s it rebuilds around the new price', zh2: '0.5 秒內整排報價改圍著新現價重掛' },
+        { en: '1 · Quotes around the last price', zh: '1 · 圍著現價掛出報價', en2: `${MM_LEVELS} levels a side: ${spread}% away, then ${step}% apart`, zh2: `每邊 ${MM_LEVELS} 層：離現價 ${spread}%，之後每層再隔 ${step}%` },
+        { en: '2 · Someone takes the best ask', zh: '2 · 有人吃掉最低賣價', en2: `A noise bot market-buys ${LADDER_BUY_LOTS} lots: it fills at the ask`, zh2: `雜訊機器人市價買 ${LADDER_BUY_LOTS} 張：以賣一價成交` },
+        { en: '3 · Next re-quote follows', zh: '3 · 下一次重掛跟著走', en2: `Within ${refreshS} s it rebuilds around the new price`, zh2: `${refreshS} 秒內整排報價改圍著新現價重掛` },
     ];
-
-    let svg = '';
     const rowsUsed = Math.max(...steps.map(st => st.book.asks.length + st.book.bids.length + 1));
     const boxH = top + rowsUsed * rowH + 22;
-    steps.forEach((step, i) => {
+
+    let svg = '';
+    steps.forEach((st, i) => {
         const x0 = i * (cw + gap);
-        const asks = [...step.book.asks].reverse(); // highest first, best ask at the bottom
-        const bids = step.book.bids;
+        const asks = [...st.book.asks].reverse(); // highest first, best ask at the bottom
         const priceX = 70;
         const barX = 84;
         const barW = cw - barX - 64;
         let y = top;
-        const levelRow = (l: { price: number; quantity: number; orderCount: number }, side: 'ask' | 'bid', highlight: boolean) => {
+        const levelRow = (l: { price: number; quantity: number }, side: 'ask' | 'bid', highlight: boolean) => {
             const w = Math.max(2, (l.quantity / maxQty) * barW);
             const color = side === 'ask' ? 'var(--down)' : 'var(--up)';
             const row = `<g>
@@ -298,26 +272,19 @@ function ladderFigure(): string {
               <text x="${priceX}" y="${y}" font-size="12.5" text-anchor="end" fill="var(--ink)" class="mono" font-weight="${highlight ? 700 : 500}">${l.price.toFixed(2)}</text>
               <rect x="${barX}" y="${y - 10}" width="${w}" height="12" rx="3" fill="${color}" fill-opacity="0.28"/>
               <rect x="${barX}" y="${y - 10}" width="3" height="12" rx="1.5" fill="${color}"/>
-              <text x="${barX + w + 6}" y="${y}" font-size="11" fill="var(--muted)" class="mono">${(l.quantity / 1000).toFixed(0)}${t(' lots', ' 張')}</text>${highlight ? `<text x="${cw - 16}" y="${y}" font-size="11" font-weight="700" fill="var(--s2)" text-anchor="end">${t('−2 lots', '−2 張')}</text>` : ''}
+              <text x="${barX + w + 6}" y="${y}" font-size="11" fill="var(--muted)" class="mono">${(l.quantity / SHARES_PER_LOT).toFixed(0)}${t(' lots', ' 張')}</text>
+              ${highlight ? `<text x="${cw - 16}" y="${y}" font-size="11" font-weight="700" fill="var(--s2)" text-anchor="end">${t(`−${LADDER_BUY_LOTS} lots`, `−${LADDER_BUY_LOTS} 張`)}</text>` : ''}
             </g>`;
             y += rowH;
             return row;
         };
-        let rows = asks.map(l => levelRow(l, 'ask', l.price === step.taken)).join('');
-        if (step.taken !== undefined && !step.book.asks.some(l => l.price === step.taken)) {
-            // the level that was eaten
-            rows += `<text x="${priceX}" y="${y}" font-size="12.5" text-anchor="end" fill="var(--muted)" class="mono" text-decoration="line-through">${step.taken.toFixed(2)}</text>
-                     <text x="${barX}" y="${y}" font-size="11" fill="var(--s2)" font-weight="600">${t('filled, gone', '成交，這層沒了')}</text>`;
-            y += rowH;
-        }
-        // last price line
+        let rows = asks.map(l => levelRow(l, 'ask', l.price === st.taken)).join('');
         const lastY = y - 4;
         rows += `<line x1="8" x2="${cw - 8}" y1="${lastY}" y2="${lastY}" stroke="var(--s1)" stroke-width="2" stroke-dasharray="6 4"/>
                  <rect x="${cw - 112}" y="${lastY - 11}" width="104" height="21" rx="10.5" fill="var(--s1)"/>
-                 <text x="${cw - 60}" y="${lastY + 4}" font-size="11.5" font-weight="700" fill="#fff" text-anchor="middle">${t('last ', '現價 ')}${step.last.toFixed(2)}</text>`;
+                 <text x="${cw - 60}" y="${lastY + 4}" font-size="11.5" font-weight="700" fill="#fff" text-anchor="middle">${t('last ', '現價 ')}${st.last.toFixed(2)}</text>`;
         y += rowH - 2;
-        rows += bids.map(l => levelRow(l, 'bid', false)).join('');
-        const spread = (step.book.bestAsk! - step.book.bestBid!).toFixed(2);
+        rows += st.book.bids.map(l => levelRow(l, 'bid', false)).join('');
 
         svg += `<g transform="translate(${x0},0)">
           <rect x="0.5" y="0.5" width="${cw - 1}" height="${boxH}" rx="14" fill="var(--bg2)" stroke="var(--line)"/>
@@ -326,41 +293,118 @@ function ladderFigure(): string {
           <text x="14" y="${top - 24}" font-size="10" fill="var(--muted)" letter-spacing="0.08em">${t('ASKS (SELL)', '賣方掛單')}</text>
           ${rows}
           <text x="14" y="${boxH - 12}" font-size="10" fill="var(--muted)" letter-spacing="0.08em">${t('BIDS (BUY)', '買方掛單')}</text>
-          <text x="${cw - 14}" y="${boxH - 12}" font-size="10.5" fill="var(--muted)" text-anchor="end">${t('spread ', '價差 ')}${spread}</text>
+          <text x="${cw - 14}" y="${boxH - 12}" font-size="10.5" fill="var(--muted)" text-anchor="end">${t('spread ', '價差 ')}${(st.book.bestAsk! - st.book.bestBid!).toFixed(2)}</text>
         </g>`;
     });
 
-    const svgH = top + Math.max(...steps.map(st => st.book.asks.length + st.book.bids.length + 1)) * rowH + 24;
+    const below = PriceStep.getTickSize(CONFIG.BASE_PRICE - 1);
+    const at = PriceStep.getTickSize(CONFIG.BASE_PRICE);
     const html = `<div class="frame">
   ${h('h1', 'How a price moves one step', '價格怎麼走一步')}
   ${h('p', 'The price is simply the last trade. The market maker never trades on its own; it waits around the last price. Each time someone takes one of its quotes, the last price jumps to that quote, and the next re-quote centres on it. Real numbers from the engine, 5 levels shown per side.',
         '價格就是最後一筆成交價。造市機器人自己不會主動成交，只是圍著現價掛單等人來吃。每當有人吃掉它的報價，現價就跳到那個價位，下一次重掛就改圍著新現價。數字都是引擎實際算出來的，每邊只畫 5 層。', 'class="sub"')}
-  <svg width="${W}" height="${svgH}" viewBox="0 0 ${W} ${svgH}" style="margin-top:16px;display:block">${svg}</svg>
-  ${h('div', 'Several of the 12 levels round to the same tick, so some prices hold several quotes and the walls get thick. Ticks follow the TWSE table: 0.05 below 50, 0.10 from 50 to 100, which is why bids step by 0.05 and asks by 0.10 here.',
-        '12 層裡有好幾層會進位到同一個價位，所以有些價位疊了好幾張單，掛單牆很厚。升降單位照台股：50 元以下每檔 0.05，50～100 元每檔 0.10，所以這裡買方每檔差 0.05、賣方每檔差 0.10。', 'class="foot"')}
+  <svg width="${W}" height="${boxH + 2}" viewBox="0 0 ${W} ${boxH + 2}" style="margin-top:16px;display:block">${svg}</svg>
+  ${h('div', `Several of the ${MM_LEVELS} levels round to the same tick, so some prices hold several quotes and the walls get thick. Ticks follow the TWSE table: ${below} below ${CONFIG.BASE_PRICE}, ${at} from ${CONFIG.BASE_PRICE}, which is why bids step by ${below} and asks by ${at} here.`,
+        `${MM_LEVELS} 層裡有好幾層會進位到同一個價位，所以有些價位疊了好幾張單，掛單牆很厚。升降單位照台股：${CONFIG.BASE_PRICE} 元以下每檔 ${below}，${CONFIG.BASE_PRICE} 元起每檔 ${at}，所以這裡買方每檔差 ${below}、賣方每檔差 ${at}。`, 'class="foot"')}
 </div>`;
-    return page('Ladder', 960, html, 'Market maker ladder before/after one market buy (seeded).');
+    return page('Ladder', html, 'Market maker ladder before/after one market buy (seeded).');
 }
 
-// ---------------------------------------------------------------- stats table for the docs
+// ---------------------------------------------------------------- tables for the docs
 
-export function statsTable(seeds = 20, seconds = 180): string {
-    const lines = ['| Scenario | Mode | Avg change | Ended up | Avg high–low range | Typical 1 s move | Avg spread | Trades/min |', '|---|---|---:|---:|---:|---:|---:|---:|'];
-    for (const scenario of ALL_SCENARIOS) {
-        for (const mode of ['app', 'preset'] as RunMode[]) {
-            const st = Array.from({ length: seeds }, (_, i) => statsOf(runScenario({ scenario, seed: i + 1, seconds, mode })));
-            const avg = (f: (s: (typeof st)[0]) => number) => st.reduce((a, s) => a + f(s), 0) / st.length;
-            lines.push(`| ${mode === 'app' ? `${SCENARIO_NAMES[scenario].en} \`${scenario}\`` : ''} | ${mode} | ${fmtPct(avg(s => s.change))} | ${st.filter(s => s.change > 0).length}/${seeds} | ${avg(s => s.high - s.low).toFixed(1)}% | ${avg(s => s.move1s).toFixed(2)}% | ${avg(s => s.spread).toFixed(2)}% | ${avg(s => s.tradesPerMinute).toFixed(0)} |`);
-        }
+type Lang = 'en' | 'zh';
+
+/** A markdown table; `text` marks the columns that hold words (left-aligned), the rest are numbers */
+function table(head: string[], rows: string[][], text: number[] = [0]): string {
+    const align = head.map((_, i) => (text.includes(i) ? '---' : '---:'));
+    return [`| ${head.join(' | ')} |`, `| ${align.join(' | ')} |`, ...rows.map(r => `| ${r.join(' | ')} |`)].join('\n');
+}
+
+const label = (s: MarketScenario, lang: Lang) => `${lang === 'zh' ? SCENARIO_LABELS[s].zh : `${SCENARIO_LABELS[s].zh} ${SCENARIO_LABELS[s].en}`} \`${s}\``;
+
+function presetTable(lang: Lang): string {
+    const head = lang === 'en'
+        ? ['Scenario', 'Volatility', 'Liquidity', 'Intensity', 'MM spread', 'MM levels/side', 'MM re-quote', 'Trend bias', 'Trend buy / sell strength', 'Trend every', 'Noise every', 'Noise market %', 'Then']
+        : ['劇本', '波動率', '流動性', '熱絡度', '造市價差', '每邊層數', '重掛間隔', '趨勢偏向', '趨勢 買／賣強度', '趨勢間隔', '雜訊間隔', '雜訊市價單', '接著'];
+    const rows = ALL_SCENARIOS.map(s => {
+        const c = resolveBotConfig(s);
+        const tr = c.trend;
+        const lc = SCENARIO_LIFECYCLE[s];
+        const bias = tr.biasJitter > 0 ? `${tr.bias ? tr.bias + ' ' : ''}±${tr.biasJitter}` : `${tr.bias > 0 ? '+' : tr.bias < 0 ? '−' : ''}${Math.abs(tr.bias)}`;
+        return [
+            label(s, lang),
+            String(c.volatility), String(c.liquidity), String(c.intensity),
+            `${pctOf(c.marketMaker.spreadPercent * c.volatility).toFixed(2)}%`,
+            String(c.marketMaker.depth + Math.floor(c.intensity * c.marketMaker.depthPerIntensity)),
+            `${paceMs(effectiveInterval(c.marketMaker.refreshInterval, c))} ms`,
+            tr.enabled ? bias : '–',
+            tr.enabled ? `${tr.buyStrength ?? tr.aggressiveness} / ${tr.sellStrength ?? tr.aggressiveness}` : (lang === 'en' ? 'off' : '關閉'),
+            tr.enabled ? `${paceMs(effectiveInterval(tr.tradeInterval, c))} ms` : '–',
+            `${paceMs(effectiveInterval(c.noise.tradeInterval, c))} ms`,
+            `${pctOf(c.noise.marketOrderProbability)}%`,
+            lc ? (lang === 'en' ? `\`${lc.next}\` after ${lc.duration / 1000} s` : `${lc.duration / 1000} 秒後 \`${lc.next}\``) : '',
+        ];
+    });
+    return table(head, rows, [0, 7, 8, 12]);
+}
+
+function statsTable(lang: Lang, summaries: ScenarioSummary[]): string {
+    const head = lang === 'en'
+        ? ['Scenario', 'Avg change', 'Ended up', 'Own phase (before the switch)', 'Avg high–low range', 'Typical 1 s move', 'Avg spread', 'Trades/min']
+        : ['劇本', '平均漲跌', '收高次數', '自己那段（切換前）', '平均高低差', '典型 1 秒波動', '平均價差', '每分鐘成交筆數'];
+    const rows = summaries.map(s => {
+        const lc = SCENARIO_LIFECYCLE[s.scenario];
+        const own = s.firstPhase === null ? '' : `${fmtPct(s.firstPhase)} ${lang === 'en' ? `in ${lc!.duration / 1000} s, ${s.seeds - s.firstPhaseDown!}/${s.seeds} up` : `（${lc!.duration / 1000} 秒，${s.seeds - s.firstPhaseDown!}/${s.seeds} 收高）`}`;
+        return [label(s.scenario, lang), fmtPct(s.change), `${s.endedUp}/${s.seeds}`, own, `${s.range.toFixed(1)}%`, `${s.move1s.toFixed(2)}%`, `${s.spread.toFixed(2)}%`, s.tradesPerMinute.toFixed(0)];
+    });
+    return table(head, rows, [0, 3]);
+}
+
+function inventoryTable(lang: Lang, peaks: { scenario: MarketScenario; on: number; off: number }[]): string {
+    const head = lang === 'en'
+        ? ['Scenario', 'Peak inventory, skew on', 'Peak inventory, skew off']
+        : ['劇本', '最大庫存（有調整）', '最大庫存（關掉調整）'];
+    const unit = lang === 'en' ? ' lots' : ' 張';
+    return table(head, peaks.map(p => [label(p.scenario, lang), `${Math.round(p.on)}${unit}`, `${Math.round(p.off)}${unit}`]));
+}
+
+/** Replace the text between <!-- generated:NAME --> and <!-- /generated:NAME --> */
+function fillMarkers(doc: string, parts: Record<string, string>): string {
+    let out = doc;
+    for (const [name, content] of Object.entries(parts)) {
+        const re = new RegExp(`(<!-- generated:${name} -->)[\\s\\S]*?(<!-- /generated:${name} -->)`);
+        if (!re.test(out)) throw new Error(`docs: marker generated:${name} not found`);
+        out = out.replace(re, `$1\n${content}\n$2`);
     }
-    return lines.join('\n');
+    return out;
 }
 
-{
-    mkdirSync(OUT, { recursive: true });
-    writeFileSync(OUT + 'ladder.html', ladderFigure());
-    writeFileSync(OUT + 'scenarios.html', scenariosFigure());
-    writeFileSync(OUT + 'presets-vs-app.html', presetsFigure());
-    console.log('wrote ladder.html, scenarios.html, presets-vs-app.html to', OUT);
-    if (process.argv.includes('--table')) console.log('\n' + statsTable());
+// ---------------------------------------------------------------- main
+
+mkdirSync(OUT, { recursive: true });
+const figures: Record<string, string> = {
+    'tick-loop': tickLoopPage(),
+    ladder: ladderFigure(),
+    scenarios: scenariosFigure(),
+};
+for (const [name, html] of Object.entries(figures)) writeFileSync(`${OUT}${name}.html`, html);
+writeFileSync(`${OUT}figures.json`, JSON.stringify({ width: PAGE_WIDTH, figures: Object.keys(figures) }, null, 2) + '\n');
+
+const summaries = ALL_SCENARIOS.map(s => summarize(s, SEEDS, SECONDS));
+const peaks = ALL_SCENARIOS.map(scenario => ({
+    scenario,
+    on: peakInventory(scenario, INVENTORY_SEEDS, SECONDS),
+    off: withMarketMakerDefaults({ inventorySkew: 0 }, () => peakInventory(scenario, INVENTORY_SEEDS, SECONDS)),
+}));
+const simExample = ['```text', ...formatRun(runScenario({ ...SIM_EXAMPLE, seconds: SECONDS })), '```'].join('\n');
+for (const lang of ['en', 'zh'] as Lang[]) {
+    const file = DOCS[lang];
+    writeFileSync(file, fillMarkers(readFileSync(file, 'utf8'), {
+        'scenario-presets': presetTable(lang),
+        'scenario-stats': statsTable(lang, summaries),
+        'inventory': inventoryTable(lang, peaks),
+        'sim-example': simExample,
+    }));
 }
+for (const file of READMES) writeFileSync(file, fillMarkers(readFileSync(file, 'utf8'), { 'sim-example': simExample }));
+console.log(`wrote ${Object.keys(figures).join(', ')} and the tables in docs/bots.md, docs/bots_zh-tw.md`);

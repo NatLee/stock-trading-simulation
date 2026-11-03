@@ -8,6 +8,7 @@ import {
     DEFAULT_NOISE_BOT_CONFIG,
     DEFAULT_TREND_BOT_CONFIG,
     SCENARIO_MODIFIERS,
+    resolveBotConfig,
     SCENARIO_LABELS,
     SCENARIO_LEVELS,
     scenarioLevel,
@@ -61,6 +62,34 @@ describe('MarketMakerBot', () => {
         expect(sizes[11]).toBe(Math.floor(6 * 2 * (1 + (11 / 12) * 2)));
     });
 
+    it('quotes lower when long and higher when short, by up to inventorySkew spreads', () => {
+        // At 100 one tick is 0.5, so use a spread of several ticks: 0.2% × 5 = 1.0
+        const VOLATILITY = 5;
+        const config = { ...DEFAULT_MARKET_MAKER_CONFIG, intensity: 1 };
+        const quotesWith = (inventory: number) => {
+            const mm = new MarketMakerBot(config, fixedDice([0.5]));
+            mm.updateInventory(inventory > 0 ? 'buy' : 'sell', Math.abs(inventory));
+            const qs = mm.generateQuotes(100, VOLATILITY, 1);
+            return {
+                bid: Math.max(...qs.filter(q => q.side === 'buy').map(q => q.price!)),
+                ask: Math.min(...qs.filter(q => q.side === 'sell').map(q => q.price!)),
+            };
+        };
+        const flat = quotesWith(0);
+        const long = quotesWith(config.inventoryLimit);       // full: shift = inventorySkew spreads down
+        const short = quotesWith(-config.inventoryLimit);
+        const s = config.spreadPercent * VOLATILITY;
+        expect(long.bid).toBe(PriceStep.floorToTick(100 * (1 - s - config.inventorySkew * s)));
+        expect(long.ask).toBe(PriceStep.ceilToTick(100 * (1 + s - config.inventorySkew * s)));
+        expect(short.bid).toBe(PriceStep.floorToTick(100 * (1 - s + config.inventorySkew * s)));
+        expect(long.ask).toBeLessThan(flat.ask);   // too much stock: sell more eagerly
+        expect(long.bid).toBeLessThan(flat.bid);   // ...and buy less
+        expect(short.bid).toBeGreaterThan(flat.bid); // short: buy back more eagerly
+        expect(short.ask).toBeGreaterThan(flat.ask);
+        // beyond the limit the shift stays at its full size
+        expect(quotesWith(5 * config.inventoryLimit)).toEqual(long);
+    });
+
     it('refreshes every refreshInterval / intensity ms', () => {
         const env = fixedDice([0.5]);
         const mm = new MarketMakerBot({ ...DEFAULT_MARKET_MAKER_CONFIG, intensity: 2 }, env);
@@ -87,17 +116,17 @@ describe('TrendBot', () => {
         expect(withHistory([100, 100, 100, 100, 100, 90, 90, 90, 90, 90]).bot.calculateTrend()).toBe(-1);
     });
 
-    it('stays out when |trend + scenario bias| is below 0.3 × (1 − strength)', () => {
+    it('stays out when |trend + bias| is below entryThreshold × (1 − strength)', () => {
         const { bot } = withHistory(Array(10).fill(50));
-        expect(bot.generateOrders(50, 'sideways')).toEqual([]);
+        expect(bot.generateOrders(50)).toEqual([]);
         // ...and keeps checking every tick: a skipped signal does not start the wait
         expect(bot.isReady()).toBe(true);
     });
 
-    it('in a bull scenario places a passive bid 0.1–0.3% under the price', () => {
+    it('with a +0.3 bias places a passive bid 0.1–0.3% under the price', () => {
         // bias +0.3 ≥ threshold 0.3 × (1 − 0.3); size = floor(2 + 3 × 0.3 × 0.3) = 2 lots
-        const { bot } = withHistory(Array(10).fill(50));
-        const orders = bot.generateOrders(50, 'bull');
+        const { bot } = withHistory(Array(10).fill(50), { bias: 0.3 });
+        const orders = bot.generateOrders(50);
         expect(orders).toEqual([
             { side: 'buy', type: 'limit', price: PriceStep.floorToTick(50 * (1 - 0.002)), quantity: 2, botType: 'trend' },
         ]);
@@ -106,30 +135,51 @@ describe('TrendBot', () => {
 
     it('crosses the spread (price ± 0.5%) when the combined signal is above 0.6', () => {
         const { bot } = withHistory([50, 50, 50, 50, 50, 51, 51, 51, 51, 51]);
-        const [order] = bot.generateOrders(51, 'sideways');
+        const [order] = bot.generateOrders(51);
         expect(order.side).toBe('buy');
         expect(order.price).toBe(PriceStep.floorToTick(51 * 1.005));
         expect(order.quantity).toBe(Math.floor(2 + 3 * 1 * 0.3));
 
-        const down = withHistory([51, 51, 51, 51, 51, 50, 50, 50, 50, 50]).bot.generateOrders(50, 'sideways')[0];
+        const down = withHistory([51, 51, 51, 51, 51, 50, 50, 50, 50, 50]).bot.generateOrders(50)[0];
         expect(down.side).toBe('sell');
         expect(down.price).toBe(PriceStep.ceilToTick(50 * 0.995));
     });
 
     it('uses buyStrength / sellStrength instead of aggressiveness when given', () => {
-        // bear: bias −0.3, sellStrength 0.8 -> threshold 0.06, size floor(2 + 3 × 0.3 × 0.8) = 2
-        const { bot } = withHistory(Array(10).fill(50), SCENARIO_MODIFIERS.bear.trend);
-        const [order] = bot.generateOrders(50, 'bear');
+        // bias −0.3, sellStrength 0.8 -> threshold 0.06, size floor(2 + 3 × 0.3 × 0.8) = 2
+        const { bot } = withHistory(Array(10).fill(50), { buyStrength: 0.2, sellStrength: 0.8, bias: -0.3 });
+        const [order] = bot.generateOrders(50);
         expect(order.side).toBe('sell');
         expect(order.price).toBe(PriceStep.ceilToTick(50 * 1.002));
     });
 
     it('skips about 30% of passive orders and 10% of aggressive ones', () => {
         const env = fixedDice([0.5, 0.75]); // second draw decides whether to send
-        const bot = new TrendBot({ ...DEFAULT_TREND_BOT_CONFIG, intensity: 1 }, env);
+        const bot = new TrendBot({ ...DEFAULT_TREND_BOT_CONFIG, bias: 0.3, intensity: 1 }, env);
         Array(10).fill(50).forEach(p => bot.observePrice(p));
-        expect(bot.generateOrders(50, 'bull')).toEqual([]); // 0.75 ≥ 0.7
+        expect(bot.generateOrders(50)).toEqual([]); // 0.75 ≥ 0.7
         expect(bot.isReady()).toBe(false); // still counts as its turn
+    });
+
+    it('a bias above aggressiveAbove crosses the spread every turn, in the bias direction', () => {
+        const { bot, env } = withHistory(Array(10).fill(50), { bias: -0.8, sellStrength: 0.95 });
+        for (let turn = 0; turn < 5; turn++) {
+            const [order] = bot.generateOrders(50);
+            if (order) {
+                expect(order.side).toBe('sell');
+                expect(order.price).toBe(PriceStep.ceilToTick(50 * 0.995));
+            }
+            env.clock.advance(DEFAULT_TREND_BOT_CONFIG.tradeInterval);
+        }
+    });
+
+    it('biasJitter adds a random lean of ±biasJitter each turn', () => {
+        // dice: first draw is the jitter. U = 1 -> +jitter, U = 0 -> −jitter
+        const up = new TrendBot({ ...DEFAULT_TREND_BOT_CONFIG, biasJitter: 0.7, intensity: 1 }, fixedDice([0.99999, 0.5, 0]));
+        const down = new TrendBot({ ...DEFAULT_TREND_BOT_CONFIG, biasJitter: 0.7, intensity: 1 }, fixedDice([0, 0.5, 0]));
+        Array(10).fill(50).forEach(p => { up.observePrice(p); down.observePrice(p); });
+        expect(up.generateOrders(50)[0].side).toBe('buy');
+        expect(down.generateOrders(50)[0].side).toBe('sell');
     });
 });
 
@@ -177,14 +227,65 @@ describe('BotManager', () => {
         return { engine, bots, env };
     }
 
-    it('applies a scenario preset to itself and to each bot', () => {
+    it('applies a scenario as defaults + its preset, to itself and to each bot', () => {
         const { bots } = managerAt(50);
         bots.setScenario('crash');
         const config = bots.getConfig();
-        expect(config).toMatchObject({ scenario: 'crash', volatility: 3, liquidity: 0.5, intensity: 3 });
-        expect(config.marketMaker).toMatchObject({ spreadPercent: 0.01, depth: 5, intensity: 3 });
-        expect(config.trend).toMatchObject({ aggressiveness: 0.9, buyStrength: 0.05, sellStrength: 0.95, tradeInterval: 800 });
-        expect(config.noise).toMatchObject({ marketOrderProbability: 0.7, tradeInterval: 1000 });
+        const preset = SCENARIO_MODIFIERS.crash;
+        expect(config).toMatchObject({ scenario: 'crash', volatility: preset.volatility, liquidity: preset.liquidity, intensity: preset.intensity });
+        expect(config.marketMaker).toEqual({ ...DEFAULT_MARKET_MAKER_CONFIG, ...preset.marketMaker, intensity: preset.intensity });
+        expect(config.trend).toEqual({ ...DEFAULT_TREND_BOT_CONFIG, ...preset.trend, intensity: preset.intensity });
+        expect(config.noise).toEqual({ ...DEFAULT_NOISE_BOT_CONFIG, ...preset.noise, intensity: preset.intensity });
+    });
+
+    it('behaves the same whichever scenario came before (user decision 2)', () => {
+        const fresh = new BotManager(new MatchingEngine(50), { scenario: 'bull' }).getConfig();
+        const { bots } = managerAt(50);
+        for (const s of ['crash', 'volatile', 'accumulation', 'calm'] as const) bots.setScenario(s);
+        bots.setScenario('bull');
+        expect(bots.getConfig()).toEqual(fresh);
+        expect(resolveBotConfig('bull')).toEqual(fresh);
+    });
+
+    it('keeps the chosen scenario when the page sends its own settings (user decision 1)', () => {
+        // The page moves the intensity slider right after a pick, and resends lot size / odd lots
+        const { bots } = managerAt(50);
+        bots.setScenario('bull');
+        bots.updateSettings({ unitSize: 2000, isOddLot: false, intensity: 1.5 });
+        const config = bots.getConfig();
+        expect(config.scenario).toBe('bull');
+        expect(config.volatility).toBe(SCENARIO_MODIFIERS.bull.volatility);
+        expect(config.trend.bias).toBe(SCENARIO_MODIFIERS.bull.trend!.bias);
+        expect(config.unitSize).toBe(2000);
+    });
+
+    it('the intensity slider overrides the preset until the next scenario pick', () => {
+        const { bots } = managerAt(50);
+        bots.updateSettings({ intensity: 2.2 });
+        expect(bots.getConfig().intensity).toBe(2.2);
+        expect(bots.getConfig().trend.intensity).toBe(2.2);
+        bots.setScenario('calm');
+        expect(bots.getConfig().intensity).toBe(SCENARIO_MODIFIERS.calm.intensity);
+    });
+
+    it('books fills of its own quotes into the market maker inventory, in lots (user decision 3)', () => {
+        // Squeeze: the other bots are quiet for seconds after their first move
+        const { engine, bots, env } = managerAt(50, { scenario: 'squeeze' });
+        bots.tick(); // first quotes (the noise bot may trade once too)
+        env.clock.advance(100);
+        bots.tick(); // ...which gets booked here
+        const before = bots.getMarketMakerInventory();
+
+        const buy = engine.submitOrder('buy', 'market', 3000, null, 'user', 'IOC'); // the market maker sells 3 lots
+        expect(buy.trades.every(t => t.makerSource === 'bot')).toBe(true);
+        env.clock.advance(100);
+        bots.tick();
+        expect(bots.getMarketMakerInventory()).toBe(before - 3);
+
+        engine.submitOrder('sell', 'market', 5000, null, 'user', 'IOC'); // and buys 5
+        env.clock.advance(100);
+        bots.tick();
+        expect(bots.getMarketMakerInventory()).toBe(before + 2);
     });
 
     it('turns bot lot counts into shares: whole lots of 1000, at least one', () => {
@@ -199,7 +300,6 @@ describe('BotManager', () => {
 
     it('in odd-lot mode sends lots × 100 × √intensity shares plus 0–98 random shares', () => {
         const { bots } = managerAt(50, { isOddLot: true });
-        bots.updateConfig({ intensity: 1 }); // the sideways preset had set 0.8
         const orders = bots.tick().filter(o => o.botType === 'marketMaker');
         expect(orders.length).toBeGreaterThan(0);
         for (const o of orders) {
@@ -209,18 +309,12 @@ describe('BotManager', () => {
         }
     });
 
-    it('a scenario preset sets intensity even when the constructor got another one', () => {
-        // The trading page sends its slider value right after, see useMarketSimulator
-        const { bots } = managerAt(50, { intensity: 1 });
-        expect(bots.getConfig().intensity).toBe(0.8);
-    });
-
     it('re-quoting cancels every resting bot order, not just the market maker ones', () => {
         const { engine, bots, env } = managerAt(50);
         bots.tick();
         engine.submitOrder('buy', 'limit', 1000, 40, 'bot'); // e.g. a resting trend/noise order
         engine.submitOrder('buy', 'limit', 1000, 40, 'user');
-        env.clock.advance(625); // 500 ms / intensity 0.8
+        env.clock.advance(500); // refreshInterval / intensity 1
 
         bots.tick();
         const level = engine.getOrderBookSnapshot(100).bids.find(l => l.price === 40);

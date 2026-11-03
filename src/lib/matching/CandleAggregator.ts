@@ -25,6 +25,9 @@ export interface CandleStats {
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/** Trades go into candles of this size; every chart timeframe is a multiple of it */
+export const BASE_CANDLE_MS = 15000;
+
 /**
  * Shape of the synthetic history: each 15 s candle moves by
  * trend + (U − 0.5) × volatility, with U uniform in [0, 1).
@@ -62,7 +65,7 @@ export class CandleAggregator {
     private baseCandles: CandleData[] = []; // Finished 15 s candles, oldest first
     private currentBaseCandle: CandleData | null = null;
     private displayPeriodMs: number;
-    private readonly basePeriodMs: number = 15000; // Fixed base resolution (15s)
+    private readonly basePeriodMs: number = BASE_CANDLE_MS;
     private maxBaseCandles: number = 10000; // Store enough history (~40 hours of 15s data)
     private lastPrice: number;
     private env: SimEnv;
@@ -76,7 +79,7 @@ export class CandleAggregator {
      * @param periodMs display timeframe
      * @param initialPrice price to report before any trade
      */
-    constructor(periodMs: number = 15000, initialPrice: number = 50, env: SimEnv = realEnv) {
+    constructor(periodMs: number = BASE_CANDLE_MS, initialPrice: number = 50, env: SimEnv = realEnv) {
         this.displayPeriodMs = periodMs;
         this.lastPrice = initialPrice;
         this.env = env;

@@ -9,11 +9,12 @@ import { SimEnv, realEnv } from '../sim/env';
  * Features:
  * - Maintains bid/ask quotes at multiple price levels
  * - Adjusts spread based on volatility
- * - Skews quotes based on inventory
+ * - Shifts its quotes with its inventory: down when it holds too much
+ *   (to sell more and buy less), up when it is short (to buy back)
  */
 export class MarketMakerBot {
     private config: MarketMakerBotConfig;
-    private inventory: number = 0; // Positive = long, negative = short
+    private inventory: number = 0; // In lots. Positive = long, negative = short
     private lastQuoteTime: number = 0;
     private env: SimEnv;
 
@@ -57,12 +58,9 @@ export class MarketMakerBot {
         const { spreadPercent, levelStepPercent, depth, depthPerIntensity, sizeRange, depthSizeGrowth } = this.config;
         const baseSpread = spreadPercent * volatilityMultiplier;
 
-        // Inventory skew - if holding too much, make sells more attractive
-        const inventoryRatio = this.inventory / this.config.inventoryLimit;
-        const skew: Record<OrderSide, number> = {
-            buy: Math.max(0, -inventoryRatio * this.config.inventorySkew),
-            sell: Math.max(0, inventoryRatio * this.config.inventorySkew),
-        };
+        // Inventory shift: the whole ladder moves down when long, up when short,
+        // by up to inventorySkew spreads at inventoryLimit
+        const shift = this.inventoryShift() * baseSpread;
 
         const [minSize, maxSize] = sizeRange;
         const levels = depth + Math.floor(intensityOf(this.config) * depthPerIntensity);
@@ -72,8 +70,8 @@ export class MarketMakerBot {
             // Bids sit below the price (floor to a tick), asks above it (ceil)
             const direction = side === 'buy' ? -1 : 1;
             for (let i = 0; i < levels; i++) {
-                const offset = baseSpread + i * levelStepPercent + skew[side] * baseSpread;
-                const rawPrice = currentPrice * (1 + direction * offset);
+                const offset = baseSpread + i * levelStepPercent;
+                const rawPrice = currentPrice * (1 + direction * offset - shift);
                 const price = side === 'buy' ? PriceStep.floorToTick(rawPrice) : PriceStep.ceilToTick(rawPrice);
 
                 // Deeper levels are bigger: 1× at the touch up to (1 + depthSizeGrowth)×
@@ -99,7 +97,17 @@ export class MarketMakerBot {
     }
 
     /**
-     * Update inventory after a trade
+     * How far the ladder is shifted, in spreads: +inventorySkew when the
+     * inventory is at +inventoryLimit (quotes lower), −inventorySkew at
+     * −inventoryLimit (quotes higher), in between in proportion
+     */
+    inventoryShift(): number {
+        const ratio = Math.max(-1, Math.min(1, this.inventory / this.config.inventoryLimit));
+        return ratio * this.config.inventorySkew;
+    }
+
+    /**
+     * Update inventory after one of its quotes was filled (quantity in lots)
      */
     updateInventory(side: OrderSide, quantity: number): void {
         if (side === 'buy') {

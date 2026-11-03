@@ -1,5 +1,5 @@
 import { TrendBotConfig, BotOrder, effectiveInterval } from './types';
-import { OrderSide, MarketScenario } from '../matching/types';
+import { OrderSide } from '../matching/types';
 import { PriceStep } from '../matching/PriceStep';
 import { SimEnv, realEnv } from '../sim/env';
 
@@ -78,18 +78,14 @@ export class TrendBot {
     /**
      * Generate trend-following orders
      */
-    generateOrders(
-        currentPrice: number,
-        scenario: MarketScenario,
-        force: boolean = false
-    ): BotOrder[] {
+    generateOrders(currentPrice: number, force: boolean = false): BotOrder[] {
         if (!this.config.enabled) return [];
 
         const now = this.env.now();
         if (!force && !this.isReady()) return [];
 
         const trend = this.calculateTrend();
-        const scenarioBias = this.getScenarioBias(scenario);
+        const scenarioBias = this.scenarioBias();
         const combinedTrend = trend + scenarioBias;
 
         // Use separate buy/sell strength if provided, otherwise use aggressiveness
@@ -156,16 +152,10 @@ export class TrendBot {
         return orders;
     }
 
-    /**
-     * Get scenario-based bias
-     */
-    private getScenarioBias(scenario: MarketScenario): number {
-        switch (scenario) {
-            case 'bull': return 0.3;
-            case 'bear': return -0.3;
-            case 'volatile': return (this.env.random() - 0.5) * 0.4;
-            default: return 0;
-        }
+    /** The scenario's lean for this turn: bias, plus a random ±biasJitter */
+    private scenarioBias(): number {
+        const { bias, biasJitter } = this.config;
+        return biasJitter > 0 ? bias + (this.env.random() - 0.5) * 2 * biasJitter : bias;
     }
 
     /**

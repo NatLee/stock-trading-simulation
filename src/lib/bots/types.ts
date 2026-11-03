@@ -36,9 +36,9 @@ export interface MarketMakerBotConfig extends BotCommonConfig {
     depthSizeGrowth: number;
     /** How often to refresh quotes (ms) */
     refreshInterval: number;
-    /** Max inventory before skewing quotes */
+    /** Inventory (in lots, + long / − short) at which the quote shift is at its full size */
     inventoryLimit: number;
-    /** How far a full inventory shifts the quotes, in spreads */
+    /** How far a full inventory shifts both sides of the ladder, in spreads (down when long, up when short) */
     inventorySkew: number;
 }
 
@@ -56,6 +56,10 @@ export interface TrendBotConfig extends BotCommonConfig {
     buyStrength?: number;
     /** Sell trend strength (0-1, overrides aggressiveness for sells) */
     sellStrength?: number;
+    /** The scenario's lean, added to the momentum signal (+ buys, − sells) */
+    bias: number;
+    /** Random extra lean each turn, uniform in ±biasJitter */
+    biasJitter: number;
     /** Ticks in each of the two averages the momentum compares */
     momentumWindow: number;
     /** Momentum = clamp(relative change × momentumScale, −1, 1) */
@@ -147,8 +151,8 @@ export const DEFAULT_MARKET_MAKER_CONFIG: MarketMakerBotConfig = {
     sizeRange: [2, 10],
     depthSizeGrowth: 2,
     refreshInterval: 500,
-    inventoryLimit: 1000,
-    inventorySkew: 0.5,
+    inventoryLimit: 50,
+    inventorySkew: 1,
     enabled: true,
 };
 
@@ -164,6 +168,8 @@ export const DEFAULT_TREND_BOT_CONFIG: TrendBotConfig = {
     passiveOffset: [0.001, 0.003],
     aggressiveSendProbability: 0.9,
     passiveSendProbability: 0.7,
+    bias: 0,
+    biasJitter: 0,
     enabled: true,
 };
 
@@ -201,178 +207,166 @@ export function effectiveInterval(interval: number, config: { intensity?: number
 }
 
 /**
- * Scenario modifiers
+ * What a scenario may change. Anything it leaves out stays at the defaults
+ * above: every scenario starts from the same base, whichever came before.
  */
-export const SCENARIO_MODIFIERS: Record<MarketScenario, Partial<BotManagerConfig>> = {
-    // 強勢多頭 (Strong Bull) - 頭頭高、底底高
+export interface ScenarioPreset {
+    volatility?: number;
+    liquidity?: number;
+    /** The scenario's own pace; picking the scenario moves the intensity slider here */
+    intensity?: number;
+    marketMaker?: Partial<MarketMakerBotConfig>;
+    trend?: Partial<TrendBotConfig>;
+    noise?: Partial<NoiseBotConfig>;
+}
+
+/**
+ * What the trading page controls; everything else comes from the scenario.
+ */
+export interface BotSettings {
+    /** Shares per bot lot in whole-lot mode */
+    unitSize: number;
+    isOddLot: boolean;
+    /** The intensity slider; when unset, the scenario's own intensity */
+    intensity?: number;
+}
+
+/**
+ * Scenario presets, tuned with seeded runs of the real engine
+ * (`npm run sim -- --all --seeds 20`; numbers and charts in docs/bots.md).
+ *
+ * Direction comes from the trend bot's bias: below its aggressiveAbove line
+ * (0.6) the bot mostly leans with passive orders and momentum; above it, it
+ * crosses the spread every turn, so tradeInterval sets how fast the price
+ * walks. Volatility sets the step size, intensity the pace of everyone.
+ */
+export const SCENARIO_MODIFIERS: Record<MarketScenario, ScenarioPreset> = {
+    // 強勢多頭 (Strong Bull) - 頭頭高、底底高: leans up, buys on strength
     bull: {
         volatility: 1.2,
         liquidity: 1.5,
         intensity: 1.5,
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.7,
-            buyStrength: 0.8,  // Strong buying pressure
-            sellStrength: 0.2, // Weak selling
-        },
+        trend: { buyStrength: 0.8, sellStrength: 0.2, bias: 0.5 },
     },
-    // 弱勢空頭 (Weak Bear) - 頭頭低、底底低
+    // 弱勢空頭 (Weak Bear) - 頭頭低、底底低: the mirror image of bull
     bear: {
-        volatility: 1.3,
+        volatility: 1.2,
         liquidity: 1.2,
         intensity: 1.5,
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.7,
-            buyStrength: 0.2,  // Weak buying
-            sellStrength: 0.8, // Strong selling pressure
-        },
+        trend: { buyStrength: 0.2, sellStrength: 0.8, bias: -0.5 },
     },
-    // 盤整 (Consolidation) - 橫向整理
+    // 盤整 (Consolidation) - 橫向整理: no lean, busy noise, tight spread
     sideways: {
-        volatility: 0.6, // Slight increase to allow spread crossing
+        volatility: 0.6,
         liquidity: 2.0,
         intensity: 0.8,
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.2, // Keep trend low
-            buyStrength: 0.5,
-            sellStrength: 0.5,
-        },
-        noise: {
-            ...DEFAULT_NOISE_BOT_CONFIG,
-            tradeInterval: 1000, // Faster trades to create volume
-            marketOrderProbability: 0.5, // Verify price matches more often
-        },
+        trend: { aggressiveness: 0.2, buyStrength: 0.5, sellStrength: 0.5 },
+        noise: { tradeInterval: 1000, marketOrderProbability: 0.5 },
     },
-    // 劇烈震盪 (Volatile) - 上沖下洗
+    // 劇烈震盪 (Volatile) - 上沖下洗: wide steps, a random lean every turn
     volatile: {
-        volatility: 2.5,
+        volatility: 1.8,
         liquidity: 0.8,
         intensity: 2.5,
-        marketMaker: { ...DEFAULT_MARKET_MAKER_CONFIG, spreadPercent: 0.005 },
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.5,
-            tradeInterval: 1000,
-            buyStrength: 0.6,
-            sellStrength: 0.6,
-        },
+        marketMaker: { spreadPercent: 0.003 },
+        trend: { aggressiveness: 0.5, tradeInterval: 1000, buyStrength: 0.6, sellStrength: 0.6, biasJitter: 0.3 },
     },
-    // 冷清 (Calm) - 低量盤整
+    // 冷清 (Calm) - 低量盤整: almost nobody trades
     calm: {
         volatility: 0.3,
         liquidity: 3.0,
         intensity: 0.3,
-        trend: { ...DEFAULT_TREND_BOT_CONFIG, enabled: false },
-        noise: { ...DEFAULT_NOISE_BOT_CONFIG, tradeInterval: 5000 },
+        trend: { enabled: false },
+        noise: { tradeInterval: 5000 },
     },
-    // 盤整突破 (Breakout) - 突破壓力位
+    // 盤整突破 (Breakout) - 突破壓力位: a steady buyer crossing the spread about every 0.8 s
     breakout: {
-        volatility: 1.8,
+        volatility: 1.5,
         liquidity: 1.3,
         intensity: 2.0,
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.8,
-            buyStrength: 0.9,  // Very strong buying on breakout
-            sellStrength: 0.1,
-            tradeInterval: 1500,
-        },
-        noise: { ...DEFAULT_NOISE_BOT_CONFIG, marketOrderProbability: 0.5 },
+        trend: { buyStrength: 0.9, sellStrength: 0.1, bias: 0.8, tradeInterval: 1500 },
+        noise: { marketOrderProbability: 0.5 },
     },
-    // 恐慌崩盤 (Crash) - 急速下跌
+    // 恐慌崩盤 (Crash) - 急速下跌: a steady seller every 0.5 s, thin book, panicky crowd
     crash: {
-        volatility: 3.0,
+        volatility: 1.5,
         liquidity: 0.5,
         intensity: 3.0,
-        marketMaker: { ...DEFAULT_MARKET_MAKER_CONFIG, spreadPercent: 0.01, depth: 5 },
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.9,
-            buyStrength: 0.05, // Almost no buying
-            sellStrength: 0.95, // Panic selling
-            tradeInterval: 800,
-        },
-        noise: { ...DEFAULT_NOISE_BOT_CONFIG, marketOrderProbability: 0.7, tradeInterval: 1000 },
+        marketMaker: { depth: 5 },
+        trend: { buyStrength: 0.05, sellStrength: 0.95, bias: -0.8, tradeInterval: 1500 },
+        noise: { marketOrderProbability: 0.7, tradeInterval: 1000 },
     },
-    // 主力吸籌 (Accumulation) - 低檔吸貨
+    // 主力吸籌 (Accumulation) - 低檔吸貨: a slow, patient buyer (one crossing order every ~17 s)
     accumulation: {
         volatility: 0.6,
         liquidity: 1.8,
         intensity: 1.2,
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.6,
-            buyStrength: 0.75, // Steady accumulation
-            sellStrength: 0.25,
-            tradeInterval: 2000,
-        },
-        marketMaker: { ...DEFAULT_MARKET_MAKER_CONFIG, depth: 15 }, // Deep order book
+        marketMaker: { depth: 15 },
+        trend: { buyStrength: 0.75, sellStrength: 0.25, bias: 0.65, tradeInterval: 20000 },
     },
-    // 主力出貨 (Distribution) - 高檔出貨
+    // 主力出貨 (Distribution) - 高檔出貨: a slow, patient seller
     distribution: {
         volatility: 0.8,
         liquidity: 1.5,
         intensity: 1.3,
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.6,
-            buyStrength: 0.3,
-            sellStrength: 0.7, // Steady distribution
-            tradeInterval: 2000,
-        },
-        marketMaker: { ...DEFAULT_MARKET_MAKER_CONFIG, depth: 12 },
+        marketMaker: { depth: 12 },
+        trend: { buyStrength: 0.25, sellStrength: 0.75, bias: -0.65, tradeInterval: 20000 },
     },
-    // 拉高出貨 (Pump & Dump) - 極速拉升
+    // 拉高出貨 (Pump & Dump) - 極速拉升: a buyer crossing every 0.2 s, then crash takes over
     pump_dump: {
-        volatility: 2.5,
+        volatility: 1.5,
         liquidity: 1.2,
-        intensity: 4.0, // Very high intensity
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.95,
-            buyStrength: 0.9,  // Hard pump
-            sellStrength: 0.1,
-            tradeInterval: 500, // Very fast
-        },
-        marketMaker: { ...DEFAULT_MARKET_MAKER_CONFIG, spreadPercent: 0.01 }, // Wider spread during pump
+        intensity: 4.0,
+        trend: { buyStrength: 0.9, sellStrength: 0.1, bias: 0.8, tradeInterval: 500 },
     },
-    // 死貓反彈 (Dead Cat Bounce) - 崩盤後小幅反彈
+    // 死貓反彈 (Dead Cat Bounce) - 崩盤後小幅反彈: a short bounce, then bear takes over
     dead_cat: {
-        volatility: 2.0,
+        volatility: 1.5,
         liquidity: 0.8,
         intensity: 2.0,
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.6,
-            buyStrength: 0.6,  // Moderate buy
-            sellStrength: 0.4,
-            tradeInterval: 1500,
-        },
+        trend: { buyStrength: 0.6, sellStrength: 0.4, bias: 0.8, tradeInterval: 3000 },
     },
-    // 盤整待變 (Squeeze) - 窒息量
+    // 盤整待變 (Squeeze) - 窒息量: nearly silent until breakout takes over
     squeeze: {
-        volatility: 0.1, // Very low volatility
-        liquidity: 0.5,  // Low liquidity
-        intensity: 0.5,  // Low activity
-        trend: {
-            ...DEFAULT_TREND_BOT_CONFIG,
-            aggressiveness: 0.1,
-            tradeInterval: 5000,
-            enabled: true,
-        },
-        noise: { ...DEFAULT_NOISE_BOT_CONFIG, tradeInterval: 8000 },
+        volatility: 0.1,
+        liquidity: 0.5,
+        intensity: 0.5,
+        trend: { aggressiveness: 0.1, tradeInterval: 5000 },
+        noise: { tradeInterval: 8000 },
     },
 };
 
 /**
+ * The full bot configuration for a scenario: defaults, then the scenario's
+ * preset, then the page's own settings. Nothing carries over from the
+ * scenario that was active before.
+ */
+export function resolveBotConfig(scenario: MarketScenario, settings: Partial<BotSettings> = {}): BotManagerConfig {
+    const base = DEFAULT_BOT_MANAGER_CONFIG;
+    const preset = SCENARIO_MODIFIERS[scenario];
+    const intensity = settings.intensity ?? preset.intensity ?? base.intensity;
+    return {
+        ...base,
+        volatility: preset.volatility ?? base.volatility,
+        liquidity: preset.liquidity ?? base.liquidity,
+        unitSize: settings.unitSize ?? base.unitSize,
+        isOddLot: settings.isOddLot ?? base.isOddLot,
+        scenario,
+        intensity,
+        marketMaker: { ...base.marketMaker, ...preset.marketMaker, intensity },
+        trend: { ...base.trend, ...preset.trend, intensity },
+        noise: { ...base.noise, ...preset.noise, intensity },
+    };
+}
+
+/**
  * Short-lived scenarios: after `duration` ms the trading page switches to `next` by itself
- * (pump & dump -> crash -> dead cat bounce, squeeze -> breakout -> bull).
+ * (pump & dump -> crash -> dead cat bounce -> bear, squeeze -> breakout -> bull).
  */
 export const SCENARIO_LIFECYCLE: Partial<Record<MarketScenario, { duration: number; next: MarketScenario; label: string }>> = {
     pump_dump: { duration: 15000, next: 'crash', label: '拉高結束 -> 殺盤開始' },
-    crash: { duration: 20000, next: 'dead_cat', label: '恐慌結束 -> 死貓反彈' },
+    crash: { duration: 25000, next: 'dead_cat', label: '恐慌結束 -> 死貓反彈' },
+    dead_cat: { duration: 10000, next: 'bear', label: '反彈結束 -> 續跌' },
     breakout: { duration: 25000, next: 'bull', label: '突破確立 -> 轉為多頭' },
     squeeze: { duration: 30000, next: 'breakout', label: '盤整結束 -> 向上突破' },
 };
