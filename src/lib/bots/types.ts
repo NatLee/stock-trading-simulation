@@ -377,3 +377,34 @@ export const SCENARIO_LIFECYCLE: Partial<Record<MarketScenario, { duration: numb
     squeeze: { duration: 30000, next: 'breakout', label: '盤整結束 -> 向上突破' },
 };
 
+/** Display names, shared by the trading page and the docs figures */
+export const SCENARIO_LABELS: Record<MarketScenario, { zh: string; en: string }> = {
+    bull: { zh: '強勢多頭', en: 'Bull' },
+    bear: { zh: '弱勢空頭', en: 'Bear' },
+    sideways: { zh: '盤整', en: 'Sideways' },
+    volatile: { zh: '劇烈震盪', en: 'Volatile' },
+    calm: { zh: '冷清', en: 'Calm' },
+    breakout: { zh: '盤整突破', en: 'Breakout' },
+    crash: { zh: '恐慌崩盤', en: 'Crash' },
+    accumulation: { zh: '主力吸籌', en: 'Accumulation' },
+    distribution: { zh: '主力出貨', en: 'Distribution' },
+    pump_dump: { zh: '拉高出貨', en: 'Pump & dump' },
+    dead_cat: { zh: '死貓反彈', en: 'Dead cat bounce' },
+    squeeze: { zh: '盤整待變', en: 'Squeeze' },
+};
+
+/** Steps of the volatility / liquidity bars on the scenario card */
+export const SCENARIO_LEVELS = 5;
+
+/**
+ * Where a scenario's preset volatility or liquidity sits among all presets,
+ * as 1 … SCENARIO_LEVELS (lowest preset = 1, highest = SCENARIO_LEVELS).
+ */
+export function scenarioLevel(scenario: MarketScenario, key: 'volatility' | 'liquidity'): number {
+    const valueOf = (s: MarketScenario) => SCENARIO_MODIFIERS[s][key] ?? DEFAULT_BOT_MANAGER_CONFIG[key];
+    const values = (Object.keys(SCENARIO_MODIFIERS) as MarketScenario[]).map(valueOf);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    if (max === min) return 1;
+    return 1 + Math.round(((valueOf(scenario) - min) / (max - min)) * (SCENARIO_LEVELS - 1));
+}

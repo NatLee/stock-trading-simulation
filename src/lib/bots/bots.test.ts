@@ -8,6 +8,9 @@ import {
     DEFAULT_NOISE_BOT_CONFIG,
     DEFAULT_TREND_BOT_CONFIG,
     SCENARIO_MODIFIERS,
+    SCENARIO_LABELS,
+    SCENARIO_LEVELS,
+    scenarioLevel,
 } from './types';
 import { MatchingEngine } from '../matching/MatchingEngine';
 import { PriceStep } from '../matching/PriceStep';
@@ -238,5 +241,28 @@ describe('BotManager', () => {
             bots.tick();
             expect(engine.getOrderBook().getOrder(order.orderId)?.remainingQuantity).toBe(1000);
         }
+    });
+});
+
+describe('scenario tables', () => {
+    const scenarios = Object.keys(SCENARIO_MODIFIERS) as (keyof typeof SCENARIO_MODIFIERS)[];
+
+    it('names every scenario in both languages', () => {
+        expect(Object.keys(SCENARIO_LABELS).sort()).toEqual([...scenarios].sort());
+        for (const s of scenarios) {
+            expect(SCENARIO_LABELS[s].zh).not.toBe('');
+            expect(SCENARIO_LABELS[s].en).not.toBe('');
+        }
+    });
+
+    it('derives the card bars from the presets: lowest preset 1, highest SCENARIO_LEVELS', () => {
+        const levels = (key: 'volatility' | 'liquidity') => scenarios.map(s => scenarioLevel(s, key));
+        for (const key of ['volatility', 'liquidity'] as const) {
+            expect(Math.min(...levels(key))).toBe(1);
+            expect(Math.max(...levels(key))).toBe(SCENARIO_LEVELS);
+        }
+        // Calm has the most liquidity of all presets, so it gets the full bar
+        const mostLiquid = scenarios.reduce((a, b) => ((SCENARIO_MODIFIERS[b].liquidity ?? 1) > (SCENARIO_MODIFIERS[a].liquidity ?? 1) ? b : a));
+        expect(scenarioLevel(mostLiquid, 'liquidity')).toBe(SCENARIO_LEVELS);
     });
 });
