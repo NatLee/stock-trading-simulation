@@ -4,6 +4,8 @@ import { useRef, useEffect, useCallback, useState } from 'react';
 import { MarketScenario, Trade, OrderBookSnapshot } from '../lib/matching';
 import { BotManagerConfig } from '../lib/bots';
 import { MarketSimulation } from '../lib/sim/MarketSimulation';
+import { SIM_TICK_MS } from '../lib/sim/env';
+import { CONFIG } from '@/constants';
 import { CandleData as ChartCandleData, OrderCondition } from '@/types';
 
 /**
@@ -47,7 +49,7 @@ export interface MarketSimulatorConfig {
 
 const DEFAULT_CONFIG: MarketSimulatorConfig = {
     initialPrice: 50,
-    tickInterval: 100,
+    tickInterval: SIM_TICK_MS,
     candlePeriod: 15000,
     scenario: 'sideways',
     volatility: 1.0,
@@ -63,11 +65,11 @@ export interface MarketSimulatorCallbacks {
     onTrade?: (trade: Trade) => void;
 }
 
-/** Today's 09:00 (local), or yesterday's if it is not 09:00 yet: where the synthetic history starts */
+/** Today's market open (local), or yesterday's if it is not open yet: where the synthetic history starts */
 function historyStartTime(now: number): number {
-    const nineAm = new Date(now);
-    nineAm.setHours(9, 0, 0, 0);
-    const start = nineAm.getTime();
+    const open = new Date(now);
+    open.setHours(CONFIG.MARKET_OPEN_HOUR, 0, 0, 0);
+    const start = open.getTime();
     return now < start ? start - 24 * 60 * 60 * 1000 : start;
 }
 
@@ -131,7 +133,7 @@ export function useMarketSimulator(config: Partial<MarketSimulatorConfig> = {}, 
      * Initialize components
      */
     const initializeComponents = useCallback(() => {
-        // History from 09:00 up to now, then the engine starts at its last price
+        // History from the market open up to now, then the engine starts at its last price
         const sim = new MarketSimulation({
             initialPrice: fullConfig.initialPrice,
             candlePeriod: fullConfig.candlePeriod,

@@ -9,6 +9,8 @@ export const CONFIG = {
 
     // Chart
     BASE_PRICE: 50.00,
+    /** The synthetic chart history starts at this local hour (the TWSE opens at 09:00) */
+    MARKET_OPEN_HOUR: 9,
     MAX_CANDLES: 100,
     CANDLE_PROGRESS_MAX: 240,
     DEFAULT_VIEW_COUNT: 60,

@@ -26,6 +26,26 @@ export interface CandleStats {
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
+ * Shape of the synthetic history: each 15 s candle moves by
+ * trend + (U − 0.5) × volatility, with U uniform in [0, 1).
+ */
+export const SYNTHETIC_HISTORY = {
+    /** volatility = minVolatility + U × extraVolatility */
+    minVolatility: 0.002,
+    extraVolatility: 0.003,
+    /** trend = (U − 0.5) × trendRange */
+    trendRange: 0.0005,
+    /** wicks reach up to wickRatio × volatility beyond the body */
+    wickRatio: 0.5,
+    /** volume = minVolume + U × extraVolume shares */
+    minVolume: 500,
+    extraVolume: 2000,
+    /** trade count = minTrades + U × extraTrades */
+    minTrades: 2,
+    extraTrades: 8,
+};
+
+/**
  * CandleAggregator - aggregates trades into OHLCV candles
  *
  * Trades land in fixed 15 s "base" candles. The chart's timeframe (15 s, 1 m,
@@ -246,27 +266,27 @@ export class CandleAggregator {
         if (startTime >= now) return;
 
         const random = this.env.random;
+        const h = SYNTHETIC_HISTORY;
         let price = basePrice;
         let currentTime = this.getBaseTimestamp(startTime);
         const endTime = this.getBaseTimestamp(now);
 
         while (currentTime < endTime) {
-            const volatility = 0.002 + random() * 0.003;
-            // Shorter trend for shorter period
-            const trend = (random() - 0.5) * 0.0005;
+            const volatility = h.minVolatility + random() * h.extraVolatility;
+            const trend = (random() - 0.5) * h.trendRange;
 
             const change = trend + (random() - 0.5) * volatility;
             const open = price;
             const close = price * (1 + change);
-            const range = Math.abs(close - open) + price * volatility * 0.5;
+            const range = Math.abs(close - open) + price * volatility * h.wickRatio;
             const high = Math.max(open, close) + random() * range;
             const low = Math.min(open, close) - random() * range;
-            const volume = Math.floor(500 + random() * 2000); // Smaller volume for 15s
+            const volume = Math.floor(h.minVolume + random() * h.extraVolume);
 
             this.pushBaseCandle({
                 open, high, low, close, volume,
                 timestamp: currentTime,
-                tradeCount: Math.floor(2 + random() * 8),
+                tradeCount: Math.floor(h.minTrades + random() * h.extraTrades),
             });
             price = close;
             currentTime += this.basePeriodMs;
