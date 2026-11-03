@@ -10,7 +10,7 @@ import { Navbar } from '@/components/ui/Navbar';
 import { Language, TRANSLATIONS, CONFIG } from '@/constants';
 import { useMarketSimulator } from '@/hooks/useMarketSimulator';
 import { MarketScenario, HoldingLot } from '@/lib/matching';
-import { SCENARIO_MODIFIERS } from '@/lib/bots/types';
+import { SCENARIO_MODIFIERS, SCENARIO_LIFECYCLE } from '@/lib/bots/types';
 import { CandleData, OrderType, OrderCondition, Holding, OrderRecord, LogEntry, AIState, AIRecommendation, PendingOrder } from '@/types';
 import { Trade } from '@/lib/matching';
 import { CandlestickChart } from '@/components/chart';
@@ -80,16 +80,6 @@ const SCENARIO_DETAILS: Record<MarketScenario, { desc: string; vol: number; liq:
     pump_dump: { desc: "人為極速拉抬股價，隨後將出現垂直崩盤。", vol: 5, liq: 3 },
     dead_cat: { desc: "崩盤後的技術性反彈，幅度有限，通常是逃命波。", vol: 4, liq: 2 },
     squeeze: { desc: "成交量窒息，波幅壓縮至極限，即將出現大行情。", vol: 1, liq: 2 },
-};
-
-/**
- * Scenario Lifecycle Config (Transient Scenarios)
- */
-const SCENARIO_LIFECYCLE: Partial<Record<MarketScenario, { duration: number; next: MarketScenario; label: string }>> = {
-    pump_dump: { duration: 15000, next: 'crash', label: '拉高結束 -> 殺盤開始' },
-    crash: { duration: 20000, next: 'dead_cat', label: '恐慌結束 -> 死貓反彈' },
-    breakout: { duration: 25000, next: 'bull', label: '突破確立 -> 轉為多頭' },
-    squeeze: { duration: 30000, next: 'breakout', label: '盤整結束 -> 向上突破' },
 };
 
 /**
