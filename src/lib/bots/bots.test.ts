@@ -62,6 +62,34 @@ describe('MarketMakerBot', () => {
         expect(sizes[11]).toBe(Math.floor(6 * 2 * (1 + (11 / 12) * 2)));
     });
 
+    it('quotes lower when long and higher when short, by up to inventorySkew spreads', () => {
+        // At 100 one tick is 0.5, so use a spread of several ticks: 0.2% × 5 = 1.0
+        const VOLATILITY = 5;
+        const config = { ...DEFAULT_MARKET_MAKER_CONFIG, intensity: 1 };
+        const quotesWith = (inventory: number) => {
+            const mm = new MarketMakerBot(config, fixedDice([0.5]));
+            mm.updateInventory(inventory > 0 ? 'buy' : 'sell', Math.abs(inventory));
+            const qs = mm.generateQuotes(100, VOLATILITY, 1);
+            return {
+                bid: Math.max(...qs.filter(q => q.side === 'buy').map(q => q.price!)),
+                ask: Math.min(...qs.filter(q => q.side === 'sell').map(q => q.price!)),
+            };
+        };
+        const flat = quotesWith(0);
+        const long = quotesWith(config.inventoryLimit);       // full: shift = inventorySkew spreads down
+        const short = quotesWith(-config.inventoryLimit);
+        const s = config.spreadPercent * VOLATILITY;
+        expect(long.bid).toBe(PriceStep.floorToTick(100 * (1 - s - config.inventorySkew * s)));
+        expect(long.ask).toBe(PriceStep.ceilToTick(100 * (1 + s - config.inventorySkew * s)));
+        expect(short.bid).toBe(PriceStep.floorToTick(100 * (1 - s + config.inventorySkew * s)));
+        expect(long.ask).toBeLessThan(flat.ask);   // too much stock: sell more eagerly
+        expect(long.bid).toBeLessThan(flat.bid);   // ...and buy less
+        expect(short.bid).toBeGreaterThan(flat.bid); // short: buy back more eagerly
+        expect(short.ask).toBeGreaterThan(flat.ask);
+        // beyond the limit the shift stays at its full size
+        expect(quotesWith(5 * config.inventoryLimit)).toEqual(long);
+    });
+
     it('refreshes every refreshInterval / intensity ms', () => {
         const env = fixedDice([0.5]);
         const mm = new MarketMakerBot({ ...DEFAULT_MARKET_MAKER_CONFIG, intensity: 2 }, env);
@@ -238,6 +266,26 @@ describe('BotManager', () => {
         expect(bots.getConfig().trend.intensity).toBe(2.2);
         bots.setScenario('calm');
         expect(bots.getConfig().intensity).toBe(SCENARIO_MODIFIERS.calm.intensity);
+    });
+
+    it('books fills of its own quotes into the market maker inventory, in lots (user decision 3)', () => {
+        // Squeeze: the other bots are quiet for seconds after their first move
+        const { engine, bots, env } = managerAt(50, { scenario: 'squeeze' });
+        bots.tick(); // first quotes (the noise bot may trade once too)
+        env.clock.advance(100);
+        bots.tick(); // ...which gets booked here
+        const before = bots.getMarketMakerInventory();
+
+        const buy = engine.submitOrder('buy', 'market', 3000, null, 'user', 'IOC'); // the market maker sells 3 lots
+        expect(buy.trades.every(t => t.makerSource === 'bot')).toBe(true);
+        env.clock.advance(100);
+        bots.tick();
+        expect(bots.getMarketMakerInventory()).toBe(before - 3);
+
+        engine.submitOrder('sell', 'market', 5000, null, 'user', 'IOC'); // and buys 5
+        env.clock.advance(100);
+        bots.tick();
+        expect(bots.getMarketMakerInventory()).toBe(before + 2);
     });
 
     it('turns bot lot counts into shares: whole lots of 1000, at least one', () => {

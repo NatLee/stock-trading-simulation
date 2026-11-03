@@ -13,7 +13,7 @@ import {
     effectiveInterval,
     intensityOf,
 } from './types';
-import { MatchingEngine, MarketScenario, PriceLevel } from '../matching';
+import { MatchingEngine, MarketScenario, OrderSide, PriceLevel } from '../matching';
 import { SimEnv, realEnv, SIM_TICK_MS } from '../sim/env';
 
 /**
@@ -23,6 +23,8 @@ import { SimEnv, realEnv, SIM_TICK_MS } from '../sim/env';
  *   bots' configuration from them (resolveBotConfig): defaults, then the
  *   scenario preset, then the page's settings.
  * - Runs the bots every tick and submits their orders.
+ * - Tells the market maker which of its quotes were filled, so it can move
+ *   its quotes with its inventory.
  */
 export class BotManager {
     private scenario: MarketScenario;
@@ -34,6 +36,10 @@ export class BotManager {
     private engine: MatchingEngine;
     private lastCleanupTime: number = 0;
     private env: SimEnv;
+    /** The market maker's resting quotes: order ID -> side */
+    private quoteSides = new Map<string, OrderSide>();
+    /** Engine trade cursor: trades before it have been checked for quote fills */
+    private tradeCursor: number;
 
     constructor(
         engine: MatchingEngine,
@@ -46,6 +52,7 @@ export class BotManager {
         this.scenario = scenario;
         this.settings = settings;
         this.config = resolveBotConfig(scenario, settings);
+        this.tradeCursor = engine.getTradeCount();
 
         this.marketMaker = new MarketMakerBot(this.config.marketMaker, env);
         this.trendBot = new TrendBot(this.config.trend, env);
@@ -86,9 +93,29 @@ export class BotManager {
         return { ...this.config };
     }
 
+    /** The market maker's inventory, in lots (+ long, − short) */
+    getMarketMakerInventory(): number {
+        return this.marketMaker.getInventory();
+    }
+
     /** One bot lot in shares, in the current mode */
     private lotShares(): number {
         return this.config.isOddLot ? ODD_LOT_SHARES : (this.config.unitSize || SHARES_PER_LOT);
+    }
+
+    /**
+     * Book every fill of the market maker's quotes since the last check into
+     * its inventory. Runs before it re-quotes, so the IDs of the quotes it is
+     * about to cancel are still known.
+     */
+    private syncMarketMakerInventory(): void {
+        const trades = this.engine.getTradesSince(this.tradeCursor);
+        this.tradeCursor = this.engine.getTradeCount();
+        const lotShares = this.lotShares();
+        for (const trade of trades) {
+            if (this.quoteSides.has(trade.buyOrderId)) this.marketMaker.updateInventory('buy', trade.quantity / lotShares);
+            if (this.quoteSides.has(trade.sellOrderId)) this.marketMaker.updateInventory('sell', trade.quantity / lotShares);
+        }
     }
 
     /**
@@ -134,12 +161,16 @@ export class BotManager {
         // Update trend bot with price observation
         this.trendBot.observePrice(currentPrice);
 
-        // Market maker: re-quote when due (at most once a tick: a second
-        // re-quote in the same tick would replace the first one unchanged)
+        // Market maker: book its fills, then re-quote when due (at most once a
+        // tick: a second re-quote in the same tick would replace the first one unchanged)
+        this.syncMarketMakerInventory();
         if (this.marketMaker.needsRefresh()) {
             this.engine.cancelOrdersBySource('bot');
+            this.quoteSides.clear();
             const quotes = this.marketMaker.generateQuotes(currentPrice, this.config.volatility, this.config.liquidity);
-            this.processOrders(quotes, protect);
+            for (const { orderId, side } of this.processOrders(quotes, protect)) {
+                this.quoteSides.set(orderId, side);
+            }
             allOrders.push(...quotes);
         }
 
@@ -163,14 +194,18 @@ export class BotManager {
 
     /**
      * Turn bot lots into shares and submit them, skipping orders that would
-     * trade against a protected (fresh) user order
+     * trade against a protected (fresh) user order. Returns what was submitted.
      */
-    private processOrders(orders: BotOrder[], protect: { buyLimit: number | null, sellLimit: number | null }): void {
+    private processOrders(
+        orders: BotOrder[],
+        protect: { buyLimit: number | null, sellLimit: number | null },
+    ): { orderId: string; side: OrderSide }[] {
         const { isOddLot } = this.config;
         // One bot "lot" is a board lot of unitSize shares, or ODD_LOT_SHARES in odd-lot mode;
         // sizes grow with √intensity so busy markets also trade a bit bigger
         const lotShares = this.lotShares();
         const volumeMultiplier = Math.sqrt(intensityOf(this.config));
+        const submitted: { orderId: string; side: OrderSide }[] = [];
 
         for (const order of orders) {
             // If protectBuyLimit (User Bid) is set, Don't SELL <= that price
@@ -190,11 +225,13 @@ export class BotManager {
                 : Math.max(SHARES_PER_LOT, Math.round(qty / SHARES_PER_LOT) * SHARES_PER_LOT);
 
             if (qty > 0) {
-                this.engine.submitOrder(order.side, order.type, qty, order.price, 'bot');
+                const result = this.engine.submitOrder(order.side, order.type, qty, order.price, 'bot');
+                submitted.push({ orderId: result.orderId, side: order.side });
                 // Update order object for return
                 order.quantity = qty;
             }
         }
+        return submitted;
     }
 
     /**
@@ -202,6 +239,8 @@ export class BotManager {
      */
     reset(): void {
         this.marketMaker.resetInventory();
+        this.quoteSides.clear();
+        this.tradeCursor = this.engine.getTradeCount();
         this.trendBot.reset();
         this.noiseBot.reset();
         this.engine.cancelOrdersBySource('bot');

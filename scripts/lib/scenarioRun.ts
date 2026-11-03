@@ -6,7 +6,7 @@
 
 import { MarketSimulation } from '../../src/lib/sim/MarketSimulation';
 import { deterministicEnv, SIM_TICK_MS } from '../../src/lib/sim/env';
-import { SCENARIO_LIFECYCLE, SCENARIO_MODIFIERS } from '../../src/lib/bots/types';
+import { SCENARIO_LIFECYCLE, SCENARIO_MODIFIERS, DEFAULT_MARKET_MAKER_CONFIG } from '../../src/lib/bots/types';
 import { MarketScenario } from '../../src/lib/matching/types';
 import { CONFIG } from '../../src/constants/config';
 
@@ -28,6 +28,8 @@ export interface RunResult {
     prices: number[];
     /** Relative spread (best ask - best bid) / mid at every second, when both sides exist */
     spreads: number[];
+    /** The market maker's inventory in lots at t = 0, 1, 2, ... seconds */
+    inventory: number[];
     /** Scenario switches: [second, scenario] */
     phases: [number, MarketScenario][];
     trades: number;
@@ -57,6 +59,7 @@ export function runScenario(opts: RunOptions): RunResult {
     let nextSwitchTick = switchAfter(current);
 
     const prices: number[] = [sim.engine.getLastPrice()];
+    const inventory: number[] = [sim.bots.getMarketMakerInventory()];
     const spreads: number[] = [];
     let trades = 0;
     let volume = 0;
@@ -78,6 +81,7 @@ export function runScenario(opts: RunOptions): RunResult {
 
         if (tick % TICKS_PER_SECOND === 0) {
             prices.push(sim.engine.getLastPrice());
+            inventory.push(sim.bots.getMarketMakerInventory());
             const book = sim.engine.getOrderBookSnapshot(1);
             if (book.bestAsk !== null && book.bestBid !== null) {
                 spreads.push((book.bestAsk - book.bestBid) / ((book.bestAsk + book.bestBid) / 2));
@@ -85,7 +89,7 @@ export function runScenario(opts: RunOptions): RunResult {
         }
     }
 
-    return { options, prices, spreads, phases, trades, volume };
+    return { options, prices, spreads, inventory, phases, trades, volume };
 }
 
 export interface RunStats {
@@ -151,5 +155,30 @@ export function summarize(scenario: MarketScenario, seeds: number, seconds: numb
         spread: avg(s => s.spread),
         tradesPerMinute: avg(s => s.tradesPerMinute),
     };
+}
+
+/**
+ * Run `fn` with some market-maker defaults changed, then put them back.
+ * Only for what-if comparisons in tests and the docs (e.g. the inventory skew
+ * switched off); the app never changes its defaults at run time.
+ */
+export function withMarketMakerDefaults<T>(patch: Partial<typeof DEFAULT_MARKET_MAKER_CONFIG>, fn: () => T): T {
+    const saved = { ...DEFAULT_MARKET_MAKER_CONFIG };
+    Object.assign(DEFAULT_MARKET_MAKER_CONFIG, patch);
+    try {
+        return fn();
+    } finally {
+        Object.assign(DEFAULT_MARKET_MAKER_CONFIG, saved);
+    }
+}
+
+/** Largest |market-maker inventory| (lots) over seeds 1 … seeds */
+export function peakInventory(scenario: MarketScenario, seeds: number, seconds: number): number {
+    let peak = 0;
+    for (let seed = 1; seed <= seeds; seed++) {
+        const run = runScenario({ scenario, seed, seconds });
+        peak = Math.max(peak, ...run.inventory.map(Math.abs));
+    }
+    return peak;
 }
 

@@ -36,9 +36,9 @@ export interface MarketMakerBotConfig extends BotCommonConfig {
     depthSizeGrowth: number;
     /** How often to refresh quotes (ms) */
     refreshInterval: number;
-    /** Max inventory before skewing quotes */
+    /** Inventory (in lots, + long / − short) at which the quote shift is at its full size */
     inventoryLimit: number;
-    /** How far a full inventory shifts the quotes, in spreads */
+    /** How far a full inventory shifts both sides of the ladder, in spreads (down when long, up when short) */
     inventorySkew: number;
 }
 
@@ -151,8 +151,8 @@ export const DEFAULT_MARKET_MAKER_CONFIG: MarketMakerBotConfig = {
     sizeRange: [2, 10],
     depthSizeGrowth: 2,
     refreshInterval: 500,
-    inventoryLimit: 1000,
-    inventorySkew: 0.5,
+    inventoryLimit: 50,
+    inventorySkew: 1,
     enabled: true,
 };
 
