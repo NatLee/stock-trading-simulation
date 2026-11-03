@@ -113,7 +113,7 @@ export function OrderForm({
             onSubmitOrder('buy', quantity, effectivePrice, leverage, orderType, condition);
             // quantity reset is handled by parent
         }
-    }, [quantity, effectivePrice, leverage, orderType, onSubmitOrder, previewData.isAffordable]);
+    }, [quantity, effectivePrice, leverage, orderType, condition, onSubmitOrder, previewData.isAffordable]);
 
     const handleSell = useCallback(() => {
         if (quantity > 0) {
@@ -121,14 +121,13 @@ export function OrderForm({
             onSubmitOrder('sell', quantity, effectivePrice, leverage, orderType, condition);
             // quantity reset is handled by parent
         }
-    }, [quantity, effectivePrice, leverage, orderType, onSubmitOrder]);
+    }, [quantity, effectivePrice, leverage, orderType, condition, onSubmitOrder]);
 
     const canBuy = quantity > 0 && previewData.isAffordable;
     const canSell = quantity > 0;
 
     // Color based on theme
     const buyColor = isAsianTheme ? 'rose' : 'emerald';
-    const sellColor = isAsianTheme ? 'emerald' : 'rose';
 
     return (
         <div className="space-y-4">
