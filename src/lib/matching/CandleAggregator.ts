@@ -1,4 +1,5 @@
 import { Trade } from './types';
+import { SimEnv, realEnv } from '../sim/env';
 
 /**
  * Candle data structure
@@ -13,26 +14,54 @@ export interface CandleData {
     tradeCount: number;
 }
 
+export interface CandleStats {
+    high24h: number;
+    low24h: number;
+    open24h: number;
+    volume24h: number;
+    change24h: number;
+    changePercent24h: number;
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 /**
  * CandleAggregator - aggregates trades into OHLCV candles
- * 
- * Features:
- * - Configurable time period
- * - Real-time current candle updates
- * - Historical candle storage
+ *
+ * Trades land in fixed 15 s "base" candles. The chart's timeframe (15 s, 1 m,
+ * 5 m, 30 m) is made by merging base candles, so switching timeframe never
+ * loses history.
+ *
+ * The app asks for candles on every 100 ms tick, and by the evening there are
+ * thousands of base candles. Finished base candles never change, so their
+ * merged buckets and 24 h numbers are cached and only rebuilt when a base
+ * candle is finished, dropped or the timeframe changes; each call only merges
+ * the candle that is still open.
  */
 export class CandleAggregator {
-    private baseCandles: CandleData[] = []; // Store fine-grained candles (e.g. 15s)
+    private baseCandles: CandleData[] = []; // Finished 15 s candles, oldest first
     private currentBaseCandle: CandleData | null = null;
     private displayPeriodMs: number;
     private readonly basePeriodMs: number = 15000; // Fixed base resolution (15s)
     private maxBaseCandles: number = 10000; // Store enough history (~40 hours of 15s data)
     private lastPrice: number;
+    private env: SimEnv;
 
-    constructor(periodMs: number = 15000, maxCandles: number = 100, initialPrice: number = 50) {
+    /** Bumped whenever baseCandles changes; cache keys use it */
+    private version = 0;
+    private aggregateCache: { version: number; period: number; candles: CandleData[] } | null = null;
+    private statsCache: { version: number; first: number; high: number; low: number; volume: number } | null = null;
+
+    /**
+     * @param periodMs display timeframe
+     * @param _maxCandles not used (the chart decides how many candles it shows)
+     * @param initialPrice price to report before any trade
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    constructor(periodMs: number = 15000, _maxCandles: number = 100, initialPrice: number = 50, env: SimEnv = realEnv) {
         this.displayPeriodMs = periodMs;
-        // maxCandles is for display limit, but we store more base history
         this.lastPrice = initialPrice;
+        this.env = env;
     }
 
     /**
@@ -76,8 +105,7 @@ export class CandleAggregator {
      * Update candle with tick
      */
     tick(currentPrice: number): void {
-        const now = Date.now();
-        const baseTimestamp = this.getBaseTimestamp(now);
+        const baseTimestamp = this.getBaseTimestamp(this.env.now());
 
         if (!this.currentBaseCandle) {
             this.currentBaseCandle = this.createCandle(currentPrice, 0, baseTimestamp);
@@ -117,20 +145,49 @@ export class CandleAggregator {
         candle.tradeCount++;
     }
 
+    private pushBaseCandle(candle: CandleData): void {
+        this.baseCandles.push(candle);
+        if (this.baseCandles.length > this.maxBaseCandles) {
+            this.baseCandles.shift(); // Keep size manageable
+        }
+        this.version++;
+    }
+
     private finalizeCurrentBaseCandle(): void {
         if (this.currentBaseCandle) {
-            this.baseCandles.push(this.currentBaseCandle);
-            if (this.baseCandles.length > this.maxBaseCandles) {
-                this.baseCandles.shift(); // Keep size manageable
-            }
+            this.pushBaseCandle(this.currentBaseCandle);
         }
     }
 
     /**
-     * Get aggregated candles for current period
+     * Get aggregated candles for current period (a new array every call)
      */
     getCandles(): CandleData[] {
-        return this.aggregateCandles(this.baseCandles, this.currentBaseCandle, this.displayPeriodMs);
+        const finished = this.getFinishedBuckets();
+        const current = this.currentBaseCandle;
+        if (!current) return finished.slice();
+
+        const bucket = this.bucketOf(current.timestamp);
+        const last = finished[finished.length - 1];
+
+        if (last && last.timestamp === bucket) {
+            // The open base candle belongs to the newest bucket: merge into a copy
+            const merged: CandleData = {
+                ...last,
+                high: Math.max(last.high, current.high),
+                low: Math.min(last.low, current.low),
+                close: current.close,
+                volume: last.volume + current.volume,
+                tradeCount: last.tradeCount + current.tradeCount,
+            };
+            const result = finished.slice(0, -1);
+            result.push(merged);
+            return result;
+        }
+
+        const result = finished.slice();
+        result.push({ ...current, timestamp: bucket });
+        return result;
     }
 
     /**
@@ -148,41 +205,19 @@ export class CandleAggregator {
         return all.length > 0 ? all[all.length - 1] : null;
     }
 
-    /**
-     * Aggregate base candles into target period candles
-     */
-    private aggregateCandles(baseData: CandleData[], current: CandleData | null, periodMs: number): CandleData[] {
-        const source = [...baseData];
-        if (current) source.push(current);
+    private bucketOf(timestamp: number): number {
+        return Math.floor(timestamp / this.displayPeriodMs) * this.displayPeriodMs;
+    }
 
-        if (source.length === 0) return [];
-
-        const aggregated: CandleData[] = [];
-        let currentAgg: CandleData | null = null;
-
-        for (const candle of source) {
-            const aggTimestamp = Math.floor(candle.timestamp / periodMs) * periodMs;
-
-            if (!currentAgg) {
-                currentAgg = { ...candle, timestamp: aggTimestamp };
-            } else if (currentAgg.timestamp !== aggTimestamp) {
-                aggregated.push(currentAgg);
-                currentAgg = { ...candle, timestamp: aggTimestamp };
-            } else {
-                // Merge
-                currentAgg.high = Math.max(currentAgg.high, candle.high);
-                currentAgg.low = Math.min(currentAgg.low, candle.low);
-                currentAgg.close = candle.close;
-                currentAgg.volume += candle.volume;
-                currentAgg.tradeCount += candle.tradeCount;
-            }
+    /** Merged buckets of the finished base candles, cached until they change */
+    private getFinishedBuckets(): CandleData[] {
+        const cache = this.aggregateCache;
+        if (cache && cache.version === this.version && cache.period === this.displayPeriodMs) {
+            return cache.candles;
         }
-
-        if (currentAgg) {
-            aggregated.push(currentAgg);
-        }
-
-        return aggregated;
+        const candles = aggregateCandles(this.baseCandles, this.displayPeriodMs);
+        this.aggregateCache = { version: this.version, period: this.displayPeriodMs, candles };
+        return candles;
     }
 
     /**
@@ -199,82 +234,84 @@ export class CandleAggregator {
         this.baseCandles = [];
         this.currentBaseCandle = null;
         this.lastPrice = initialPrice;
+        this.version++;
     }
 
     /**
-     * Generate synthetic history (base candles)
+     * Generate synthetic history (base candles): a random walk from
+     * `startTime` up to now, so the chart is not empty when the page opens.
      */
     generateHistory(startTime: number, basePrice: number): void {
         this.reset(basePrice);
 
-        const now = Date.now();
+        const now = this.env.now();
         if (startTime >= now) return;
 
+        const random = this.env.random;
         let price = basePrice;
         let currentTime = this.getBaseTimestamp(startTime);
         const endTime = this.getBaseTimestamp(now);
 
         while (currentTime < endTime) {
-            const volatility = 0.002 + Math.random() * 0.003;
+            const volatility = 0.002 + random() * 0.003;
             // Shorter trend for shorter period
-            const trend = (Math.random() - 0.5) * 0.0005;
+            const trend = (random() - 0.5) * 0.0005;
 
-            const change = trend + (Math.random() - 0.5) * volatility;
+            const change = trend + (random() - 0.5) * volatility;
             const open = price;
             const close = price * (1 + change);
             const range = Math.abs(close - open) + price * volatility * 0.5;
-            const high = Math.max(open, close) + Math.random() * range;
-            const low = Math.min(open, close) - Math.random() * range;
-            const volume = Math.floor(500 + Math.random() * 2000); // Smaller volume for 15s
+            const high = Math.max(open, close) + random() * range;
+            const low = Math.min(open, close) - random() * range;
+            const volume = Math.floor(500 + random() * 2000); // Smaller volume for 15s
 
-            const candle: CandleData = {
+            this.pushBaseCandle({
                 open, high, low, close, volume,
                 timestamp: currentTime,
-                tradeCount: Math.floor(2 + Math.random() * 8),
-            };
-
-            this.baseCandles.push(candle);
+                tradeCount: Math.floor(2 + random() * 8),
+            });
             price = close;
             currentTime += this.basePeriodMs;
-
-            if (this.baseCandles.length > this.maxBaseCandles) {
-                this.baseCandles.shift();
-            }
         }
 
         this.lastPrice = price;
         this.currentBaseCandle = this.createCandle(price, 0, this.getBaseTimestamp(now));
     }
 
-    // No need for backward generation anymore
-    generateHistoryBackwards(endTime: number, endPrice: number): void {
-        // Deprecated/No-op, as we use resampling now
-    }
-
     /**
      * Get previous completed candle close price
      */
     getPrevClose(): number {
-        const candles = this.getCandles();
-        if (candles.length >= 2) {
-            return candles[candles.length - 2].close;
-        }
-        return candles.length > 0 ? candles[0].open : this.lastPrice;
+        return prevCloseOf(this.getCandles(), this.lastPrice);
     }
 
     /**
      * Get OHLC stats (24h) based on BASE candles for accuracy
      */
-    getStats() {
-        // Use base candles for 24h stats
-        const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
-        const recent = this.baseCandles.filter(c => c.timestamp >= dayAgo);
+    getStats(): CandleStats {
+        const dayAgo = this.env.now() - DAY_MS;
+        const first = firstIndexAtOrAfter(this.baseCandles, dayAgo);
+        const current = this.currentBaseCandle && this.currentBaseCandle.timestamp >= dayAgo
+            ? this.currentBaseCandle
+            : null;
 
-        if (this.currentBaseCandle && this.currentBaseCandle.timestamp >= dayAgo) {
-            recent.push(this.currentBaseCandle);
+        let cache = this.statsCache;
+        if (!cache || cache.version !== this.version || cache.first !== first) {
+            let high = -Infinity;
+            let low = Infinity;
+            let volume = 0;
+            for (let i = first; i < this.baseCandles.length; i++) {
+                const c = this.baseCandles[i];
+                if (c.high > high) high = c.high;
+                if (c.low < low) low = c.low;
+                volume += c.volume;
+            }
+            cache = { version: this.version, first, high, low, volume };
+            this.statsCache = cache;
         }
 
-        if (recent.length === 0) {
+        const hasFinished = first < this.baseCandles.length;
+        if (!hasFinished && !current) {
             return {
                 high24h: this.lastPrice,
                 low24h: this.lastPrice,
@@ -285,14 +322,58 @@ export class CandleAggregator {
             };
         }
 
-        const high24h = Math.max(...recent.map(c => c.high));
-        const low24h = Math.min(...recent.map(c => c.low));
-        const open24h = recent[0].open;
-        const close24h = recent[recent.length - 1].close;
-        const volume24h = recent.reduce((sum, c) => sum + c.volume, 0);
+        const high24h = current ? Math.max(cache.high, current.high) : cache.high;
+        const low24h = current ? Math.min(cache.low, current.low) : cache.low;
+        const open24h = hasFinished ? this.baseCandles[first].open : current!.open;
+        const close24h = current ? current.close : this.baseCandles[this.baseCandles.length - 1].close;
+        const volume24h = cache.volume + (current ? current.volume : 0);
         const change24h = close24h - open24h;
         const changePercent24h = (change24h / open24h) * 100;
 
         return { high24h, low24h, open24h, volume24h, change24h, changePercent24h };
     }
+}
+
+/**
+ * Merge time-ordered candles into buckets of `periodMs` (pure; returns new objects)
+ */
+export function aggregateCandles(source: CandleData[], periodMs: number): CandleData[] {
+    const aggregated: CandleData[] = [];
+    let currentAgg: CandleData | null = null;
+
+    for (const candle of source) {
+        const aggTimestamp = Math.floor(candle.timestamp / periodMs) * periodMs;
+
+        if (!currentAgg || currentAgg.timestamp !== aggTimestamp) {
+            if (currentAgg) aggregated.push(currentAgg);
+            currentAgg = { ...candle, timestamp: aggTimestamp };
+        } else {
+            currentAgg.high = Math.max(currentAgg.high, candle.high);
+            currentAgg.low = Math.min(currentAgg.low, candle.low);
+            currentAgg.close = candle.close;
+            currentAgg.volume += candle.volume;
+            currentAgg.tradeCount += candle.tradeCount;
+        }
+    }
+
+    if (currentAgg) aggregated.push(currentAgg);
+    return aggregated;
+}
+
+/** Close of the previous candle; falls back to the first open, then `fallback` */
+export function prevCloseOf(candles: CandleData[], fallback: number): number {
+    if (candles.length >= 2) return candles[candles.length - 2].close;
+    return candles.length > 0 ? candles[0].open : fallback;
+}
+
+/** Index of the first candle with timestamp >= t (candles sorted by time) */
+function firstIndexAtOrAfter(candles: CandleData[], t: number): number {
+    let lo = 0;
+    let hi = candles.length;
+    while (lo < hi) {
+        const mid = (lo + hi) >>> 1;
+        if (candles[mid].timestamp < t) lo = mid + 1;
+        else hi = mid;
+    }
+    return lo;
 }
