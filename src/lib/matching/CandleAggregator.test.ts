@@ -27,7 +27,7 @@ function naiveCandles(base: CandleData[], current: CandleData | null, period: nu
 describe('CandleAggregator', () => {
     it('buckets trades into 15 s candles and merges them for the chosen timeframe', () => {
         const env = deterministicEnv(1, T0);
-        const agg = new CandleAggregator(60000, 100, 50, env);
+        const agg = new CandleAggregator(60000, 50, env);
 
         agg.processTrade(trade(T0 + 1000, 50, 1000));
         agg.processTrade(trade(T0 + 5000, 51, 2000));
@@ -47,7 +47,7 @@ describe('CandleAggregator', () => {
 
     it('lets the open candle follow the price between trades', () => {
         const env = deterministicEnv(1, T0);
-        const agg = new CandleAggregator(15000, 100, 50, env);
+        const agg = new CandleAggregator(15000, 50, env);
         agg.processTrade(trade(T0, 50));
         env.clock.advance(100);
         agg.tick(50.4);
@@ -59,7 +59,7 @@ describe('CandleAggregator', () => {
     it('generates the same synthetic history for the same seed', () => {
         const make = () => {
             const env = deterministicEnv(7, T0 + 3 * 3600_000);
-            const agg = new CandleAggregator(60000, 100, 50, env);
+            const agg = new CandleAggregator(60000, 50, env);
             agg.generateHistory(T0, 50);
             return agg.getCandles();
         };
@@ -73,7 +73,7 @@ describe('CandleAggregator', () => {
         // Regression for the per-tick cache: same output as the old code path.
         const env = deterministicEnv(3, T0 + 2 * 3600_000);
         const random = seededRandom(99);
-        const agg = new CandleAggregator(60000, 100, 50, env);
+        const agg = new CandleAggregator(60000, 50, env);
         agg.generateHistory(T0, 50);
 
         const internals = agg as unknown as { baseCandles: CandleData[]; currentBaseCandle: CandleData | null };
@@ -105,7 +105,7 @@ describe('CandleAggregator', () => {
 
     it('never hands out the cached objects, so callers cannot corrupt the cache', () => {
         const env = deterministicEnv(1, T0 + 600_000);
-        const agg = new CandleAggregator(60000, 100, 50, env);
+        const agg = new CandleAggregator(60000, 50, env);
         agg.generateHistory(T0, 50);
         const first = agg.getCandles();
         first.pop();
@@ -114,7 +114,7 @@ describe('CandleAggregator', () => {
 
     it('24 h stats only look at the last 24 hours', () => {
         const env = deterministicEnv(1, T0);
-        const agg = new CandleAggregator(15000, 100, 50, env);
+        const agg = new CandleAggregator(15000, 50, env);
         agg.processTrade(trade(T0, 80, 5000)); // a spike that will age out
         env.clock.advance(15000);
         agg.tick(50);

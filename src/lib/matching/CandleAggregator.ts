@@ -54,11 +54,9 @@ export class CandleAggregator {
 
     /**
      * @param periodMs display timeframe
-     * @param _maxCandles not used (the chart decides how many candles it shows)
      * @param initialPrice price to report before any trade
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    constructor(periodMs: number = 15000, _maxCandles: number = 100, initialPrice: number = 50, env: SimEnv = realEnv) {
+    constructor(periodMs: number = 15000, initialPrice: number = 50, env: SimEnv = realEnv) {
         this.displayPeriodMs = periodMs;
         this.lastPrice = initialPrice;
         this.env = env;
