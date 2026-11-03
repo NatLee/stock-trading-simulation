@@ -1,4 +1,4 @@
-import { TrendBotConfig, BotOrder } from './types';
+import { TrendBotConfig, BotOrder, effectiveInterval } from './types';
 import { OrderSide, MarketScenario } from '../matching/types';
 import { PriceStep } from '../matching/PriceStep';
 import { SimEnv, realEnv } from '../sim/env';
@@ -15,7 +15,6 @@ export class TrendBot {
     private config: TrendBotConfig;
     private lastTradeTime: number = 0;
     private priceHistory: number[] = [];
-    private maxHistoryLength: number = 20;
     private env: SimEnv;
 
     constructor(config: TrendBotConfig, env: SimEnv = realEnv) {
@@ -49,7 +48,8 @@ export class TrendBot {
      */
     observePrice(price: number): void {
         this.priceHistory.push(price);
-        if (this.priceHistory.length > this.maxHistoryLength) {
+        // Two windows are all the momentum ever looks at
+        if (this.priceHistory.length > 2 * this.config.momentumWindow) {
             this.priceHistory.shift();
         }
     }
@@ -58,11 +58,12 @@ export class TrendBot {
      * Calculate current trend direction (-1 to 1)
      */
     calculateTrend(): number {
-        if (this.priceHistory.length < 5) return 0;
+        const window = this.config.momentumWindow;
+        if (this.priceHistory.length < window) return 0;
 
-        // Simple moving average comparison
-        const recentPrices = this.priceHistory.slice(-5);
-        const olderPrices = this.priceHistory.slice(-10, -5);
+        // Simple moving average comparison: the last window vs the one before
+        const recentPrices = this.priceHistory.slice(-window);
+        const olderPrices = this.priceHistory.slice(-2 * window, -window);
 
         if (olderPrices.length === 0) return 0;
 
@@ -71,7 +72,7 @@ export class TrendBot {
 
         // Normalize to -1 to 1 range
         const change = (recentAvg - olderAvg) / olderAvg;
-        return Math.max(-1, Math.min(1, change * 100)); // Scale up for sensitivity
+        return Math.max(-1, Math.min(1, change * this.config.momentumScale));
     }
 
     /**
@@ -85,10 +86,7 @@ export class TrendBot {
         if (!this.config.enabled) return [];
 
         const now = this.env.now();
-        const intensity = this.config.intensity || 1.0;
-        const effectiveInterval = this.config.tradeInterval / intensity;
-
-        if (!force && now - this.lastTradeTime < effectiveInterval) return [];
+        if (!force && !this.isReady()) return [];
 
         const trend = this.calculateTrend();
         const scenarioBias = this.getScenarioBias(scenario);
@@ -103,7 +101,7 @@ export class TrendBot {
         const strength = isBuying ? buyStrength : sellStrength;
 
         // Only trade if trend is strong enough
-        const threshold = 0.3 * (1 - strength);
+        const threshold = this.config.entryThreshold * (1 - strength);
         if (Math.abs(combinedTrend) < threshold) return [];
 
         const orders: BotOrder[] = [];
@@ -114,39 +112,33 @@ export class TrendBot {
 
         if (size > 0) {
             // Determine order urgency based on trend strength
-            const isAggressive = Math.abs(combinedTrend) > 0.6; // High trend = aggressive
+            const isAggressive = Math.abs(combinedTrend) > this.config.aggressiveAbove;
             const side: OrderSide = combinedTrend > 0 ? 'buy' : 'sell';
 
-            // Aggressive: Cross the spread to ensure execution (Market-like Limit)
-            // Passive: Sit on the book (Standard Limit)
-            let price: number;
-
+            // Aggressive: priced crossPercent past the price, so it crosses the spread
+            // and fills at once like a market order with a cap.
+            // Passive: sits passiveOffset on its own side of the price.
+            let rawPrice: number;
             if (isAggressive) {
-                // Aggressive: Price is set to cross the spread
-                // Buy: Current + 0.5% (to eat asks)
-                // Sell: Current - 0.5% (to hit bids)
-                // Note: Matching engine treats these as limit orders that cross = immediate match
-                const crossing = 0.005;
-                const rawPrice = side === 'buy'
+                const crossing = this.config.crossPercent;
+                rawPrice = side === 'buy'
                     ? currentPrice * (1 + crossing)
                     : currentPrice * (1 - crossing);
-
-                price = side === 'buy'
-                    ? PriceStep.floorToTick(rawPrice)
-                    : PriceStep.ceilToTick(rawPrice);
             } else {
-                // Passive: Standard logic (existing)
-                const deviation = 0.001 + this.env.random() * 0.002;
-                const rawPrice = side === 'buy'
+                const [minOffset, maxOffset] = this.config.passiveOffset;
+                const deviation = minOffset + this.env.random() * (maxOffset - minOffset);
+                rawPrice = side === 'buy'
                     ? currentPrice * (1 - deviation)
                     : currentPrice * (1 + deviation);
-
-                price = side === 'buy'
-                    ? PriceStep.floorToTick(rawPrice)
-                    : PriceStep.ceilToTick(rawPrice);
             }
+            const price = side === 'buy'
+                ? PriceStep.floorToTick(rawPrice)
+                : PriceStep.ceilToTick(rawPrice);
 
-            if (this.env.random() < (isAggressive ? 0.9 : 0.7)) {
+            const sendProbability = isAggressive
+                ? this.config.aggressiveSendProbability
+                : this.config.passiveSendProbability;
+            if (this.env.random() < sendProbability) {
                 orders.push({
                     side,
                     type: 'limit',
@@ -181,9 +173,7 @@ export class TrendBot {
      */
     isReady(): boolean {
         if (!this.config.enabled) return false;
-        const intensity = this.config.intensity || 1.0;
-        const effectiveInterval = this.config.tradeInterval / intensity;
-        return this.env.now() - this.lastTradeTime >= effectiveInterval;
+        return this.env.now() - this.lastTradeTime >= effectiveInterval(this.config.tradeInterval, this.config);
     }
 
     /**

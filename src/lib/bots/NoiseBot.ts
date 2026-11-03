@@ -1,4 +1,4 @@
-import { NoiseBotConfig, BotOrder } from './types';
+import { NoiseBotConfig, BotOrder, effectiveInterval } from './types';
 import { OrderSide } from '../matching/types';
 import { PriceStep } from '../matching/PriceStep';
 import { SimEnv, realEnv } from '../sim/env';
@@ -49,10 +49,7 @@ export class NoiseBot {
         if (!this.config.enabled) return [];
 
         const now = this.env.now();
-        const intensity = this.config.intensity || 1.0;
-        const effectiveInterval = this.config.tradeInterval / intensity;
-
-        if (!force && now - this.lastTradeTime < effectiveInterval) return [];
+        if (!force && !this.isReady()) return [];
 
         const orders: BotOrder[] = [];
         const [minSize, maxSize] = this.config.sizeRange;
@@ -72,7 +69,8 @@ export class NoiseBot {
 
             // For limit orders, pick a price near current price
             if (type === 'limit') {
-                const deviation = (this.env.random() - 0.5) * 0.01; // +/- 0.5%
+                const bandWidth = 2 * this.config.limitBand; // ± limitBand around the price
+                const deviation = (this.env.random() - 0.5) * bandWidth;
                 const rawPrice = currentPrice * (1 + deviation);
                 price = PriceStep.roundToTick(rawPrice);
             }
@@ -98,9 +96,7 @@ export class NoiseBot {
      */
     isReady(): boolean {
         if (!this.config.enabled) return false;
-        const intensity = this.config.intensity || 1.0;
-        const effectiveInterval = this.config.tradeInterval / intensity;
-        return this.env.now() - this.lastTradeTime >= effectiveInterval;
+        return this.env.now() - this.lastTradeTime >= effectiveInterval(this.config.tradeInterval, this.config);
     }
 
     /**

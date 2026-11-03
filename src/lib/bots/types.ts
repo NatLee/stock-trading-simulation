@@ -1,4 +1,7 @@
 // Bot System Type Definitions
+//
+// Every number that shapes how the bots behave lives in these tables (the
+// DEFAULT_*_CONFIG objects and the scenario presets below), not in the bot code.
 
 import { OrderSide, MarketScenario } from '../matching/types';
 
@@ -7,60 +10,82 @@ import { OrderSide, MarketScenario } from '../matching/types';
  */
 export type BotType = 'marketMaker' | 'trend' | 'noise';
 
+/** Settings every bot has: on/off and how busy it is */
+interface BotCommonConfig {
+    /** Enable/disable the bot */
+    enabled: boolean;
+    /** Activity intensity (default 1.0): intervals are divided by it */
+    intensity?: number;
+}
+
 /**
  * Market maker bot configuration
  */
-export interface MarketMakerBotConfig {
-    /** Base spread percentage (0.001 = 0.1%) */
+export interface MarketMakerBotConfig extends BotCommonConfig {
+    /** Base spread percentage (0.001 = 0.1%), multiplied by the scenario's volatility */
     spreadPercent: number;
-    /** Number of price levels on each side */
+    /** Extra distance of each further level from the price (0.0005 = 0.05%) */
+    levelStepPercent: number;
+    /** Number of price levels on each side at intensity 0 */
     depth: number;
-    /** Order size range [min, max] */
+    /** Extra levels per 1.0 of intensity (floored) */
+    depthPerIntensity: number;
+    /** Order size range [min, max] in lots, before liquidity and depth scaling */
     sizeRange: [number, number];
+    /** How much bigger the deepest level is than the first (2 = up to 3×) */
+    depthSizeGrowth: number;
     /** How often to refresh quotes (ms) */
     refreshInterval: number;
     /** Max inventory before skewing quotes */
     inventoryLimit: number;
-    /** Enable/disable the bot */
-    enabled: boolean;
-    /** Activity intensity (default 1.0) */
-    intensity?: number;
+    /** How far a full inventory shifts the quotes, in spreads */
+    inventorySkew: number;
 }
 
 /**
  * Trend following bot configuration
  */
-export interface TrendBotConfig {
+export interface TrendBotConfig extends BotCommonConfig {
     /** Aggressiveness (0-1) */
     aggressiveness: number;
-    /** Order size range */
+    /** Order size range in lots */
     sizeRange: [number, number];
     /** Trade frequency (ms) */
     tradeInterval: number;
-    /** Enable/disable */
-    enabled: boolean;
-    /** Activity intensity (default 1.0) */
-    intensity?: number;
     /** Buy trend strength (0-1, overrides aggressiveness for buys) */
     buyStrength?: number;
     /** Sell trend strength (0-1, overrides aggressiveness for sells) */
     sellStrength?: number;
+    /** Ticks in each of the two averages the momentum compares */
+    momentumWindow: number;
+    /** Momentum = clamp(relative change × momentumScale, −1, 1) */
+    momentumScale: number;
+    /** Trade only when |signal| ≥ entryThreshold × (1 − strength) */
+    entryThreshold: number;
+    /** Above this |signal| the order crosses the spread */
+    aggressiveAbove: number;
+    /** How far past the price a spread-crossing order is priced (0.005 = 0.5%) */
+    crossPercent: number;
+    /** Passive orders sit this far from the price, picked at random in [min, max] */
+    passiveOffset: [number, number];
+    /** Chance that a spread-crossing order is actually sent */
+    aggressiveSendProbability: number;
+    /** Chance that a passive order is actually sent */
+    passiveSendProbability: number;
 }
 
 /**
  * Noise trader bot configuration
  */
-export interface NoiseBotConfig {
+export interface NoiseBotConfig extends BotCommonConfig {
     /** Trade frequency (ms) */
     tradeInterval: number;
-    /** Order size range */
+    /** Order size range in lots */
     sizeRange: [number, number];
     /** Probability of market vs limit order */
     marketOrderProbability: number;
-    /** Enable/disable */
-    enabled: boolean;
-    /** Activity intensity (default 1.0) */
-    intensity?: number;
+    /** Limit prices are picked within ± this fraction of the price (0.005 = ±0.5%) */
+    limitBand: number;
 }
 
 /**
@@ -82,11 +107,23 @@ export interface BotManagerConfig {
     isOddLot: boolean;
     /** Market intensity (activity level) scalar (0.1 to 5.0) */
     intensity: number;
-    /** Target price for institutional manipulation (optional) */
-    targetPrice?: number;
-    /** Delay in ms before bots match user orders (optional, default 1000) */
-    reactionDelay?: number;
+    /** Delay in ms before bots match user orders */
+    reactionDelay: number;
+    /** How often (ms) bot orders far from the price are cleared */
+    pruneInterval: number;
+    /** Bot orders further than this fraction from the price are cleared (0.1 = 10%) */
+    pruneDistance: number;
 }
+
+/** Board lot: shares per lot on the Taiwan Stock Exchange */
+export const SHARES_PER_LOT = 1000;
+
+/**
+ * Odd-lot mode: a bot "lot" becomes this many shares, plus a random
+ * 0 … ODD_LOT_JITTER − 1 shares so the sizes do not all look alike.
+ */
+export const ODD_LOT_SHARES = 100;
+export const ODD_LOT_JITTER = 99;
 
 /**
  * Order to be submitted by a bot
@@ -104,24 +141,37 @@ export interface BotOrder {
  */
 export const DEFAULT_MARKET_MAKER_CONFIG: MarketMakerBotConfig = {
     spreadPercent: 0.002,
+    levelStepPercent: 0.0005,
     depth: 10,
-    sizeRange: [2, 10], // Increased to ensure multi-lot orders
+    depthPerIntensity: 2,
+    sizeRange: [2, 10],
+    depthSizeGrowth: 2,
     refreshInterval: 500,
     inventoryLimit: 1000,
+    inventorySkew: 0.5,
     enabled: true,
 };
 
 export const DEFAULT_TREND_BOT_CONFIG: TrendBotConfig = {
     aggressiveness: 0.3,
-    sizeRange: [2, 5], // Increased to ensure multi-lot orders
+    sizeRange: [2, 5],
     tradeInterval: 3000,
+    momentumWindow: 5,
+    momentumScale: 100,
+    entryThreshold: 0.3,
+    aggressiveAbove: 0.6,
+    crossPercent: 0.005,
+    passiveOffset: [0.001, 0.003],
+    aggressiveSendProbability: 0.9,
+    passiveSendProbability: 0.7,
     enabled: true,
 };
 
 export const DEFAULT_NOISE_BOT_CONFIG: NoiseBotConfig = {
     tradeInterval: 2000,
-    sizeRange: [1, 3], // Increased slightly
+    sizeRange: [1, 3],
     marketOrderProbability: 0.3,
+    limitBand: 0.005,
     enabled: true,
 };
 
@@ -132,11 +182,23 @@ export const DEFAULT_BOT_MANAGER_CONFIG: BotManagerConfig = {
     scenario: 'sideways',
     volatility: 1.0,
     liquidity: 1.0,
-    unitSize: 1000,
+    unitSize: SHARES_PER_LOT,
     isOddLot: false,
     intensity: 1.0,
-    reactionDelay: 1000, // Delay in ms before bots match user orders
+    reactionDelay: 1000,
+    pruneInterval: 5000,
+    pruneDistance: 0.1,
 };
+
+/** Intensity as a number, with the documented default of 1.0 */
+export function intensityOf(config: { intensity?: number }): number {
+    return config.intensity || 1.0;
+}
+
+/** How long a bot waits between turns at its current intensity */
+export function effectiveInterval(interval: number, config: { intensity?: number }): number {
+    return interval / intensityOf(config);
+}
 
 /**
  * Scenario modifiers
@@ -314,3 +376,4 @@ export const SCENARIO_LIFECYCLE: Partial<Record<MarketScenario, { duration: numb
     breakout: { duration: 25000, next: 'bull', label: '突破確立 -> 轉為多頭' },
     squeeze: { duration: 30000, next: 'breakout', label: '盤整結束 -> 向上突破' },
 };
+

@@ -54,3 +54,9 @@ export function deterministicEnv(seed: number, start: number = 0): SimEnv & { cl
     const clock = manualClock(start);
     return { random: seededRandom(seed), now: clock.now, clock };
 }
+
+/**
+ * One tick of the market, in ms. The page runs a tick on this timer, the bots
+ * measure their bursts against it, and the headless scripts step by it.
+ */
+export const SIM_TICK_MS = 100;
