@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useCallback, useState } from 'react';
 import { MarketScenario, Trade, OrderBookSnapshot } from '../lib/matching';
+import { BASE_CANDLE_MS } from '../lib/matching/CandleAggregator';
 import { DEFAULT_BOT_MANAGER_CONFIG } from '../lib/bots';
 import { MarketSimulation } from '../lib/sim/MarketSimulation';
 import { SIM_TICK_MS } from '../lib/sim/env';
@@ -49,7 +50,7 @@ export interface MarketSimulatorConfig {
 const DEFAULT_CONFIG: MarketSimulatorConfig = {
     initialPrice: CONFIG.BASE_PRICE,
     tickInterval: SIM_TICK_MS,
-    candlePeriod: 15000,
+    candlePeriod: BASE_CANDLE_MS,
     scenario: DEFAULT_BOT_MANAGER_CONFIG.scenario,
     unitSize: DEFAULT_BOT_MANAGER_CONFIG.unitSize,
     isOddLot: DEFAULT_BOT_MANAGER_CONFIG.isOddLot,

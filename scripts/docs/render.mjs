@@ -8,7 +8,7 @@
 // not in the usual place. ImageMagick (`magick`) trims and compresses.
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync, statSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -17,8 +17,11 @@ const root = fileURLToPath(new URL('../../', import.meta.url));
 const src = join(root, 'docs/images/src');
 const out = join(root, 'docs/images');
 
-const FIGURES = ['tick-loop', 'ladder', 'scenarios', 'presets-vs-app'];
-const wanted = process.argv.slice(2).length ? process.argv.slice(2) : FIGURES;
+// Written by scripts/docs/figures.ts: which pages exist and how wide they are laid out
+const manifest = JSON.parse(readFileSync(join(src, 'figures.json'), 'utf8'));
+const wanted = process.argv.slice(2).length ? process.argv.slice(2) : manifest.figures;
+// Tall enough for any figure; the transparent margin is trimmed afterwards
+const WINDOW_HEIGHT = 1400;
 
 const candidates = [
     process.env.EDGE, process.env.CHROME,
@@ -40,7 +43,7 @@ for (const name of wanted) {
             const url = `${pathToFileURL(join(src, `${name}.html`)).href}#${theme},${lang}`;
             execFileSync(browser, [
                 '--headless=new', '--disable-gpu', '--hide-scrollbars', `--user-data-dir=${profile}`,
-                '--force-device-scale-factor=2', '--window-size=960,1400',
+                '--force-device-scale-factor=2', `--window-size=${manifest.width},${WINDOW_HEIGHT}`,
                 '--default-background-color=00000000', '--virtual-time-budget=4000',
                 `--screenshot=${raw}`, url,
             ], { stdio: 'ignore' });

@@ -9,6 +9,7 @@ import { deterministicEnv, SIM_TICK_MS } from '../../src/lib/sim/env';
 import { SCENARIO_LIFECYCLE, SCENARIO_MODIFIERS, DEFAULT_MARKET_MAKER_CONFIG } from '../../src/lib/bots/types';
 import { MarketScenario } from '../../src/lib/matching/types';
 import { CONFIG } from '../../src/constants/config';
+import { BASE_CANDLE_MS } from '../../src/lib/matching/CandleAggregator';
 
 export const ALL_SCENARIOS = Object.keys(SCENARIO_MODIFIERS) as MarketScenario[];
 
@@ -46,7 +47,7 @@ export function runScenario(opts: RunOptions): RunResult {
     // resets the pace to the scenario's own intensity, like the slider does)
     const sim = new MarketSimulation({
         initialPrice: options.startPrice,
-        candlePeriod: 15000,
+        candlePeriod: BASE_CANDLE_MS,
         bots: { scenario: options.scenario },
     }, env);
 
@@ -182,3 +183,31 @@ export function peakInventory(scenario: MarketScenario, seeds: number, seconds: 
     return peak;
 }
 
+const BARS = '▁▂▃▄▅▆▇█';
+function sparkline(values: number[], width = 60): string {
+    const step = Math.max(1, Math.floor(values.length / width));
+    const sampled = values.filter((_, i) => i % step === 0);
+    const min = Math.min(...sampled);
+    const max = Math.max(...sampled);
+    return sampled.map(v => BARS[max === min ? 3 : Math.round(((v - min) / (max - min)) * (BARS.length - 1))]).join('');
+}
+
+const signed = (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`;
+
+/** What `npm run sim` prints for one run (also used for the examples in the docs) */
+export function formatRun(run: RunResult): string[] {
+    const s = statsOf(run);
+    const { scenario, seed, seconds } = run.options;
+    const phases = run.phases.map(([t, sc]) => `${t}s ${sc}`).join(' -> ');
+    return [
+        `${scenario} (seed ${seed}, ${seconds} s)  ${phases}`,
+        `  ${run.prices[0].toFixed(2)} ${sparkline(run.prices)} ${run.prices[run.prices.length - 1].toFixed(2)}`,
+        `  change ${signed(s.change)}  high ${signed(s.high)}  low ${signed(s.low)}  1 s move ${s.move1s.toFixed(2)}%  spread ${s.spread.toFixed(2)}%  ${s.tradesPerMinute.toFixed(0)} trades/min`,
+    ];
+}
+
+/** What `npm run sim -- --seeds N` prints for one scenario */
+export function formatSummary(s: ScenarioSummary): string {
+    const first = s.firstPhase === null ? '' : `  first phase ${signed(s.firstPhase)} (${s.firstPhaseDown}/${s.seeds} down)`;
+    return `${s.scenario.padEnd(13)} avg ${signed(s.change).padStart(7)}  up ${String(s.endedUp).padStart(2)}/${s.seeds}  range ${s.range.toFixed(1)}%  1 s move ${s.move1s.toFixed(2)}%${first}`;
+}

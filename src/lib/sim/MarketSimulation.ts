@@ -4,6 +4,10 @@ import { OrderBookSnapshot, Trade, MarketScenario } from '../matching/types';
 import { BotManager } from '../bots/BotManager';
 import { BotSettings } from '../bots/types';
 import { SimEnv, realEnv } from './env';
+import { CONFIG } from '../../constants/config';
+
+/** How many recent trades a snapshot carries (the trades feed on the page) */
+export const RECENT_TRADES = 20;
 
 export interface MarketSimulationOptions {
     /** Price the synthetic history starts from */
@@ -74,7 +78,7 @@ export class MarketSimulation {
     }
 
     /** Everything the UI shows, read in one go */
-    snapshot(showBotOrders: boolean = true, depth: number = 15, recentTradeCount: number = 20): MarketSnapshot {
+    snapshot(showBotOrders: boolean = true, depth: number = CONFIG.ORDER_BOOK_DEPTH, recentTradeCount: number = RECENT_TRADES): MarketSnapshot {
         const currentPrice = this.engine.getLastPrice();
         const candles = this.candles.getCandles();
         const prevClose = prevCloseOf(candles, currentPrice);
