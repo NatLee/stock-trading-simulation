@@ -175,19 +175,6 @@ export class TrendBot {
     }
 
     /**
-     * Calculate limit price based on trend
-     */
-    private getLimitPrice(currentPrice: number, side: OrderSide, trend: number): number {
-        const offset = 0.001 + Math.abs(trend) * 0.002;
-
-        if (side === 'buy') {
-            return Math.round(currentPrice * (1 - offset) * 100) / 100;
-        } else {
-            return Math.round(currentPrice * (1 + offset) * 100) / 100;
-        }
-    }
-
-    /**
      * Check if ready to trade
      */
     isReady(): boolean {

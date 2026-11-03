@@ -1,6 +1,5 @@
 export * from './utils';
 export * from './orderCalculations';
-export * from './orderMatching';
 export * from './aiAnalysis';
 
 // Re-export matching module - contains the new matching engine
@@ -12,8 +11,6 @@ export {
     generateTradeId,
     calculateTradeCommission,
     COMMISSION_RATE,
-    DEFAULT_MARKET_CONFIG,
-    MARKET_PRESETS,
 } from './matching';
 export type {
     OrderEntry,
@@ -23,7 +20,6 @@ export type {
     Trade,
     MatchResult,
     MarketScenario,
-    MarketConfig,
     OrderSide as MatchingOrderSide,
     MatchingOrderType,
     MatchingOrderStatus,
