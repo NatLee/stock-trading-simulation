@@ -31,8 +31,8 @@ the noise bot and the trend bot take those quotes, and every fill moves the pric
 Scenarios only change the bots' settings (spread, activity, how eagerly the trend bot joins a move).
 
 **[How the bots move the price](docs/bots.md)** explains every bot with its formulas, what each of the
-twelve scenarios changes, charts of each scenario from seeded runs, and a few places where the app does
-not do what the scenario presets say.
+twelve scenarios changes, how each one behaves over 20 seeded runs, and how the market maker manages its
+inventory.
 
 ## Features
 
@@ -53,18 +53,21 @@ not do what the scenario presets say.
 
 ### Bot-driven market
 
-- **Market maker**: re-quotes a ladder of 12 levels on each side around the last price
-- **Trend bot**: follows the last second's momentum, nudged by the scenario
+- **Market maker**: re-quotes a ladder of 12 levels on each side around the last price, and shifts it
+  down when it holds too much stock (up when it is short)
+- **Trend bot**: follows the last second's momentum, with a lean set by the scenario
 - **Noise bot**: random 1–2 lot orders, market or limit, like a crowd of small traders
 
 **Twelve scenarios**: 強勢多頭 Bull, 弱勢空頭 Bear, 盤整 Sideways, 劇烈震盪 Volatile, 冷清 Calm,
 盤整突破 Breakout, 恐慌崩盤 Crash, 主力吸籌 Accumulation, 主力出貨 Distribution, 拉高出貨 Pump & dump,
-死貓反彈 Dead cat bounce and 盤整待變 Squeeze. Four of them hand over to the next one by themselves
-(pump & dump → crash → dead cat bounce, squeeze → breakout → bull).
+死貓反彈 Dead cat bounce and 盤整待變 Squeeze. Each one is the defaults plus a small preset, tuned with
+seeded runs so it does what its name says: bull rises, a crash is a clear fall, pump & dump pumps and then
+dumps. Five of them hand over to the next one by themselves (pump & dump → crash → dead cat bounce → bear,
+squeeze → breakout → bull).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/scenarios-dark.png">
-  <img src="docs/images/scenarios-light.png" alt="Twelve small charts, one per scenario, 3 minutes each on one ±15% scale: calm is almost flat, volatile, crash and pump & dump swing hardest.">
+  <img src="docs/images/scenarios-light.png" alt="Twelve small charts, one per scenario, 20 seeded runs of 3 minutes each with their median: bull rises, bear and crash fall, pump & dump rises and then drops, calm is flat.">
 </picture>
 
 ### Learning center
@@ -141,11 +144,13 @@ npm run sim -- --scenario crash --seed 7   # run a scenario headless, see docs/b
 
 `npm run sim` prints a price sparkline and a summary for one seeded run:
 
+<!-- generated:sim-example -->
 ```text
-pump_dump (app, seed 2, 180 s)  0s pump_dump -> 15s crash -> 35s dead_cat
-  50.00 ▁▁▂▃▃▂▄▄▅▆▆▅▅▆▆▆▆▅▆▆▆▆▆▇▆▆▆▅▆▆▆▆▆▆▆▆▆▅▅▆▆▇▇▇▇█▇▇▇▇▆▆▆▇▆▆▅▅▅▅▅ 55.90
-  change +11.80%  high +20.20%  low +0.00%  1 s move 0.81%  spread 1.13%  74 trades/min
+pump_dump (seed 2, 180 s)  0s pump_dump -> 15s crash -> 40s dead_cat -> 50s bear
+  50.00 ▄▅▅▆▇██▇▆▆▅▅▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▅▅▄▄▄▄▄▄▄▄▃▃▃▃▂▂▂▂▂▂▂▂▂▂▂▂▂▁▁▁▁▁▁▁ 47.05
+  change -5.90%  high +11.00%  low -6.00%  1 s move 0.37%  spread 0.56%  54 trades/min
 ```
+<!-- /generated:sim-example -->
 
 ## Project structure
 
