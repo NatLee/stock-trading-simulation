@@ -148,6 +148,19 @@ describe('MatchingEngine', () => {
         expect(book.bids).toEqual([{ price: 99, quantity: 2000, orderCount: 1, hasUserOrder: true, hasBotOrder: false }]);
         expect(book.asks).toEqual([]);
     });
+
+    it('gives every order a unique ID, even many in the same millisecond', () => {
+        // Regression: IDs were "time + 4 random chars". When two resting orders
+        // shared one, the second never left the book.
+        const { engine } = engineAt();
+        const ids = new Set<string>();
+        for (let i = 0; i < 5000; i++) {
+            ids.add(engine.submitOrder('buy', 'limit', 1000, 90 + (i % 10) * 0.5, 'bot').orderId);
+        }
+        expect(ids.size).toBe(5000);
+        expect(engine.cancelOrdersBySource('bot')).toBe(5000);
+        expect(engine.getOrderBook().getStats().totalOrders).toBe(0);
+    });
 });
 
 describe('MatchingEngine trade cursor', () => {

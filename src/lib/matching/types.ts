@@ -149,13 +149,20 @@ export function calculateTradeCommission(total: number, rate: number = COMMISSIO
     return Math.round(total * rate);
 }
 
+let idSequence = 0;
+
 /**
- * Generate unique order ID
+ * Generate a unique order ID: prefix, time and a running counter.
+ *
+ * One tick submits dozens of bot orders in the same millisecond. The old
+ * "time + 4 random characters" scheme collided now and then, and the order
+ * that lost its index entry stayed in the book for good (it could be hit
+ * forever and never cancelled). A counter cannot collide.
  */
 export function generateOrderId(prefix: string = 'ORD', env: SimEnv = realEnv): string {
     const timestamp = env.now().toString(36);
-    const random = env.random().toString(36).substring(2, 6);
-    return `${prefix}-${timestamp}-${random}`.toUpperCase();
+    const sequence = (idSequence++).toString(36).padStart(4, '0');
+    return `${prefix}-${timestamp}-${sequence}`.toUpperCase();
 }
 
 /**
