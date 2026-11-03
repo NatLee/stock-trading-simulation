@@ -7,31 +7,31 @@ interface SupplyDemandChartProps {
     isAsianTheme?: boolean;
 }
 
+/** Running total of quantity, level by level */
+function cumulative(levels: { price: number; quantity: number }[]): { price: number; volume: number }[] {
+    let total = 0;
+    return levels.map(level => {
+        total += level.quantity;
+        return { price: level.price, volume: total };
+    });
+}
+
 export function SupplyDemandChart({ orderBook, isAsianTheme = true }: SupplyDemandChartProps) {
     // Process data for depth chart
     const bids = [...orderBook.bids].sort((a, b) => b.price - a.price); // High to low
     const asks = [...orderBook.asks].sort((a, b) => a.price - b.price); // Low to high
 
     // Calculate cumulative volume
-    let bidAccum = 0;
-    const bidPoints = bids.map(b => {
-        bidAccum += b.quantity;
-        return { price: b.price, volume: bidAccum };
-    });
-
-    let askAccum = 0;
-    const askPoints = asks.map(a => {
-        askAccum += a.quantity;
-        return { price: a.price, volume: askAccum };
-    });
+    const bidPoints = cumulative(bids);
+    const askPoints = cumulative(asks);
+    const bidAccum = bidPoints.length > 0 ? bidPoints[bidPoints.length - 1].volume : 0;
+    const askAccum = askPoints.length > 0 ? askPoints[askPoints.length - 1].volume : 0;
 
     const maxVolume = Math.max(bidAccum, askAccum);
 
     // Colors
     const bidColor = isAsianTheme ? '#f43f5e' : '#10b981'; // Red/Green
     const askColor = isAsianTheme ? '#10b981' : '#f43f5e'; // Green/Red
-    const bidFill = isAsianTheme ? 'rgba(244, 63, 94, 0.2)' : 'rgba(16, 185, 129, 0.2)';
-    const askFill = isAsianTheme ? 'rgba(16, 185, 129, 0.2)' : 'rgba(244, 63, 94, 0.2)';
 
     if (bidPoints.length === 0 || askPoints.length === 0) {
         return <div className="h-[120px] bg-zinc-900 border border-zinc-800 rounded-sm flex items-center justify-center text-zinc-600 text-xs">No Data</div>;

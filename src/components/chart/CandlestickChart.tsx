@@ -77,7 +77,7 @@ export function CandlestickChart({
         return DEFAULT_CONFIG.colors;
     }, [isAsianTheme]);
 
-    const config: ChartConfig = {
+    const config: ChartConfig = useMemo(() => ({
         ...DEFAULT_CONFIG,
         dimensions: {
             ...DEFAULT_CONFIG.dimensions,
@@ -88,7 +88,7 @@ export function CandlestickChart({
         showMA,
         showVolume,
         showGrid,
-    };
+    }), [width, height, themedColors, showMA, showVolume, showGrid]);
 
     const draw = useCallback(() => {
         const canvas = canvasRef.current;
@@ -243,7 +243,7 @@ export function CandlestickChart({
                 colors,
             });
         }
-    }, [candles, currentPrice, config, crosshair]);
+    }, [candles, currentPrice, config, crosshair, offsetIndex]);
 
     // Redraw on changes
     useEffect(() => {
@@ -292,7 +292,7 @@ export function CandlestickChart({
                 });
             }
         }
-    }, [candles, config.dimensions]);
+    }, [candles, config.dimensions, currentPrice, offsetIndex]);
 
     const handleMouseLeave = useCallback(() => {
         setCrosshair(prev => ({ ...prev, visible: false }));

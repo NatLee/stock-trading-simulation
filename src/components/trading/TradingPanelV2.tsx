@@ -200,7 +200,7 @@ export function TradingPanelV2() {
     const [aiState, setAiState] = useState<AIState>('idle');
     const [aiRecommendation, setAiRecommendation] = useState<AIRecommendation>(null);
     const [aiAnalysis, setAiAnalysis] = useState<AIDetailedAnalysis | null>(null);
-    const [logs, setLogs] = useState<LogEntry[]>([
+    const [logs, setLogs] = useState<LogEntry[]>(() => [
         { id: generateId(), text: t.logReady, type: 'info', time: getTimeString(), timestamp: Date.now() }
     ]);
 

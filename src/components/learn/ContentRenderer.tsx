@@ -11,7 +11,7 @@ interface ContentRendererProps {
 
 // 解析文本中的 **粗體** 標記
 function parseText(text: string, highlights?: { text: string; color: string }[]): React.ReactNode {
-    let result: React.ReactNode = text;
+    const result: React.ReactNode = text;
     
     // 處理 **粗體** 標記
     const boldRegex = /\*\*(.*?)\*\*/g;
