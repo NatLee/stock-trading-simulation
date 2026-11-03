@@ -1,6 +1,7 @@
 import { NoiseBotConfig, BotOrder } from './types';
 import { OrderSide } from '../matching/types';
 import { PriceStep } from '../matching/PriceStep';
+import { SimEnv, realEnv } from '../sim/env';
 
 /**
  * NoiseBot - adds random market activity
@@ -13,9 +14,11 @@ import { PriceStep } from '../matching/PriceStep';
 export class NoiseBot {
     private config: NoiseBotConfig;
     private lastTradeTime: number = 0;
+    private env: SimEnv;
 
-    constructor(config: NoiseBotConfig) {
+    constructor(config: NoiseBotConfig, env: SimEnv = realEnv) {
         this.config = { ...config };
+        this.env = env;
     }
 
     /**
@@ -45,7 +48,7 @@ export class NoiseBot {
     generateOrders(currentPrice: number, force: boolean = false): BotOrder[] {
         if (!this.config.enabled) return [];
 
-        const now = Date.now();
+        const now = this.env.now();
         const intensity = this.config.intensity || 1.0;
         const effectiveInterval = this.config.tradeInterval / intensity;
 
@@ -55,13 +58,13 @@ export class NoiseBot {
         const [minSize, maxSize] = this.config.sizeRange;
 
         // Random side
-        const side: OrderSide = Math.random() > 0.5 ? 'buy' : 'sell';
+        const side: OrderSide = this.env.random() > 0.5 ? 'buy' : 'sell';
 
         // Random size
-        const size = Math.floor(minSize + Math.random() * (maxSize - minSize));
+        const size = Math.floor(minSize + this.env.random() * (maxSize - minSize));
 
         // Random order type
-        const useMarket = Math.random() < this.config.marketOrderProbability;
+        const useMarket = this.env.random() < this.config.marketOrderProbability;
         const type = useMarket ? 'market' : 'limit';
 
         if (size > 0) {
@@ -69,7 +72,7 @@ export class NoiseBot {
 
             // For limit orders, pick a price near current price
             if (type === 'limit') {
-                const deviation = (Math.random() - 0.5) * 0.01; // +/- 0.5%
+                const deviation = (this.env.random() - 0.5) * 0.01; // +/- 0.5%
                 const rawPrice = currentPrice * (1 + deviation);
                 price = PriceStep.roundToTick(rawPrice);
             }
@@ -97,7 +100,7 @@ export class NoiseBot {
         if (!this.config.enabled) return false;
         const intensity = this.config.intensity || 1.0;
         const effectiveInterval = this.config.tradeInterval / intensity;
-        return Date.now() - this.lastTradeTime >= effectiveInterval;
+        return this.env.now() - this.lastTradeTime >= effectiveInterval;
     }
 
     /**

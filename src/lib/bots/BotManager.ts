@@ -8,6 +8,7 @@ import {
     SCENARIO_MODIFIERS,
 } from './types';
 import { MatchingEngine, MarketScenario, Trade } from '../matching';
+import { SimEnv, realEnv } from '../sim/env';
 
 /**
  * BotManager - coordinates all trading bots
@@ -24,18 +25,20 @@ export class BotManager {
     private noiseBot: NoiseBot;
     private engine: MatchingEngine;
     private lastCleanupTime: number = 0;
+    private env: SimEnv;
 
-    constructor(engine: MatchingEngine, config: Partial<BotManagerConfig> = {}) {
+    constructor(engine: MatchingEngine, config: Partial<BotManagerConfig> = {}, env: SimEnv = realEnv) {
         this.config = { ...DEFAULT_BOT_MANAGER_CONFIG, ...config };
         this.engine = engine;
+        this.env = env;
 
         // Apply scenario modifiers
         this.applyScenario(this.config.scenario);
 
         // Initialize bots
-        this.marketMaker = new MarketMakerBot(this.config.marketMaker);
-        this.trendBot = new TrendBot(this.config.trend);
-        this.noiseBot = new NoiseBot(this.config.noise);
+        this.marketMaker = new MarketMakerBot(this.config.marketMaker, env);
+        this.trendBot = new TrendBot(this.config.trend, env);
+        this.noiseBot = new NoiseBot(this.config.noise, env);
     }
 
     /**
@@ -143,7 +146,7 @@ export class BotManager {
 
         // Protection Logic: Check if we need to delay reacting to user orders
         // If the best Bid/Ask is a User order placed very recently, bots should ignore it (simulating reaction time)
-        const now = Date.now();
+        const now = this.env.now();
         const reactionDelay = this.config.reactionDelay || 1000;
         const book = this.engine.getOrderBook();
 
@@ -269,7 +272,7 @@ export class BotManager {
 
             if (isOddLot) {
                 // Odd lot: floor to integer and add randomness (0-99 shares)
-                qty = Math.floor(qty) + Math.floor(Math.random() * 99);
+                qty = Math.floor(qty) + Math.floor(this.env.random() * 99);
             } else {
                 // Standard: round to nearest lot (1000 shares)
                 qty = Math.max(1000, Math.round(qty / 1000) * 1000);

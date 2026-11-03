@@ -1,11 +1,11 @@
 import {
     OrderEntry,
-    OrderSide,
     PriceLevel,
     OrderBookSnapshot,
     OrderBookLevel,
     OrderSource,
 } from './types';
+import { SimEnv, realEnv } from '../sim/env';
 
 /**
  * Order Book - manages buy and sell orders with price-time priority
@@ -20,10 +20,11 @@ export class OrderBook {
     private bids: Map<number, PriceLevel> = new Map(); // buy orders (descending by price)
     private orderIndex: Map<string, OrderEntry> = new Map(); // orderId -> order
     private _lastPrice: number;
-    private _lastTradeTime: number = Date.now();
+    private env: SimEnv;
 
-    constructor(initialPrice: number = 150) {
+    constructor(initialPrice: number = 150, env: SimEnv = realEnv) {
         this._lastPrice = initialPrice;
+        this.env = env;
     }
 
     /**
@@ -38,7 +39,6 @@ export class OrderBook {
      */
     set lastPrice(price: number) {
         this._lastPrice = price;
-        this._lastTradeTime = Date.now();
     }
 
     /**
@@ -221,7 +221,7 @@ export class OrderBook {
             bestAsk,
             bestBid,
             lastPrice: this._lastPrice,
-            timestamp: Date.now(),
+            timestamp: this.env.now(),
         };
     }
 

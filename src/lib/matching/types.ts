@@ -1,5 +1,7 @@
 // Matching Engine Type Definitions
 
+import { SimEnv, realEnv } from '../sim/env';
+
 /**
  * Order side - buy or sell
  */
@@ -140,10 +142,7 @@ export type MarketScenario =
 export const COMMISSION_RATE = 0.001;
 
 /**
- * Calculate commission for a trade
- */
-/**
- * Calculate commission for a trade (Rounded to Integer for TWD)
+ * Calculate commission for a trade (rounded to an integer, like TWD)
  */
 export function calculateTradeCommission(total: number, rate: number = COMMISSION_RATE): number {
     // TWD usually has minimum 20, but for sim just round to integer
@@ -153,16 +152,16 @@ export function calculateTradeCommission(total: number, rate: number = COMMISSIO
 /**
  * Generate unique order ID
  */
-export function generateOrderId(prefix: string = 'ORD'): string {
-    const timestamp = Date.now().toString(36);
-    const random = Math.random().toString(36).substring(2, 6);
+export function generateOrderId(prefix: string = 'ORD', env: SimEnv = realEnv): string {
+    const timestamp = env.now().toString(36);
+    const random = env.random().toString(36).substring(2, 6);
     return `${prefix}-${timestamp}-${random}`.toUpperCase();
 }
 
 /**
  * Generate unique trade ID
  */
-export function generateTradeId(suffix?: string | number): string {
-    const id = generateOrderId('TRD');
+export function generateTradeId(suffix?: string | number, env: SimEnv = realEnv): string {
+    const id = generateOrderId('TRD', env);
     return suffix !== undefined ? `${id}-${suffix}` : id;
 }
