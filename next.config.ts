@@ -9,12 +9,11 @@ const nextConfig: NextConfig = {
   },
   basePath: isGithubActions ? '/stock-trading-simulation' : '',
   assetPrefix: isGithubActions ? '/stock-trading-simulation/' : '',
-  experimental: {
-    // @ts-expect-error - turbopack root is a valid runtime config but missing from types
-    turbopack: {
-      root: process.cwd(),
-    }
-  }
+  // Pin the project root: with another lockfile higher up the disk, Next.js
+  // would otherwise guess the wrong folder.
+  turbopack: {
+    root: process.cwd(),
+  },
 };
 
 export default nextConfig;
