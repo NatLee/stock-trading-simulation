@@ -5,7 +5,7 @@
 // dice are swapped for a manual clock and a seeded random source.
 
 import { MarketSimulation } from '../../src/lib/sim/MarketSimulation';
-import { deterministicEnv } from '../../src/lib/sim/env';
+import { deterministicEnv, SIM_TICK_MS } from '../../src/lib/sim/env';
 import { SCENARIO_LIFECYCLE, SCENARIO_MODIFIERS } from '../../src/lib/bots/types';
 import { MarketScenario } from '../../src/lib/matching/types';
 
@@ -42,7 +42,6 @@ export interface RunResult {
 }
 
 const START = Date.UTC(2026, 10, 3, 1, 0, 0); // any fixed moment works
-const TICK_MS = 100;
 
 /** The page's settings right after it loads (useMarketSimulator defaults) */
 const PAGE_SETTINGS = { scenario: 'sideways' as MarketScenario, volatility: 1, liquidity: 1, unitSize: 1000, isOddLot: false };
@@ -87,16 +86,16 @@ export function runScenario(opts: RunOptions): RunResult {
     let trades = 0;
     let volume = 0;
 
-    const totalTicks = Math.round((options.seconds * 1000) / TICK_MS);
+    const totalTicks = Math.round((options.seconds * 1000) / SIM_TICK_MS);
     for (let tick = 1; tick <= totalTicks; tick++) {
-        const elapsed = tick * TICK_MS;
+        const elapsed = tick * SIM_TICK_MS;
         if (elapsed >= nextSwitchAt) {
             current = SCENARIO_LIFECYCLE[current]!.next;
             choose(current, Math.round(elapsed / 1000));
             scheduleSwitch(elapsed);
         }
 
-        env.clock.advance(TICK_MS);
+        env.clock.advance(SIM_TICK_MS);
         for (const t of sim.step()) {
             trades++;
             volume += t.quantity;

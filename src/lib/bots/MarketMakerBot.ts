@@ -1,11 +1,11 @@
-import { MarketMakerBotConfig, BotOrder } from './types';
+import { MarketMakerBotConfig, BotOrder, effectiveInterval, intensityOf } from './types';
 import { OrderSide } from '../matching/types';
 import { PriceStep } from '../matching/PriceStep';
 import { SimEnv, realEnv } from '../sim/env';
 
 /**
  * MarketMakerBot - provides liquidity by placing orders on both sides
- * 
+ *
  * Features:
  * - Maintains bid/ask quotes at multiple price levels
  * - Adjusts spread based on volatility
@@ -45,7 +45,7 @@ export class MarketMakerBot {
 
     /**
      * Generate quotes for the order book
-     * Returns orders to place on both bid and ask sides
+     * Returns orders to place on both bid and ask sides (all bids first)
      */
     generateQuotes(
         currentPrice: number,
@@ -54,67 +54,39 @@ export class MarketMakerBot {
     ): BotOrder[] {
         if (!this.config.enabled) return [];
 
-        const now = this.env.now();
-        const orders: BotOrder[] = [];
-
-        // Calculate spread with volatility adjustment
-        const baseSpread = this.config.spreadPercent * volatilityMultiplier;
+        const { spreadPercent, levelStepPercent, depth, depthPerIntensity, sizeRange, depthSizeGrowth } = this.config;
+        const baseSpread = spreadPercent * volatilityMultiplier;
 
         // Inventory skew - if holding too much, make sells more attractive
         const inventoryRatio = this.inventory / this.config.inventoryLimit;
-        const bidSkew = Math.max(0, -inventoryRatio * 0.5);  // Reduce if long
-        const askSkew = Math.max(0, inventoryRatio * 0.5);   // Reduce if short
+        const skew: Record<OrderSide, number> = {
+            buy: Math.max(0, -inventoryRatio * this.config.inventorySkew),
+            sell: Math.max(0, inventoryRatio * this.config.inventorySkew),
+        };
 
-        const [minSize, maxSize] = this.config.sizeRange;
-        const sizeMultiplier = liquidityMultiplier;
+        const [minSize, maxSize] = sizeRange;
+        const levels = depth + Math.floor(intensityOf(this.config) * depthPerIntensity);
+        const orders: BotOrder[] = [];
 
-        // Dynamic depth based on intensity
-        const intensity = this.config.intensity || 1.0;
-        const dynamicDepth = this.config.depth + Math.floor(intensity * 2);
+        for (const side of ['buy', 'sell'] as OrderSide[]) {
+            // Bids sit below the price (floor to a tick), asks above it (ceil)
+            const direction = side === 'buy' ? -1 : 1;
+            for (let i = 0; i < levels; i++) {
+                const offset = baseSpread + i * levelStepPercent + skew[side] * baseSpread;
+                const rawPrice = currentPrice * (1 + direction * offset);
+                const price = side === 'buy' ? PriceStep.floorToTick(rawPrice) : PriceStep.ceilToTick(rawPrice);
 
-        // Generate bid (buy) orders
-        for (let i = 0; i < dynamicDepth; i++) {
-            const levelOffset = baseSpread + (i * 0.0005);
-            const skewedOffset = levelOffset + bidSkew * baseSpread;
-            const rawPrice = currentPrice * (1 - skewedOffset);
-            const price = PriceStep.floorToTick(rawPrice); // Use floor for bids to be safe
+                // Deeper levels are bigger: 1× at the touch up to (1 + depthSizeGrowth)×
+                const depthScale = 1 + (i / levels) * depthSizeGrowth;
+                const size = Math.floor((minSize + this.env.random() * (maxSize - minSize)) * liquidityMultiplier * depthScale);
 
-            // Increase size for deeper levels (scale 1.0 to ~3.0)
-            const depthScale = 1 + (i / dynamicDepth) * 2.0;
-            const size = Math.floor((minSize + this.env.random() * (maxSize - minSize)) * sizeMultiplier * depthScale);
-
-            if (price > 0) {
-                orders.push({
-                    side: 'buy',
-                    type: 'limit',
-                    price: price,
-                    quantity: Math.max(1, size),
-                    botType: 'marketMaker',
-                });
+                if (price > 0) {
+                    orders.push({ side, type: 'limit', price, quantity: Math.max(1, size), botType: 'marketMaker' });
+                }
             }
         }
 
-        // Generate ask (sell) orders
-        for (let i = 0; i < dynamicDepth; i++) {
-            const levelOffset = baseSpread + (i * 0.0005);
-            const skewedOffset = levelOffset + askSkew * baseSpread;
-            const rawPrice = currentPrice * (1 + skewedOffset);
-            const price = PriceStep.ceilToTick(rawPrice); // Use ceil for asks to be safe
-
-            // Increase size for deeper levels
-            const depthScale = 1 + (i / dynamicDepth) * 2.0;
-            const size = Math.floor((minSize + this.env.random() * (maxSize - minSize)) * sizeMultiplier * depthScale);
-
-            orders.push({
-                side: 'sell',
-                type: 'limit',
-                price: price,
-                quantity: Math.max(1, size),
-                botType: 'marketMaker',
-            });
-        }
-
-        this.lastQuoteTime = now;
+        this.lastQuoteTime = this.env.now();
         return orders;
     }
 
@@ -123,9 +95,7 @@ export class MarketMakerBot {
      */
     needsRefresh(): boolean {
         if (!this.config.enabled) return false;
-        const intensity = this.config.intensity || 1.0;
-        const effectiveInterval = this.config.refreshInterval / intensity;
-        return this.env.now() - this.lastQuoteTime >= effectiveInterval;
+        return this.env.now() - this.lastQuoteTime >= effectiveInterval(this.config.refreshInterval, this.config);
     }
 
     /**
@@ -151,13 +121,5 @@ export class MarketMakerBot {
      */
     resetInventory(): void {
         this.inventory = 0;
-    }
-
-    /**
-     * Get time until next refresh
-     */
-    getTimeUntilRefresh(): number {
-        const elapsed = this.env.now() - this.lastQuoteTime;
-        return Math.max(0, this.config.refreshInterval - elapsed);
     }
 }

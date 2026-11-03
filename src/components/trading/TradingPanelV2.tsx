@@ -10,7 +10,8 @@ import { Navbar } from '@/components/ui/Navbar';
 import { Language, TRANSLATIONS, CONFIG } from '@/constants';
 import { useMarketSimulator } from '@/hooks/useMarketSimulator';
 import { MarketScenario, HoldingLot } from '@/lib/matching';
-import { SCENARIO_MODIFIERS, SCENARIO_LIFECYCLE } from '@/lib/bots/types';
+import { SCENARIO_MODIFIERS, SCENARIO_LIFECYCLE, SCENARIO_LABELS, SCENARIO_LEVELS, scenarioLevel } from '@/lib/bots/types';
+import { SIM_TICK_MS } from '@/lib/sim/env';
 import { CandleData, OrderType, OrderCondition, Holding, OrderRecord, LogEntry, AIState, AIRecommendation, PendingOrder } from '@/types';
 import { Trade } from '@/lib/matching';
 import { CandlestickChart } from '@/components/chart';
@@ -27,20 +28,20 @@ import { AIDetailedAnalysis } from '@/types';
 // Speed options removed as requested
 // Default tick interval: 100ms
 
-// Scenario options - Taiwan stock market patterns
-const SCENARIO_OPTIONS: { label: string; value: MarketScenario; icon: React.ReactNode }[] = [
-    { label: '強勢多頭', value: 'bull', icon: <TrendingUp size={14} className="text-emerald-400" /> },
-    { label: '弱勢空頭', value: 'bear', icon: <TrendingDown size={14} className="text-rose-400" /> },
-    { label: '盤整', value: 'sideways', icon: <Minus size={14} className="text-zinc-400" /> },
-    { label: '劇烈震盪', value: 'volatile', icon: <Zap size={14} className="text-amber-400" /> },
-    { label: '冷清', value: 'calm', icon: <Activity size={14} className="text-blue-400" /> },
-    { label: '盤整突破', value: 'breakout', icon: <TrendingUp size={14} className="text-cyan-400" /> },
-    { label: '恐慌崩盤', value: 'crash', icon: <TrendingDown size={14} className="text-red-600" /> },
-    { label: '主力吸籌', value: 'accumulation', icon: <Activity size={14} className="text-green-400" /> },
-    { label: '主力出貨', value: 'distribution', icon: <Activity size={14} className="text-orange-400" /> },
-    { label: '拉高出貨', value: 'pump_dump', icon: <TrendingUp size={14} className="text-red-500" /> },
-    { label: '死貓反彈', value: 'dead_cat', icon: <Activity size={14} className="text-orange-500" /> },
-    { label: '盤整待變', value: 'squeeze', icon: <MinusCircle size={14} className="text-zinc-500" /> },
+// Scenario buttons (names come from SCENARIO_LABELS)
+const SCENARIO_OPTIONS: { value: MarketScenario; icon: React.ReactNode }[] = [
+    { value: 'bull', icon: <TrendingUp size={14} className="text-emerald-400" /> },
+    { value: 'bear', icon: <TrendingDown size={14} className="text-rose-400" /> },
+    { value: 'sideways', icon: <Minus size={14} className="text-zinc-400" /> },
+    { value: 'volatile', icon: <Zap size={14} className="text-amber-400" /> },
+    { value: 'calm', icon: <Activity size={14} className="text-blue-400" /> },
+    { value: 'breakout', icon: <TrendingUp size={14} className="text-cyan-400" /> },
+    { value: 'crash', icon: <TrendingDown size={14} className="text-red-600" /> },
+    { value: 'accumulation', icon: <Activity size={14} className="text-green-400" /> },
+    { value: 'distribution', icon: <Activity size={14} className="text-orange-400" /> },
+    { value: 'pump_dump', icon: <TrendingUp size={14} className="text-red-500" /> },
+    { value: 'dead_cat', icon: <Activity size={14} className="text-orange-500" /> },
+    { value: 'squeeze', icon: <MinusCircle size={14} className="text-zinc-500" /> },
 ];
 
 /**
@@ -65,21 +66,21 @@ const getScenarioPreviewPath = (scenario: MarketScenario) => {
 };
 
 /**
- * Scenario Explanations & Stats
+ * Scenario explanations (the volatility / liquidity bars come from the presets, see scenarioLevel)
  */
-const SCENARIO_DETAILS: Record<MarketScenario, { desc: string; vol: number; liq: number }> = {
-    bull: { desc: "市場情緒樂觀，買盤強勁，價格呈現多頭排列。", vol: 3, liq: 4 },
-    bear: { desc: "市場情緒悲觀，賣壓沉重，價格持續探底。", vol: 3, liq: 3 },
-    sideways: { desc: "市場缺乏明確方向，價格在區間內來回波動，流動性充足。", vol: 2, liq: 5 },
-    volatile: { desc: "多空交戰激烈，價格上下沖洗，風險極高。", vol: 5, liq: 2 },
-    calm: { desc: "交易清淡，價格波動極小，市場觀望氣氛濃厚。", vol: 1, liq: 1 },
-    breakout: { desc: "價格突破關鍵壓力位，伴隨大量買盤，趨勢可能反轉。", vol: 4, liq: 3 },
-    crash: { desc: "恐慌性拋售，價格直線崩落，流動性瞬間枯竭。", vol: 5, liq: 1 },
-    accumulation: { desc: "主力在低檔悄悄吸納籌碼，價格波動被刻意壓低。", vol: 2, liq: 4 },
-    distribution: { desc: "主力在高檔掩護出貨，價格看似強勢實則虛浮。", vol: 2, liq: 4 },
-    pump_dump: { desc: "人為極速拉抬股價，隨後將出現垂直崩盤。", vol: 5, liq: 3 },
-    dead_cat: { desc: "崩盤後的技術性反彈，幅度有限，通常是逃命波。", vol: 4, liq: 2 },
-    squeeze: { desc: "成交量窒息，波幅壓縮至極限，即將出現大行情。", vol: 1, liq: 2 },
+const SCENARIO_DESCRIPTIONS: Record<MarketScenario, string> = {
+    bull: "市場情緒樂觀，買盤強勁，價格呈現多頭排列。",
+    bear: "市場情緒悲觀，賣壓沉重，價格持續探底。",
+    sideways: "市場缺乏明確方向，價格在區間內來回波動，流動性充足。",
+    volatile: "多空交戰激烈，價格上下沖洗，風險極高。",
+    calm: "交易清淡，價格波動極小，市場觀望氣氛濃厚。",
+    breakout: "價格突破關鍵壓力位，伴隨大量買盤，趨勢可能反轉。",
+    crash: "恐慌性拋售，價格直線崩落，流動性瞬間枯竭。",
+    accumulation: "主力在低檔悄悄吸納籌碼，價格波動被刻意壓低。",
+    distribution: "主力在高檔掩護出貨，價格看似強勢實則虛浮。",
+    pump_dump: "人為極速拉抬股價，隨後將出現垂直崩盤。",
+    dead_cat: "崩盤後的技術性反彈，幅度有限，通常是逃命波。",
+    squeeze: "成交量窒息，波幅壓縮至極限，即將出現大行情。",
 };
 
 /**
@@ -119,7 +120,7 @@ export function TradingPanelV2() {
     // Market simulator - new matching engine powered
     const simConfig = useMemo(() => ({
         initialPrice: CONFIG.BASE_PRICE,
-        tickInterval: 100, // Fixed reliable speed
+        tickInterval: SIM_TICK_MS,
         candlePeriod: timeframe,
         unitSize: botVolume * 1000,
         isOddLot,
@@ -208,6 +209,13 @@ export function TradingPanelV2() {
         }]);
     }, []);
 
+    // Picking a scenario (button or automatic switch) also moves the intensity slider to the preset's pace
+    const chooseScenario = useCallback((scenario: MarketScenario) => {
+        setScenario(scenario);
+        const intensity = SCENARIO_MODIFIERS[scenario].intensity;
+        if (intensity) setIntensity(intensity);
+    }, [setScenario]);
+
     // Scenario Lifecycle Management
     const scenarioTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -222,12 +230,7 @@ export function TradingPanelV2() {
         if (lifecycle) {
             scenarioTimeoutRef.current = setTimeout(() => {
                 addLog(`[劇本切換] ${lifecycle.label}`, 'warning');
-                setScenario(lifecycle.next);
-
-                // If switching implies intensity change, update it too
-                const modifier = SCENARIO_MODIFIERS[lifecycle.next];
-                if (modifier?.intensity) setIntensity(modifier.intensity);
-
+                chooseScenario(lifecycle.next);
             }, lifecycle.duration);
         }
 
@@ -236,7 +239,7 @@ export function TradingPanelV2() {
                 clearTimeout(scenarioTimeoutRef.current);
             }
         };
-    }, [marketState.scenario, setScenario, addLog]);
+    }, [marketState.scenario, chooseScenario, addLog]);
 
     // Centralized Trade Handler: every fill of the user's orders comes through here,
     // one call per trade (the simulator may deliver several in a row in one tick).
@@ -649,11 +652,7 @@ export function TradingPanelV2() {
                                         {SCENARIO_OPTIONS.map(opt => (
                                             <button
                                                 key={opt.value}
-                                                onClick={() => {
-                                                    setScenario(opt.value);
-                                                    const modifier = SCENARIO_MODIFIERS[opt.value];
-                                                    if (modifier?.intensity) setIntensity(modifier.intensity);
-                                                }}
+                                                onClick={() => chooseScenario(opt.value)}
                                                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all border relative overflow-hidden ${marketState.scenario === opt.value
                                                     ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300 ring-1 ring-indigo-500/50'
                                                     : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600'
@@ -663,7 +662,7 @@ export function TradingPanelV2() {
                                                 {marketState.scenario === opt.value && (
                                                     <div className="absolute inset-0 bg-indigo-500/10 animate-pulse" />
                                                 )}
-                                                {opt.icon} {opt.label}
+                                                {opt.icon} {SCENARIO_LABELS[opt.value].zh}
                                             </button>
                                         ))}
                                     </div>
@@ -691,7 +690,7 @@ export function TradingPanelV2() {
                                             <div>
                                                 <div className="flex items-center gap-2 mb-1">
                                                     <h4 className="text-sm font-bold text-white">
-                                                        {SCENARIO_OPTIONS.find(o => o.value === marketState.scenario)?.label}
+                                                        {SCENARIO_LABELS[marketState.scenario].zh}
                                                     </h4>
                                                     {SCENARIO_LIFECYCLE[marketState.scenario] && (
                                                         <span className="text-[10px] px-1.5 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded animate-pulse">
@@ -700,7 +699,7 @@ export function TradingPanelV2() {
                                                     )}
                                                 </div>
                                                 <p className="text-xs text-zinc-400 leading-relaxed">
-                                                    {SCENARIO_DETAILS[marketState.scenario]?.desc}
+                                                    {SCENARIO_DESCRIPTIONS[marketState.scenario]}
                                                 </p>
                                             </div>
 
@@ -709,24 +708,24 @@ export function TradingPanelV2() {
                                                 <div className="space-y-1">
                                                     <div className="flex justify-between text-[10px] text-zinc-500 uppercase">
                                                         <span>Volatility</span>
-                                                        <span>{SCENARIO_DETAILS[marketState.scenario]?.vol}/5</span>
+                                                        <span>{scenarioLevel(marketState.scenario, 'volatility')}/{SCENARIO_LEVELS}</span>
                                                     </div>
                                                     <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
                                                         <div
                                                             className="h-full bg-amber-500 rounded-full transition-all duration-500"
-                                                            style={{ width: `${(SCENARIO_DETAILS[marketState.scenario]?.vol / 5) * 100}%` }}
+                                                            style={{ width: `${(scenarioLevel(marketState.scenario, 'volatility') / SCENARIO_LEVELS) * 100}%` }}
                                                         />
                                                     </div>
                                                 </div>
                                                 <div className="space-y-1">
                                                     <div className="flex justify-between text-[10px] text-zinc-500 uppercase">
                                                         <span>Liquidity</span>
-                                                        <span>{SCENARIO_DETAILS[marketState.scenario]?.liq}/5</span>
+                                                        <span>{scenarioLevel(marketState.scenario, 'liquidity')}/{SCENARIO_LEVELS}</span>
                                                     </div>
                                                     <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
                                                         <div
                                                             className="h-full bg-blue-500 rounded-full transition-all duration-500"
-                                                            style={{ width: `${(SCENARIO_DETAILS[marketState.scenario]?.liq / 5) * 100}%` }}
+                                                            style={{ width: `${(scenarioLevel(marketState.scenario, 'liquidity') / SCENARIO_LEVELS) * 100}%` }}
                                                         />
                                                     </div>
                                                 </div>

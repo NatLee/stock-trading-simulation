@@ -6,9 +6,14 @@ import {
     BotOrder,
     DEFAULT_BOT_MANAGER_CONFIG,
     SCENARIO_MODIFIERS,
+    SHARES_PER_LOT,
+    ODD_LOT_SHARES,
+    ODD_LOT_JITTER,
+    effectiveInterval,
+    intensityOf,
 } from './types';
-import { MatchingEngine, MarketScenario, Trade } from '../matching';
-import { SimEnv, realEnv } from '../sim/env';
+import { MatchingEngine, MarketScenario, Trade, PriceLevel } from '../matching';
+import { SimEnv, realEnv, SIM_TICK_MS } from '../sim/env';
 
 /**
  * BotManager - coordinates all trading bots
@@ -107,156 +112,87 @@ export class BotManager {
     }
 
     /**
+     * How many times a bot acts this tick. A bot whose interval (÷ intensity)
+     * is shorter than one tick acts several times ("burst"), skipping its own
+     * timer; otherwise it acts once when its timer says it is ready.
+     */
+    private turnsThisTick(baseInterval: number, ready: () => boolean): { count: number; force: boolean } {
+        const interval = effectiveInterval(baseInterval, this.config);
+        const bursts = interval < SIM_TICK_MS ? Math.floor(SIM_TICK_MS / interval) : 1;
+        if (bursts > 1) return { count: bursts, force: true };
+        return { count: ready() ? 1 : 0, force: false };
+    }
+
+    /**
      * Run one tick of bot activity
      * Returns the orders that were generated and submitted
-     * 
-     * Burst Mode: At high intensity, bots can execute multiple times per tick
-     * Example: At 5.0x intensity with 100ms system tick:
-     *   - MM: 500ms/5 = 100ms → fires 1x per tick
-     *   - Trend: 3000ms/5 = 600ms → fires 1x every 6 ticks (but can burst if MM interval < tick)
-     *   - Noise: 2000ms/5 = 400ms → fires 1x every 4 ticks
      */
     tick(): BotOrder[] {
         const currentPrice = this.engine.getLastPrice();
         const allOrders: BotOrder[] = [];
-
-        // Determine multipliers based on mode
-        const isOddLot = this.config.isOddLot;
-        const unitSize = isOddLot ? 1 : (this.config.unitSize || 1000);
-
-        // Scale quantity: 
-        // Standard: Bot 1-5 -> 1000-5000 shares (1 * 1000)
-        // Odd Lot: Bot 1-5 -> 100-500 shares (100 * 1)
-        const qtyScale = isOddLot ? 100 : 1;
-
-        // Volume scaling based on intensity (sqrt to avoid extreme values)
-        const intensity = this.config.intensity || 1.0;
-        const volumeMultiplier = Math.sqrt(intensity);
-
-        // Burst-mode: Calculate how many times each bot should fire this tick
-        const SYSTEM_TICK = 100; // ms
-        const mmInterval = this.marketMaker.getRefreshInterval() / intensity;
-        const trendInterval = this.trendBot.getTradeInterval() / intensity;
-        const noiseInterval = this.noiseBot.getTradeInterval() / intensity;
-
-        // If effective interval < system tick, bot can fire multiple times
-        const mmBursts = mmInterval < SYSTEM_TICK ? Math.floor(SYSTEM_TICK / mmInterval) : 1;
-        const trendBursts = trendInterval < SYSTEM_TICK ? Math.floor(SYSTEM_TICK / trendInterval) : 1;
-        const noiseBursts = noiseInterval < SYSTEM_TICK ? Math.floor(SYSTEM_TICK / noiseInterval) : 1;
-
-        // Protection Logic: Check if we need to delay reacting to user orders
-        // If the best Bid/Ask is a User order placed very recently, bots should ignore it (simulating reaction time)
         const now = this.env.now();
-        const reactionDelay = this.config.reactionDelay || 1000;
-        const book = this.engine.getOrderBook();
 
+        // Protection Logic: if the best bid/ask is a user order placed less than
+        // reactionDelay ago, bots do not trade against it yet (simulated reaction time)
+        const book = this.engine.getOrderBook();
+        const isFreshUserOrder = (level: PriceLevel | null) =>
+            !!level && level.orders.length > 0 && level.orders[0].source === 'user'
+            && now - level.orders[0].timestamp < this.config.reactionDelay;
         const bestBid = book.getBestBid();
         const bestAsk = book.getBestAsk();
-
-        let protectBuySide = false; // Protect User Bid (Don't Sell into it)
-        let protectSellSide = false; // Protect User Ask (Don't Buy from it)
-
-        if (bestBid && bestBid.orders.length > 0 && bestBid.orders[0].source === 'user') {
-            if (now - bestBid.orders[0].timestamp < reactionDelay) {
-                protectBuySide = true;
-            }
-        }
-
-        if (bestAsk && bestAsk.orders.length > 0 && bestAsk.orders[0].source === 'user') {
-            if (now - bestAsk.orders[0].timestamp < reactionDelay) {
-                protectSellSide = true;
-            }
-        }
-
         const protect = {
-            buyLimit: protectBuySide && bestBid ? bestBid.price : null,
-            sellLimit: protectSellSide && bestAsk ? bestAsk.price : null
+            buyLimit: isFreshUserOrder(bestBid) ? bestBid!.price : null,   // don't sell into it
+            sellLimit: isFreshUserOrder(bestAsk) ? bestAsk!.price : null,  // don't buy from it
         };
 
-        // Periodic Cleanup: Every 5 seconds, remove bot orders that are too far (>10%)
-        if (now - this.lastCleanupTime > 5000) {
-            this.engine.getOrderBook().pruneDistantOrders(currentPrice, 0.1, 'bot');
+        // Periodic cleanup: remove bot orders that drifted too far from the price
+        if (now - this.lastCleanupTime > this.config.pruneInterval) {
+            book.pruneDistantOrders(currentPrice, this.config.pruneDistance, 'bot');
             this.lastCleanupTime = now;
         }
 
         // Update trend bot with price observation
         this.trendBot.observePrice(currentPrice);
 
-        // Market Maker: refresh quotes if needed (can burst)
-        for (let i = 0; i < mmBursts; i++) {
-            if (this.marketMaker.needsRefresh()) {
-                // Cancel old market maker orders
-                this.engine.cancelOrdersBySource('bot');
-
-                // Generate new quotes
-                const mmOrders = this.marketMaker.generateQuotes(
-                    currentPrice,
-                    this.config.volatility,
-                    this.config.liquidity
-                );
-
-                // Process orders with protection
-                this.processOrders(mmOrders, qtyScale, unitSize, volumeMultiplier, protect);
-
-                allOrders.push(...mmOrders);
-            }
+        // Market maker: re-quote when due (at most once a tick: a second
+        // re-quote in the same tick would replace the first one unchanged)
+        if (this.marketMaker.needsRefresh()) {
+            this.engine.cancelOrdersBySource('bot');
+            const quotes = this.marketMaker.generateQuotes(currentPrice, this.config.volatility, this.config.liquidity);
+            this.processOrders(quotes, protect);
+            allOrders.push(...quotes);
         }
 
-        // Trend Bot: generate trend-following orders
-        if (trendBursts > 1) {
-            // Burst mode: execute multiple times without updating internal timer
-            for (let i = 0; i < trendBursts; i++) {
-                const trendOrders = this.trendBot.generateOrders(
-                    currentPrice,
-                    this.config.scenario,
-                    true // force execution
-                );
-
-                this.processOrders(trendOrders, qtyScale, unitSize, volumeMultiplier, protect);
-                allOrders.push(...trendOrders);
-            }
-        } else if (this.trendBot.isReady()) {
-            // Normal mode
-            const trendOrders = this.trendBot.generateOrders(
-                currentPrice,
-                this.config.scenario
-            );
-            this.processOrders(trendOrders, qtyScale, unitSize, volumeMultiplier, protect);
-            allOrders.push(...trendOrders);
+        // Trend bot, then noise bot
+        const trend = this.turnsThisTick(this.trendBot.getTradeInterval(), () => this.trendBot.isReady());
+        for (let i = 0; i < trend.count; i++) {
+            const orders = this.trendBot.generateOrders(currentPrice, this.config.scenario, trend.force);
+            this.processOrders(orders, protect);
+            allOrders.push(...orders);
         }
 
-        // Noise Bot: generate random orders
-        if (noiseBursts > 1) {
-            // Burst mode
-            for (let i = 0; i < noiseBursts; i++) {
-                const noiseOrders = this.noiseBot.generateOrders(currentPrice, true);
-                this.processOrders(noiseOrders, qtyScale, unitSize, volumeMultiplier, protect);
-                allOrders.push(...noiseOrders);
-            }
-        } else if (this.noiseBot.isReady()) {
-            // Normal mode
-            const noiseOrders = this.noiseBot.generateOrders(currentPrice);
-            this.processOrders(noiseOrders, qtyScale, unitSize, volumeMultiplier, protect);
-            allOrders.push(...noiseOrders);
+        const noise = this.turnsThisTick(this.noiseBot.getTradeInterval(), () => this.noiseBot.isReady());
+        for (let i = 0; i < noise.count; i++) {
+            const orders = this.noiseBot.generateOrders(currentPrice, noise.force);
+            this.processOrders(orders, protect);
+            allOrders.push(...orders);
         }
 
         return allOrders;
     }
 
     /**
-     * Helper to process and submit orders
+     * Turn bot lots into shares and submit them, skipping orders that would
+     * trade against a protected (fresh) user order
      */
-    private processOrders(
-        orders: BotOrder[],
-        qtyScale: number,
-        unitSize: number,
-        volumeMultiplier: number,
-        protect: { buyLimit: number | null, sellLimit: number | null }
-    ): void {
-        const isOddLot = this.config.isOddLot;
+    private processOrders(orders: BotOrder[], protect: { buyLimit: number | null, sellLimit: number | null }): void {
+        const { isOddLot } = this.config;
+        // One bot "lot" is a board lot of unitSize shares, or ODD_LOT_SHARES in odd-lot mode;
+        // sizes grow with √intensity so busy markets also trade a bit bigger
+        const lotShares = isOddLot ? ODD_LOT_SHARES : (this.config.unitSize || SHARES_PER_LOT);
+        const volumeMultiplier = Math.sqrt(intensityOf(this.config));
 
         for (const order of orders) {
-            // Filter orders that hit protected user price levels
             // If protectBuyLimit (User Bid) is set, Don't SELL <= that price
             if (order.side === 'sell' && protect.buyLimit !== null) {
                 if (order.type === 'market') continue; // Market sell hits bid
@@ -268,29 +204,19 @@ export class BotManager {
                 if (order.type === 'limit' && order.price! >= protect.sellLimit) continue; // Limit buy crosses ask
             }
 
-            let qty = order.quantity * qtyScale * unitSize * volumeMultiplier;
-
-            if (isOddLot) {
-                // Odd lot: floor to integer and add randomness (0-99 shares)
-                qty = Math.floor(qty) + Math.floor(this.env.random() * 99);
-            } else {
-                // Standard: round to nearest lot (1000 shares)
-                qty = Math.max(1000, Math.round(qty / 1000) * 1000);
-            }
+            let qty = order.quantity * lotShares * volumeMultiplier;
+            qty = isOddLot
+                ? Math.floor(qty) + Math.floor(this.env.random() * ODD_LOT_JITTER)
+                : Math.max(SHARES_PER_LOT, Math.round(qty / SHARES_PER_LOT) * SHARES_PER_LOT);
 
             if (qty > 0) {
-                this.engine.submitOrder(
-                    order.side,
-                    order.type,
-                    qty,
-                    order.price,
-                    'bot'
-                );
+                this.engine.submitOrder(order.side, order.type, qty, order.price, 'bot');
                 // Update order object for return
                 order.quantity = qty;
             }
         }
     }
+
     onTrade(trade: Trade): void {
         // Update market maker inventory if it was involved
         if (trade.makerSource === 'bot') {
@@ -318,46 +244,5 @@ export class BotManager {
         this.marketMaker.updateConfig(this.config.marketMaker);
         this.trendBot.updateConfig(this.config.trend);
         this.noiseBot.updateConfig(this.config.noise);
-    }
-
-    /**
-     * Enable/disable specific bot
-     */
-    setBotEnabled(botType: 'marketMaker' | 'trend' | 'noise', enabled: boolean): void {
-        switch (botType) {
-            case 'marketMaker':
-                this.config.marketMaker.enabled = enabled;
-                this.marketMaker.updateConfig({ enabled });
-                break;
-            case 'trend':
-                this.config.trend.enabled = enabled;
-                this.trendBot.updateConfig({ enabled });
-                break;
-            case 'noise':
-                this.config.noise.enabled = enabled;
-                this.noiseBot.updateConfig({ enabled });
-                break;
-        }
-    }
-
-    /**
-     * Get bot stats
-     */
-    getStats(): {
-        marketMakerInventory: number;
-        trendBotReady: boolean;
-        noiseBotReady: boolean;
-        scenario: MarketScenario;
-        volatility: number;
-        liquidity: number;
-    } {
-        return {
-            marketMakerInventory: this.marketMaker.getInventory(),
-            trendBotReady: this.trendBot.isReady(),
-            noiseBotReady: this.noiseBot.isReady(),
-            scenario: this.config.scenario,
-            volatility: this.config.volatility,
-            liquidity: this.config.liquidity,
-        };
     }
 }
