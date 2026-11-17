@@ -36,6 +36,15 @@ export const DEFAULT_CONFIG: ChartConfig = {
     maPeriods: [7, 25],
 };
 
+/**
+ * Where the moving-average legend sits: the strip of top padding above the
+ * price area. Nothing is plotted there, so candles, MA lines and the
+ * current-price line can't run through the legend, however high the price goes.
+ */
+export function maLegendBox(dimensions: ChartDimensions): { top: number; left: number; height: number } {
+    return { top: 0, left: dimensions.padding.left, height: dimensions.padding.top };
+}
+
 // Fixed candle dimensions
 const CANDLE_WIDTH = 8;
 const CANDLE_GAP = 2;

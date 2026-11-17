@@ -3,7 +3,7 @@
 import { useRef, useEffect, useCallback, useState, useMemo } from 'react';
 import { CandleData } from '@/types';
 import { ChartConfig, CrosshairData, TooltipData } from './types';
-import { DEFAULT_CONFIG, calculateScale, calculateMA } from './utils';
+import { DEFAULT_CONFIG, calculateScale, calculateMA, maLegendBox } from './utils';
 import { drawCandles, drawVolume, drawMA } from './drawers';
 import { drawGrid, drawPriceLine, drawCrosshair } from './overlays';
 
@@ -320,9 +320,12 @@ export function CandlestickChart({
                 </div>
             )}
 
-            {/* MA Legend */}
+            {/* MA Legend, in the top padding above the plotted prices */}
             {showMA && candles.length > Math.min(...config.maPeriods) && (
-                <div className="absolute top-10 left-2 flex gap-3 text-[10px] font-mono pointer-events-none">
+                <div
+                    className="absolute flex items-center gap-3 text-[10px] leading-none font-mono pointer-events-none"
+                    style={maLegendBox(config.dimensions)}
+                >
                     {config.maPeriods.map((period, i) => candles.length > period && (
                         <span key={period} style={{ color: config.colors.ma[i] }}>MA{period}</span>
                     ))}
