@@ -8,7 +8,10 @@ describe('runScenario', () => {
         const b = runScenario({ scenario: 'volatile', seed: 3, seconds: 30 });
         expect(a.prices).toHaveLength(31);
         expect(a.prices).toEqual(b.prices);
-        expect(a.trades).toBeGreaterThan(0);
+        expect(a.fills.length).toBeGreaterThan(0);
+        expect(a.fills[0].timestamp).toBeGreaterThan(a.start);
+        // The price is the last trade, so the fills end where the prices do
+        expect(a.fills[a.fills.length - 1].price).toBe(a.prices[a.prices.length - 1]);
     });
 
     it('follows the automatic scenario switches', () => {

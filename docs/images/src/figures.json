@@ -1,6 +1,7 @@
 {
   "width": 960,
   "figures": [
+    "cover",
     "tick-loop",
     "ladder",
     "scenarios"

@@ -1,5 +1,5 @@
-// Builds the figures and tables of docs/bots.md (and the Chinese version) from
-// the bot config and from seeded runs of the real engine.
+// Builds the README cover and the figures and tables of docs/bots.md (and the
+// Chinese versions) from the bot config, the app's data and seeded runs of the real engine.
 //
 //   npx tsx scripts/docs/figures.ts   -> docs/images/src/*.html + figures.json, and the
 //                                        generated tables inside docs/bots*.md
@@ -13,21 +13,24 @@ import { fileURLToPath } from 'node:url';
 import { runScenario, summarize, peakInventory, withMarketMakerDefaults, formatRun, ALL_SCENARIOS, ScenarioSummary } from '../lib/scenarioRun';
 import { MatchingEngine } from '../../src/lib/matching/MatchingEngine';
 import { PriceStep } from '../../src/lib/matching/PriceStep';
-import { BASE_CANDLE_MS } from '../../src/lib/matching/CandleAggregator';
+import { BASE_CANDLE_MS, CandleData, aggregateCandles } from '../../src/lib/matching/CandleAggregator';
 import { MarketMakerBot } from '../../src/lib/bots/MarketMakerBot';
 import {
     DEFAULT_BOT_MANAGER_CONFIG, DEFAULT_MARKET_MAKER_CONFIG, DEFAULT_NOISE_BOT_CONFIG,
     SCENARIO_LABELS, SCENARIO_LIFECYCLE, SHARES_PER_LOT, resolveBotConfig, effectiveInterval,
 } from '../../src/lib/bots/types';
-import { OrderBookSnapshot, MarketScenario } from '../../src/lib/matching/types';
+import { OrderBookSnapshot, MarketScenario, Trade } from '../../src/lib/matching/types';
 import { deterministicEnv, SIM_TICK_MS } from '../../src/lib/sim/env';
 import { CONFIG } from '../../src/constants/config';
+import { DEFAULT_CONFIG as DEFAULT_CHART_CONFIG, calculateMA } from '../../src/components/chart/utils';
+import { COURSES_DATA } from '../../src/data/learn';
+import { getAvailablePatterns } from '../../src/data/practice';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const OUT = ROOT + 'docs/images/src/';
 const DOCS = { en: ROOT + 'docs/bots.md', zh: ROOT + 'docs/bots_zh-tw.md' };
 const READMES = [ROOT + 'README.md', ROOT + 'README_zh-tw.md'];
-/** The `npm run sim` example shown in the docs and the READMEs */
+/** The `npm run sim` example shown in the docs and the READMEs, and the run on the cover */
 const SIM_EXAMPLE = { scenario: 'pump_dump' as MarketScenario, seed: 2 };
 
 /** Every figure is laid out for this page width (CSS px); render.mjs reads it from figures.json */
@@ -310,6 +313,139 @@ function ladderFigure(): string {
     return page('Ladder', html, 'Market maker ladder before/after one market buy (seeded).');
 }
 
+// ---------------------------------------------------------------- figure: the cover
+
+/** 2:1 like GitHub's social preview (1280×640); render.mjs shoots it at 2× (1920×960) */
+const COVER_HEIGHT = PAGE_WIDTH / 2;
+
+/** One fill as a one-trade candle, so aggregateCandles buckets fills the way the app buckets candles */
+const fillCandle = (f: Trade, start: number): CandleData => ({
+    open: f.price, high: f.price, low: f.price, close: f.price, volume: f.quantity, timestamp: f.timestamp - start, tradeCount: 1,
+});
+
+/** 1, 2, 2.5 or 5 times a power of ten: the smallest such step of at least `raw` */
+function niceStep(raw: number): number {
+    const power = 10 ** Math.floor(Math.log10(raw));
+    return [1, 2, 2.5, 5, 10].map(m => m * power).find(v => v >= raw)!;
+}
+
+/** The README's `npm run sim` run as the app would chart it: as many candles as the chart shows by default */
+function coverChart(w: number, h: number): string {
+    const run = runScenario({ ...SIM_EXAMPLE, seconds: SECONDS });
+    const candleMs = (SECONDS * 1000) / CONFIG.DEFAULT_VIEW_COUNT;
+    const candles = aggregateCandles(run.fills.map(f => fillCandle(f, run.start)), candleMs);
+    const closes = candles.map(c => c.close);
+    const p0 = run.prices[0];
+    const last = run.prices[run.prices.length - 1];
+
+    const head = 58;
+    const foot = 40;
+    const pad = { l: 16, r: 58 };
+    const plotW = w - pad.l - pad.r;
+    const volH = 42;
+    const priceTop = head + 22;
+    const priceH = h - priceTop - foot - volH - 14;
+    const volTop = priceTop + priceH + 14;
+    const slot = plotW / CONFIG.DEFAULT_VIEW_COUNT;
+    const X = (index: number) => pad.l + (index + 0.5) * slot;
+    const lo = Math.min(...candles.map(c => c.low));
+    const hi = Math.max(...candles.map(c => c.high));
+    const Y = (p: number) => priceTop + (1 - (p - lo) / (hi - lo)) * priceH;
+    const maxVol = Math.max(...candles.map(c => c.volume));
+    const up = (c: CandleData) => c.close >= c.open;
+
+    const lastY = Y(last);
+    // Round prices for the axis, at most four; a label the last-price tag would cover is left out
+    const step = niceStep((hi - lo) / 4);
+    const ticks = Array.from({ length: Math.floor(hi / step) - Math.ceil(lo / step) + 1 }, (_, k) => (Math.ceil(lo / step) + k) * step);
+    const gridLines = ticks.map(p => `
+      <line x1="${pad.l}" x2="${pad.l + plotW}" y1="${Y(p)}" y2="${Y(p)}" stroke="var(--grid)" stroke-dasharray="3 4"/>
+      ${Math.abs(Y(p) - lastY) < 16 ? '' : `<text x="${w - pad.r + 8}" y="${Y(p) + 3.5}" font-size="10" fill="var(--muted)" class="mono">${p.toFixed(2)}</text>`}`).join('');
+    const body = candles.map(c => {
+        const i = c.timestamp / candleMs;
+        const color = up(c) ? 'var(--up)' : 'var(--down)';
+        const top = Y(Math.max(c.open, c.close));
+        const bodyH = Math.max(2, Math.abs(Y(c.open) - Y(c.close)));
+        const vh = (c.volume / maxVol) * volH;
+        return `<line x1="${X(i)}" x2="${X(i)}" y1="${Y(c.high)}" y2="${Y(c.low)}" stroke="${color}" stroke-width="1.2"/>
+      <rect x="${X(i) - slot * 0.34}" y="${top}" width="${slot * 0.68}" height="${bodyH}" rx="1" fill="${color}"/>
+      <rect x="${X(i) - slot * 0.34}" y="${volTop + volH - vh}" width="${slot * 0.68}" height="${vh}" fill="${color}" fill-opacity="0.35"/>`;
+    }).join('');
+    const ma = DEFAULT_CHART_CONFIG.maPeriods.map((period, k) => {
+        const points = calculateMA(closes, period).flatMap((v, i) => (v === null ? [] : [[X(candles[i].timestamp / candleMs), Y(v)] as [number, number]]));
+        return `<path d="${path(points)}" fill="none" stroke="var(--s${k + 1})" stroke-width="1.7" stroke-linejoin="round"/>`;
+    }).join('');
+    const maLegend = DEFAULT_CHART_CONFIG.maPeriods.map((period, k) => `<tspan fill="var(--s${k + 1})" dx="${k ? 10 : 0}">MA${period}</tspan>`).join('');
+    const lastLine = `<line x1="${pad.l}" x2="${w - pad.r}" y1="${lastY}" y2="${lastY}" stroke="var(--s1)" stroke-width="1.2" stroke-dasharray="5 4"/>
+      <rect x="${w - pad.r + 3}" y="${lastY - 10}" width="${pad.r - 9}" height="20" rx="5" fill="var(--s1)"/>
+      <text x="${w - pad.r + 3 + (pad.r - 9) / 2}" y="${lastY + 4}" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle" class="mono">${last.toFixed(2)}</text>`;
+
+    // The scenario switches the page made by itself, numbered at the top of each phase
+    const phaseX = (second: number) => pad.l + ((second * 1000) / candleMs) * slot;
+    const phaseMarks = run.phases.map(([second], k) => {
+        const next = run.phases[k + 1]?.[0] ?? SECONDS;
+        const cx = (phaseX(second) + phaseX(next)) / 2;
+        return `${k ? `<line x1="${phaseX(second)}" x2="${phaseX(second)}" y1="${priceTop - 14}" y2="${volTop + volH}" stroke="var(--muted)" stroke-opacity="0.7" stroke-dasharray="2 3"/>` : ''}
+      <circle cx="${cx}" cy="${priceTop - 8}" r="7.5" fill="var(--bg)" stroke="var(--muted)"/>
+      <text x="${cx}" y="${priceTop - 4.5}" font-size="9.5" font-weight="700" fill="var(--ink)" text-anchor="middle">${k + 1}</text>`;
+    }).join('');
+    const phaseLegend = run.phases.map(([, sc], k) => `${k ? '<tspan fill="var(--muted)"> → </tspan>' : ''}<tspan font-weight="700">${k + 1}</tspan> ${t(SCENARIO_LABELS[sc].en, SCENARIO_LABELS[sc].zh)}`).join('');
+
+    const change = (last / p0 - 1) * 100;
+    return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block">
+      <rect x="0.5" y="0.5" width="${w - 1}" height="${h - 1}" rx="16" fill="var(--bg2)" stroke="var(--line)"/>
+      <text x="${pad.l + 2}" y="36" font-size="17" font-weight="800" fill="var(--ink)">${CONFIG.DEFAULT_SYMBOL}<tspan font-size="12" font-weight="500" fill="var(--muted)" dx="7" class="mono">${CONFIG.DEFAULT_SYMBOL_CODE}</tspan></text>
+      <text x="${pad.l + 120}" y="37" font-size="20" font-weight="700" fill="${change >= 0 ? 'var(--up)' : 'var(--down)'}" class="mono">${last.toFixed(2)}<tspan font-size="12.5" dx="8">${fmtPct(change, 2)}</tspan></text>
+      <text x="${w - 16}" y="35" font-size="11" fill="var(--muted)" text-anchor="end">${t(`${candleMs / 1000} s candles · seed ${SIM_EXAMPLE.seed}`, `${candleMs / 1000} 秒 K · 種子 ${SIM_EXAMPLE.seed}`)}</text>
+      <line x1="0" x2="${w}" y1="${head}" y2="${head}" stroke="var(--line)"/>
+      ${gridLines}${phaseMarks}${body}${ma}${lastLine}
+      <line x1="0" x2="${w}" y1="${h - foot}" y2="${h - foot}" stroke="var(--line)"/>
+      <text x="${pad.l + 2}" y="${h - foot / 2 + 4}" font-size="11.5" fill="var(--ink)">${phaseLegend}</text>
+      <text x="${w - 16}" y="${h - foot / 2 + 4}" font-size="10.5" text-anchor="end" class="mono">${maLegend}</text>
+    </svg>`;
+}
+
+function coverFigure(): string {
+    const chartW = 492;
+    const stats = [
+        { n: ALL_SCENARIOS.length, en: 'market scenarios', zh: '種市場劇本' },
+        { n: COURSES_DATA.length, en: 'courses', zh: '堂課程' },
+        { n: getAvailablePatterns().length, en: 'chart patterns to practise', zh: '種 K 線型態練習' },
+    ];
+    // Three candles, rising: the mark next to the name
+    const mark = `<svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+      <rect x="0.5" y="0.5" width="45" height="45" rx="12" fill="var(--bg2)" stroke="var(--line)"/>
+      <line x1="13" x2="13" y1="19" y2="36" stroke="var(--up)" stroke-width="2"/><rect x="9.5" y="23" width="7" height="10" rx="1.5" fill="var(--up)"/>
+      <line x1="23" x2="23" y1="14" y2="31" stroke="var(--down)" stroke-width="2"/><rect x="19.5" y="17" width="7" height="10" rx="1.5" fill="var(--down)"/>
+      <line x1="33" x2="33" y1="8" y2="27" stroke="var(--up)" stroke-width="2"/><rect x="29.5" y="11" width="7" height="13" rx="1.5" fill="var(--up)"/>
+    </svg>`;
+    const body = `<div class="cover">
+  <div class="intro">
+    <div class="brand">${mark}<span class="name">Stonk<span class="bang">!</span></span></div>
+    ${h('div', 'Stock Trading Simulator', '股票交易模擬器', 'class="what"')}
+    ${h('p', `A real matching engine and three bots trading every ${SIM_TICK_MS} ms, right in your browser. Every price is a real fill, not a formula.`,
+        `真正的撮合引擎，三個機器人每 ${SIM_TICK_MS} 毫秒下單，直接在瀏覽器裡跑。每一個價格、每一根 K 線都來自實際成交，不是公式算出來的。`, 'class="pitch"')}
+    <div class="stats">${stats.map(s => `<div class="stat"><b class="mono">${s.n}</b>${h('span', s.en, s.zh)}</div>`).join('')}</div>
+  </div>
+  <div class="chart">${coverChart(chartW, COVER_HEIGHT - 2 * 28)}</div>
+</div>`;
+    const css = `<style>
+.cover { position: relative; width: ${PAGE_WIDTH}px; height: ${COVER_HEIGHT}px; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--bg);
+  display: grid; grid-template-columns: 1fr ${chartW}px; gap: 34px; padding: 28px 28px 28px 46px; }
+.intro { display: flex; flex-direction: column; justify-content: center; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.name { font-size: 64px; font-weight: 800; letter-spacing: -0.045em; line-height: 1; }
+.bang { color: var(--up); }
+.what { margin-top: 12px; font-size: 22px; font-weight: 650; letter-spacing: -0.01em; }
+.pitch { margin: 14px 0 0; font-size: 15px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
+.stats { display: flex; gap: 10px; margin-top: 26px; }
+.stat { flex: 1; border: 1px solid var(--line); background: var(--bg2); border-radius: 12px; padding: 10px 12px 11px; }
+.stat b { display: block; font-size: 24px; font-weight: 700; line-height: 1.1; }
+.stat span { display: block; margin-top: 3px; font-size: 11.5px; line-height: 1.3; color: var(--muted); }
+</style>`;
+    return page('Cover', css + body, `Repository cover: the README's \`npm run sim\` run (${SIM_EXAMPLE.scenario}, seed ${SIM_EXAMPLE.seed}) charted like the app, plus counts from the app's data.`);
+}
+
 // ---------------------------------------------------------------- tables for the docs
 
 type Lang = 'en' | 'zh';
@@ -383,6 +519,7 @@ function fillMarkers(doc: string, parts: Record<string, string>): string {
 
 mkdirSync(OUT, { recursive: true });
 const figures: Record<string, string> = {
+    cover: coverFigure(),
     'tick-loop': tickLoopPage(),
     ladder: ladderFigure(),
     scenarios: scenariosFigure(),
