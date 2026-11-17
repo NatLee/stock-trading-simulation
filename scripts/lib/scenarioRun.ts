@@ -7,7 +7,7 @@
 import { MarketSimulation } from '../../src/lib/sim/MarketSimulation';
 import { deterministicEnv, SIM_TICK_MS } from '../../src/lib/sim/env';
 import { SCENARIO_LIFECYCLE, SCENARIO_MODIFIERS, DEFAULT_MARKET_MAKER_CONFIG } from '../../src/lib/bots/types';
-import { MarketScenario } from '../../src/lib/matching/types';
+import { MarketScenario, Trade } from '../../src/lib/matching/types';
 import { CONFIG } from '../../src/constants/config';
 import { BASE_CANDLE_MS } from '../../src/lib/matching/CandleAggregator';
 
@@ -33,8 +33,10 @@ export interface RunResult {
     inventory: number[];
     /** Scenario switches: [second, scenario] */
     phases: [number, MarketScenario][];
-    trades: number;
-    volume: number;
+    /** The clock at t = 0 (ms); fill timestamps count from here */
+    start: number;
+    /** Every fill, oldest first (only bots trade in a run) */
+    fills: Trade[];
 }
 
 const START = Date.UTC(2026, 10, 3, 1, 0, 0); // any fixed moment works
@@ -62,8 +64,7 @@ export function runScenario(opts: RunOptions): RunResult {
     const prices: number[] = [sim.engine.getLastPrice()];
     const inventory: number[] = [sim.bots.getMarketMakerInventory()];
     const spreads: number[] = [];
-    let trades = 0;
-    let volume = 0;
+    const fills: Trade[] = [];
 
     const totalTicks = options.seconds * TICKS_PER_SECOND;
     for (let tick = 1; tick <= totalTicks; tick++) {
@@ -75,10 +76,7 @@ export function runScenario(opts: RunOptions): RunResult {
         }
 
         env.clock.advance(SIM_TICK_MS);
-        for (const t of sim.step()) {
-            trades++;
-            volume += t.quantity;
-        }
+        fills.push(...sim.step());
 
         if (tick % TICKS_PER_SECOND === 0) {
             prices.push(sim.engine.getLastPrice());
@@ -90,7 +88,7 @@ export function runScenario(opts: RunOptions): RunResult {
         }
     }
 
-    return { options, prices, spreads, inventory, phases, trades, volume };
+    return { options, prices, spreads, inventory, phases, start: START, fills };
 }
 
 export interface RunStats {
@@ -122,7 +120,7 @@ export function statsOf(run: RunResult): RunStats {
         low: pct(Math.min(...run.prices)),
         move1s: sd,
         spread: (run.spreads.reduce((a, b) => a + b, 0) / Math.max(1, run.spreads.length)) * 100,
-        tradesPerMinute: run.trades / (run.options.seconds / 60),
+        tradesPerMinute: run.fills.length / (run.options.seconds / 60),
     };
 }
 

@@ -1,5 +1,10 @@
 [English](README.md)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/cover-zh-dark.png">
+  <img src="docs/images/cover-zh-light.png" alt="Stonk! 股票交易模擬器：一次固定種子的拉高出貨走勢 K 線圖（先拉高、崩盤、反彈一次，再一路走低），旁邊是 App 裡市場劇本、課程和 K 線型態練習的數量。">
+</picture>
+
 # Stonk! 股票交易模擬器
 
 <p>
@@ -7,9 +12,6 @@
   <a href="https://github.com/NatLee/stock-trading-simulation/actions/workflows/deploy.yml"><img src="https://github.com/NatLee/stock-trading-simulation/actions/workflows/deploy.yml/badge.svg" alt="部署到 GitHub Pages"></a>
   <a href="https://natlee.github.io/stock-trading-simulation/"><img src="https://img.shields.io/badge/demo-live-2a78d6" alt="線上試玩"></a>
 </p>
-
-![交易模擬介面](./docs/simulation.png)
-*主交易介面，包含即時委託簿、K 線圖表與交易面板*
 
 一個完全在瀏覽器裡執行的股票交易模擬器。中間是一個真的撮合引擎，三個機器人（造市、追趨勢、代表散戶的雜訊）每 100 毫秒互相交易，也跟你交易，所以價格、委託簿和 K 線都是真實成交出來的。12 種市場劇本會調整機器人的參數，從冷清沒人的市場到拉高出貨都有。另外還有 19 堂課的學習中心，以及練習 K 線型態的實戰練習。
 
@@ -29,6 +31,9 @@
 ## 功能特色
 
 ### 交易模擬
+
+![交易模擬介面](./docs/simulation.png)
+*主交易介面，包含即時委託簿、K 線圖表與交易面板*
 
 - **撮合引擎**：價格優先、時間優先，以掛單方價格成交，支援部分成交
 - **訂單類型**：市價單、限價單
@@ -156,7 +161,7 @@ src/
 ├── data/                     # 課程與練習資料（JSON）
 scripts/
 ├── simulate.ts               # npm run sim
-└── docs/                     # 用固定種子跑引擎，產生 docs/images 裡的圖
+└── docs/                     # 用固定種子跑引擎，產生封面和 docs/images 裡的圖
 docs/
 ├── bots_zh-tw.md             # 機器人怎麼讓價格動起來
 └── images/                   # 圖片（src/ 是它們的 HTML 原始檔）
