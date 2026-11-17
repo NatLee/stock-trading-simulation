@@ -1,5 +1,10 @@
 [繁體中文](README_zh-tw.md)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/cover-dark.png">
+  <img src="docs/images/cover-light.png" alt="Stonk! Stock Trading Simulator: a candlestick chart of one seeded pump & dump run (it pumps, crashes, bounces once and drifts lower), next to how many market scenarios, courses and chart patterns the app has.">
+</picture>
+
 # Stonk! Stock Trading Simulator
 
 <p>
@@ -7,9 +12,6 @@
   <a href="https://github.com/NatLee/stock-trading-simulation/actions/workflows/deploy.yml"><img src="https://github.com/NatLee/stock-trading-simulation/actions/workflows/deploy.yml/badge.svg" alt="Deploy to GitHub Pages"></a>
   <a href="https://natlee.github.io/stock-trading-simulation/"><img src="https://img.shields.io/badge/demo-live-2a78d6" alt="Live demo"></a>
 </p>
-
-![Trading Simulation](./docs/simulation.png)
-*Main trading interface with real-time order book, candlestick chart, and trading panel*
 
 A stock trading simulator that runs entirely in your browser. A real order-matching engine sits in the
 middle, and three bots (a market maker, a trend follower and a noisy crowd) trade against each other
@@ -37,6 +39,9 @@ inventory.
 ## Features
 
 ### Trading simulation
+
+![Trading Simulation](./docs/simulation.png)
+*Main trading interface with real-time order book, candlestick chart, and trading panel*
 
 - **Matching engine**: price-time priority, fills at the resting order's price, partial fills
 - **Order types**: market and limit orders
@@ -173,7 +178,7 @@ src/
 ├── data/                     # Course and practice content (JSON)
 scripts/
 ├── simulate.ts               # npm run sim
-└── docs/                     # Builds the figures in docs/images from seeded runs
+└── docs/                     # Builds the cover and the figures in docs/images from seeded runs
 docs/
 ├── bots.md                   # How the bots move the price
 └── images/                   # Figures (src/ holds their HTML sources)
