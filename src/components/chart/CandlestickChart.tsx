@@ -175,31 +175,13 @@ export function CandlestickChart({
         });
 
         // Draw MA lines
-        if (config.showMA && candles.length > 7) {
+        if (config.showMA) {
             const closes = candles.map(c => c.close);
-
-            const ma7 = calculateMA(closes, 7);
-            drawMA({
-                ctx,
-                maValues: ma7,
-                scale: {
-                    priceMin: scale.priceMin,
-                    priceRange: scale.priceRange,
-                    candleWidth: scale.candleWidth,
-                    candleGap: scale.candleGap,
-                    chartHeight: scale.chartHeight,
-                },
-                padding: dimensions.padding,
-                color: colors.ma7,
-                volumeHeight,
-                offsetIndex,
-            });
-
-            if (candles.length > 25) {
-                const ma25 = calculateMA(closes, 25);
+            config.maPeriods.forEach((period, i) => {
+                if (candles.length <= period) return;
                 drawMA({
                     ctx,
-                    maValues: ma25,
+                    maValues: calculateMA(closes, period),
                     scale: {
                         priceMin: scale.priceMin,
                         priceRange: scale.priceRange,
@@ -208,11 +190,11 @@ export function CandlestickChart({
                         chartHeight: scale.chartHeight,
                     },
                     padding: dimensions.padding,
-                    color: colors.ma25,
+                    color: colors.ma[i],
                     volumeHeight,
                     offsetIndex,
                 });
-            }
+            });
         }
 
         // Draw current price line
@@ -339,10 +321,11 @@ export function CandlestickChart({
             )}
 
             {/* MA Legend */}
-            {showMA && candles.length > 7 && (
+            {showMA && candles.length > Math.min(...config.maPeriods) && (
                 <div className="absolute top-10 left-2 flex gap-3 text-[10px] font-mono pointer-events-none">
-                    <span className="text-indigo-400">MA7</span>
-                    {candles.length > 25 && <span className="text-amber-400">MA25</span>}
+                    {config.maPeriods.map((period, i) => candles.length > period && (
+                        <span key={period} style={{ color: config.colors.ma[i] }}>MA{period}</span>
+                    ))}
                 </div>
             )}
         </div>

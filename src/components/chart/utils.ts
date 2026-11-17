@@ -9,8 +9,7 @@ export const DEFAULT_COLORS: ChartColors = {
     volume: '#27272a',
     volumeBullish: 'rgba(16, 185, 129, 0.3)',
     volumeBearish: 'rgba(239, 68, 68, 0.3)',
-    ma7: '#6366f1',
-    ma25: '#f59e0b',
+    ma: ['#6366f1', '#f59e0b'],
     priceLine: '#3b82f6',
     crosshair: '#52525b',
 };

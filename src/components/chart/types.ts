@@ -29,8 +29,8 @@ export interface ChartColors {
     volume: string;
     volumeBullish: string;
     volumeBearish: string;
-    ma7: string;
-    ma25: string;
+    /** One colour per entry of ChartConfig.maPeriods, in the same order */
+    ma: string[];
     priceLine: string;
     crosshair: string;
 }
@@ -43,6 +43,7 @@ export interface ChartConfig {
     showGrid: boolean;
     showCrosshair: boolean;
     volumeHeight: number; // percentage of chart height
+    /** Moving averages to draw (in candles); each one appears once there are more candles than its period */
     maPeriods: number[];
 }
 
